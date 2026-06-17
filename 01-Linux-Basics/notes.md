@@ -1,4 +1,3 @@
-```markdown
 # 🐧 Core Linux Telemetry & Stream Processing Logs
 
 This document contains deep-dive technical notes, command variations (`--help` capabilities), and architectural observations gathered during Day 3 core Linux administration tasks.
