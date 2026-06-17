@@ -10,7 +10,7 @@ Welcome to my DevOps engineering journal. This repository is dedicated to docume
 
 ## 📅 Daily Progress Logs
 
-### 🔹 June 17, 2026 | Day 3: Automated Provisioning & Dynamic Telemetry
+### 🔹 June 17, 2026 | Automated Provisioning & Dynamic Telemetry
 - **Tasks & Objectives:**
   - Initialized isolated testing laboratory environments using **Vagrant** over the `vmware_desktop` provider to embrace Infrastructure as Code (IaC) workflows.
   - Deployed and configured **Ubuntu** and **Rocky Linux 9.8 (Minimal CLI)** server instances.
