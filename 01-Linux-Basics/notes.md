@@ -66,7 +66,6 @@ Two separate binaries are utilized daily to prevent system-wide lockups due to l
 
 ℹ️ *All syntax behaviors verified across both Ubuntu and Rocky Linux enterprise images.*
 
-```
 ## 📊 Linux Telemetry & Automation Cheatsheet
 
 ### 1. Core Telemetry Commands
