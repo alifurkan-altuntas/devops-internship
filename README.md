@@ -6,6 +6,7 @@ Welcome to my DevOps engineering journal. This repository is dedicated to docume
 - [01-Linux-Basics](./01-Linux-Basics/): Core Linux administration telemetry, stream processing (`awk`, `grep`, `cut`), and custom automation scripts.
 - [02-Vagrant-Automation](./02-Vagrant-Automation/): Infrastructure as Code (IaC) environments, provider bridges, and multi-distribution provisioning logs.
 - [03-File-System-Management](./03-File-System-Management/): Storage diagnostics, physical block allocation strategies (`dd`), and advanced data stream sorting pipelines.
+- [04-User-Privilege-Management](./04-User-Privilege-Management/): Identity access control, system group lifecycles, and granular sudoers security constraints (Least Privilege Principle).
 
 ---
 
@@ -29,6 +30,15 @@ Welcome to my DevOps engineering journal. This repository is dedicated to docume
   - Engineered an emergency production diagnostics pipeline combining find syntax, disk utilities, and human-readable reverse sort mechanisms to trap the top 10 heaviest files under root nodes.
 - **Milestones & Deliverables:**
   - 🗂️ File System Operations & Pipelines: See [Storage Diagnostics & Command Matrix](./03-File-System-Management/)
+
+### 🔹 June 18, 2026 | Identity Access Control & Granular Privilege Isolation
+- **Tasks & Objectives:**
+  - Studied Linux user and group authentication mechanics (`useradd`, `groupadd`, `id`) and security boundaries within `/etc/passwd` and `/etc/group`.
+  - Implemented the **Least Privilege Principle (En Düşük Yetki İlkesi)** to enforce structural operating system hardening.
+  - Provisioned a restricted operator account (`devopstester`) configured specifically via `visudo` and the `/etc/sudoers` architecture.
+  - Isolated execution vectors to allow the restricted user to run *only* `systemctl restart nginx` under root space without a password prompt (`NOPASSWD:`), successfully catching and blocking unauthorized service operations (e.g., `systemctl stop nginx`).
+- **Milestones & Deliverables:**
+  - 🔑 Role-Based Access Controls: See [User Administration & Sudoers Constraints](./04-User-Privilege-Management/)
 
 ---
 ℹ️ *Note: All mechanisms, network layers, and automation scripts are rigorously tested locally within sandboxed virtualization instances before integration.*
