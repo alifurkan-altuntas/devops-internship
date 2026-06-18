@@ -11,25 +11,46 @@ In a secure DevOps infrastructure, providing full root access via the `wheel` or
 ### 🛠️ Step-by-Step Security Implementation
 
 1. **Created the Isolated Automation Account:**
+
    ```bash
    sudo useradd -m devopstester
    sudo passwd devopstester
 
-```
-
 2. **Configured Granular Privileges via `visudo`:**
 To enforce strict boundaries, the structural configuration file `/etc/sudoers` was modified securely using the `sudo visudo` command by appending the following specific instruction at the bottom of the registry:
 ```text
-devopstester ALL=(ALL) NOPASSWD: /usr/bin/systemctl restart nginx
+    devopstester ALL=(ALL) NOPASSWD: /usr/bin/systemctl restart nginx
+```
+### 🔍 Binary Path Verification
 
+Before creating a sudoers rule, verify the exact location of the binary:
+
+```bash
+which systemctl
 ```
 
+Example output:
+
+```text
+/usr/bin/systemctl
+```
+
+The path may vary between Linux distributions and environments.
 
 * **`devopstester`**: Targets the restricted operator profile.
 * **`NOPASSWD:`**: Bypasses the standard runtime terminal password prompt solely for the explicitly declared binary string, facilitating smooth CI/CD automation pipelines.
-* **`/usr/bin/systemctl restart nginx`**: Restricts the entire root privilege scope to this unique horizontal command path.
+* **`/usr/bin/systemctl restart nginx`**: Restricts execution to the exact command invocation, including its arguments.
 
+---
 
+### 🔒 Why `visudo` Instead of Editing `/etc/sudoers` Directly?
+
+`visudo` provides several safety mechanisms:
+
+* Syntax validation before saving
+* File locking to prevent simultaneous edits
+* Protection against malformed configurations
+* Reduced risk of accidentally breaking sudo access
 
 ---
 
@@ -54,10 +75,10 @@ This confirms the operating system successfully trapped the unauthorized instruc
 
 | Command | Operational Purpose | Production Practical Example | Essential Options | Option Mechanics / Output |
 | --- | --- | --- | --- | --- |
-| **`useradd`** | Deploys a brand new structural user profile into the `/etc/passwd` registry. | `useradd -m devopsuser` | **`-m`** | Automates the creation of a clean home directory tree structure. |
+| **`useradd`** | Creates a new local user account inside the `/etc/passwd` registry. | `useradd -m devopsuser` | **`-m`** | Automates the creation of a clean home directory tree structure. |
 | **`passwd`** | Sets or updates encrypted authentication keys for a targeted user node. | `passwd devopsuser` | *None* | Updates password layers securely. |
 | **`usermod`** | Modifies existing user profile structures and secondary runtime parameters. | `usermod -aG wheel user` | **`-aG`** | Appends (`a`) the user to a targeted group (`G`) without purging older memberships. |
-| **`groupadd`** | instantiates a fresh authorization group node inside `/etc/group`. | `groupadd security-team` | *None* | Generates logical group objects for role-based access. |
+| **`groupadd`** | Creates a new local group inside the `/etc/group`. | `groupadd security-team` | *None* | Generates logical group objects for role-based access. |
 | **`id`** | Dumps comprehensive metadata tracking numbers for user and group references. | `id devopstester` | *None* | Returns active operational keys including **UID**, **GID**, and connected groups. |
 | **`sudo`** | Executes dedicated target operational binaries utilizing elevated root permissions. | `sudo visudo` | *None* | Invokes root execution buffers mapped tightly against `/etc/sudoers` rules. |
 
