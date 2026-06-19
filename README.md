@@ -8,11 +8,15 @@ Welcome to my DevOps engineering journal. This repository is dedicated to docume
 - [02-Vagrant-Automation](./02-Vagrant-Automation/): Infrastructure as Code (IaC) environments, provider bridges, and multi-distribution provisioning logs.
 - [03-File-System-Management](./03-File-System-Management/): Storage diagnostics, physical block allocation strategies (`dd`), and advanced data stream sorting pipelines.
 - [04-User-Privilege-Management](./04-User-Privilege-Management/): Identity access control, system group lifecycles, and granular sudoers security constraints (Least Privilege Principle).
+- [05-Linux-Permissions](./05-Linux-Permissions/): File system access control, recursive ownership migration matrices, and advanced isolation layers.
+- [06-Linux-Process-Management](./06-Linux-Process-Management/): Process status monitoring, CPU priority adjustments (`nice`/`renice`), and kernel-level signal operations.
 
 ### 📝 Evaluation & Assessment Artifacts
 
-- [challenges.md](./challenges.md): Verified production scenario matrices, question sheets, and technical system administration answers.
-- [quiz-results.md](./quiz-results.md): Comprehensive 20-question comprehensive evaluation logs with 85% success performance profile and infrastructure post-mortems.
+- [challenges.md](./challenges.md): Verified production scenario matrices, question sheets, and technical system administration answers (Phases 1-4).
+- [quiz-results.md](./quiz-results.md): Comprehensive 20-question engineering evaluation logs with 85% success performance profile (Phases 1-4).
+- [Phase 5 Quiz Logs](./05-Linux-Permissions/quiz-results.md): Targeted 5-question assessment telemetry covering masking filters and special directory perimeters.
+- [Phase 6 Quiz Logs](./06-Linux-Process-Management/quiz-results.md): Perfect metric evaluation (100% Score) monitoring process tracking loops and signal states.
 
 ---
 
@@ -61,6 +65,7 @@ Welcome to my DevOps engineering journal. This repository is dedicated to docume
   - 📊 Examination Logs: See [20-Question Evaluation & Post-Mortem Analytics](./quiz-results.md)
 
 ### 🔹 June 19, 2026 | Storage Authorization Layers & Shared Environment Hardening
+
 - **Tasks & Objectives:**
   - Analyzed standard Linux authorization maps (`rwx`), numerical masking conversions (`755` vs `644`), and user layout masks (`umask`).
   - Audited asset distribution commands (`chown` and `chgrp`) to automate recursive file tree ownership migrations.
@@ -69,6 +74,17 @@ Welcome to my DevOps engineering journal. This repository is dedicated to docume
 - **Milestones & Deliverables:**
   - 🔑 Security Hardening Workspace: See [Storage Diagnostics & Permissions Matrix](./05-Linux-Permissions/notes.md)
   - 📊 Validation Diagnostics: See [Phase 5 Assessment Analytics](./05-Linux-Permissions/quiz-results.md)
+
+### 🔹 June 19, 2026 | Kernel Process Telemetry & Prioritization Engineering
+
+- **Tasks & Objectives:**
+  - Explored native process status architectures (`ps`, `pidof`) and implemented real-time monitoring via native utilities (`top`) to ensure compatibility with minimalist air-gapped nodes.
+  - Simulated production failure scenarios by deploying background processor stress tests and intercepting them seamlessly with precise kernel signals (`SIGKILL -9`).
+  - Evaluated architectural differences between universal tracking engines and modern tree-view visualization overlays (`htop`).
+  - Mastered CPU resource balance scheduling by configuring custom initial load weights (`nice`) and shifting current prioritization grids dynamically (`renice`).
+- **Milestones & Deliverables:**
+  - ⚙️ Process Operations Workspace: See [Process Telemetry & Matrix Logs](./06-Linux-Process-Management/notes.md)
+  - 📊 Performance Evaluation: See [Phase 6 Clean Validation Analytics (100% Score)](./06-Linux-Process-Management/quiz-results.md)
 
 ---
 
