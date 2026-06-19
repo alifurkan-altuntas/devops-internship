@@ -11,6 +11,7 @@ Welcome to my DevOps engineering journal. This repository is dedicated to docume
 - [05-Linux-Permissions](./05-Linux-Permissions/): File system access control, recursive ownership migration matrices, and advanced isolation layers.
 - [06-Linux-Process-Management](./06-Linux-Process-Management/): Process status monitoring, CPU priority adjustments (`nice`/`renice`), and kernel-level signal operations.
 - [07-Linux-Service-Management](./07-Linux-Service-Management/): Systemd service lifecycle automation, zero-downtime reconfigurations, and binary log auditing.
+- [08-Linux-Log-Analysis](./08-Linux-Log-Analysis/): Multi-stage text processing pipelines, column-based pattern extraction, and cross-distribution network diagnostics.
 
 ### 📝 Evaluation & Assessment Artifacts
 
@@ -19,6 +20,7 @@ Welcome to my DevOps engineering journal. This repository is dedicated to docume
 - [Phase 5 Quiz Logs](./05-Linux-Permissions/quiz-results.md): Targeted 5-question assessment telemetry covering masking filters and special directory perimeters.
 - [Phase 6 Quiz Logs](./06-Linux-Process-Management/quiz-results.md): Perfect metric evaluation (100% Score) monitoring process tracking loops and signal states.
 - [Phase 7 Quiz Logs](./07-Linux-Service-Management/quiz-results.md): Infrastructure service assessment (100% Score) analyzing daemon initialization states and runtime journals.
+- [Phase 8 Quiz Logs](./08-Linux-Log-Analysis/quiz-results.md): High-performance log manipulation assessment (100% Score) parsing structured token streams.
 
 ---
 
@@ -89,6 +91,7 @@ Welcome to my DevOps engineering journal. This repository is dedicated to docume
   - 📊 Performance Evaluation: See [Phase 6 Clean Validation Analytics (100% Score)](./06-Linux-Process-Management/quiz-results.md)
 
 ### 🔹 June 19, 2026 | Service Lifecycle Automation & Centralized Journal Auditing
+
 - **Tasks & Objectives:**
   - Provisioned enterprise web utilities (Nginx) across distinct distribution ecosystems, analyzing package execution management layers (`dnf` vs `apt`).
   - Deconstructed architectural deployment philosophies, contrasting user-friendly automatic startup defaults with enterprise zero-trust initialization constraints.
@@ -97,6 +100,17 @@ Welcome to my DevOps engineering journal. This repository is dedicated to docume
 - **Milestones & Deliverables:**
   - 🏗️ Service Control Workspace: See [Systemd Daemon Lifecycles & Configurations](./07-Linux-Service-Management/notes.md)
   - 📊 Operational Analytics: See [Phase 7 Performance Evaluation (100% Score)](./07-Linux-Service-Management/quiz-results.md)
+
+  ### 🔹 June 19, 2026 | High-Density Log Processing & Stream Token Engineering
+
+- **Tasks & Objectives:**
+  - Explored structural web logs format patterns, mapping column tokens (`$1` Client IP, `$7` Path URI, `$9` HTTP Status) to decode native transaction layouts.
+  - Analyzed multi-distribution networking behaviors, troubleshooting default IPv6 loopback routing (`::1`) on Ubuntu against backward-compatible IPv4 layers (`127.0.0.1`) inside Rocky Linux.
+  - Resolved utility packaging anomalies, mitigating minimal image footprint variations via on-demand compilation loops for network diagnostics tools (`curl`).
+  - Constructed enterprise text analytics pipelines leveraging chained filters (`grep`, `awk`, `sort`, `uniq`) to isolate brute-force vectors and audit corrupted 404 path triggers.
+- **Milestones & Deliverables:**
+  - 🪵 Metin İşleme Workspace: See [Log Analytics & Command Processing Templates](./08-Linux-Log-Analysis/notes.md)
+  - 📊 Operational Analytics: See [Phase 8 Performance Evaluation (100% Score)](./08-Linux-Log-Analysis/quiz-results.md)
 
 ---
 
