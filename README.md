@@ -10,6 +10,7 @@ Welcome to my DevOps engineering journal. This repository is dedicated to docume
 - [04-User-Privilege-Management](./04-User-Privilege-Management/): Identity access control, system group lifecycles, and granular sudoers security constraints (Least Privilege Principle).
 - [05-Linux-Permissions](./05-Linux-Permissions/): File system access control, recursive ownership migration matrices, and advanced isolation layers.
 - [06-Linux-Process-Management](./06-Linux-Process-Management/): Process status monitoring, CPU priority adjustments (`nice`/`renice`), and kernel-level signal operations.
+- [07-Linux-Service-Management](./07-Linux-Service-Management/): Systemd service lifecycle automation, zero-downtime reconfigurations, and binary log auditing.
 
 ### 📝 Evaluation & Assessment Artifacts
 
@@ -17,6 +18,7 @@ Welcome to my DevOps engineering journal. This repository is dedicated to docume
 - [quiz-results.md](./quiz-results.md): Comprehensive 20-question engineering evaluation logs with 85% success performance profile (Phases 1-4).
 - [Phase 5 Quiz Logs](./05-Linux-Permissions/quiz-results.md): Targeted 5-question assessment telemetry covering masking filters and special directory perimeters.
 - [Phase 6 Quiz Logs](./06-Linux-Process-Management/quiz-results.md): Perfect metric evaluation (100% Score) monitoring process tracking loops and signal states.
+- [Phase 7 Quiz Logs](./07-Linux-Service-Management/quiz-results.md): Infrastructure service assessment (100% Score) analyzing daemon initialization states and runtime journals.
 
 ---
 
@@ -85,6 +87,16 @@ Welcome to my DevOps engineering journal. This repository is dedicated to docume
 - **Milestones & Deliverables:**
   - ⚙️ Process Operations Workspace: See [Process Telemetry & Matrix Logs](./06-Linux-Process-Management/notes.md)
   - 📊 Performance Evaluation: See [Phase 6 Clean Validation Analytics (100% Score)](./06-Linux-Process-Management/quiz-results.md)
+
+### 🔹 June 19, 2026 | Service Lifecycle Automation & Centralized Journal Auditing
+- **Tasks & Objectives:**
+  - Provisioned enterprise web utilities (Nginx) across distinct distribution ecosystems, analyzing package execution management layers (`dnf` vs `apt`).
+  - Deconstructed architectural deployment philosophies, contrasting user-friendly automatic startup defaults with enterprise zero-trust initialization constraints.
+  - Implemented core systemd automation blocks, distinguishing structural persistence links (`enable`) from dynamic real-time runtime state changes (`start`).
+  - Engineered zero-downtime hot-reconfigurations (`reload`) and hooked into unified binary journal streams (`journalctl -u -f`) to track runtime service logs dynamically.
+- **Milestones & Deliverables:**
+  - 🏗️ Service Control Workspace: See [Systemd Daemon Lifecycles & Configurations](./07-Linux-Service-Management/notes.md)
+  - 📊 Operational Analytics: See [Phase 7 Performance Evaluation (100% Score)](./07-Linux-Service-Management/quiz-results.md)
 
 ---
 
