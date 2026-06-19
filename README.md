@@ -109,7 +109,7 @@ Welcome to my DevOps engineering journal. This repository is dedicated to docume
   - Resolved utility packaging anomalies, mitigating minimal image footprint variations via on-demand compilation loops for network diagnostics tools (`curl`).
   - Constructed enterprise text analytics pipelines leveraging chained filters (`grep`, `awk`, `sort`, `uniq`) to isolate brute-force vectors and audit corrupted 404 path triggers.
 - **Milestones & Deliverables:**
-  - 🪵 Metin İşleme Workspace: See [Log Analytics & Command Processing Templates](./08-Linux-Log-Analysis/notes.md)
+  - 🪵 Text Process Workspace: See [Log Analytics & Command Processing Templates](./08-Linux-Log-Analysis/notes.md)
   - 📊 Operational Analytics: See [Phase 8 Performance Evaluation (100% Score)](./08-Linux-Log-Analysis/quiz-results.md)
 
 ---
