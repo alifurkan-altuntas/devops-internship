@@ -1,31 +1,32 @@
 # 🔑 Linux Permissions & Security Hardening
 
-This document covers file system authorization layers, ownership structures, custom identity maskings, and advanced security boundaries implemented on Virtual Private Servers (VPS).
+This document covers file permissions, ownership, umask, and the sticky bit implemented on Virtual Private Servers (VPS).
 
 ---
 
-## 1. Enterprise Task 1: Shared Secure Directory (Sticky Bit Architecture)
+## 1. Shared Directory with Sticky Bit
 
-In collaborative enterprise environments, providing a shared folder with full write access (`777`) introduces a critical vulnerability: any user can cross-delete or alter files belonging to other operators. To mitigate these risks, a **Sticky Bit** boundary layer was successfully simulated.
+A shared folder with full write access (`777`) introduces a vulnerability: any user can cross-delete or alter files belonging to other operators. To mitigate these risks, the **sticky bit** was used to fix this.
 
-### 🛠️ Step-by-Step Laboratory Deployment
+### 🛠️ Steps
 
-1. **Created the Shared Infrastructure Node:**
+1. **Created the shared directory:**
+
 ```bash
    sudo mkdir /tmp/test
    sudo chmod 777 /tmp/test
 
 ```
 
-2. **Injected the Special Sticky Bit Permission:**
-To restrict cross-deletion rules while preserving global write capabilities, the dynamic directory mask was modified:
+2. **Added the sticky bit:**
+   To prevent cross-deletion while keeping write access open:
 
 ```bash
    sudo chmod +t /tmp/test
 
 ```
 
-*Alternative absolute command layout:* `sudo chmod 1777 /tmp/test`
+_Alternative absolute command layout:_ `sudo chmod 1777 /tmp/test`
 
 3. **Status Verification:**
 
@@ -34,9 +35,9 @@ To restrict cross-deletion rules while preserving global write capabilities, the
 
 ```
 
-*Expected system flag output:* `drwxrwxrwt ... /tmp/test` (The trailing **`t`** token indicates the active Sticky Bit perimeter).
+_Expected system flag output:_ `drwxrwxrwt ... /tmp/test` (The trailing **`t`** token indicates the active Sticky Bit perimeter).
 
-### 🔐 Sticky Bit Behavioral Notes
+### 🔐 How It Works
 
 The Sticky Bit does **not** restrict file reading or modification permissions directly. Instead, it introduces a directory-level ownership boundary that controls file deletion and renaming operations.
 
@@ -49,41 +50,42 @@ Within a Sticky Bit protected directory:
 
 This mechanism is widely used on shared temporary storage locations such as `/tmp`, where all users require write access but cross-user file removal must be prevented.
 
-### 🔒 Post-Mortem Verification Analytics
+### 🔒 Test Results
 
-During functional runtime verification across distinct local profile entities:
+Tested with two different users:
 
-* **Test Case A (Ownership Execution):** User `altun` initiates a target file `touch /tmp/test/test.txt`. The process finishes with exit code `0`.
-* **Test Case B (Cross-Deletion Trap):** User `devopstester` attempts to sweep the file array via `rm /tmp/test/test.txt`.
-* **System Defense Log Output:**
+- **Test Case A (Ownership Execution):** User `altun` runs `touch /tmp/test/test.txt` — succeeds.
+- **Test Case B (Cross-Deletion Trap):** User `devopstester` tries `rm /tmp/test/test.txt` — fails.
+- **Output:**
 
 ```text
   rm: cannot remove '/tmp/test/test.txt': Operation not permitted
 
 ```
 
-The security policy effectively locks write streams down to file owners and root administrators only, successfully preventing unauthorized system asset destruction.
+Confirms only the file owner and root can delete the file.
 
 ---
 
-## 2. Enterprise Task 2: Ownership Migration & Group Alignment (`chown` & `chgrp`)
+## 2. Changing Ownership & Group (`chown` & `chgrp`)
 
-During infrastructure handovers, non-privileged users should not own configuration blocks, and files must be aligned with dedicated organizational groups to maintain strict access control boundaries.
+Files should be owned by the right user and group for proper access control.
 
-### 🛠️ Execution & Verification Logs
+### 🛠️ Steps
 
-1. **Reassigning Resource Ownership (`chown`):**
-Migrated the owner link of an infrastructure asset from a deployment account directly to the primary administrator profile recursively:
+1. **Changing owner (`chown`):**
+   Changed ownership recursively to `altun`:
 
 ```bash
    sudo chown -R altun /tmp/test
 
 ```
+
 This operation updates the user ownership of all files and directories beneath the target path while preserving existing group assignments.
 
-*Verification:* `ls -l /tmp/test` confirms that the user column has successfully transitioned to `altun`.
+_Verification:_ `ls -l /tmp/test` confirms that the user column has successfully transitioned to `altun`.
 
-### 🛠️ Combined User & Group Ownership Migration
+### 🛠️ Changing Owner & Group Together
 
 The `chown` utility can also update both the owner and the group simultaneously:
 
@@ -93,23 +95,23 @@ sudo chown -R altun:wheel /tmp/test
 
 This command assigns ownership to user `altun` and group `wheel` in a single transaction.
 
-2. **Isolating Group Constraints (`chgrp`):**
-Aligned the target resource tree with the system's administrative `wheel` group to enforce collaborative boundaries while preserving the individual owner:
+2. **Changing Group Ownership (`chgrp`):**
+   Changed the group to `wheel`, while preserving the individual owner:
 
 ```bash
    sudo chgrp -R wheel /tmp/test
 
 ```
 
-*Verification:* Running `ls -l` validates the secondary security matrix column shows `wheel` tracking.
+_Verification:_ `ls -l` confirms the group column now shows `wheel`.
 
 ---
 
-## 3. Enterprise Task 3: Volatile Masking Constraints (`umask`)
+## 3. Default Permission Masking (`umask`)
 
-To enforce a proactive security footprint, the operating system must filter default creation masks. This ensures that new files do not inherit broad default permissions, mitigating potential horizontal security leaks.
+umask controls the default permissions of new files and directories. This ensures that new files do not inherit broad default permissions, mitigating potential horizontal security leaks.
 
-### 🛠️ Mathematical & Tactical Verification
+### 🛠️ Calculation & Verification
 
 1. **Inspecting Active System Filters:**
 
@@ -118,16 +120,16 @@ To enforce a proactive security footprint, the operating system must filter defa
 
 ```
 
-*Default System Return:* `0022`
+_Default System Return:_ `0022`
 
-2. **Mathematical Evaluation of the Subtraction Filter:**
-When a new resource is initiated, the kernel subtracts the active `umask` from the systemic maximum base ($666$ for standard data files, $777$ for directory nodes):
-* **Directory Node:** $777 - 022 = 755$ (`rwxr-xr-x`)
-* **Standard File:** $666 - 022 = 644$ (`rw-r--r--`)
+2. **How the Math Works:**
+   When a new resource is initiated, the kernel subtracts the active `umask` from the systemic maximum base ($666$ for standard data files, $777$ for directory nodes):
 
+- **Directory Node:** $777 - 022 = 755$ (`rwxr-xr-x`)
+- **Standard File:** $666 - 022 = 644$ (`rw-r--r--`)
 
-3. **Hardening the Pipeline (Zero-Trust Configuration):**
-Tightened the masking parameters to ensure that secondary groups and public entities receive zero baseline visibility upon new file generation:
+3. **Restricting Default Permissions:**
+   Tightened umask so new files are private by default:
 
 ```bash
    umask 0077
@@ -136,19 +138,19 @@ Tightened the masking parameters to ensure that secondary groups and public enti
 
 ```
 
-*Resulting Authorization Flags:* `-rw-------` ($666 - 077 = 600$). The system effectively isolates the production footprint natively.
+_Resulting Authorization Flags:_ `-rw-------` ($666 - 077 = 600$). Only the owner has access.
 
 ---
 
-## 📊 Comprehensive Permission Administration Matrix
+## 📊 Command Reference
 
-| Command | Operational Purpose | Production Practical Example | Essential Options | Option Mechanics / Output |
-| --- | --- | --- | --- | --- |
-| **`chmod`** | Modifies operational file system access control flags (`rwx`). | `chmod 755 script.sh` | **`+t`** / **`-R`** | `+t` applies the Sticky Bit isolation layer; `-R` triggers recursive inheritance. |
-| **`chown`** | Reassigns target profile account ownership links. | `chown -R altun /var/www` | **`-R`** | Batch updates directory trees to align ownership structures. |
-| **`chgrp`** | Reassigns target resource group connectivity constraints. | `chgrp wheel app.log` | **`-R`** | Cascades specialized group permission maps across target objects. |
-| **`umask`** | Configures active subtraction filters for new files/directories. | `umask 022` | *None* | Subtracts values dynamically against base tokens (`666` files / `777` folders). |
+| Command     | Operational Purpose                                              | Production Practical Example | Essential Options   | Option Mechanics / Output                                                         |
+| ----------- | ---------------------------------------------------------------- | ---------------------------- | ------------------- | --------------------------------------------------------------------------------- |
+| **`chmod`** | Modifies operational file system access control flags (`rwx`).   | `chmod 755 script.sh`        | **`+t`** / **`-R`** | `+t` applies the Sticky Bit isolation layer; `-R` triggers recursive inheritance. |
+| **`chown`** | Reassigns target profile account ownership links.                | `chown -R altun /var/www`    | **`-R`**            | Batch updates directory trees to align ownership structures.                      |
+| **`chgrp`** | Reassigns target resource group connectivity constraints.        | `chgrp wheel app.log`        | **`-R`**            | Cascades specialized group permission maps across target objects.                 |
+| **`umask`** | Configures active subtraction filters for new files/directories. | `umask 022`                  | _None_              | Subtracts values dynamically against base tokens (`666` files / `777` folders).   |
 
 ---
 
-ℹ️ *All storage authorization policies, dynamic masks, and recursive identities validated under zero-trust production constraints.*
+ℹ️ _All commands tested locally._
