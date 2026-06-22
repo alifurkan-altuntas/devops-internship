@@ -12,15 +12,21 @@ Welcome to my DevOps engineering journal. This repository is dedicated to docume
 - [06-Linux-Process-Management](./06-Linux-Process-Management/): Process status monitoring, CPU priority adjustments (`nice`/`renice`), and signals.
 - [07-Linux-Service-Management](./07-Linux-Service-Management/): Systemd service management, zero-downtime reloads, and Log Management with journalctl.
 - [08-Linux-Log-Analysis](./08-Linux-Log-Analysis/): Log parsing pipelines and IPv4/IPv6 differences across distros.
+- [09-Linux-Network-Management](./09-Linux-Network-Management/): DNS lookups, checking listening ports, and TLS certificate verification..
+- [10-Linux-Storage-Management](./10-Linux-Storage-Management/): Disk partitioning, formatting with `ext4`, and persistent mounts via `/etc/fstab`.
+- [11-Linux-LVM-Management](./11-Linux-LVM-Management/): LVM setup, live volume resizing, and a disk-space incident writeup.
 
 ### 📝 Evaluation & Assessment Artifacts
 
 - [challenges.md](./challenges.md): Scenario questions and answers (Phases 1-4).
 - [quiz-results.md](./quiz-results.md): 20-question quiz, 85% score (Phases 1-4).
 - [Phase 5 Quiz Logs](./05-Linux-Permissions/quiz-results.md): 5-question quiz on umask and sticky bit.
-- [Phase 6 Quiz Logs](./06-Linux-Process-Management/quiz-results.md): Quiz on process monitoring and signals (100%).
-- [Phase 7 Quiz Logs](./07-Linux-Service-Management/quiz-results.md): Quiz on systemd and journalctl (100%).
-- [Phase 8 Quiz Logs](./08-Linux-Log-Analysis/quiz-results.md): Quiz on log parsing (100%).
+- [Phase 6 Quiz Logs](./06-Linux-Process-Management/quiz-results.md): Quiz on process monitoring and signals.
+- [Phase 7 Quiz Logs](./07-Linux-Service-Management/quiz-results.md): Quiz on systemd and journalctl.
+- [Phase 8 Quiz Logs](./08-Linux-Log-Analysis/quiz-results.md): Quiz on log parsing.
+- [Phase 9 Quiz Logs](./09-Linux-Network-Management/quiz-results.md): Quiz on networking and TLS.
+- [Phase 10 Quiz Logs](./10-Linux-Storage-Management/quiz-results.md): Quiz on storage and fstab.
+- [Phase 11 Quiz Logs](./11-Linux-LVM-Management/quiz-results.md): Quiz on LVM.
 
 ---
 
@@ -111,6 +117,21 @@ Welcome to my DevOps engineering journal. This repository is dedicated to docume
 - **Milestones & Deliverables:**
   - 🪵 Text Process Workspace: See [Log Analytics & Command Processing Templates](./08-Linux-Log-Analysis/notes.md)
   - 📊 Quiz Results: See [Phase 8 Performance Evaluation (100% Score)](./08-Linux-Log-Analysis/quiz-results.md)
+
+  ### 🔹 June 21, 2026 | Networking & TLS
+
+- **Tasks & Objectives:**
+  - Used `dig @8.8.8.8` to bypass local DNS caching and verify resolution.
+  - Used `ss -lntp` to find which process was listening on a port, across both IPv4 and IPv6.
+  - Used `openssl s_client` to inspect a certificate's trust chain, issuer, and expiration date.
+
+### 🔹 June 22, 2026 | Storage & LVM
+
+- **Tasks & Objectives:**
+  - Set up persistent mounts using UUID in `/etc/fstab`, and verified the entry with `mount -a` before rebooting.
+  - Set up LVM: physical volumes → volume group → logical volume.
+  - Recovered from a VM freeze caused by filling the host disk with `dd`, and switched to `fallocate` to avoid it.
+  - Resized a logical volume and its filesystem live, without unmounting.
 
 ---
 
