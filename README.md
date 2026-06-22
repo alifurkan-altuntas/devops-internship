@@ -4,9 +4,9 @@ Welcome to my DevOps engineering journal. This repository documents my learning 
 
 ## 📍 Where I Am Now
 
-I'm currently on **Phase 11 (LVM)**, completed as of June 22. So far I've gone through Linux basics, permissions, process and service management, log analysis, networking, and storage (partitioning, fstab, LVM). Each phase has notes, and most have a short quiz I took to check my understanding.
+I'm currently on **Phase 12 (SSH, SCP & SFTP)**, completed as of June 22. So far I've gone through Linux basics, permissions, process and service management, log analysis, networking, storage (partitioning, fstab, LVM), and SSH/file transfer. Each phase has notes, and most have a short quiz I took to check my understanding.
 
-Next up: **SSH** — SSH Key, password login, SCP and SFTP.
+Next up: **Bash Scripting** — Variables, Loops, Functions and Conditions.
 
 ---
 
@@ -23,6 +23,7 @@ Next up: **SSH** — SSH Key, password login, SCP and SFTP.
 - [09-Linux-Network-Management](./09-Linux-Network-Management/): DNS lookups, checking listening ports, and TLS certificate verification.
 - [10-Linux-Storage-Management](./10-Linux-Storage-Management/): Disk partitioning, formatting with `ext4`, and persistent mounts via `/etc/fstab`.
 - [11-Linux-LVM-Management](./11-Linux-LVM-Management/): LVM setup, live volume resizing, and a disk-space incident writeup.
+- [12-Linux-SSH-Management](./12-Linux-SSH-Management/): Passwordless SSH access via key pairs, SSH config shortcuts, and file transfers with SCP/SFTP.
 
 ### 📝 Evaluation & Assessment Artifacts
 
@@ -35,6 +36,7 @@ Next up: **SSH** — SSH Key, password login, SCP and SFTP.
 - [Phase 9 Quiz Logs](./09-Linux-Network-Management/quiz-results.md): Quiz on networking and TLS.
 - [Phase 10 Quiz Logs](./10-Linux-Storage-Management/quiz-results.md): Quiz on storage and fstab.
 - [Phase 11 Quiz Logs](./11-Linux-LVM-Management/quiz-results.md): Quiz on LVM.
+- [Phase 12 Quiz Logs](./12-Linux-SSH-Management/quiz-results.md): Quiz on SSH keys, SCP, and SFTP.
 
 ---
 
@@ -167,6 +169,20 @@ _This phase included a real mistake: I filled the host machine's disk while test
   - 💾 Storage Workspace: See [Storage Management Notes](./10-Linux-Storage-Management/notes.md)
   - 🏗️ LVM Workspace: See [LVM Management Notes](./11-Linux-LVM-Management/notes.md)
   - 📊 Quiz Results: See [Phase 10 Quiz Results](./10-Linux-Storage-Management/quiz-results.md) / [Phase 11 Quiz Results](./11-Linux-LVM-Management/quiz-results.md)
+
+### 🔹 June 22, 2026 | SSH, SCP & SFTP
+
+_Didn't have `ssh-copy-id` available on Windows, so I had to do the same thing manually — paste the public key into `authorized_keys` myself and set the permissions by hand. That made it much clearer what the command actually does instead of just running it. Also ran into a real "Permission denied (publickey)" error after disabling password login, which turned out to be because I had a separate key for the Ubuntu VM and SSH was trying the wrong one by default — had to use `-i` to point to the right key file, and later set up an SSH config file so I wouldn't have to type it out every time. Along the way I also hit a leftover commented-out line in `sshd_config` that silently did nothing until I removed the `#`._
+
+- **Tasks & Objectives:**
+  - Generated an SSH key pair (`ssh-keygen -t ed25519`) and manually added the public key to a VM's `authorized_keys` (no `ssh-copy-id` on Windows).
+  - Set correct permissions (`chmod 700`/`600`) on `.ssh` and `authorized_keys`, and learned why SSH enforces this.
+  - Disabled password authentication (`PasswordAuthentication no`) and verified the restriction by testing both with and without the key in place.
+  - Debugged a `Permission denied (publickey)` error caused by using the wrong key file, and fixed it with `-i` and an SSH config file.
+  - Transferred files between host and VM using `scp` and `sftp`.
+- **Milestones & Deliverables:**
+  - 🔐 SSH Workspace: See [SSH, SCP & SFTP Notes](./12-Linux-SSH-Management/notes.md)
+  - 📊 Quiz Results: See [Phase 12 Quiz Results](./12-Linux-SSH-Management/quiz-results.md)
 
 ---
 
