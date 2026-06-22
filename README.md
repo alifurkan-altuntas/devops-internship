@@ -4,9 +4,9 @@ Welcome to my DevOps engineering journal. This repository documents my learning 
 
 ## 📍 Where I Am Now
 
-I'm currently on **Phase 14 (Bash Scripting)**, completed as of June 22. So far I've gone through Linux basics, permissions, process and service management, log analysis, networking, storage (partitioning, fstab, LVM), SSH/file transfer, proxy concepts, and basic Bash scripting. Each phase has notes, and most have a short quiz I took to check my understanding.
+I'm currently on **Phase 15 (Cron & Automation)**, completed as of June 22. So far I've gone through Linux basics, permissions, process and service management, log analysis, networking, storage (partitioning, fstab, LVM), SSH/file transfer, proxy concepts, Bash scripting, and cron automation. Each phase has notes, and most have a short quiz I took to check my understanding.
 
-Next up: **Cron and Automation**.
+Next up: **Mini Project**.
 
 ---
 
@@ -26,6 +26,7 @@ Next up: **Cron and Automation**.
 - [12-Linux-SSH-Management](./12-Linux-SSH-Management/): Passwordless SSH access via key pairs, SSH config shortcuts, and file transfers with SCP/SFTP.
 - [13-Linux-Proxy-Management](./13-Linux-Proxy-Management/): Forward vs reverse proxy concepts, Nginx's `proxy_pass`, and a real 502 Bad Gateway debugging story.
 - [14-Linux-Bash-Scripting](./14-Linux-Bash-Scripting/): Variables, command substitution, numeric conditions, and a disk usage alert script.
+- [15-Linux-Cron-Automation](./15-Linux-Cron-Automation/): Scheduling scripts with `cron`, a real `sudo`-in-cron debugging story, and a look at `logrotate`.
 
 ### 📝 Evaluation & Assessment Artifacts
 
@@ -41,6 +42,7 @@ Next up: **Cron and Automation**.
 - [Phase 12 Quiz Logs](./12-Linux-SSH-Management/quiz-results.md): Quiz on SSH keys, SCP, and SFTP.
 - [Phase 13 Quiz Logs](./13-Linux-Proxy-Management/quiz-results.md): Quiz on forward/reverse proxy and Nginx routing.
 - [Phase 14 Quiz Logs](./14-Linux-Bash-Scripting/quiz-results.md): Quiz on Bash variables, conditions, and scripting basics.
+- [Phase 15 Quiz Logs](./15-Linux-Cron-Automation/quiz-results.md): Quiz on cron scheduling, sudoers, and log rotation.
 
 ---
 
@@ -214,6 +216,21 @@ _Built a script that warns when disk usage goes over 80%, piecing it together fr
 - **Milestones & Deliverables:**
   - 🐚 Bash Scripting Workspace: See [Bash Scripting Notes](./14-Linux-Bash-Scripting/notes.md)
   - 📊 Quiz Results: See [Phase 14 Quiz Results](./14-Linux-Bash-Scripting/quiz-results.md)
+
+### 🔹 June 22, 2026 | Cron & Automation
+
+_Wrote two scripts — one for disk usage reports, one for archiving Nginx logs — and scheduled both with cron. The disk report script worked immediately, but the log archiving script kept "succeeding" without actually doing anything when run through cron, even though it worked fine manually. Took a while to track down: `sudo` needs an interactive terminal to ask for a password, and cron runs with nobody there to answer it, so every `sudo` command inside the script was silently failing. The failure was invisible at first because cron tries to email its output by default, and with no mail system installed, that output — including the actual error — was just getting discarded. Found the real error by redirecting the script's output to a file manually. Also hit a separate issue where the script itself was owned by `root` (from opening it with `sudo nano` at some point), which blocked even `chmod` until I fixed the ownership with `chown`. Solved the `sudo` problem with a narrow `sudoers` rule for just the one command that actually needed root, instead of giving broader access. Along the way also looked into `logrotate`, which is what Nginx actually uses by default for this exact job in real setups._
+
+- **Tasks & Objectives:**
+  - Wrote `disk_report.sh` (reused logic from the Bash Scripting phase) to write a disk usage report to a file.
+  - Wrote `archive_logs.sh` to compress Nginx's `access.log` with `gzip -c` and reset it with `truncate -s 0`.
+  - Diagnosed a `sudo: a password is required` failure that only showed up under cron, not manual runs.
+  - Fixed a file ownership issue (`chown`) and added a narrowly scoped `sudoers` NOPASSWD rule for the one command that needed it.
+  - Scheduled both scripts with `crontab -e` to run nightly at 02:00.
+  - Looked into `logrotate` as the standard real-world tool for this kind of log management.
+- **Milestones & Deliverables:**
+  - ⏰ Cron & Automation Workspace: See [Cron & Automation Notes](./15-Linux-Cron-Automation/notes.md)
+  - 📊 Quiz Results: See [Phase 15 Quiz Results](./15-Linux-Cron-Automation/quiz-results.md)
 
 ---
 
