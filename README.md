@@ -4,9 +4,9 @@ Welcome to my DevOps engineering journal. This repository documents my learning 
 
 ## 📍 Where I Am Now
 
-I'm currently on **Phase 12 (SSH, SCP & SFTP)**, completed as of June 22. So far I've gone through Linux basics, permissions, process and service management, log analysis, networking, storage (partitioning, fstab, LVM), and SSH/file transfer. Each phase has notes, and most have a short quiz I took to check my understanding.
+I'm currently on **Phase 14 (Bash Scripting)**, completed as of June 22. So far I've gone through Linux basics, permissions, process and service management, log analysis, networking, storage (partitioning, fstab, LVM), SSH/file transfer, proxy concepts, and basic Bash scripting. Each phase has notes, and most have a short quiz I took to check my understanding.
 
-Next up: **Bash Scripting** — Variables, Loops, Functions and Conditions.
+Next up: **Cron and Automation**.
 
 ---
 
@@ -24,6 +24,8 @@ Next up: **Bash Scripting** — Variables, Loops, Functions and Conditions.
 - [10-Linux-Storage-Management](./10-Linux-Storage-Management/): Disk partitioning, formatting with `ext4`, and persistent mounts via `/etc/fstab`.
 - [11-Linux-LVM-Management](./11-Linux-LVM-Management/): LVM setup, live volume resizing, and a disk-space incident writeup.
 - [12-Linux-SSH-Management](./12-Linux-SSH-Management/): Passwordless SSH access via key pairs, SSH config shortcuts, and file transfers with SCP/SFTP.
+- [13-Linux-Proxy-Management](./13-Linux-Proxy-Management/): Forward vs reverse proxy concepts, Nginx's `proxy_pass`, and a real 502 Bad Gateway debugging story.
+- [14-Linux-Bash-Scripting](./14-Linux-Bash-Scripting/): Variables, command substitution, numeric conditions, and a disk usage alert script.
 
 ### 📝 Evaluation & Assessment Artifacts
 
@@ -37,6 +39,8 @@ Next up: **Bash Scripting** — Variables, Loops, Functions and Conditions.
 - [Phase 10 Quiz Logs](./10-Linux-Storage-Management/quiz-results.md): Quiz on storage and fstab.
 - [Phase 11 Quiz Logs](./11-Linux-LVM-Management/quiz-results.md): Quiz on LVM.
 - [Phase 12 Quiz Logs](./12-Linux-SSH-Management/quiz-results.md): Quiz on SSH keys, SCP, and SFTP.
+- [Phase 13 Quiz Logs](./13-Linux-Proxy-Management/quiz-results.md): Quiz on forward/reverse proxy and Nginx routing.
+- [Phase 14 Quiz Logs](./14-Linux-Bash-Scripting/quiz-results.md): Quiz on Bash variables, conditions, and scripting basics.
 
 ---
 
@@ -183,6 +187,33 @@ _Didn't have `ssh-copy-id` available on Windows, so I had to do the same thing m
 - **Milestones & Deliverables:**
   - 🔐 SSH Workspace: See [SSH, SCP & SFTP Notes](./12-Linux-SSH-Management/notes.md)
   - 📊 Quiz Results: See [Phase 12 Quiz Results](./12-Linux-SSH-Management/quiz-results.md)
+
+### 🔹 June 22, 2026 | Forward & Reverse Proxy
+
+_This phase was mostly conceptual rather than fully hands-on. I understood forward proxy as a courier carrying a request on your behalf — the other side only sees the courier, not you — and reverse proxy as a front desk person at a company: you ask for someone, they send you to the right place, and you never deal with the rest of the building directly. Tried setting up an actual Nginx reverse proxy pointing to a backend service, but hit a 502 Bad Gateway. Turned out the backend and Nginx were on different VMs, and I had `proxy_pass` pointing to `localhost` — which only ever refers to the machine Nginx itself is running on, not the other VM where the backend actually was. Didn't finish the working setup in this session, but understanding exactly why it failed was the real takeaway._
+
+- **Tasks & Objectives:**
+  - Learned the difference between forward proxy (sits in front of the client) and reverse proxy (sits in front of the server).
+  - Set up a basic backend service and an Nginx reverse proxy using `proxy_pass`.
+  - Hit and diagnosed a real `502 Bad Gateway` caused by `proxy_pass` pointing to `localhost` instead of the backend VM's actual IP.
+  - Learned what a 502 error specifically means (proxy couldn't reach the backend) vs. other error codes.
+- **Milestones & Deliverables:**
+  - 🔀 Proxy Workspace: See [Forward & Reverse Proxy Notes](./13-Linux-Proxy-Management/notes.md)
+  - 📊 Quiz Results: See [Phase 13 Quiz Results](./13-Linux-Proxy-Management/quiz-results.md)
+
+### 🔹 June 22, 2026 | Bash Scripting
+
+_Built a script that warns when disk usage goes over 80%, piecing it together from commands I already knew — `df`, `awk 'NR==2'` to grab the right line, and `cut -d'%' -f1` to strip the percent sign, then storing the result in a variable with command substitution. Hit a real error along the way: `[48: command not found`, caused by missing a space between `[` and `$usage` — Bash's `[` is actually a command, so it needs spacing on both sides to work. Fixed it, then added an `else` branch so the script always prints something instead of staying silent when usage is fine. Didn't add a loop or a function, since the task only needed a single check — felt more honest to leave them out than to force them in just to "use" every topic in the list._
+
+- **Tasks & Objectives:**
+  - Wrote a script combining `df`, `awk`, and `cut` to extract disk usage as a plain number.
+  - Stored the result in a variable using command substitution (`$(...)`).
+  - Used an `if`/`else` block with `-gt` to print a warning above 80% usage, and an "OK" message otherwise.
+  - Debugged a real `[48: command not found` error caused by a missing space in the condition syntax.
+  - Made the script executable with `chmod +x` and ran it directly with `./script.sh`.
+- **Milestones & Deliverables:**
+  - 🐚 Bash Scripting Workspace: See [Bash Scripting Notes](./14-Linux-Bash-Scripting/notes.md)
+  - 📊 Quiz Results: See [Phase 14 Quiz Results](./14-Linux-Bash-Scripting/quiz-results.md)
 
 ---
 
