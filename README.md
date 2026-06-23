@@ -241,7 +241,7 @@ _Wrote two scripts — one for disk usage reports, one for archiving Nginx logs 
 _Couldn't do hands-on work today since the company laptop doesn't allow running VMs or the tools I'd normally use. Used the day to complete a DevOps - Linux Temelleri course on Udemy instead, to keep making progress even without direct lab access._
 
 - **Tasks & Objectives:**
-  - Completed the "DevOps - Linux Temelleri" course on Udemy Business.
+  - Completed the "DevOps - Linux Temelleri" course on Udemy.
 - **Milestones & Deliverables:**
   - 🎓 Course Completion: DevOps - Linux Temelleri (Udemy)
 
