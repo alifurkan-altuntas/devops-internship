@@ -245,6 +245,18 @@ _Couldn't do hands-on work today since the company laptop doesn't allow running 
 - **Milestones & Deliverables:**
   - 🎓 Course Completion: DevOps - Linux Temelleri (Udemy)
 
+### 🔹 June 23, 2026 | Docker & Networking Research
+
+_Continued the A'dan Z'ye Docker course (finished the intro, now in the setup/installation section), and spent time researching core networking concepts — the internet, protocols, end systems, packet switching, latency, and throughput. Also went through the graduation/review questions from the Linux roadmap given earlier in the internship._
+
+- **Tasks & Objectives:**
+  - Finished the intro section of the "A'dan Z'ye Docker" Udemy course, currently in the installation section.
+  - Researched networking fundamentals: the internet, protocols, end systems, packet switching, latency, and throughput.
+  - Worked through the graduation/review questions from the assigned Linux roadmap.
+- **Milestones & Deliverables:**
+  - 🐳 In progress: A'dan Z'ye Docker (Udemy)
+  - 🌐 Networking fundamentals research (no hands-on lab this session)
+
 ---
 
 ℹ️ _Note: Everything documented here was tested locally in sandboxed VMs._
