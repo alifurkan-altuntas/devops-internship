@@ -44,6 +44,10 @@ Next up: **Mini Project**.
 - [Phase 14 Quiz Logs](./14-Linux-Bash-Scripting/quiz-results.md): Quiz on Bash variables, conditions, and scripting basics.
 - [Phase 15 Quiz Logs](./15-Linux-Cron-Automation/quiz-results.md): Quiz on cron scheduling, sudoers, and log rotation.
 
+### 🎓 Courses & Certifications
+
+- **DevOps - Linux Temelleri** (Udemy, via Türkiye Sigorta) — Completed June 23, 2026. Taken as an alternative learning path on a day when hands-on VM work wasn't possible on the company laptop.
+
 ---
 
 ## 📅 Daily Progress Logs
@@ -231,6 +235,15 @@ _Wrote two scripts — one for disk usage reports, one for archiving Nginx logs 
 - **Milestones & Deliverables:**
   - ⏰ Cron & Automation Workspace: See [Cron & Automation Notes](./15-Linux-Cron-Automation/notes.md)
   - 📊 Quiz Results: See [Phase 15 Quiz Results](./15-Linux-Cron-Automation/quiz-results.md)
+
+### 🔹 June 23, 2026 | DevOps - Linux Temelleri (Udemy Course)
+
+_Couldn't do hands-on work today since the company laptop doesn't allow running VMs or the tools I'd normally use. Used the day to complete a DevOps - Linux Temelleri course on Udemy instead, to keep making progress even without direct lab access._
+
+- **Tasks & Objectives:**
+  - Completed the "DevOps - Linux Temelleri" course on Udemy Business.
+- **Milestones & Deliverables:**
+  - 🎓 Course Completion: DevOps - Linux Temelleri (Udemy)
 
 ---
 
