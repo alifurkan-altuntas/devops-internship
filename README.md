@@ -4,9 +4,9 @@ Welcome to my DevOps engineering journal. This repository documents my learning 
 
 ## 📍 Where I Am Now
 
-I'm currently on **Phase 15 (Cron & Automation)**, completed as of June 22. So far I've gone through Linux basics, permissions, process and service management, log analysis, networking, storage (partitioning, fstab, LVM), SSH/file transfer, proxy concepts, Bash scripting, and cron automation. Each phase has notes, and most have a short quiz I took to check my understanding.
+I'm currently on **Phase 15 (Cron & Automation)**, completed as of June 22, and used June 23 to complete a Udemy Course on DevOps - Linux Temelleri. So far I've gone through Linux basics, permissions, process and service management, log analysis, networking, storage (partitioning, fstab, LVM), SSH/file transfer, proxy concepts, Bash scripting, and cron automation. Each phase has notes, and most have a short quiz I took to check my understanding.
 
-Next up: **Mini Project**.
+Next up: **A'dan Z'ye Docker** (Udemy Course) -- currently working through it.
 
 ---
 
