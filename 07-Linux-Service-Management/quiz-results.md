@@ -9,7 +9,7 @@ This document tracks the comprehensive assessment results regarding systemd init
 - **Total Examination Questions:** 5
 - **Correct Formulations:** 5
 - **Discrepancies identified:** 0
-- **Aggregated Metric Score:**
+- **Aggregated Metric Score:** 100%
 
 ---
 
