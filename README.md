@@ -6,7 +6,7 @@ Welcome to my DevOps engineering journal. This repository documents my learning 
 
 I'm currently on **Phase 16 (Git)**, completed as of June 24. So far I've gone through Linux basics, permissions, process and service management, log analysis, networking, storage (partitioning, fstab, LVM), SSH/file transfer, proxy concepts, Bash scripting, cron automation, and Git branching/merging — plus a Udemy course on Linux fundamentals and ongoing progress through a Docker course. Each phase has notes, and most have a short quiz I took to check my understanding.
 
-Next up: **A'dan Z'ye, Docker** (Udemy course) — currently in the installation section.
+Next up: **Mini Project**.
 
 ---
 

@@ -1,155 +1,171 @@
 # 🔑 Linux Permissions & Security Hardening
 
-This document covers file permissions, ownership, umask, and the sticky bit implemented on Virtual Private Servers (VPS).
+This document covers file permissions, ownership, umask, and the sticky bit.
 
 ---
 
-## 1. Shared Directory with Sticky Bit
+## 1. Reading `ls -l` Output
 
-A shared folder with full write access (`777`) introduces a vulnerability: any user can cross-delete or alter files belonging to other operators. To mitigate these risks, the **sticky bit** was used to fix this.
+```text
+-rwxr-xr-x  1 altun altun  4096 Jun 19 18:09 script.sh
+drwxr-x---  1 altun altun  4096 Jun 19 18:09 folder/
+lrwxrwxrwx  1 altun altun     7 Jun 19 18:09 link -> target
+```
+
+The very first character indicates the **type**, not a permission:
+
+| Character | Meaning                                        |
+| --------- | ---------------------------------------------- |
+| `-`       | Regular file (no special letter — just a dash) |
+| `d`       | **D**irectory                                  |
+| `l`       | Symbolic **l**ink                              |
+
+The remaining 9 characters are split into three groups of 3 (`rwx`), representing **user (owner)**, **group**, and **others**, in that order.
+
+---
+
+## 2. The `chmod` Numeric System
+
+Each permission has a fixed numeric value:
+
+| Number | Permission  |
+| ------ | ----------- |
+| **4**  | read (r)    |
+| **2**  | write (w)   |
+| **1**  | execute (x) |
+
+These values are **added together** to represent a combination — each combination from 0-7 has exactly one possible meaning:
+
+| Sum | Permissions | Meaning                |
+| --- | ----------- | ---------------------- |
+| 7   | rwx         | read + write + execute |
+| 6   | rw-         | read + write           |
+| 5   | r-x         | read + execute         |
+| 4   | r--         | read only              |
+| 0   | ---         | no permissions         |
+
+A `chmod` command uses three digits — one each for **user, group, others**:
+
+```bash
+chmod 750 file
+```
+
+= user: `7` (rwx), group: `5` (r-x), others: `0` (---)
+
+### Worked Examples
+
+- **`chmod 700`** — user has full access (rwx); group and others have nothing. Useful for private files only the owner should touch.
+- **`chmod 555`** — everyone (user, group, others) can read and execute, but nobody can write. Common for shared, read-only scripts.
+- **`chmod 074`** — user has no permissions at all; group has full access; others can only read. An unusual but valid combination — there's no rule that the owner needs the most access.
+
+### File vs. Directory Maximum Permissions
+
+This is easy to get backwards, so worth stating clearly:
+
+- **Files**: maximum is `666` (rw-rw-rw-) by default — execute isn't meaningful for a file unless it's actually a script/binary, so it isn't granted automatically.
+- **Directories**: maximum is `777` (rwxrwxrwx) by default — the execute bit on a directory means "permission to enter/traverse it" (`cd` into it, list its contents). Without `x`, a directory can't be entered at all, even if `r` is set.
+
+This is exactly why `umask` math (covered below) subtracts from `666` for files and `777` for directories — they have different baselines.
+
+---
+
+## 3. Shared Directory with Sticky Bit
+
+A shared folder with full write access (`777`) introduces a vulnerability: any user can cross-delete or alter files belonging to other operators. The **sticky bit** fixes this.
 
 ### 🛠️ Steps
 
 1. **Created the shared directory:**
 
-```bash
+   ```bash
    sudo mkdir /tmp/test
    sudo chmod 777 /tmp/test
-
-```
+   ```
 
 2. **Added the sticky bit:**
-   To prevent cross-deletion while keeping write access open:
 
-```bash
+   ```bash
    sudo chmod +t /tmp/test
+   ```
 
-```
-
-_Alternative absolute command layout:_ `sudo chmod 1777 /tmp/test`
+   _Alternative absolute command:_ `sudo chmod 1777 /tmp/test`
 
 3. **Status Verification:**
-
-```bash
+   ```bash
    ls -ld /tmp/test
-
-```
-
-_Expected system flag output:_ `drwxrwxrwt ... /tmp/test` (The trailing **`t`** token indicates the active Sticky Bit perimeter).
+   ```
+   _Expected output:_ `drwxrwxrwt ... /tmp/test` — the trailing **`t`** indicates the active sticky bit.
 
 ### 🔐 How It Works
 
-The Sticky Bit does **not** restrict file reading or modification permissions directly. Instead, it introduces a directory-level ownership boundary that controls file deletion and renaming operations.
-
-Within a Sticky Bit protected directory:
+The sticky bit does **not** restrict reading or modification directly. Instead, it adds a directory-level rule about deletion:
 
 - File owners may delete or rename their own files.
 - The directory owner may manage files within the directory.
-- Root retains full administrative control.
-- Other users, even with write permissions on the directory, cannot delete or rename files owned by another user.
+- Root retains full control.
+- Other users — even with write permission on the directory — cannot delete or rename files owned by someone else.
 
-This mechanism is widely used on shared temporary storage locations such as `/tmp`, where all users require write access but cross-user file removal must be prevented.
+Widely used on shared temp locations like `/tmp`, where everyone needs write access but cross-user deletion must be blocked.
 
 ### 🔒 Test Results
 
-Tested with two different users:
-
-- **Test Case A (Ownership Execution):** User `altun` runs `touch /tmp/test/test.txt` — succeeds.
-- **Test Case B (Cross-Deletion Trap):** User `devopstester` tries `rm /tmp/test/test.txt` — fails.
-- **Output:**
-
-```text
+- **Test Case A:** User `altun` runs `touch /tmp/test/test.txt` — succeeds.
+- **Test Case B:** User `devopstester` tries `rm /tmp/test/test.txt` — fails:
+  ```text
   rm: cannot remove '/tmp/test/test.txt': Operation not permitted
-
-```
+  ```
 
 Confirms only the file owner and root can delete the file.
 
 ---
 
-## 2. Changing Ownership & Group (`chown` & `chgrp`)
-
-Files should be owned by the right user and group for proper access control.
-
-### 🛠️ Steps
-
-1. **Changing owner (`chown`):**
-   Changed ownership recursively to `altun`:
+## 4. Changing Ownership & Group (`chown` & `chgrp`)
 
 ```bash
-   sudo chown -R altun /tmp/test
-
+sudo chown -R altun /tmp/test           # change owner
+sudo chown -R altun:wheel /tmp/test     # change owner AND group together
+sudo chgrp -R wheel /tmp/test           # change group only
 ```
 
-This operation updates the user ownership of all files and directories beneath the target path while preserving existing group assignments.
-
-_Verification:_ `ls -l /tmp/test` confirms that the user column has successfully transitioned to `altun`.
-
-### 🛠️ Changing Owner & Group Together
-
-The `chown` utility can also update both the owner and the group simultaneously:
-
-```bash
-sudo chown -R altun:wheel /tmp/test
-```
-
-This command assigns ownership to user `altun` and group `wheel` in a single transaction.
-
-2. **Changing Group Ownership (`chgrp`):**
-   Changed the group to `wheel`, while preserving the individual owner:
-
-```bash
-   sudo chgrp -R wheel /tmp/test
-
-```
-
-_Verification:_ `ls -l` confirms the group column now shows `wheel`.
+`-R` applies the change recursively to everything beneath the target path.
 
 ---
 
-## 3. Default Permission Masking (`umask`)
+## 5. Default Permission Masking (`umask`)
 
-umask controls the default permissions of new files and directories. This ensures that new files do not inherit broad default permissions, mitigating potential horizontal security leaks.
-
-### 🛠️ Calculation & Verification
-
-1. **Inspecting Active System Filters:**
+`umask` controls the default permissions of newly created files and directories, by subtracting from the baseline maximums covered above.
 
 ```bash
-   umask
-
+umask
 ```
 
-_Default System Return:_ `0022`
+_Default return:_ `0022`
 
-2. **How the Math Works:**
-   When a new resource is initiated, the kernel subtracts the active `umask` from the systemic maximum base ($666$ for standard data files, $777$ for directory nodes):
+### The Math
 
-- **Directory Node:** $777 - 022 = 755$ (`rwxr-xr-x`)
-- **Standard File:** $666 - 022 = 644$ (`rw-r--r--`)
+- **Directory:** `777 - 022 = 755` (`rwxr-xr-x`)
+- **File:** `666 - 022 = 644` (`rw-r--r--`)
 
-3. **Restricting Default Permissions:**
-   Tightened umask so new files are private by default:
+Tightening it:
 
 ```bash
-   umask 0077
-   touch enterprise_hardened.conf
-   ls -l enterprise_hardened.conf
-
+umask 0077
+touch hardened.conf
+ls -l hardened.conf
 ```
 
-_Resulting Authorization Flags:_ `-rw-------` ($666 - 077 = 600$). Only the owner has access.
+_Result:_ `-rw-------` (`666 - 077 = 600`) — only the owner has access.
 
 ---
 
 ## 📊 Command Reference
 
-| Command     | Operational Purpose                                              | Production Practical Example | Essential Options   | Option Mechanics / Output                                                         |
-| ----------- | ---------------------------------------------------------------- | ---------------------------- | ------------------- | --------------------------------------------------------------------------------- |
-| **`chmod`** | Modifies operational file system access control flags (`rwx`).   | `chmod 755 script.sh`        | **`+t`** / **`-R`** | `+t` applies the Sticky Bit isolation layer; `-R` triggers recursive inheritance. |
-| **`chown`** | Reassigns target profile account ownership links.                | `chown -R altun /var/www`    | **`-R`**            | Batch updates directory trees to align ownership structures.                      |
-| **`chgrp`** | Reassigns target resource group connectivity constraints.        | `chgrp wheel app.log`        | **`-R`**            | Cascades specialized group permission maps across target objects.                 |
-| **`umask`** | Configures active subtraction filters for new files/directories. | `umask 022`                  | _None_              | Subtracts values dynamically against base tokens (`666` files / `777` folders).   |
+| Command     | Purpose                                                     | Example                         | Notes                                               |
+| ----------- | ----------------------------------------------------------- | ------------------------------- | --------------------------------------------------- |
+| **`chmod`** | Sets file permission flags (`rwx`).                         | `chmod 750 script.sh`           | `+t` adds the sticky bit; `-R` applies recursively. |
+| **`chown`** | Changes file owner (and optionally group).                  | `chown -R altun:wheel /var/www` |                                                     |
+| **`chgrp`** | Changes the group only.                                     | `chgrp wheel app.log`           |                                                     |
+| **`umask`** | Sets the default permission mask for new files/directories. | `umask 022`                     | Subtracts from `666` (files) / `777` (directories). |
 
 ---
 

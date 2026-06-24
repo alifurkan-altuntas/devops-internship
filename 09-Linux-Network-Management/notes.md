@@ -4,73 +4,121 @@ This document covers DNS lookups, checking listening ports, and verifying TLS ce
 
 ---
 
-## 1. DNS, Ports, and TLS Verification
+## 1. DNS Resolution and Troubleshooting
 
-Common networking tasks: diagnosing DNS issues, checking which process owns a port, and verifying TLS certificates. This lab demonstrates low-level networking validations using native system utilities.
+### Basic Lookup
 
-### 🛠️ Steps
+```bash
+dig google.com
+```
 
-1. **DNS Resolution:**
-   To bypass local DNS caching, queried a public resolver directly:
+Uses the system's configured (local) DNS resolver.
+
+### Bypassing the Local Resolver
+
+```bash
+dig @8.8.8.8 google.com
+```
+
+Forces the query to go directly to Google's public DNS server, skipping any local caching or resolver.
+
+### The Actual Troubleshooting Flow
+
+If DNS resolution is failing, the goal is to isolate **where** the problem is — locally, or further out:
+
+1. **Try the default resolver, then a public one:**
+
    ```bash
+   dig google.com
    dig @8.8.8.8 google.com
    ```
 
-````
+   - Both fail → likely a general network/connectivity issue, or the domain itself is broken.
+   - Only the local one fails → the local resolver/DNS configuration is the problem.
 
-* Without `@8.8.8.8`, `dig google.com` queries the local gateway and returns a cached result. Forcing Google's public resolver took 18ms and confirmed routing works correctly.
+2. **If it looks local, check the resolver configuration:**
 
-2. **Checking Listening Ports:**
-To find which process is listening on port 80:
+   ```bash
+   cat /etc/resolv.conf
+   ```
+
+   This file lists the `nameserver` entries the system actually uses. A wrong, outdated, or unreachable IP here is a common and very findable cause.
+
+3. **Rule out a pure connectivity issue:**
+   ```bash
+   ping 8.8.8.8
+   ```
+   If a raw IP isn't reachable either, the problem isn't DNS specifically — it's the network connection itself. If the IP works but domain names don't resolve, that confirms it's a DNS-layer issue specifically, not a general connectivity one.
+
+---
+
+## 2. Checking Listening Ports
+
 ```bash
 sudo ss -lntp | grep :80
+```
 
-````
+### `-l` vs `-a`
 
-- **Output:**
+These are easy to confuse:
+
+| Flag     | Shows                                                                                                              |
+| -------- | ------------------------------------------------------------------------------------------------------------------ |
+| **`-l`** | Only **listening** sockets — i.e. what's actually waiting for incoming connections on a port.                      |
+| **`-a`** | **Both** listening sockets **and** established connections — a superset of `-l`, not a separate alternative to it. |
+
+For "what's listening on port X," `-l` is the direct and sufficient answer:
+
+```bash
+sudo ss -lntp | grep :80
+```
+
+Output:
 
 ```text
 LISTEN 0   511   0.0.0.0:80   0.0.0.0:* users:(("nginx",pid=32381,fd=6))
 LISTEN 0   511      [::]:80      [::]:* users:(("nginx",pid=32381,fd=7))
-
 ```
 
-3. **Checking a TLS Certificate:**
-   To check a certificate without a browser:
-
-```bash
-openssl s_client -connect example.com:443 -showcerts
-
-```
-
-- Returns `Verification: OK` and confirms the connection uses TLSv1.3 with `TLS_AES_256_GCM_SHA384`.
+Confirms Nginx (PID 32381) is bound to port 80 over both IPv4 (`0.0.0.0`) and IPv6 (`[::]`).
 
 ---
 
-## 🔬 Understanding the Certificate Trust Chain
+## 3. Checking a TLS Certificate
 
-The connection shows the full trust chain:
+```bash
+openssl s_client -connect example.com:443 -showcerts
+```
 
-- **`depth=4` (Root Certificate Authority):** `Comodo CA Limited / AAA Certificate Services` (trusted by the OS by default).
-- **`depth=3` & `depth=2` (Intermediate Bridges):** Intermediate certificates that link the root to the end certificate.
-- **`depth=1` (Edge Issuing Authority):** `Cloudflare TLS Issuing ECC CA 3` (issues the certificate for this specific domain).
-- **`depth=0` (End-Entity Target):** `example.com` (the actual site).
+Returns `Verification: OK` and confirms the TLS version/cipher in use (e.g. `TLSv1.3` with `TLS_AES_256_GCM_SHA384`).
 
-> **Certificate Validity:**
-> `NotBefore: May 31 21:39:12 2026 GMT; NotAfter: Aug 29 21:41:26 2026 GMT`
-> If the certificate isn't renewed before the expiration date, visitors will see certificate warnings.
+### Understanding the Certificate Trust Chain
+
+- **`depth=4` (Root CA):** trusted by the OS by default.
+- **`depth=3` / `depth=2` (Intermediate):** link the root to the end certificate.
+- **`depth=1` (Issuing CA):** issues the certificate for this specific domain.
+- **`depth=0` (End entity):** the actual site.
+
+### Certificate Validity
+
+```text
+NotBefore: May 31 21:39:12 2026 GMT; NotAfter: Aug 29 21:41:26 2026 GMT
+```
+
+If not renewed before the expiration date, visitors see certificate warnings in their browser.
 
 ---
 
 ## 📊 Command Reference
 
-| Utility       | Protocol Layer | Sandbox Lab Practical Example        | Core Operational Purpose / Troubleshooting Utility                                       |
-| ------------- | -------------- | ------------------------------------ | ---------------------------------------------------------------------------------------- |
-| **`dig`**     | UDP / 53       | `dig @8.8.8.8 google.com`            | Looks up DNS records; useful for diagnosing resolver issues.                             |
-| **`ss`**      | TCP/UDP        | `sudo ss -lntp`                      | Lists listening sockets and the PID that owns each one. Faster than the older `netstat`. |
-| **`openssl`** | TCP / 443      | `openssl s_client -connect site:443` | Connects via TLS to check certificate validity and issuer.                               |
-| **`ip`**      | Layer 3        | `ip a` / `ip route`                  | Shows network interfaces, MAC addresses, and routing info.                               |
-| **`ping`**    | ICMP           | `ping -c 4 8.8.8.8`                  | Checks if a host is reachable and measures latency.                                      |
+| Utility                    | Protocol Layer | Example                              | Purpose                                                                                        |
+| -------------------------- | -------------- | ------------------------------------ | ---------------------------------------------------------------------------------------------- |
+| **`dig`**                  | UDP / 53       | `dig @8.8.8.8 google.com`            | Looks up DNS records; can target a specific resolver to isolate local vs. remote DNS issues.   |
+| **`cat /etc/resolv.conf`** | —              | `cat /etc/resolv.conf`               | Shows which DNS servers the system is actually configured to use.                              |
+| **`ss`**                   | TCP/UDP        | `sudo ss -lntp`                      | `-l` shows listening sockets only; `-a` shows listening + established connections.             |
+| **`openssl s_client`**     | TCP / 443      | `openssl s_client -connect site:443` | Inspects a TLS certificate's validity, issuer, and trust chain.                                |
+| **`ip`**                   | Layer 3        | `ip a` / `ip route`                  | Shows interfaces, addresses, and routing info.                                                 |
+| **`ping`**                 | ICMP           | `ping -c 4 8.8.8.8`                  | Checks raw reachability — useful for distinguishing a DNS problem from a connectivity problem. |
 
 ---
 
