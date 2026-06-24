@@ -9,7 +9,7 @@ This document tracks the comprehensive assessment results regarding unified text
 - **Total Examination Questions:** 5
 - **Correct Formulations:** 5
 - **Discrepancies identified:** 0
-- **Aggregated Metric Score:** 100% 💎
+- **Aggregated Metric Score:** 100% 
 
 ---
 

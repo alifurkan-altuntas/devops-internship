@@ -4,9 +4,9 @@ Welcome to my DevOps engineering journal. This repository documents my learning 
 
 ## 📍 Where I Am Now
 
-I'm currently on **Phase 15 (Cron & Automation)**, completed as of June 22. So far I've gone through Linux basics, permissions, process and service management, log analysis, networking, storage (partitioning, fstab, LVM), SSH/file transfer, proxy concepts, Bash scripting, and cron automation. Each phase has notes, and most have a short quiz I took to check my understanding.
+I'm currently on **Phase 15 (Cron & Automation)**, completed as of June 22, and used June 23 to complete a Udemy Course on DevOps - Linux Temelleri. So far I've gone through Linux basics, permissions, process and service management, log analysis, networking, storage (partitioning, fstab, LVM), SSH/file transfer, proxy concepts, Bash scripting, and cron automation. Each phase has notes, and most have a short quiz I took to check my understanding.
 
-Next up: **Mini Project**.
+Next up: **A'dan Z'ye Docker** (Udemy Course) -- currently working through it.
 
 ---
 
@@ -43,6 +43,10 @@ Next up: **Mini Project**.
 - [Phase 13 Quiz Logs](./13-Linux-Proxy-Management/quiz-results.md): Quiz on forward/reverse proxy and Nginx routing.
 - [Phase 14 Quiz Logs](./14-Linux-Bash-Scripting/quiz-results.md): Quiz on Bash variables, conditions, and scripting basics.
 - [Phase 15 Quiz Logs](./15-Linux-Cron-Automation/quiz-results.md): Quiz on cron scheduling, sudoers, and log rotation.
+
+### 🎓 Courses & Certifications
+
+- **DevOps - Linux Temelleri** (Udemy, via Türkiye Sigorta) — Completed June 23, 2026. Taken as an alternative learning path on a day when hands-on VM work wasn't possible on the company laptop.
 
 ---
 
@@ -231,6 +235,27 @@ _Wrote two scripts — one for disk usage reports, one for archiving Nginx logs 
 - **Milestones & Deliverables:**
   - ⏰ Cron & Automation Workspace: See [Cron & Automation Notes](./15-Linux-Cron-Automation/notes.md)
   - 📊 Quiz Results: See [Phase 15 Quiz Results](./15-Linux-Cron-Automation/quiz-results.md)
+
+### 🔹 June 23, 2026 | DevOps - Linux Temelleri (Udemy Course)
+
+_Couldn't do hands-on work today since the company laptop doesn't allow running VMs or the tools I'd normally use. Used the day to complete a DevOps - Linux Temelleri course on Udemy instead, to keep making progress even without direct lab access._
+
+- **Tasks & Objectives:**
+  - Completed the "DevOps - Linux Temelleri" course on Udemy.
+- **Milestones & Deliverables:**
+  - 🎓 Course Completion: DevOps - Linux Temelleri (Udemy)
+
+### 🔹 June 23, 2026 | Docker & Networking Research
+
+_Continued the A'dan Z'ye Docker course (finished the intro, now in the setup/installation section), and spent time researching core networking concepts — the internet, protocols, end systems, packet switching, latency, and throughput. Also went through the graduation/review questions from the Linux roadmap given earlier in the internship._
+
+- **Tasks & Objectives:**
+  - Finished the intro section of the "A'dan Z'ye Docker" Udemy course, currently in the installation section.
+  - Researched networking fundamentals: the internet, protocols, end systems, packet switching, latency, and throughput.
+  - Worked through the graduation/review questions from the assigned Linux roadmap.
+- **Milestones & Deliverables:**
+  - 🐳 In progress: A'dan Z'ye Docker (Udemy)
+  - 🌐 Networking fundamentals research (no hands-on lab this session)
 
 ---
 
