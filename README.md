@@ -4,9 +4,9 @@ Welcome to my DevOps engineering journal. This repository documents my learning 
 
 ## 📍 Where I Am Now
 
-I'm currently on **Phase 15 (Cron & Automation)**, completed as of June 22, and used June 23 to complete a Udemy Course on DevOps - Linux Temelleri. So far I've gone through Linux basics, permissions, process and service management, log analysis, networking, storage (partitioning, fstab, LVM), SSH/file transfer, proxy concepts, Bash scripting, and cron automation. Each phase has notes, and most have a short quiz I took to check my understanding.
+I'm currently on **Phase 16 (Git)**, completed as of June 24. So far I've gone through Linux basics, permissions, process and service management, log analysis, networking, storage (partitioning, fstab, LVM), SSH/file transfer, proxy concepts, Bash scripting, cron automation, and Git branching/merging — plus a Udemy course on Linux fundamentals and ongoing progress through a Docker course. Each phase has notes, and most have a short quiz I took to check my understanding.
 
-Next up: **A'dan Z'ye Docker** (Udemy Course) -- currently working through it.
+Next up: **A'dan Z'ye, Docker** (Udemy course) — currently in the installation section.
 
 ---
 
@@ -27,6 +27,7 @@ Next up: **A'dan Z'ye Docker** (Udemy Course) -- currently working through it.
 - [13-Linux-Proxy-Management](./13-Linux-Proxy-Management/): Forward vs reverse proxy concepts, Nginx's `proxy_pass`, and a real 502 Bad Gateway debugging story.
 - [14-Linux-Bash-Scripting](./14-Linux-Bash-Scripting/): Variables, command substitution, numeric conditions, and a disk usage alert script.
 - [15-Linux-Cron-Automation](./15-Linux-Cron-Automation/): Scheduling scripts with `cron`, a real `sudo`-in-cron debugging story, and a look at `logrotate`.
+- [16-Git-Basics](./16-Git-Basics/): `git clone`, branching, merging, and a real push-rejected/editor-stuck conflict resolved on this exact repo.
 
 ### 📝 Evaluation & Assessment Artifacts
 
@@ -43,6 +44,7 @@ Next up: **A'dan Z'ye Docker** (Udemy Course) -- currently working through it.
 - [Phase 13 Quiz Logs](./13-Linux-Proxy-Management/quiz-results.md): Quiz on forward/reverse proxy and Nginx routing.
 - [Phase 14 Quiz Logs](./14-Linux-Bash-Scripting/quiz-results.md): Quiz on Bash variables, conditions, and scripting basics.
 - [Phase 15 Quiz Logs](./15-Linux-Cron-Automation/quiz-results.md): Quiz on cron scheduling, sudoers, and log rotation.
+- [Phase 16 Quiz Logs](./16-Git-Basics/quiz-results.md): Quiz on Git branching, merging, and resolving a push conflict.
 
 ### 🎓 Courses & Certifications
 
@@ -256,6 +258,20 @@ _Continued the A'dan Z'ye Docker course (finished the intro, now in the setup/in
 - **Milestones & Deliverables:**
   - 🐳 In progress: A'dan Z'ye Docker (Udemy)
   - 🌐 Networking fundamentals research (no hands-on lab this session)
+
+### 🔹 June 24, 2026 | Git — Branching, Merging, and a Real Push Conflict
+
+_Tested `git branch` and `git merge` directly on this repo — created a test branch, committed a file to it, confirmed `main` was unaffected, then merged it back in (a clean fast-forward). Cleaning up afterward led to a real conflict: `git push` got rejected because the remote had changes the local repo didn't have yet. Running `git pull` to fix that got stuck — the merge needed a commit message, and Git tried to open a configured editor (WebStorm) that wasn't actually installed at that path, so the merge was left half-done. Fixed it by setting Notepad as the default editor (`git config --global core.editor "notepad"`), completing the commit, and pushing successfully. Also mixed up `git branch` (lists branches) with creating one when answering the quiz, even though the command itself was used correctly during the actual hands-on part._
+
+- **Tasks & Objectives:**
+  - Created and switched to a new branch (`git checkout -b`), committed a file to it, and confirmed branch isolation by checking that `main` didn't have the file until merged.
+  - Performed a fast-forward merge (`git merge`) and cleaned up the test branch/file afterward.
+  - Hit and resolved a real `git push` rejection caused by unsynced remote changes.
+  - Diagnosed and fixed a stuck `git pull`/merge caused by a misconfigured, nonexistent editor path.
+  - Reconfigured Git's default editor globally (`git config --global core.editor`).
+- **Milestones & Deliverables:**
+  - 🔧 Git Workspace: See [Git Notes](./16-Git-Basics/notes.md)
+  - 📊 Quiz Results: See [Phase 16 Quiz Results](./16-Git-Basics/quiz-results.md)
 
 ---
 
