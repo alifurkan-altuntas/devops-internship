@@ -4,9 +4,9 @@ Welcome to my DevOps engineering journal. This repository documents my learning 
 
 ## 📍 Where I Am Now
 
-I'm currently on **Phase 16 (Git)**, completed as of June 24. So far I've gone through Linux basics, permissions, process and service management, log analysis, networking, storage (partitioning, fstab, LVM), SSH/file transfer, proxy concepts, Bash scripting, cron automation, and Git branching/merging — plus a Udemy course on Linux fundamentals and ongoing progress through a Docker course. Each phase has notes, and most have a short quiz I took to check my understanding.
+I've completed all 17 phases of the assigned Linux roadmap, including the final mini-project — Nginx, Docker, Git, and SSH configured on an actual rented server (not a local VM), serving a page pulled directly from this repository. Along the way I also did a full review pass: went through the roadmap's graduation-style scenario questions out loud, found a few gaps in my own understanding (some command syntax I kept forgetting, a couple of concepts I'd half-learned), and went back to strengthen the notes for those phases rather than just noting "I got this wrong" and moving on.
 
-Next up: **Mini Project**.
+Continuing the Udemy course on Docker (A'dan Z'ye) and the YouTube networking playlist alongside this.
 
 ---
 
@@ -28,6 +28,7 @@ Next up: **Mini Project**.
 - [14-Linux-Bash-Scripting](./14-Linux-Bash-Scripting/): Variables, command substitution, numeric conditions, and a disk usage alert script.
 - [15-Linux-Cron-Automation](./15-Linux-Cron-Automation/): Scheduling scripts with `cron`, a real `sudo`-in-cron debugging story, and a look at `logrotate`.
 - [16-Git-Basics](./16-Git-Basics/): `git clone`, branching, merging, and a real push-rejected/editor-stuck conflict resolved on this exact repo.
+- [17-Mini-Project](./17-Mini-Project/): Nginx, Docker, Git, and SSH set up on a real rented server — a static page pulled from this repo and published live.
 
 ### 📝 Evaluation & Assessment Artifacts
 
@@ -272,6 +273,23 @@ _Tested `git branch` and `git merge` directly on this repo — created a test br
 - **Milestones & Deliverables:**
   - 🔧 Git Workspace: See [Git Notes](./16-Git-Basics/notes.md)
   - 📊 Quiz Results: See [Phase 16 Quiz Results](./16-Git-Basics/quiz-results.md)
+
+### 🔹 June 24, 2026 | Full Review & Mini Project (Real Server)
+
+_Did a full review pass over everything so far, going through scenario-style questions modeled on the roadmap's actual graduation criteria (e.g. "what's listening on port 443," "why would DNS resolution fail," "how do you add a new disk") instead of just rereading notes. Answering out loud surfaced real gaps — forgot `-p err` for filtering journalctl by severity, mixed up `tail -f` with `tail -n`, got `ss -l` vs `-a` slightly wrong, forgot the partition step when describing adding a new disk, and reversed which is more important to understand why LVM exists versus just running the commands. Went back into the notes for Storage, Service Management, Permissions, Log Analysis, Network, and LVM and filled in what was actually missing — not just typos, but real explanatory gaps (e.g. the `chmod` 4/2/1 breakdown wasn't actually spelled out anywhere before this)._
+
+_Then did the mini-project on the real server purchased this week — created a non-root sudo user, set up SSH key access the same way as the original SSH phase, installed Nginx and Docker (verified with `hello-world`), installed Git and cloned this exact repository, and published a static page from it. Hit two real issues: forgot that the cloned repo and the file Nginx actually serves are separate copies, so `git pull` alone didn't update the live page until the file was re-copied; and got a "refused to connect" in the browser that turned out to be from trying `https://` when only port 80 (HTTP) was ever configured — same category of mistake as the 502 from the Proxy phase, just a different layer._
+
+- **Tasks & Objectives:**
+  - Answered scenario-based review questions covering processes, ports, DNS, disk management, log analysis, SSH, cron, and file permissions.
+  - Identified and fixed real gaps in the notes for 6 phases (Storage, Service Management, Permissions, Log Analysis, Network, LVM).
+  - Set up a non-root sudo user and SSH key-based access on a real rented server.
+  - Installed and verified Nginx and Docker on the server.
+  - Installed Git, cloned this repository, and published a static page from it via Nginx.
+  - Debugged a stale-deployment issue (source file vs. served file) and an HTTPS-vs-HTTP connection issue.
+- **Milestones & Deliverables:**
+  - 📝 Deepened Notes: [Storage](./10-Linux-Storage-Management/notes.md) · [Service Management](./07-Linux-Service-Management/notes.md) · [Permissions](./05-Linux-Permissions/notes.md) · [Log Analysis](./08-Linux-Log-Analysis/notes.md) · [Network](./09-Linux-Network-Management/notes.md) · [LVM](./11-Linux-LVM-Management/notes.md)
+  - 🚀 Mini Project: See [Mini Project Notes](./17-Mini-Project/notes.md)
 
 ---
 
