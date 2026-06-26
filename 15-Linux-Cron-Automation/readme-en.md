@@ -1,12 +1,13 @@
-# ⏰ Cron & Automation — Disk Reports and Log Archiving
+# ⏰ Cron & Automation — Disk Reports, Log Archiving, and One-Time Jobs
 
-This document covers scheduling scripts with `cron`, and a real debugging process around running `sudo` commands inside a cron job.
+This document covers scheduling recurring scripts with `cron`, scheduling one-time jobs with `at`, and a real debugging process around running `sudo` commands inside a cron job.
 
 ---
 
 ## 1. The Task
 
 Set up automation that, every night:
+
 - Archives logs
 - Generates a disk usage report
 
@@ -27,6 +28,7 @@ Set up automation that, every night:
 Field order: **minute, hour, day of month, month, day of week.**
 
 To run something every night at 02:00:
+
 ```
 0 2 * * *
 ```
@@ -82,12 +84,13 @@ echo "Log archived as access-$today.log.gz"
 ```
 
 Key pieces:
-- **`gzip -c`**: compresses the file but sends the output to stdout instead of replacing the original file in place. Without `-c`, plain `gzip file` would compress *and delete* the original — not what we want here, since Nginx may still be writing to it, and we want a custom name/location anyway.
+
+- **`gzip -c`**: compresses the file but sends the output to stdout instead of replacing the original file in place. Without `-c`, plain `gzip file` would compress _and delete_ the original — not what we want here, since Nginx may still be writing to it, and we want a custom name/location anyway.
 - **`truncate -s 0`**: resets the file's size to 0 bytes without deleting the file. This matters because deleting the file outright (`rm`) could break Nginx's open file handle — `truncate` keeps the file reference intact, just empties the contents.
 
 ### Problem 1: Permission denied on redirect
 
-Running `sudo gzip -c file > archive/file.gz` failed with "Permission denied," because `sudo` only applies to the `gzip` command — the `>` redirection itself runs with the *current user's* permissions, not root's. Since reading the log turned out not to require `sudo` at all, this was avoided entirely by dropping `sudo` from that line once it was confirmed unnecessary (`cat /var/log/nginx/access.log` worked without it).
+Running `sudo gzip -c file > archive/file.gz` failed with "Permission denied," because `sudo` only applies to the `gzip` command — the `>` redirection itself runs with the _current user's_ permissions, not root's. Since reading the log turned out not to require `sudo` at all, this was avoided entirely by dropping `sudo` from that line once it was confirmed unnecessary (`cat /var/log/nginx/access.log` worked without it).
 
 ### Problem 2: `chmod: Operation not permitted`
 
@@ -96,6 +99,7 @@ chmod: 'archive_logs.sh' ögesinin erişim izinleri değiştiriliyor: İşleme i
 ```
 
 Cause: the script file itself was owned by `root` — likely from having opened it with `sudo nano` at some point. Fixed with:
+
 ```bash
 sudo chown altun:altun archive_logs.sh
 ```
@@ -118,11 +122,12 @@ This failure wasn't visible at first because cron tries to email command output 
 
 ### The fix: a narrow `sudoers` rule
 
-Rather than giving broad `sudo` access, a rule was added for the *one* command that genuinely needed root (truncating a file owned by `www-data`):
+Rather than giving broad `sudo` access, a rule was added for the _one_ command that genuinely needed root (truncating a file owned by `www-data`):
 
 ```bash
 sudo visudo
 ```
+
 ```text
 altun ALL=(ALL) NOPASSWD: /usr/bin/truncate -s 0 /var/log/nginx/access.log
 ```
@@ -176,31 +181,83 @@ Worth understanding even though the custom script above was still built and fixe
 ```bash
 crontab -e
 ```
+
 ```
 0 2 * * * /home/altun/archive_logs.sh
 0 2 * * * /home/altun/disk_report.sh
 ```
 
 Both run every night at 02:00. Verified with:
+
 ```bash
 crontab -l
 ```
 
 ---
 
-## 📊 Command Reference
+## 7. One-Time Scheduling with `at`
 
-| Command | Purpose |
-| --- | --- |
-| **`crontab -e`** | Edit the current user's cron jobs. |
-| **`crontab -l`** | List the current user's scheduled cron jobs. |
-| **`gzip -c file > out.gz`** | Compress without deleting/modifying the original file. |
-| **`truncate -s 0 file`** | Reset a file's size to 0 without deleting it. |
-| **`sudo visudo`** | Safely edit sudoers rules (syntax-checked before saving). |
-| **`NOPASSWD:`** | Allows a specific command to run via `sudo` without a password prompt. |
-| **`chown user:user file`** | Changes file ownership — needed when a file was created as `root` by mistake. |
-| **`journalctl -u cron`** | View cron's own logs to debug why a job didn't behave as expected. |
+`cron` is for **recurring** jobs. `at` is for something that should run **exactly once**, at a specific point in the future — no repeating schedule needed.
+
+### Installing and Enabling `at`
+
+Not installed by default on this server:
+
+```bash
+sudo apt install at -y
+sudo systemctl enable --now atd
+```
+
+`atd` is the background service that actually runs `at` jobs — conceptually the same role `crond` plays for cron.
+
+### Scheduling a One-Time Job
+
+```bash
+echo "echo Merhaba > /home/altun/at_test.txt" | at now + 1 minute
+```
+
+This schedules the command to run once, one minute from now.
+
+### Checking Pending Jobs
+
+```bash
+atq
+```
+
+**Important:** `atq` only lists jobs that are still **pending**. Once a job actually runs, it disappears from `atq` — that doesn't mean it failed, it means it's done. The real way to confirm a job ran is to check its actual result:
+
+```bash
+cat /home/altun/at_test.txt
+```
+
+This came up directly: a job looked "missing" from `atq` after its scheduled time passed, but the output file confirmed it had in fact run successfully — `atq` going empty was just expected behavior, not a failure.
+
+### Cancelling a Pending Job
+
+```bash
+atrm <job_number>
+```
+
+Uses the job number shown by `atq`.
 
 ---
 
-ℹ️ _The real lesson here wasn't the scripts themselves — both were fairly simple — but debugging why something that worked manually silently failed when automated, and learning that cron's non-interactive nature is what broke it._
+## 📊 Command Reference
+
+| Command                     | Purpose                                                                       |
+| --------------------------- | ----------------------------------------------------------------------------- |
+| **`crontab -e`**            | Edit the current user's cron jobs.                                            |
+| **`crontab -l`**            | List the current user's scheduled cron jobs.                                  |
+| **`gzip -c file > out.gz`** | Compress without deleting/modifying the original file.                        |
+| **`truncate -s 0 file`**    | Reset a file's size to 0 without deleting it.                                 |
+| **`sudo visudo`**           | Safely edit sudoers rules (syntax-checked before saving).                     |
+| **`NOPASSWD:`**             | Allows a specific command to run via `sudo` without a password prompt.        |
+| **`chown user:user file`**  | Changes file ownership — needed when a file was created as `root` by mistake. |
+| **`journalctl -u cron`**    | View cron's own logs to debug why a job didn't behave as expected.            |
+| **`at now + <time>`**       | Schedules a one-time command to run at a future point.                        |
+| **`atq`**                   | Lists pending (not-yet-run) `at` jobs.                                        |
+| **`atrm <job_number>`**     | Cancels a pending `at` job.                                                   |
+
+---
+
+ℹ️ _The real lesson here wasn't the scripts themselves — both were fairly simple — but debugging why something that worked manually silently failed when automated, and learning that cron's non-interactive nature is what broke it. Same spirit with `at`: the job didn't actually fail, it just disappeared from the wrong place to check._

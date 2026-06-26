@@ -1,296 +1,298 @@
-# 🚀 DevOps & Linux Infrastructure Journey - Türkiye Sigorta
+# 🚀 DevOps & Linux Altyapı Yolculuğu - Türkiye Sigorta
 
-Welcome to my DevOps engineering journal. This repository documents my learning path, infrastructure automation practices, error resolutions, and Linux systems administration tasks during my internship.
+🌐 [Read in English](./README-EN.md)
 
-## 📍 Where I Am Now
+Bu repo, stajım boyunca takip ettiğim öğrenme sürecimi, altyapı otomasyonu pratiklerimi, hata çözümlerimi ve Linux sistem yönetimi görevlerimi belgeleyen DevOps mühendisliği günlüğümdür.
 
-I've completed all 17 phases of the assigned Linux roadmap, including the final mini-project — Nginx, Docker, Git, and SSH configured on an actual rented server (not a local VM), serving a page pulled directly from this repository. Along the way I also did a full review pass: went through the roadmap's graduation-style scenario questions out loud, found a few gaps in my own understanding (some command syntax I kept forgetting, a couple of concepts I'd half-learned), and went back to strengthen the notes for those phases rather than just noting "I got this wrong" and moving on.
+## 📍 Şu An Neredeyim
 
-Continuing the Udemy course on Docker (A'dan Z'ye) and the YouTube networking playlist alongside this.
+Verilen Linux yol haritasının tüm 17 fazını, son mini proje dahil, tamamladım — Nginx, Docker, Git ve SSH, gerçek (kiralık) bir sunucuda (yerel bir VM değil) kurulu, ve bu repodan doğrudan çekilen bir sayfayı sunuyor. Bu süreçte ayrıca genel bir tekrar turu da yaptım: yol haritasının mezuniyet kriterlerindeki senaryo sorularını sesli olarak cevapladım, kendi bilgimde bazı eksikler buldum (sürekli unuttuğum bazı komut syntax'ları, yarım öğrendiğim birkaç kavram), ve bu fazların notlarını sadece "burada hata yaptım" diye not edip geçmek yerine, geri dönüp güçlendirdim.
 
----
-
-## 📁 Repository Structure
-
-- [01-Linux-Basics](./01-Linux-Basics/): Core Linux commands and text processing (`awk`, `grep`, `cut`), and custom automation scripts.
-- [02-Vagrant-Automation](./02-Vagrant-Automation/): Infrastructure as Code (IaC) environments, and multi-distro provisioning.
-- [03-File-System-Management](./03-File-System-Management/): Storage diagnostics, disk write operations (`dd`), and sorting pipelines.
-- [04-User-Privilege-Management](./04-User-Privilege-Management/): Identity access control, system group lifecycles, and sudoers configuration (Least Privilege Principle).
-- [05-Linux-Permissions](./05-Linux-Permissions/): File system access control, recursive ownership changes, and sticky bit isolation.
-- [06-Linux-Process-Management](./06-Linux-Process-Management/): Process status monitoring, CPU priority adjustments (`nice`/`renice`), and signals.
-- [07-Linux-Service-Management](./07-Linux-Service-Management/): Systemd service management, zero-downtime reloads, and Log Management with journalctl.
-- [08-Linux-Log-Analysis](./08-Linux-Log-Analysis/): Log parsing pipelines and IPv4/IPv6 differences across distros.
-- [09-Linux-Network-Management](./09-Linux-Network-Management/): DNS lookups, checking listening ports, and TLS certificate verification.
-- [10-Linux-Storage-Management](./10-Linux-Storage-Management/): Disk partitioning, formatting with `ext4`, and persistent mounts via `/etc/fstab`.
-- [11-Linux-LVM-Management](./11-Linux-LVM-Management/): LVM setup, live volume resizing, and a disk-space incident writeup.
-- [12-Linux-SSH-Management](./12-Linux-SSH-Management/): Passwordless SSH access via key pairs, SSH config shortcuts, and file transfers with SCP/SFTP.
-- [13-Linux-Proxy-Management](./13-Linux-Proxy-Management/): Forward vs reverse proxy concepts, Nginx's `proxy_pass`, and a real 502 Bad Gateway debugging story.
-- [14-Linux-Bash-Scripting](./14-Linux-Bash-Scripting/): Variables, command substitution, numeric conditions, and a disk usage alert script.
-- [15-Linux-Cron-Automation](./15-Linux-Cron-Automation/): Scheduling scripts with `cron`, a real `sudo`-in-cron debugging story, and a look at `logrotate`.
-- [16-Git-Basics](./16-Git-Basics/): `git clone`, branching, merging, and a real push-rejected/editor-stuck conflict resolved on this exact repo.
-- [17-Mini-Project](./17-Mini-Project/): Nginx, Docker, Git, and SSH set up on a real rented server — a static page pulled from this repo and published live.
-
-### 📝 Evaluation & Assessment Artifacts
-
-- [challenges.md](./challenges.md): Scenario questions and answers (Phases 1-4).
-- [quiz-results.md](./quiz-results.md): 20-question quiz, 85% score (Phases 1-4).
-- [Phase 5 Quiz Logs](./05-Linux-Permissions/quiz-results.md): 5-question quiz on umask and sticky bit.
-- [Phase 6 Quiz Logs](./06-Linux-Process-Management/quiz-results.md): Quiz on process monitoring and signals.
-- [Phase 7 Quiz Logs](./07-Linux-Service-Management/quiz-results.md): Quiz on systemd and journalctl.
-- [Phase 8 Quiz Logs](./08-Linux-Log-Analysis/quiz-results.md): Quiz on log parsing.
-- [Phase 9 Quiz Logs](./09-Linux-Network-Management/quiz-results.md): Quiz on networking and TLS.
-- [Phase 10 Quiz Logs](./10-Linux-Storage-Management/quiz-results.md): Quiz on storage and fstab.
-- [Phase 11 Quiz Logs](./11-Linux-LVM-Management/quiz-results.md): Quiz on LVM.
-- [Phase 12 Quiz Logs](./12-Linux-SSH-Management/quiz-results.md): Quiz on SSH keys, SCP, and SFTP.
-- [Phase 13 Quiz Logs](./13-Linux-Proxy-Management/quiz-results.md): Quiz on forward/reverse proxy and Nginx routing.
-- [Phase 14 Quiz Logs](./14-Linux-Bash-Scripting/quiz-results.md): Quiz on Bash variables, conditions, and scripting basics.
-- [Phase 15 Quiz Logs](./15-Linux-Cron-Automation/quiz-results.md): Quiz on cron scheduling, sudoers, and log rotation.
-- [Phase 16 Quiz Logs](./16-Git-Basics/quiz-results.md): Quiz on Git branching, merging, and resolving a push conflict.
-
-### 🎓 Courses & Certifications
-
-- **DevOps - Linux Temelleri** (Udemy, via Türkiye Sigorta) — Completed June 23, 2026. Taken as an alternative learning path on a day when hands-on VM work wasn't possible on the company laptop.
+Bununla paralel, Udemy'deki Docker (A'dan Z'ye) kursuna ve YouTube networking playlist'ine devam ediyorum.
 
 ---
 
-## 📅 Daily Progress Logs
+## 📁 Repo Yapısı
 
-### 🔹 June 17, 2026 | Vagrant Setup & Linux Basics
+- [01-Linux-Basics](./01-Linux-Basics/): Temel Linux komutları ve metin işleme (`awk`, `grep`, `cut`), ve özel otomasyon scriptleri.
+- [02-Vagrant-Automation](./02-Vagrant-Automation/): Infrastructure as Code (IaC) ortamları, ve çoklu dağıtım provisioning.
+- [03-File-System-Management](./03-File-System-Management/): Depolama diagnostiği, disk yazma işlemleri (`dd`), ve sıralama pipeline'ları.
+- [04-User-Privilege-Management](./04-User-Privilege-Management/): Kimlik erişim kontrolü, sistem grup yaşam döngüleri, ve sudoers yapılandırması (Least Privilege Prensibi).
+- [05-Linux-Permissions](./05-Linux-Permissions/): Dosya sistemi erişim kontrolü, recursive sahiplik değişiklikleri, ve sticky bit izolasyonu.
+- [06-Linux-Process-Management](./06-Linux-Process-Management/): Süreç durum izleme, CPU önceliği ayarlamaları (`nice`/`renice`), ve sinyaller.
+- [07-Linux-Service-Management](./07-Linux-Service-Management/): Systemd servis yönetimi, kesintisiz yeniden yüklemeler, ve journalctl ile log yönetimi.
+- [08-Linux-Log-Analysis](./08-Linux-Log-Analysis/): Log işleme pipeline'ları, `sed`, ve dağıtımlar arası IPv4/IPv6 farkları. ([EN](./08-Linux-Log-Analysis/README-EN.md) / [TR](./08-Linux-Log-Analysis/README-TR.md))
+- [09-Linux-Network-Management](./09-Linux-Network-Management/): DNS sorguları, dinleyen portları kontrol etme, ve TLS sertifika doğrulama.
+- [10-Linux-Storage-Management](./10-Linux-Storage-Management/): Disk partition'lama, `ext4` ile formatlama, ve `/etc/fstab` üzerinden kalıcı mount'lar.
+- [11-Linux-LVM-Management](./11-Linux-LVM-Management/): LVM kurulumu, canlı volume büyütme, ve bir disk-alanı olayının anlatımı.
+- [12-Linux-SSH-Management](./12-Linux-SSH-Management/): Key çiftleri ile şifresiz SSH erişimi, SSH config kısayolları, ve SCP/SFTP ile dosya transferleri.
+- [13-Linux-Proxy-Management](./13-Linux-Proxy-Management/): Forward vs reverse proxy kavramları, Nginx'in `proxy_pass`'i, ve gerçek bir 502 Bad Gateway debug hikayesi.
+- [14-Linux-Bash-Scripting](./14-Linux-Bash-Scripting/): Değişkenler, komut yerine geçirme (command substitution), sayısal koşullar, ve bir disk kullanım uyarı scripti.
+- [15-Linux-Cron-Automation](./15-Linux-Cron-Automation/): `cron` ve `at` ile zamanlama, gerçek bir `sudo`-cron-içinde debug hikayesi, ve `logrotate`'e bir bakış. ([EN](./15-Linux-Cron-Automation/README-EN.md) / [TR](./15-Linux-Cron-Automation/README-TR.md))
+- [16-Git-Basics](./16-Git-Basics/): `git clone`, branching, merging, ve bu repo üzerinde gerçekten çözülen bir push-reddedildi/editör-takıldı çakışması.
+- [17-Mini-Project](./17-Mini-Project/): Gerçek bir kiralık sunucuda Nginx, Docker, Git, ve SSH kurulumu — bu repodan çekilip canlıya alınan statik bir sayfa.
 
-_Hadn't used Vagrant before — my previous virtualization experience was with VMware directly. Since I didn't have VirtualBox installed (Vagrant's default provider), it kept failing on `vagrant up`. Had to research how to get Vagrant working with VMware as the provider instead._
+### 📝 Değerlendirme & Sınav Materyalleri
 
-- **Tasks & Objectives:**
-  - Initialized isolated testing laboratory environments using **Vagrant** over the `vmware_desktop` provider to embrace Infrastructure as Code (IaC) workflows.
-  - Deployed and configured **Ubuntu** and **Rocky Linux 9.8 (Minimal CLI)** server instances.
-  - Explored core Linux commands and analyzed enterprise configuration standards (FQDN defaults on Rocky Linux).
-  - Wrote a shell script to monitor live system metrics.
-- **Milestones & Deliverables:**
-  - 🛠️ Automated Environment Setup: See [Vagrant Logs & Troubleshooting](./02-Vagrant-Automation/)
-  - 📜 Linux Basics & Custom Script: See [Linux Basics & Custom Report Script](./01-Linux-Basics/)
+- [challenges.md](./challenges.md): Senaryo soruları ve cevapları (Faz 1-4).
+- [quiz-results.md](./quiz-results.md): 20 soruluk quiz, %85 skor (Faz 1-4).
+- [Faz 5 Quiz Sonuçları](./05-Linux-Permissions/quiz-results.md): umask ve sticky bit üzerine 5 soruluk quiz.
+- [Faz 6 Quiz Sonuçları](./06-Linux-Process-Management/quiz-results.md): Süreç izleme ve sinyaller üzerine quiz.
+- [Faz 7 Quiz Sonuçları](./07-Linux-Service-Management/quiz-results.md): systemd ve journalctl üzerine quiz.
+- [Faz 8 Quiz Sonuçları](./08-Linux-Log-Analysis/quiz-results.md): Log işleme üzerine quiz.
+- [Faz 9 Quiz Sonuçları](./09-Linux-Network-Management/quiz-results.md): Networking ve TLS üzerine quiz.
+- [Faz 10 Quiz Sonuçları](./10-Linux-Storage-Management/quiz-results.md): Depolama ve fstab üzerine quiz.
+- [Faz 11 Quiz Sonuçları](./11-Linux-LVM-Management/quiz-results.md): LVM üzerine quiz.
+- [Faz 12 Quiz Sonuçları](./12-Linux-SSH-Management/quiz-results.md): SSH key'leri, SCP, ve SFTP üzerine quiz.
+- [Faz 13 Quiz Sonuçları](./13-Linux-Proxy-Management/quiz-results.md): Forward/reverse proxy ve Nginx routing üzerine quiz.
+- [Faz 14 Quiz Sonuçları](./14-Linux-Bash-Scripting/quiz-results.md): Bash değişkenleri, koşullar, ve scripting temelleri üzerine quiz.
+- [Faz 15 Quiz Sonuçları](./15-Linux-Cron-Automation/quiz-results.md): Cron zamanlama, sudoers, ve log rotasyonu üzerine quiz.
+- [Faz 16 Quiz Sonuçları](./16-Git-Basics/quiz-results.md): Git branching, merging, ve bir push çakışması çözme üzerine quiz.
 
-### 🔹 June 18, 2026 | File System & Storage Diagnostics
+### 🎓 Kurslar & Sertifikalar
 
-_Wanted to actually see the difference between `dd` and `fallocate` instead of just reading about it — generating a real 10GB file made the sparse vs. physical allocation distinction click._
-
-- **Tasks & Objectives:**
-  - Mastered Linux file system directory hierarchies, dynamic permissions, and storage diagnostic navigation (`pwd`, `ls`, `cd`, `mkdir`, `rm`, `cp`, `mv`).
-  - Generated a 10 GB test file using low-level block writes.
-  - Compared how `dd` and `fallocate` handle disk writes (sparse vs physical allocation).
-  - Built a command pipeline with `find`, `du`, and `sort` to list the 10 largest files on the system.
-- **Milestones & Deliverables:**
-  - 🗂️ File System Operations & Pipelines: See [Storage Diagnostics & Command Matrix](./03-File-System-Management/)
-
-### 🔹 June 18, 2026 | Identity Access Control & Security Hardening (Least Privilege)
-
-_To really understand how the sudoers restriction worked, I didn't just test the allowed command — I deliberately tried commands outside the permission scope to see exactly how and where it would get blocked._
-
-- **Tasks & Objectives:**
-  - Studied Linux user and group authentication mechanics (`useradd`, `groupadd`, `id`) and security boundaries within `/etc/passwd` and `/etc/group`.
-  - Implemented the **Least Privilege Principle (En Düşük Yetki İlkesi)** to enforce structural operating system hardening.
-  - Provisioned a restricted operator account (`devopstester`) configured specifically via `visudo` and the `/etc/sudoers` architecture.
-  - Restricted the user to run _only_ `systemctl restart nginx` targeted explicitly at root space (`ALL=(root)`), maintaining credentials verification prompts as an extra security layer while successfully blocking unauthorized operations (e.g., `systemctl stop nginx`).
-- **Milestones & Deliverables:**
-  - 🔑 Role-Based Access Controls: See [User Administration & Sudoers Constraints](./04-User-Privilege-Management/)
-
-### 🔹 June 19, 2026 | Review & Quiz Results
-
-_Took the 20-question quiz covering everything from the previous phases. Answered based on what I'd actually learned, without changing or correcting answers afterward — this was meant to confirm what had genuinely stuck._
-
-- **Tasks & Objectives:**
-  - Consolidated knowledge domains across all completed infrastructural modules through a rigorous testing phase.
-  - Worked through scenario-based questions covering file streams, sparse files, and systemd restrictions.
-  - Took a 20-question quiz covering IaC, filtering pipelines, and sudoers rules.
-  - Documented mistakes and lessons learned (Vagrant provider setup and kernel version flags).
-- **Milestones & Deliverables:**
-  - 📝 Scenario Solutions: See [Verified Production Scenario Matrices](./challenges.md)
-  - 📊 Quiz Results: See [20-Question Quiz Results](./quiz-results.md)
-
-### 🔹 June 19, 2026 | File Permissions & Shared Directory Security
-
-_The permission numbers (like `755` or `777`) didn't make sense to me at first — I couldn't tell what each digit actually represented. After experimenting with different combinations, I understood that each digit maps to a permission level (read/write/execute) for a specific owner type (user/group/others). Once that clicked, I reinforced it by running more tests with different commands._
-
-- **Tasks & Objectives:**
-  - Analyzed standard Linux authorization maps (`rwx`), numerical masking conversions (`755` vs `644`), and user layout masks (`umask`).
-  - Audited asset distribution commands (`chown` and `chgrp`) to automate recursive file tree ownership migrations.
-  - Set up a shared test directory (`/tmp/test`) configured with custom **Sticky Bit** privileges (`+t`).
-  - Successfully tested and confirmed that unauthorized users couldn't delete others' files across independent operator profiles, preserving environment integrity.
-- **Milestones & Deliverables:**
-  - 🔑 Security Hardening Workspace: See [Storage Diagnostics & Permissions Matrix](./05-Linux-Permissions/notes.md)
-  - 📊 Validation Diagnostics: See [Phase 5 Assessment Analytics](./05-Linux-Permissions/quiz-results.md)
-
-### 🔹 June 19, 2026 | Linux Process Management
-
-_Noticed `htop` wasn't installed by default and initially thought I'd missed something during setup. After looking into it, I learned this is normal — `htop` is a more advanced tool that has to be installed separately, while `top` comes built in. Practiced each command repeatedly with different flags to make sure it stuck._
-
-- **Tasks & Objectives:**
-  - Used `ps` and `pidof` to check running processes and `top` for real-time monitoring.
-  - Simulated a runaway process and killed it with `SIGKILL -9`.
-  - Compared `top` and `htop`.
-  - Practiced CPU priority scheduling with `nice` and `renice`.
-- **Milestones & Deliverables:**
-  - ⚙️ Process Operations Workspace: See [Process Management Notes](./06-Linux-Process-Management/notes.md)
-  - 📊 Performance Evaluation: See [Phase 6 Clean Validation Analytics (100% Score)](./06-Linux-Process-Management/quiz-results.md)
-
-### 🔹 June 19, 2026 | Service Management & Logging
-
-_Found that Rocky Linux doesn't use `apt` — it uses `dnf`/`yum` instead. Looking into why, I learned this comes down to the two distro families being built for different audiences: Debian/Ubuntu (`apt`) leans more toward general/desktop use, while RHEL/Rocky (`dnf`) is built more for enterprise environments. The same pattern showed up with Nginx itself — Ubuntu enables and starts it automatically right after install, while Rocky leaves it disabled by default. Researching why both of these differences exist (and not just memorizing the commands) is what made it stick._
-
-- **Tasks & Objectives:**
-  - Installed Nginx on both distros and compared `dnf` vs `apt`.
-  - Compared Ubuntu's auto-start default with Rocky Linux's disabled-by-default behavior.
-  - Compared `enable` (persists across reboots) vs `start` (runs now).
-  - Used `reload` for zero-downtime config changes and `journalctl -u -f` to follow logs live.
-- **Milestones & Deliverables:**
-  - 🏗️ Service Control Workspace: See [Systemd Daemon Lifecycles & Configurations](./07-Linux-Service-Management/notes.md)
-  - 📊 Quiz Results: See [Phase 7 Performance Evaluation (100% Score)](./07-Linux-Service-Management/quiz-results.md)
-
-### 🔹 June 19, 2026 | Linux Log Analysis
-
-_Wasn't expecting Ubuntu to return the IPv6 loopback address (`::1`) for localhost — Rocky Linux returned the familiar `127.0.0.1` (IPv4) instead. Looking into it, I learned Ubuntu defaults to IPv6 because it's geared more toward general/home use where modern networking stacks are expected, while Rocky sticks with IPv4 since it's more widely supported and stable in enterprise environments. The commands themselves weren't easy to get used to at first, but they clicked after running through them a few times._
-
-- **Tasks & Objectives:**
-  - Learned the Nginx log format and which columns map to IP, path, and status code.
-  - Compared IPv6 loopback (`::1`) on Ubuntu vs IPv4 (`127.0.0.1`) on Rocky Linux.
-  - Fixed missing `curl` on Ubuntu's minimal image by installing it manually.
-  - Built `grep`/`awk`/`sort`/`uniq` pipelines to find top IPs and count 404 errors by path.
-- **Milestones & Deliverables:**
-  - 🪵 Text Process Workspace: See [Log Analytics & Command Processing Templates](./08-Linux-Log-Analysis/notes.md)
-  - 📊 Quiz Results: See [Phase 8 Performance Evaluation (100% Score)](./08-Linux-Log-Analysis/quiz-results.md)
-
-### 🔹 June 21, 2026 | Networking & TLS
-
-_First time inspecting a TLS certificate directly — at first I didn't fully understand what I was looking at. After digging deeper, I understood that the certificate itself has a validity window (issue and expiration dates), and separately, TLS also uses session resumption so that repeated connections don't have to redo the full handshake and certificate check every time — which is what speeds up subsequent connections to the same server._
-
-- **Tasks & Objectives:**
-  - Used `dig @8.8.8.8` to bypass local DNS caching and verify resolution.
-  - Used `ss -lntp` to find which process was listening on a port, across both IPv4 and IPv6.
-  - Used `openssl s_client` to inspect a certificate's trust chain, issuer, and expiration date.
-- **Milestones & Deliverables:**
-  - 🌐 Networking Workspace: See [Network & TLS Notes](./09-Linux-Network-Management/notes.md)
-  - 📊 Quiz Results: See [Phase 9 Quiz Results](./09-Linux-Network-Management/quiz-results.md)
-
-### 🔹 June 22, 2026 | Storage & LVM
-
-_This phase included a real mistake: I filled the host machine's disk while testing with `dd` and froze the VM completely. Recovering from that — and switching to `fallocate` — taught me more than the planned exercise would have on its own._
-
-- **Tasks & Objectives:**
-  - Set up persistent mounts using UUID in `/etc/fstab`, and verified the entry with `mount -a` before rebooting.
-  - Set up LVM: physical volumes → volume group → logical volume.
-  - Recovered from a VM freeze caused by filling the host disk with `dd`, and switched to `fallocate` to avoid it.
-  - Resized a logical volume and its filesystem live, without unmounting.
-- **Milestones & Deliverables:**
-  - 💾 Storage Workspace: See [Storage Management Notes](./10-Linux-Storage-Management/notes.md)
-  - 🏗️ LVM Workspace: See [LVM Management Notes](./11-Linux-LVM-Management/notes.md)
-  - 📊 Quiz Results: See [Phase 10 Quiz Results](./10-Linux-Storage-Management/quiz-results.md) / [Phase 11 Quiz Results](./11-Linux-LVM-Management/quiz-results.md)
-
-### 🔹 June 22, 2026 | SSH, SCP & SFTP
-
-_Didn't have `ssh-copy-id` available on Windows, so I had to do the same thing manually — paste the public key into `authorized_keys` myself and set the permissions by hand. That made it much clearer what the command actually does instead of just running it. Also ran into a real "Permission denied (publickey)" error after disabling password login, which turned out to be because I had a separate key for the Ubuntu VM and SSH was trying the wrong one by default — had to use `-i` to point to the right key file, and later set up an SSH config file so I wouldn't have to type it out every time. Along the way I also hit a leftover commented-out line in `sshd_config` that silently did nothing until I removed the `#`._
-
-- **Tasks & Objectives:**
-  - Generated an SSH key pair (`ssh-keygen -t ed25519`) and manually added the public key to a VM's `authorized_keys` (no `ssh-copy-id` on Windows).
-  - Set correct permissions (`chmod 700`/`600`) on `.ssh` and `authorized_keys`, and learned why SSH enforces this.
-  - Disabled password authentication (`PasswordAuthentication no`) and verified the restriction by testing both with and without the key in place.
-  - Debugged a `Permission denied (publickey)` error caused by using the wrong key file, and fixed it with `-i` and an SSH config file.
-  - Transferred files between host and VM using `scp` and `sftp`.
-- **Milestones & Deliverables:**
-  - 🔐 SSH Workspace: See [SSH, SCP & SFTP Notes](./12-Linux-SSH-Management/notes.md)
-  - 📊 Quiz Results: See [Phase 12 Quiz Results](./12-Linux-SSH-Management/quiz-results.md)
-
-### 🔹 June 22, 2026 | Forward & Reverse Proxy
-
-_This phase was mostly conceptual rather than fully hands-on. I understood forward proxy as a courier carrying a request on your behalf — the other side only sees the courier, not you — and reverse proxy as a front desk person at a company: you ask for someone, they send you to the right place, and you never deal with the rest of the building directly. Tried setting up an actual Nginx reverse proxy pointing to a backend service, but hit a 502 Bad Gateway. Turned out the backend and Nginx were on different VMs, and I had `proxy_pass` pointing to `localhost` — which only ever refers to the machine Nginx itself is running on, not the other VM where the backend actually was. Didn't finish the working setup in this session, but understanding exactly why it failed was the real takeaway._
-
-- **Tasks & Objectives:**
-  - Learned the difference between forward proxy (sits in front of the client) and reverse proxy (sits in front of the server).
-  - Set up a basic backend service and an Nginx reverse proxy using `proxy_pass`.
-  - Hit and diagnosed a real `502 Bad Gateway` caused by `proxy_pass` pointing to `localhost` instead of the backend VM's actual IP.
-  - Learned what a 502 error specifically means (proxy couldn't reach the backend) vs. other error codes.
-- **Milestones & Deliverables:**
-  - 🔀 Proxy Workspace: See [Forward & Reverse Proxy Notes](./13-Linux-Proxy-Management/notes.md)
-  - 📊 Quiz Results: See [Phase 13 Quiz Results](./13-Linux-Proxy-Management/quiz-results.md)
-
-### 🔹 June 22, 2026 | Bash Scripting
-
-_Built a script that warns when disk usage goes over 80%, piecing it together from commands I already knew — `df`, `awk 'NR==2'` to grab the right line, and `cut -d'%' -f1` to strip the percent sign, then storing the result in a variable with command substitution. Hit a real error along the way: `[48: command not found`, caused by missing a space between `[` and `$usage` — Bash's `[` is actually a command, so it needs spacing on both sides to work. Fixed it, then added an `else` branch so the script always prints something instead of staying silent when usage is fine. Didn't add a loop or a function, since the task only needed a single check — felt more honest to leave them out than to force them in just to "use" every topic in the list._
-
-- **Tasks & Objectives:**
-  - Wrote a script combining `df`, `awk`, and `cut` to extract disk usage as a plain number.
-  - Stored the result in a variable using command substitution (`$(...)`).
-  - Used an `if`/`else` block with `-gt` to print a warning above 80% usage, and an "OK" message otherwise.
-  - Debugged a real `[48: command not found` error caused by a missing space in the condition syntax.
-  - Made the script executable with `chmod +x` and ran it directly with `./script.sh`.
-- **Milestones & Deliverables:**
-  - 🐚 Bash Scripting Workspace: See [Bash Scripting Notes](./14-Linux-Bash-Scripting/notes.md)
-  - 📊 Quiz Results: See [Phase 14 Quiz Results](./14-Linux-Bash-Scripting/quiz-results.md)
-
-### 🔹 June 22, 2026 | Cron & Automation
-
-_Wrote two scripts — one for disk usage reports, one for archiving Nginx logs — and scheduled both with cron. The disk report script worked immediately, but the log archiving script kept "succeeding" without actually doing anything when run through cron, even though it worked fine manually. Took a while to track down: `sudo` needs an interactive terminal to ask for a password, and cron runs with nobody there to answer it, so every `sudo` command inside the script was silently failing. The failure was invisible at first because cron tries to email its output by default, and with no mail system installed, that output — including the actual error — was just getting discarded. Found the real error by redirecting the script's output to a file manually. Also hit a separate issue where the script itself was owned by `root` (from opening it with `sudo nano` at some point), which blocked even `chmod` until I fixed the ownership with `chown`. Solved the `sudo` problem with a narrow `sudoers` rule for just the one command that actually needed root, instead of giving broader access. Along the way also looked into `logrotate`, which is what Nginx actually uses by default for this exact job in real setups._
-
-- **Tasks & Objectives:**
-  - Wrote `disk_report.sh` (reused logic from the Bash Scripting phase) to write a disk usage report to a file.
-  - Wrote `archive_logs.sh` to compress Nginx's `access.log` with `gzip -c` and reset it with `truncate -s 0`.
-  - Diagnosed a `sudo: a password is required` failure that only showed up under cron, not manual runs.
-  - Fixed a file ownership issue (`chown`) and added a narrowly scoped `sudoers` NOPASSWD rule for the one command that needed it.
-  - Scheduled both scripts with `crontab -e` to run nightly at 02:00.
-  - Looked into `logrotate` as the standard real-world tool for this kind of log management.
-- **Milestones & Deliverables:**
-  - ⏰ Cron & Automation Workspace: See [Cron & Automation Notes](./15-Linux-Cron-Automation/notes.md)
-  - 📊 Quiz Results: See [Phase 15 Quiz Results](./15-Linux-Cron-Automation/quiz-results.md)
-
-### 🔹 June 23, 2026 | DevOps - Linux Temelleri (Udemy Course)
-
-_Couldn't do hands-on work today since the company laptop doesn't allow running VMs or the tools I'd normally use. Used the day to complete a DevOps - Linux Temelleri course on Udemy instead, to keep making progress even without direct lab access._
-
-- **Tasks & Objectives:**
-  - Completed the "DevOps - Linux Temelleri" course on Udemy.
-- **Milestones & Deliverables:**
-  - 🎓 Course Completion: DevOps - Linux Temelleri (Udemy)
-
-### 🔹 June 23, 2026 | Docker & Networking Research
-
-_Continued the A'dan Z'ye Docker course (finished the intro, now in the setup/installation section), and spent time researching core networking concepts — the internet, protocols, end systems, packet switching, latency, and throughput. Also went through the graduation/review questions from the Linux roadmap given earlier in the internship._
-
-- **Tasks & Objectives:**
-  - Finished the intro section of the "A'dan Z'ye Docker" Udemy course, currently in the installation section.
-  - Researched networking fundamentals: the internet, protocols, end systems, packet switching, latency, and throughput.
-  - Worked through the graduation/review questions from the assigned Linux roadmap.
-- **Milestones & Deliverables:**
-  - 🐳 In progress: A'dan Z'ye Docker (Udemy)
-  - 🌐 Networking fundamentals research (no hands-on lab this session)
-
-### 🔹 June 24, 2026 | Git — Branching, Merging, and a Real Push Conflict
-
-_Tested `git branch` and `git merge` directly on this repo — created a test branch, committed a file to it, confirmed `main` was unaffected, then merged it back in (a clean fast-forward). Cleaning up afterward led to a real conflict: `git push` got rejected because the remote had changes the local repo didn't have yet. Running `git pull` to fix that got stuck — the merge needed a commit message, and Git tried to open a configured editor (WebStorm) that wasn't actually installed at that path, so the merge was left half-done. Fixed it by setting Notepad as the default editor (`git config --global core.editor "notepad"`), completing the commit, and pushing successfully. Also mixed up `git branch` (lists branches) with creating one when answering the quiz, even though the command itself was used correctly during the actual hands-on part._
-
-- **Tasks & Objectives:**
-  - Created and switched to a new branch (`git checkout -b`), committed a file to it, and confirmed branch isolation by checking that `main` didn't have the file until merged.
-  - Performed a fast-forward merge (`git merge`) and cleaned up the test branch/file afterward.
-  - Hit and resolved a real `git push` rejection caused by unsynced remote changes.
-  - Diagnosed and fixed a stuck `git pull`/merge caused by a misconfigured, nonexistent editor path.
-  - Reconfigured Git's default editor globally (`git config --global core.editor`).
-- **Milestones & Deliverables:**
-  - 🔧 Git Workspace: See [Git Notes](./16-Git-Basics/notes.md)
-  - 📊 Quiz Results: See [Phase 16 Quiz Results](./16-Git-Basics/quiz-results.md)
-
-### 🔹 June 24, 2026 | Full Review & Mini Project (Real Server)
-
-_Did a full review pass over everything so far, going through scenario-style questions modeled on the roadmap's actual graduation criteria (e.g. "what's listening on port 443," "why would DNS resolution fail," "how do you add a new disk") instead of just rereading notes. Answering out loud surfaced real gaps — forgot `-p err` for filtering journalctl by severity, mixed up `tail -f` with `tail -n`, got `ss -l` vs `-a` slightly wrong, forgot the partition step when describing adding a new disk, and reversed which is more important to understand why LVM exists versus just running the commands. Went back into the notes for Storage, Service Management, Permissions, Log Analysis, Network, and LVM and filled in what was actually missing — not just typos, but real explanatory gaps (e.g. the `chmod` 4/2/1 breakdown wasn't actually spelled out anywhere before this)._
-
-_Then did the mini-project on the real server purchased this week — created a non-root sudo user, set up SSH key access the same way as the original SSH phase, installed Nginx and Docker (verified with `hello-world`), installed Git and cloned this exact repository, and published a static page from it. Hit two real issues: forgot that the cloned repo and the file Nginx actually serves are separate copies, so `git pull` alone didn't update the live page until the file was re-copied; and got a "refused to connect" in the browser that turned out to be from trying `https://` when only port 80 (HTTP) was ever configured — same category of mistake as the 502 from the Proxy phase, just a different layer._
-
-- **Tasks & Objectives:**
-  - Answered scenario-based review questions covering processes, ports, DNS, disk management, log analysis, SSH, cron, and file permissions.
-  - Identified and fixed real gaps in the notes for 6 phases (Storage, Service Management, Permissions, Log Analysis, Network, LVM).
-  - Set up a non-root sudo user and SSH key-based access on a real rented server.
-  - Installed and verified Nginx and Docker on the server.
-  - Installed Git, cloned this repository, and published a static page from it via Nginx.
-  - Debugged a stale-deployment issue (source file vs. served file) and an HTTPS-vs-HTTP connection issue.
-- **Milestones & Deliverables:**
-  - 📝 Deepened Notes: [Storage](./10-Linux-Storage-Management/notes.md) · [Service Management](./07-Linux-Service-Management/notes.md) · [Permissions](./05-Linux-Permissions/notes.md) · [Log Analysis](./08-Linux-Log-Analysis/notes.md) · [Network](./09-Linux-Network-Management/notes.md) · [LVM](./11-Linux-LVM-Management/notes.md)
-  - 🚀 Mini Project: See [Mini Project Notes](./17-Mini-Project/notes.md)
+- **DevOps - Linux Temelleri** (Udemy, Türkiye Sigorta üzerinden) — 23 Haziran 2026'da tamamlandı. Şirket laptop'unda hands-on VM çalışmasının mümkün olmadığı bir günde, alternatif bir öğrenme yolu olarak alındı.
 
 ---
 
-ℹ️ _Note: Everything documented here was tested locally in sandboxed VMs._
+## 📅 Günlük İlerleme Kayıtları
+
+### 🔹 17 Haziran 2026 | Vagrant Kurulumu & Linux Temelleri
+
+_Daha önce Vagrant kullanmamıştım — önceki sanallaştırma deneyimim direkt VMware ile oldu. VirtualBox kurulu olmadığı için (Vagrant'ın varsayılan provider'ı), `vagrant up` sürekli başarısız oluyordu. Vagrant'ı VMware provider'ı ile çalıştırmanın yolunu araştırmam gerekti._
+
+- **Görevler & Hedefler:**
+  - Infrastructure as Code (IaC) iş akışlarını benimsemek için **Vagrant**'ı `vmware_desktop` provider'ı üzerinden kullanarak izole test ortamları başlattım.
+  - **Ubuntu** ve **Rocky Linux 9.8 (Minimal CLI)** sunucu örnekleri kurdum ve yapılandırdım.
+  - Temel Linux komutlarını araştırdım ve kurumsal yapılandırma standartlarını analiz ettim (Rocky Linux'ta FQDN varsayılanları).
+  - Canlı sistem metriklerini izlemek için bir shell scripti yazdım.
+- **Kilometre Taşları & Çıktılar:**
+  - 🛠️ Otomatik Ortam Kurulumu: [Vagrant Logları & Sorun Giderme](./02-Vagrant-Automation/)
+  - 📜 Linux Temelleri & Özel Script: [Linux Temelleri & Özel Rapor Scripti](./01-Linux-Basics/)
+
+### 🔹 18 Haziran 2026 | Dosya Sistemi & Depolama Diagnostiği
+
+_`dd` ile `fallocate` arasındaki farkı sadece okumak yerine gerçekten görmek istedim — gerçek bir 10GB dosya oluşturmak, sparse vs fiziksel allocation ayrımını netleştirdi._
+
+- **Görevler & Hedefler:**
+  - Linux dosya sistemi dizin hiyerarşilerini, dinamik izinleri, ve depolama diagnostik navigasyonunu (`pwd`, `ls`, `cd`, `mkdir`, `rm`, `cp`, `mv`) öğrendim.
+  - Düşük seviyeli blok yazma ile 10 GB'lık bir test dosyası oluşturdum.
+  - `dd` ve `fallocate`'in disk yazmalarını nasıl ele aldığını karşılaştırdım (sparse vs fiziksel allocation).
+  - Sistemdeki en büyük 10 dosyayı listelemek için `find`, `du`, ve `sort` ile bir komut pipeline'ı kurdum.
+- **Kilometre Taşları & Çıktılar:**
+  - 🗂️ Dosya Sistemi İşlemleri & Pipeline'lar: [Depolama Diagnostiği & Komut Matrisi](./03-File-System-Management/)
+
+### 🔹 18 Haziran 2026 | Kimlik Erişim Kontrolü & Güvenlik Sıkılaştırma (Least Privilege)
+
+_Sudoers kısıtlamasının nasıl çalıştığını gerçekten anlamak için, sadece izin verilen komutu test etmedim — kısıtlamanın tam olarak nerede ve nasıl bloke ettiğini görmek için, izin kapsamı dışındaki komutları da kasıtlı olarak denedim._
+
+- **Görevler & Hedefler:**
+  - Linux kullanıcı ve grup kimlik doğrulama mekaniklerini (`useradd`, `groupadd`, `id`) ve `/etc/passwd` ile `/etc/group` içindeki güvenlik sınırlarını öğrendim.
+  - Yapısal işletim sistemi sıkılaştırmasını uygulamak için **Least Privilege Prensibi (En Düşük Yetki İlkesi)**'ni uyguladım.
+  - `visudo` ve `/etc/sudoers` mimarisi üzerinden özel olarak yapılandırılmış, kısıtlı bir operatör hesabı (`devopstester`) oluşturdum.
+  - Kullanıcıyı, root alanına (`ALL=(root)`) açıkça yönlendirilmiş, _sadece_ `systemctl restart nginx` çalıştırabilecek şekilde kısıtladım — kimlik doğrulama isteminin ek bir güvenlik katmanı olarak korunmasını sağlarken, yetkisiz işlemleri (örn. `systemctl stop nginx`) başarıyla bloke ettim.
+- **Kilometre Taşları & Çıktılar:**
+  - 🔑 Rol-Bazlı Erişim Kontrolleri: [Kullanıcı Yönetimi & Sudoers Kısıtlamaları](./04-User-Privilege-Management/)
+
+### 🔹 19 Haziran 2026 | Genel Tekrar & Quiz Sonuçları
+
+_Önceki tüm fazları kapsayan 20 soruluk quiz'i çözdüm. Cevapları, gerçekten öğrendiğime dayanarak verdim, sonradan değiştirmeden veya düzeltmeden — bu, gerçekten oturan bilgiyi teyit etmek içindi._
+
+- **Görevler & Hedefler:**
+  - Tamamlanan tüm altyapı modüllerindeki bilgi alanlarını, zorlu bir test fazı üzerinden bütünleştirdim.
+  - Dosya akışları, sparse dosyalar, ve systemd kısıtlamalarını kapsayan senaryo bazlı sorular üzerinde çalıştım.
+  - IaC, filtreleme pipeline'ları, ve sudoers kurallarını kapsayan 20 soruluk bir quiz çözdüm.
+  - Hataları ve öğrenilen dersleri belgeledim (Vagrant provider kurulumu ve kernel versiyon flag'leri).
+- **Kilometre Taşları & Çıktılar:**
+  - 📝 Senaryo Çözümleri: [Doğrulanmış Production Senaryo Matrisleri](./challenges.md)
+  - 📊 Quiz Sonuçları: [20 Soruluk Quiz Sonuçları](./quiz-results.md)
+
+### 🔹 19 Haziran 2026 | Dosya İzinleri & Paylaşılan Dizin Güvenliği
+
+_İzin sayıları (`755` veya `777` gibi) ilk başta bana mantıklı gelmedi — her basamağın gerçekte neyi temsil ettiğini anlayamadım. Farklı kombinasyonlarla deney yaptıktan sonra, her basamağın belirli bir sahip türü (kullanıcı/grup/diğerleri) için bir izin seviyesine (okuma/yazma/çalıştırma) karşılık geldiğini anladım. Bu netleştikten sonra, farklı komutlarla daha fazla test yaparak pekiştirdim._
+
+- **Görevler & Hedefler:**
+  - Standart Linux yetkilendirme haritalarını (`rwx`), sayısal maskeleme dönüşümlerini (`755` vs `644`), ve kullanıcı düzeni maskelerini (`umask`) analiz ettim.
+  - Recursive dosya ağacı sahiplik geçişlerini otomatikleştirmek için varlık dağıtım komutlarını (`chown` ve `chgrp`) denetledim.
+  - Özel **Sticky Bit** ayrıcalıklarıyla (`+t`) yapılandırılmış, paylaşılan bir test dizini (`/tmp/test`) kurdum.
+  - Yetkisiz kullanıcıların, bağımsız operatör profilleri arasında başkalarının dosyalarını silemediğini başarıyla test ettim ve doğruladım, ortam bütünlüğünü koruyarak.
+- **Kilometre Taşları & Çıktılar:**
+  - 🔑 Güvenlik Sıkılaştırma Çalışma Alanı: [Depolama Diagnostiği & İzinler Matrisi](./05-Linux-Permissions/notes.md)
+  - 📊 Doğrulama Diagnostiği: [Faz 5 Değerlendirme Analitiği](./05-Linux-Permissions/quiz-results.md)
+
+### 🔹 19 Haziran 2026 | Linux Süreç Yönetimi
+
+_`htop`'un varsayılan olarak kurulu olmadığını fark ettim ve önce kurulumda bir şey atladığımı düşündüm. Araştırdıktan sonra bunun normal olduğunu öğrendim — `htop` ayrıca kurulması gereken daha gelişmiş bir araç, `top` ise yerleşik geliyor. Her komutu farklı flag'lerle tekrar tekrar pratik ettim, gerçekten oturması için._
+
+- **Görevler & Hedefler:**
+  - Çalışan süreçleri kontrol etmek için `ps` ve `pidof`'u, gerçek zamanlı izleme için `top`'u kullandım.
+  - Kaçak (runaway) bir süreç simüle ettim ve `SIGKILL -9` ile öldürdüm.
+  - `top` ve `htop`'u karşılaştırdım.
+  - `nice` ve `renice` ile CPU önceliği zamanlamasını pratik ettim.
+- **Kilometre Taşları & Çıktılar:**
+  - ⚙️ Süreç İşlemleri Çalışma Alanı: [Süreç Yönetimi Notları](./06-Linux-Process-Management/notes.md)
+  - 📊 Performans Değerlendirmesi: [Faz 6 Temiz Doğrulama Analitiği (%100 Skor)](./06-Linux-Process-Management/quiz-results.md)
+
+### 🔹 19 Haziran 2026 | Servis Yönetimi & Loglama
+
+_Rocky Linux'un `apt` kullanmadığını, bunun yerine `dnf`/`yum` kullandığını fark ettim. Nedenini araştırınca, bunun iki dağıtım ailesinin farklı kitleler için inşa edilmesinden kaynaklandığını öğrendim: Debian/Ubuntu (`apt`) genel/masaüstü kullanıma daha yakın, RHEL/Rocky (`dnf`) ise daha kurumsal ortamlar için inşa edilmiş. Aynı örüntü Nginx'in kendisinde de çıktı — Ubuntu kurulumdan sonra otomatik olarak etkinleştirip başlatıyor, Rocky ise varsayılan olarak devre dışı bırakıyor. Bu iki farkın da neden var olduğunu araştırmak (sadece komutları ezberlemek değil) bunun gerçekten oturmasını sağladı._
+
+- **Görevler & Hedefler:**
+  - Her iki dağıtıma da Nginx kurdum ve `dnf` ile `apt`'ı karşılaştırdım.
+  - Ubuntu'nun otomatik-başlatma varsayılanını, Rocky Linux'un devre-dışı-varsayılan davranışıyla karşılaştırdım.
+  - `enable` (reboot'lar arası kalıcı) ile `start` (şimdi çalıştırır)'ı karşılaştırdım.
+  - Kesintisiz config değişiklikleri için `reload`'u, logları canlı takip etmek için `journalctl -u -f`'i kullandım.
+- **Kilometre Taşları & Çıktılar:**
+  - 🏗️ Servis Kontrol Çalışma Alanı: [Systemd Daemon Yaşam Döngüleri & Yapılandırmaları](./07-Linux-Service-Management/notes.md)
+  - 📊 Quiz Sonuçları: [Faz 7 Performans Değerlendirmesi (%100 Skor)](./07-Linux-Service-Management/quiz-results.md)
+
+### 🔹 19 Haziran 2026 | Linux Log Analizi
+
+_Ubuntu'nun localhost için IPv6 loopback adresini (`::1`) döndürmesini beklemiyordum — Rocky Linux bunun yerine bildiğimiz `127.0.0.1` (IPv4) döndürdü. Araştırınca, Ubuntu'nun genel/ev kullanımına daha yönelik olduğu için, modern networking stack'lerin beklendiği yerlerde varsayılan olarak IPv6 kullandığını öğrendim; Rocky ise kurumsal ortamlarda daha yaygın desteklendiği ve daha kararlı olduğu için IPv4'e bağlı kalıyor. Komutların kendisi ilk başta alışılmadık geldi, ama birkaç kez çalıştırdıktan sonra oturdu._
+
+- **Görevler & Hedefler:**
+  - Nginx log formatını ve hangi sütunların IP, path, ve durum koduna karşılık geldiğini öğrendim.
+  - Ubuntu'da IPv6 loopback (`::1`) ile Rocky Linux'ta IPv4 (`127.0.0.1`)'i karşılaştırdım.
+  - Ubuntu'nun minimal imajındaki eksik `curl`'u elle kurarak düzelttim.
+  - En çok istek gönderen IP'leri bulmak ve 404 hatalarını path'e göre saymak için `grep`/`awk`/`sort`/`uniq` pipeline'ları kurdum.
+- **Kilometre Taşları & Çıktılar:**
+  - 🪵 Metin İşleme Çalışma Alanı: [Log Analizi Notları (EN](./08-Linux-Log-Analysis/README-EN.md) / [TR)](./08-Linux-Log-Analysis/README-TR.md)
+  - 📊 Quiz Sonuçları: [Faz 8 Performans Değerlendirmesi (%100 Skor)](./08-Linux-Log-Analysis/quiz-results.md)
+
+### 🔹 21 Haziran 2026 | Networking & TLS
+
+_İlk kez bir TLS sertifikasını doğrudan inceledim — ilk başta tam olarak neye baktığımı anlamadım. Daha derine indikçe, sertifikanın kendisinin bir geçerlilik penceresi (yayın ve bitiş tarihleri) olduğunu, ve ayrıca TLS'in tekrarlanan bağlantılarda her seferinde tam handshake ve sertifika kontrolü yapmaması için session resumption kullandığını anladım — bu da aynı sunucuya sonraki bağlantıları hızlandıran şey._
+
+- **Görevler & Hedefler:**
+  - Yerel DNS cache'ini atlayıp çözümlemeyi doğrulamak için `dig @8.8.8.8`'i kullandım.
+  - Hem IPv4 hem IPv6 üzerinden, bir portu hangi sürecin dinlediğini bulmak için `ss -lntp`'yi kullandım.
+  - Bir sertifikanın trust chain'ini, issuer'ını, ve bitiş tarihini incelemek için `openssl s_client`'ı kullandım.
+- **Kilometre Taşları & Çıktılar:**
+  - 🌐 Networking Çalışma Alanı: [Network & TLS Notları](./09-Linux-Network-Management/notes.md)
+  - 📊 Quiz Sonuçları: [Faz 9 Quiz Sonuçları](./09-Linux-Network-Management/quiz-results.md)
+
+### 🔹 22 Haziran 2026 | Depolama & LVM
+
+_Bu faz gerçek bir hata içeriyordu: `dd` ile test ederken host makinenin diskini doldurdum ve VM'i tamamen kilitledim. Bundan kurtulmak — ve `fallocate`'e geçmek — planlanan alıştırmanın tek başına öğretebileceğinden daha fazlasını öğretti._
+
+- **Görevler & Hedefler:**
+  - `/etc/fstab`'da UUID kullanarak kalıcı mount'lar kurdum, ve reboot öncesi `mount -a` ile girişi doğruladım.
+  - LVM kurdum: fiziksel volume'lar → volume group → mantıksal volume.
+  - `dd` ile host diskini doldurmanın sebep olduğu bir VM dondurmasından kurtuldum, ve bunu önlemek için `fallocate`'e geçtim.
+  - Bir mantıksal volume'u ve dosya sistemini, unmount etmeden, canlı olarak büyüttüm.
+- **Kilometre Taşları & Çıktılar:**
+  - 💾 Depolama Çalışma Alanı: [Depolama Yönetimi Notları](./10-Linux-Storage-Management/notes.md)
+  - 🏗️ LVM Çalışma Alanı: [LVM Yönetimi Notları](./11-Linux-LVM-Management/notes.md)
+  - 📊 Quiz Sonuçları: [Faz 10 Quiz Sonuçları](./10-Linux-Storage-Management/quiz-results.md) / [Faz 11 Quiz Sonuçları](./11-Linux-LVM-Management/quiz-results.md)
+
+### 🔹 22 Haziran 2026 | SSH, SCP & SFTP
+
+_Windows'ta `ssh-copy-id` mevcut değildi, bu yüzden aynı şeyi elle yapmam gerekti — public key'i `authorized_keys`'e kendim yapıştırdım ve izinleri elle ayarladım. Bu, komutu sadece çalıştırmak yerine, gerçekte ne yaptığını çok daha net hale getirdi. Şifre ile girişi kapattıktan sonra gerçek bir "Permission denied (publickey)" hatasıyla da karşılaştım, bunun sebebi Ubuntu VM için ayrı bir key'im olması ve SSH'ın varsayılan olarak yanlış olanı denemesiydi — doğru key dosyasına işaret etmek için `-i` kullanmam gerekti, ve sonra her seferinde yazmak zorunda kalmamak için bir SSH config dosyası kurdum. Bu süreçte, `#` işaretini kaldırana kadar sessizce hiçbir şey yapmayan, `sshd_config`'te yorum satırı olarak kalmış bir satırla da karşılaştım._
+
+- **Görevler & Hedefler:**
+  - Bir SSH key çifti (`ssh-keygen -t ed25519`) oluşturdum ve public key'i elle bir VM'in `authorized_keys`'ine ekledim (Windows'ta `ssh-copy-id` yok).
+  - `.ssh` ve `authorized_keys` üzerinde doğru izinleri (`chmod 700`/`600`) ayarladım, ve SSH'ın bunu neden zorunlu kıldığını öğrendim.
+  - Şifre kimlik doğrulamasını (`PasswordAuthentication no`) devre dışı bıraktım, ve kısıtlamayı hem key varken hem yokken test ederek doğruladım.
+  - Yanlış key dosyası kullanmaktan kaynaklanan bir `Permission denied (publickey)` hatasını debug ettim, ve `-i` ile bir SSH config dosyasıyla düzelttim.
+  - Host ve VM arasında `scp` ve `sftp` ile dosya transferi yaptım.
+- **Kilometre Taşları & Çıktılar:**
+  - 🔐 SSH Çalışma Alanı: [SSH, SCP & SFTP Notları](./12-Linux-SSH-Management/notes.md)
+  - 📊 Quiz Sonuçları: [Faz 12 Quiz Sonuçları](./12-Linux-SSH-Management/quiz-results.md)
+
+### 🔹 22 Haziran 2026 | Forward & Reverse Proxy
+
+_Bu faz, tamamen pratik olmaktan çok ağırlıklı olarak kavramsaldı. Forward proxy'yi, senin adına bir isteği taşıyan bir kurye gibi anladım — karşı taraf sadece kuryeyi görür, seni görmez — ve reverse proxy'yi, bir şirketteki danışma görevlisi gibi: birini sorarsın, seni doğru yere yönlendirirler, ve binanın kalanıyla hiç doğrudan ilgilenmezsin. Gerçek bir Nginx reverse proxy'sini bir backend servise yönlendirerek kurmaya çalıştım, ama bir 502 Bad Gateway aldım. Backend ve Nginx'in farklı VM'lerde olduğu ve `proxy_pass`'imin `localhost`'a işaret ettiği ortaya çıktı — bu, sadece Nginx'in kendisinin çalıştığı makineyi işaret eder, backend'in gerçekte olduğu diğer VM'i değil. Bu oturumda çalışan kurulumu bitiremedim, ama tam olarak neden başarısız olduğunu anlamak gerçek kazanımdı._
+
+- **Görevler & Hedefler:**
+  - Forward proxy (client'ın önünde durur) ile reverse proxy (server'ın önünde durur) arasındaki farkı öğrendim.
+  - Basit bir backend servisi ve `proxy_pass` kullanan bir Nginx reverse proxy'si kurdum.
+  - `proxy_pass`'in backend VM'in gerçek IP'si yerine `localhost`'a işaret etmesinden kaynaklanan gerçek bir `502 Bad Gateway`'i tespit ettim ve diagnoz ettim.
+  - Bir 502 hatasının tam olarak ne anlama geldiğini (proxy backend'e ulaşamadı) diğer hata kodlarına kıyasla öğrendim.
+- **Kilometre Taşları & Çıktılar:**
+  - 🔀 Proxy Çalışma Alanı: [Forward & Reverse Proxy Notları](./13-Linux-Proxy-Management/notes.md)
+  - 📊 Quiz Sonuçları: [Faz 13 Quiz Sonuçları](./13-Linux-Proxy-Management/quiz-results.md)
+
+### 🔹 22 Haziran 2026 | Bash Scripting
+
+_Disk kullanımı %80'i geçtiğinde uyarı veren bir script yazdım, bunu zaten bildiğim komutlardan bir araya getirerek — `df`, doğru satırı yakalamak için `awk 'NR==2'`, ve yüzde işaretini temizlemek için `cut -d'%' -f1`, sonra sonucu command substitution ile bir değişkende sakladım. Bu süreçte gerçek bir hatayla karşılaştım: `[48: command not found`, `[` ile `$usage` arasında bir boşluk eksikliğinden kaynaklanıyordu — Bash'in `[`'i aslında bir komut, çalışması için her iki tarafında da boşluk olması gerekiyor. Düzelttim, sonra script'in kullanım iyi olduğunda sessiz kalmak yerine her zaman bir şey yazdırması için bir `else` dalı ekledim. Bir loop veya function eklemedim, çünkü görev sadece tek bir kontrol gerektiriyordu — listedeki her konuyu "kullanmak" için zorla eklemek yerine, onları dışarıda bırakmak daha dürüst geldi._
+
+- **Görevler & Hedefler:**
+  - Disk kullanımını düz bir sayı olarak çıkarmak için `df`, `awk`, ve `cut`'ı birleştiren bir script yazdım.
+  - Sonucu command substitution (`$(...)`) kullanarak bir değişkende sakladım.
+  - %80 kullanımın üstünde bir uyarı, aksi halde bir "OK" mesajı yazdırmak için `-gt` ile bir `if`/`else` bloğu kullandım.
+  - Koşul syntax'ındaki bir boşluk eksikliğinden kaynaklanan gerçek bir `[48: command not found` hatasını debug ettim.
+  - Scripti `chmod +x` ile çalıştırılabilir yaptım ve `./script.sh` ile doğrudan çalıştırdım.
+- **Kilometre Taşları & Çıktılar:**
+  - 🐚 Bash Scripting Çalışma Alanı: [Bash Scripting Notları](./14-Linux-Bash-Scripting/notes.md)
+  - 📊 Quiz Sonuçları: [Faz 14 Quiz Sonuçları](./14-Linux-Bash-Scripting/quiz-results.md)
+
+### 🔹 22 Haziran 2026 | Cron & Otomasyon
+
+_İki script yazdım — biri disk kullanım raporları için, biri Nginx loglarını arşivlemek için — ve ikisini de cron ile zamanladım. Disk raporu scripti hemen çalıştı, ama log arşivleme scripti, elle çalıştığı halde, cron üzerinden çalıştırıldığında gerçekte hiçbir şey yapmadan "başarılı" olmaya devam etti. Bunu bulmak biraz zaman aldı: `sudo`, şifre sormak için interaktif bir terminal gerektirir, ve cron'da cevap verecek kimse olmadığı için, script içindeki her `sudo` komutu sessizce başarısız oluyordu. Bu hata ilk başta görünmezdi çünkü cron, varsayılan olarak çıktısını e-posta ile göndermeye çalışır, ve hiçbir mail sistemi kurulu olmadığı için, o çıktı — gerçek hata dahil — sadece göz ardı ediliyordu. Gerçek hatayı, script'in çıktısını elle bir dosyaya yönlendirerek buldum. Ayrıca, script'in kendisinin `root`'a ait olduğu (bir noktada `sudo nano` ile açıldığından) ayrı bir sorunla da karşılaştım, bu `chown` ile sahipliği düzeltene kadar `chmod`'u bile engelliyordu. `sudo` sorununu, daha geniş bir erişim vermek yerine, gerçekten root gerektiren tek komut için dar kapsamlı bir `sudoers` kuralıyla çözdüm. Bu süreçte, Nginx'in gerçek kurulumlarda bu tam iş için varsayılan olarak kullandığı `logrotate`'e de baktım._
+
+- **Görevler & Hedefler:**
+  - Disk kullanım raporunu bir dosyaya yazmak için `disk_report.sh`'ı (Bash Scripting fazındaki mantığı yeniden kullanarak) yazdım.
+  - Nginx'in `access.log`'unu `gzip -c` ile sıkıştırmak ve `truncate -s 0` ile sıfırlamak için `archive_logs.sh`'ı yazdım.
+  - Sadece cron altında görünen, elle çalıştırmalarda görünmeyen bir `sudo: a password is required` hatasını diagnoz ettim.
+  - Bir dosya sahiplik sorununu (`chown`) düzelttim ve gerektiren tek komut için dar kapsamlı bir `sudoers` NOPASSWD kuralı ekledim.
+  - Her iki scripti de `crontab -e` ile her gece saat 02:00'de çalışacak şekilde zamanladım.
+  - Bu tür log yönetimi için standart gerçek dünya aracı olan `logrotate`'e baktım.
+- **Kilometre Taşları & Çıktılar:**
+  - ⏰ Cron & Otomasyon Çalışma Alanı: [Cron & Otomasyon Notları (EN](./15-Linux-Cron-Automation/README-EN.md) / [TR)](./15-Linux-Cron-Automation/README-TR.md)
+  - 📊 Quiz Sonuçları: [Faz 15 Quiz Sonuçları](./15-Linux-Cron-Automation/quiz-results.md)
+
+### 🔹 23 Haziran 2026 | DevOps - Linux Temelleri (Udemy Kursu)
+
+_Şirket laptop'unun VM çalıştırmaya veya normalde kullandığım araçlara izin vermemesi yüzünden bugün hands-on çalışma yapamadım. Doğrudan lab erişimi olmadan da ilerlemeye devam etmek için, günü Udemy'deki DevOps - Linux Temelleri kursunu tamamlamak için kullandım._
+
+- **Görevler & Hedefler:**
+  - Udemy'deki "DevOps - Linux Temelleri" kursunu tamamladım.
+- **Kilometre Taşları & Çıktılar:**
+  - 🎓 Kurs Tamamlama: DevOps - Linux Temelleri (Udemy)
+
+### 🔹 23 Haziran 2026 | Docker & Networking Araştırması
+
+_A'dan Z'ye Docker kursuna devam ettim (girişi bitirdim, şu an kurulum bölümündeyim), ve temel networking kavramları üzerine araştırma yaptım — internet, protokoller, uç sistemler, paket anahtarlama, gecikme, ve işlem hacmi. Ayrıca stajın başında verilen Linux yol haritasındaki mezuniyet/tekrar sorularını da çalıştım._
+
+- **Görevler & Hedefler:**
+  - Udemy'deki "A'dan Z'ye Docker" kursunun giriş bölümünü bitirdim, şu an kurulum bölümündeyim.
+  - Networking temellerini araştırdım: internet, protokoller, uç sistemler, paket anahtarlama, gecikme, ve işlem hacmi.
+  - Verilen Linux yol haritasındaki mezuniyet/tekrar sorularını çalıştım.
+- **Kilometre Taşları & Çıktılar:**
+  - 🐳 Devam ediyor: A'dan Z'ye Docker (Udemy)
+  - 🌐 Networking temelleri araştırması (bu oturumda hands-on lab yok)
+
+### 🔹 24 Haziran 2026 | Git — Branching, Merging, ve Gerçek Bir Push Çakışması
+
+_`git branch` ve `git merge`'i doğrudan bu repo üzerinde test ettim — bir test branch'i oluşturdum, içine bir dosya commit ettim, `main`'in etkilenmediğini doğruladım, sonra geri merge ettim (temiz bir fast-forward). Sonrasında temizlik yaparken gerçek bir çakışmayla karşılaştım: `git push`, remote'da local'de henüz olmayan değişiklikler olduğu için reddedildi. Bunu düzeltmek için `git pull` çalıştırmak takıldı — merge bir commit mesajı gerektiriyordu, ve Git, o path'te gerçekte kurulu olmayan yapılandırılmış bir editörü (WebStorm) açmaya çalıştı, bu yüzden merge yarım kaldı. Notepad'i varsayılan editör olarak ayarlayarak (`git config --global core.editor "notepad"`) düzelttim, commit'i tamamladım, ve başarıyla push ettim. Ayrıca, quiz'i cevaplarken `git branch`'i (branch'leri listeler) bir branch oluşturmakla karıştırdım, gerçi hands-on kısmında komutun kendisini doğru kullanmıştım._
+
+- **Görevler & Hedefler:**
+  - Yeni bir branch oluşturdum ve geçtim (`git checkout -b`), içine bir dosya commit ettim, ve `main`'in dosyayı merge edilene kadar almadığını kontrol ederek branch izolasyonunu doğruladım.
+  - Bir fast-forward merge (`git merge`) yaptım ve sonrasında test branch/dosyasını temizledim.
+  - Senkronize olmamış remote değişikliklerden kaynaklanan gerçek bir `git push` reddini çözdüm.
+  - Yanlış yapılandırılmış, var olmayan bir editör path'inden kaynaklanan takılı bir `git pull`/merge'i diagnoz ettim ve düzelttim.
+  - Git'in varsayılan editörünü global olarak yeniden yapılandırdım (`git config --global core.editor`).
+- **Kilometre Taşları & Çıktılar:**
+  - 🔧 Git Çalışma Alanı: [Git Notları](./16-Git-Basics/notes.md)
+  - 📊 Quiz Sonuçları: [Faz 16 Quiz Sonuçları](./16-Git-Basics/quiz-results.md)
+
+### 🔹 24 Haziran 2026 | Genel Tekrar & Mini Proje (Gerçek Sunucu)
+
+_Şu ana kadarki her şey üzerinde genel bir tekrar turu yaptım, yol haritasının gerçek mezuniyet kriterlerine modellenmiş senaryo tarzı sorular üzerinden geçerek (örn. "443 portunu kim dinliyor," "DNS çözümlemesi neden başarısız olur," "yeni bir disk nasıl eklenir") sadece notları yeniden okumak yerine. Sesli cevaplamak gerçek eksikleri ortaya çıkardı — journalctl'ı severity'ye göre filtrelemek için `-p err`'i unuttum, `tail -f`'i `tail -n` ile karıştırdım, `ss -l` ile `-a`'yı biraz yanlış aldım, yeni bir disk eklemeyi anlatırken partition adımını unuttum, ve LVM'in neden var olduğunu anlamanın komutları çalıştırmaktan daha önemli olduğunu tersine çevirdim. Storage, Service Management, Permissions, Log Analysis, Network, ve LVM notlarına geri dönüp gerçekte eksik olanı doldurdum — sadece yazım hataları değil, gerçek açıklama eksikleri (örn. `chmod` 4/2/1 dökümü bundan önce hiçbir yerde gerçekten açıklanmamıştı)._
+
+_Sonra bu hafta satın alınan gerçek sunucuda mini projeyi yaptım — root olmayan, sudo yetkili bir kullanıcı oluşturdum, orijinal SSH fazındaki aynı şekilde SSH key erişimi kurdum, Nginx ve Docker'ı kurdum (`hello-world` ile doğruladım), Git'i kurdum ve tam olarak bu repoyu klonladım, ve ondan statik bir sayfa yayınladım. İki gerçek sorunla karşılaştım: klonlanan repo ile Nginx'in gerçekte sunduğu dosyanın ayrı kopyalar olduğunu unuttum, bu yüzden sadece `git pull`, dosya yeniden kopyalanana kadar canlı sayfayı güncellemedi; ve tarayıcıda bir "bağlantı reddedildi" aldım, bunun sebebi sadece port 80'in (HTTP) yapılandırılmış olmasına rağmen `https://` denemekti — Proxy fazındaki 502 ile aynı kategoride bir hata, sadece farklı bir katmanda._
+
+- **Görevler & Hedefler:**
+  - Süreçler, portlar, DNS, disk yönetimi, log analizi, SSH, cron, ve dosya izinlerini kapsayan senaryo bazlı tekrar sorularını cevapladım.
+  - 6 faz için (Storage, Service Management, Permissions, Log Analysis, Network, LVM) notlardaki gerçek eksikleri belirledim ve düzelttim.
+  - Gerçek bir kiralık sunucuda root olmayan, sudo yetkili bir kullanıcı ve SSH key bazlı erişim kurdum.
+  - Sunucuda Nginx ve Docker'ı kurdum ve doğruladım.
+  - Git'i kurdum, bu repoyu klonladım, ve Nginx üzerinden ondan statik bir sayfa yayınladım.
+  - Eski bir deployment sorununu (kaynak dosya vs sunulan dosya) ve bir HTTPS-vs-HTTP bağlantı sorununu debug ettim.
+- **Kilometre Taşları & Çıktılar:**
+  - 📝 Derinleştirilmiş Notlar: [Depolama](./10-Linux-Storage-Management/notes.md) · [Servis Yönetimi](./07-Linux-Service-Management/notes.md) · [İzinler](./05-Linux-Permissions/notes.md) · [Log Analizi](./08-Linux-Log-Analysis/notes.md) · [Network](./09-Linux-Network-Management/notes.md) · [LVM](./11-Linux-LVM-Management/notes.md)
+  - 🚀 Mini Proje: [Mini Proje Notları](./17-Mini-Project/notes.md)
+
+---
+
+ℹ️ _Not: Burada belgelenen her şey, hem yerel sandboxed VM'lerde hem de gerçek bir kiralık sunucuda yerel olarak test edilmiştir._
