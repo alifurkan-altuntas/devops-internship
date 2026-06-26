@@ -90,6 +90,23 @@ grep '"GET / HTTP/1.1"' /var/log/nginx/access.log | awk '{print $1}' | sort | un
 
 Sadece `/` aramak, neredeyse her satırla eşleşir, çünkü `/` karakteri zaman damgalarında, path'lerde, hatta `HTTP/1.1`'in içinde bile geçer — aramayı tam istek satırına (`"GET / HTTP/1.1"`) sabitlemek bu sorunu önler.
 
+### Bunu Gerçek Trafikte Deneme
+
+Gerçek bir kiralık sunucunun access log'unda doğrudan test edildi — bu log zaten gerçek internet trafiği içeriyordu (test isteği değil, bot ve tarayıcı trafiği):
+
+```bash
+grep "/favicon.ico" /var/log/nginx/access.log | awk '{print $1}' | sort | uniq -c
+```
+
+```text
+      1 104.23.162.82
+      1 141.101.105.88
+      1 162.158.167.208
+      1 162.159.115.35
+```
+
+**Bunun gösterdiği şey:** her IP tam olarak bir kez geçti — hiçbir kaynak, bu path'e isteğini tekrar etmedi. Bu, sadece nötr bir gözlem değil, gerçekten anlamlı bir gözlem: gerçek güvenlik izlemede, tam olarak bu pipeline, **tersi örüntüyü** tespit etmek için kullanılır — bir IP'nin alışılmadık şekilde yüksek bir sayıyla görünmesi (örn. `500 1.2.3.4`), şüpheli aktivitenin (brute-force, scraping, veya DDoS denemesi) işareti olabilir. Yukarıdaki gibi düz, eşit dağılmış bir sayım, normal, düşük hacimli bot/tarayıcı trafiğinin nasıl göründüğü demek — daha fazla araştırma gerektirmez.
+
 ### Path Bazında 404 Hatalarını Sayma
 
 ```bash

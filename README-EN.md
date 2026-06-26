@@ -4,9 +4,11 @@
 
 Welcome to my DevOps engineering journal. This repository documents my learning path, infrastructure automation practices, error resolutions, and Linux systems administration tasks during my internship.
 
-## 📍 Where I Am Now
+### 📍 Where I Am Now
 
 I've completed all 17 phases of the assigned Linux roadmap, including the final mini-project — Nginx, Docker, Git, and SSH configured on an actual rented server (not a local VM), serving a page pulled directly from this repository. Along the way I also did a full review pass: went through the roadmap's graduation-style scenario questions out loud, found a few gaps in my own understanding (some command syntax I kept forgetting, a couple of concepts I'd half-learned), and went back to strengthen the notes for those phases rather than just noting "I got this wrong" and moving on.
+
+I'm now working through additional topics given by my mentor, outside the original roadmap: path-based IP grouping was added to the log analysis notes, and I've started on the OSI model (the 7 layers, distinguishing which ones are active in real scenarios, and verifying one with a real `tcpdump` packet capture — encapsulation/decapsulation isn't fully done yet, so this is marked as in progress). Up next: routing & forwarding, a deeper dive into DNS, and more hands-on work with Nginx.
 
 Continuing the Udemy course on Docker (A'dan Z'ye) and the YouTube networking playlist alongside this.
 
@@ -31,6 +33,7 @@ Continuing the Udemy course on Docker (A'dan Z'ye) and the YouTube networking pl
 - [15-Linux-Cron-Automation](./15-Linux-Cron-Automation/): Scheduling with `cron` and `at`, a real `sudo`-in-cron debugging story, and a look at `logrotate`. ([EN](./15-Linux-Cron-Automation/README-EN.md) / [TR](./15-Linux-Cron-Automation/README-TR.md))
 - [16-Git-Basics](./16-Git-Basics/): `git clone`, branching, merging, and a real push-rejected/editor-stuck conflict resolved on this exact repo.
 - [17-Mini-Project](./17-Mini-Project/): Nginx, Docker, Git, and SSH set up on a real rented server — a static page pulled from this repo and published live.
+- [18-Linux-Networking-Fundamentals](./18-Linux-Networking-Fundamentals/): OSI model, distinguishing layers in real scenarios, and a real packet capture with `tcpdump` (in progress). ([EN](./18-Linux-Networking-Fundamentals/README-EN.md) / [TR](./18-Linux-Networking-Fundamentals/README-TR.md))
 
 ### 📝 Evaluation & Assessment Artifacts
 
@@ -292,6 +295,22 @@ _Then did the mini-project on the real server purchased this week — created a 
 - **Milestones & Deliverables:**
   - 📝 Deepened Notes: [Storage](./10-Linux-Storage-Management/notes.md) · [Service Management](./07-Linux-Service-Management/notes.md) · [Permissions](./05-Linux-Permissions/notes.md) · [Log Analysis](./08-Linux-Log-Analysis/notes.md) · [Network](./09-Linux-Network-Management/notes.md) · [LVM](./11-Linux-LVM-Management/notes.md)
   - 🚀 Mini Project: See [Mini Project Notes](./17-Mini-Project/notes.md)
+
+### 🔹 June 26, 2026 | Path-Based Grouping & OSI Model (In Progress)
+
+_Continued with the additional tasks given by my mentor. First, tested path-based IP grouping (conceptually similar to SQL's `GROUP BY` + `COUNT()`) on a real Nginx access log with actual server traffic — every IP appeared exactly once, which is what normal, non-suspicious traffic looks like, as opposed to a single IP repeating at a high count._
+
+_Then started on the OSI model. After learning the 7 layers conceptually, practiced identifying which ones are actually active in real scenarios (`dig`, `curl https://`, `ssh`) — worked out on my own that a plain DNS query never involves Layer 6 (encryption), while `https://` or SSH does. Realized Layer 7 is about which protocol is being spoken, not which tool is used to speak it (PuTTY, a terminal, or an FTP client are all just tools running some protocol). Learned encapsulation (each layer wrapping data in its own header), and installed `tcpdump` to capture a real HTTP request as a packet, confirming with my own eyes that the IP, port, and HTTP text genuinely sit inside the same packet, layered the way the model describes. Encapsulation/decapsulation isn't fully finished, so the OSI phase is marked as "in progress" — felt more honest to note exactly where things stand than to build new topics on top of a half-finished foundation._
+
+- **Tasks & Objectives:**
+  - Tested path-based IP grouping (`grep`/`awk`/`sort`/`uniq -c`) on real server traffic in an Nginx access log.
+  - Learned the OSI model's 7 layers, and practiced identifying which ones are active using real commands (`dig`, `curl`, `ssh`).
+  - Clarified the difference between Layer 2 (MAC) and Layer 3 (IP), and why both are necessary.
+  - Learned the concept of encapsulation, and installed `tcpdump` to capture a real HTTP request at the packet level.
+  - Marked the OSI phase as "in progress," since encapsulation/decapsulation isn't fully covered yet.
+- **Milestones & Deliverables:**
+  - 🪵 Path-Based Grouping: [Log Analysis Notes (EN](./08-Linux-Log-Analysis/README-EN.md) / [TR)](./08-Linux-Log-Analysis/README-TR.md) updated
+  - 🌐 OSI Model (In Progress): [OSI Model Notes (EN](./18-Linux-Networking-Fundamentals/README-EN.md) / [TR)](./18-Linux-Networking-Fundamentals/README-TR.md)
 
 ---
 

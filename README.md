@@ -8,6 +8,8 @@ Bu repo, stajım boyunca takip ettiğim öğrenme sürecimi, altyapı otomasyonu
 
 Verilen Linux yol haritasının tüm 17 fazını, son mini proje dahil, tamamladım — Nginx, Docker, Git ve SSH, gerçek (kiralık) bir sunucuda (yerel bir VM değil) kurulu, ve bu repodan doğrudan çekilen bir sayfayı sunuyor. Bu süreçte ayrıca genel bir tekrar turu da yaptım: yol haritasının mezuniyet kriterlerindeki senaryo sorularını sesli olarak cevapladım, kendi bilgimde bazı eksikler buldum (sürekli unuttuğum bazı komut syntax'ları, yarım öğrendiğim birkaç kavram), ve bu fazların notlarını sadece "burada hata yaptım" diye not edip geçmek yerine, geri dönüp güçlendirdim.
 
+Şu an, asıl yol haritasının dışında, eğitmenimin verdiği ek konular üzerinde çalışıyorum: log analizine `sed` ile path bazlı IP gruplama eklendi, OSI modeline başlandı (7 katman, gerçek senaryolarla katman ayırt etme, ve `tcpdump` ile gerçek bir paket üzerinde doğrulama — encapsulation/decapsulation kısmı henüz tamamlanmadı, devam ediyor). Sırada routing & forwarding, DNS'in derinlemesine işlenmesi, ve Nginx ile daha kapsamlı pratik var.
+
 Bununla paralel, Udemy'deki Docker (A'dan Z'ye) kursuna ve YouTube networking playlist'ine devam ediyorum.
 
 ---
@@ -31,6 +33,7 @@ Bununla paralel, Udemy'deki Docker (A'dan Z'ye) kursuna ve YouTube networking pl
 - [15-Linux-Cron-Automation](./15-Linux-Cron-Automation/): `cron` ve `at` ile zamanlama, gerçek bir `sudo`-cron-içinde debug hikayesi, ve `logrotate`'e bir bakış. ([EN](./15-Linux-Cron-Automation/README-EN.md) / [TR](./15-Linux-Cron-Automation/README-TR.md))
 - [16-Git-Basics](./16-Git-Basics/): `git clone`, branching, merging, ve bu repo üzerinde gerçekten çözülen bir push-reddedildi/editör-takıldı çakışması.
 - [17-Mini-Project](./17-Mini-Project/): Gerçek bir kiralık sunucuda Nginx, Docker, Git, ve SSH kurulumu — bu repodan çekilip canlıya alınan statik bir sayfa.
+- [18-Linux-Networking-Fundamentals](./18-Linux-Networking-Fundamentals/): OSI modeli, katmanları gerçek senaryolarla ayırt etme, ve `tcpdump` ile gerçek bir paket yakalama (devam ediyor). ([EN](./18-Linux-Networking-Fundamentals/README-EN.md) / [TR](./18-Linux-Networking-Fundamentals/README-TR.md))
 
 ### 📝 Değerlendirme & Sınav Materyalleri
 
@@ -292,6 +295,22 @@ _Sonra bu hafta satın alınan gerçek sunucuda mini projeyi yaptım — root ol
 - **Kilometre Taşları & Çıktılar:**
   - 📝 Derinleştirilmiş Notlar: [Depolama](./10-Linux-Storage-Management/notes.md) · [Servis Yönetimi](./07-Linux-Service-Management/notes.md) · [İzinler](./05-Linux-Permissions/notes.md) · [Log Analizi](./08-Linux-Log-Analysis/notes.md) · [Network](./09-Linux-Network-Management/notes.md) · [LVM](./11-Linux-LVM-Management/notes.md)
   - 🚀 Mini Proje: [Mini Proje Notları](./17-Mini-Project/notes.md)
+
+### 🔹 26 Haziran 2026 | Path Bazlı Gruplama & OSI Modeli (Devam Ediyor)
+
+_Eğitmenimin verdiği ek görevlerle devam ettim. Önce, bir Nginx access log'unda path bazlı IP gruplamayı (SQL'deki `GROUP BY` + `COUNT()`'a benzer bir mantıkla) gerçek sunucu trafiği üzerinde test ettim — her IP'nin tam olarak bir kez geçtiğini gördüm, ve bunun normal/şüphesiz trafiğin nasıl göründüğünü (yüksek tekrarlı bir IP'nin aksine) gösterdiğini öğrendim._
+
+_Sonra OSI modeline başladım. 7 katmanı kavramsal olarak öğrendikten sonra, gerçek senaryolarla (`dig`, `curl https://`, `ssh`) hangi katmanların devrede olup olmadığını ayırt etmeyi pratik ettim — örneğin düz bir DNS sorgusunda Layer 6'nın (şifreleme) hiç devrede olmadığını, ama `https://` veya SSH'da olduğunu kendi kendime çıkardım. Layer 7'nin "hangi aracı kullandığın" değil "hangi protokolü konuştuğun" ile ilgili olduğunu fark ettim (PuTTY, terminal, veya FTP programı — hepsi sadece bir protokolü çalıştıran araçlar). Encapsulation kavramını (her katmanın veriyi kendi header'ıyla sarması) öğrendim, ve `tcpdump` ile gerçek bir paket yakalayıp, IP/port/HTTP metninin gerçekten aynı paketin içinde, katmanlı şekilde durduğunu kendi gözümle doğruladım. Encapsulation/decapsulation konusu henüz tam bitmedi, bu yüzden OSI fazını "devam ediyor" olarak işaretledim — yarım kalan bir temelin üzerine yeni konular eklemek yerine, dürüstçe nerede olduğumu not etmek daha doğru geldi._
+
+- **Görevler & Hedefler:**
+  - Bir Nginx access log'unda, `grep`/`awk`/`sort`/`uniq -c` ile path bazlı IP gruplamasını gerçek sunucu trafiğinde test ettim.
+  - OSI modelinin 7 katmanını öğrendim, ve gerçek komutlarla (`dig`, `curl`, `ssh`) hangi katmanların devrede olduğunu ayırt etmeyi pratik ettim.
+  - Layer 2 (MAC) ile Layer 3 (IP) arasındaki farkı ve neden ikisinin de gerekli olduğunu netleştirdim.
+  - Encapsulation kavramını öğrendim, ve `tcpdump` kurup gerçek bir HTTP isteğini paket seviyesinde yakaladım.
+  - OSI fazını, encapsulation/decapsulation tam bitmediği için "devam ediyor" olarak işaretledim.
+- **Kilometre Taşları & Çıktılar:**
+  - 🪵 Path Bazlı Gruplama: [Log Analizi Notları (EN](./08-Linux-Log-Analysis/README-EN.md) / [TR)](./08-Linux-Log-Analysis/README-TR.md) güncellendi
+  - 🌐 OSI Modeli (Devam Ediyor): [OSI Modeli Notları (EN](./18-Linux-Networking-Fundamentals/README-EN.md) / [TR)](./18-Linux-Networking-Fundamentals/README-TR.md)
 
 ---
 
