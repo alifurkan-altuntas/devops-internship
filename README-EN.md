@@ -16,8 +16,8 @@ Continuing the Udemy course on Docker (A'dan Z'ye) and the YouTube networking pl
 
 ## 📁 Repository Structure
 
-- [01-Linux-Basics](./01-Linux-Basics/): Core Linux commands and text processing (`awk`, `grep`, `cut`), and custom automation scripts.
-- [02-Vagrant-Automation](./02-Vagrant-Automation/): Infrastructure as Code (IaC) environments, and multi-distro provisioning.
+- [01-Linux-Basics](./01-Linux-Basics/): Core Linux commands and text processing (`awk`, `grep`, `cut`), and custom automation scripts. ([EN](./01-Linux-Basics/README-EN.md) / [TR](./01-Linux-Basics/README-TR.md))
+- [02-Vagrant-Automation](./02-Vagrant-Automation/): Infrastructure as Code (IaC) environments, and multi-distro provisioning. ([EN](./02-Vagrant-Automation/README-EN.md) / [TR](./02-Vagrant-Automation/README-TR.md))
 - [03-File-System-Management](./03-File-System-Management/): Storage diagnostics, disk write operations (`dd`), and sorting pipelines.
 - [04-User-Privilege-Management](./04-User-Privilege-Management/): Identity access control, system group lifecycles, and sudoers configuration (Least Privilege Principle).
 - [05-Linux-Permissions](./05-Linux-Permissions/): File system access control, recursive ownership changes, and sticky bit isolation.
@@ -70,8 +70,8 @@ _Hadn't used Vagrant before — my previous virtualization experience was with V
   - Explored core Linux commands and analyzed enterprise configuration standards (FQDN defaults on Rocky Linux).
   - Wrote a shell script to monitor live system metrics.
 - **Milestones & Deliverables:**
-  - 🛠️ Automated Environment Setup: See [Vagrant Logs & Troubleshooting](./02-Vagrant-Automation/)
-  - 📜 Linux Basics & Custom Script: See [Linux Basics & Custom Report Script](./01-Linux-Basics/)
+  - 🛠️ Automated Environment Setup: See [Vagrant Logs & Troubleshooting (EN](./02-Vagrant-Automation/README-EN.md) / [TR)](./02-Vagrant-Automation/README-TR.md)
+  - 📜 Linux Basics & Custom Script: See [Linux Basics Notes (EN](./01-Linux-Basics/README-EN.md) / [TR)](./01-Linux-Basics/README-TR.md)
 
 ### 🔹 June 18, 2026 | File System & Storage Diagnostics
 

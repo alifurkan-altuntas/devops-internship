@@ -16,8 +16,8 @@ Bununla paralel, Udemy'deki Docker (A'dan Z'ye) kursuna ve YouTube networking pl
 
 ## 📁 Repo Yapısı
 
-- [01-Linux-Basics](./01-Linux-Basics/): Temel Linux komutları ve metin işleme (`awk`, `grep`, `cut`), ve özel otomasyon scriptleri.
-- [02-Vagrant-Automation](./02-Vagrant-Automation/): Infrastructure as Code (IaC) ortamları, ve çoklu dağıtım provisioning.
+- [01-Linux-Basics](./01-Linux-Basics/): Temel Linux komutları ve metin işleme (`awk`, `grep`, `cut`), ve özel otomasyon scriptleri. ([EN](./01-Linux-Basics/README-EN.md) / [TR](./01-Linux-Basics/README-TR.md))
+- [02-Vagrant-Automation](./02-Vagrant-Automation/): Infrastructure as Code (IaC) ortamları, ve çoklu dağıtım provisioning. ([EN](./02-Vagrant-Automation/README-EN.md) / [TR](./02-Vagrant-Automation/README-TR.md))
 - [03-File-System-Management](./03-File-System-Management/): Depolama diagnostiği, disk yazma işlemleri (`dd`), ve sıralama pipeline'ları.
 - [04-User-Privilege-Management](./04-User-Privilege-Management/): Kimlik erişim kontrolü, sistem grup yaşam döngüleri, ve sudoers yapılandırması (Least Privilege Prensibi).
 - [05-Linux-Permissions](./05-Linux-Permissions/): Dosya sistemi erişim kontrolü, recursive sahiplik değişiklikleri, ve sticky bit izolasyonu.
@@ -70,8 +70,8 @@ _Daha önce Vagrant kullanmamıştım — önceki sanallaştırma deneyimim dire
   - Temel Linux komutlarını araştırdım ve kurumsal yapılandırma standartlarını analiz ettim (Rocky Linux'ta FQDN varsayılanları).
   - Canlı sistem metriklerini izlemek için bir shell scripti yazdım.
 - **Kilometre Taşları & Çıktılar:**
-  - 🛠️ Otomatik Ortam Kurulumu: [Vagrant Logları & Sorun Giderme](./02-Vagrant-Automation/)
-  - 📜 Linux Temelleri & Özel Script: [Linux Temelleri & Özel Rapor Scripti](./01-Linux-Basics/)
+  - 🛠️ Otomatik Ortam Kurulumu: [Vagrant Logları & Sorun Giderme (EN](./02-Vagrant-Automation/README-EN.md) / [TR)](./02-Vagrant-Automation/README-TR.md)
+  - 📜 Linux Temelleri & Özel Script: [Linux Temelleri Notları (EN](./01-Linux-Basics/README-EN.md) / [TR)](./01-Linux-Basics/README-TR.md)
 
 ### 🔹 18 Haziran 2026 | Dosya Sistemi & Depolama Diagnostiği
 
