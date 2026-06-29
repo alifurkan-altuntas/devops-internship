@@ -8,7 +8,7 @@ Welcome to my DevOps engineering journal. This repository documents my learning 
 
 I've completed all 17 phases of the assigned Linux roadmap, including the final mini-project — Nginx, Docker, Git, and SSH configured on an actual rented server, serving a page pulled directly from this repository. Along the way I also did a full review pass: went through the roadmap's graduation-style scenario questions out loud, found a few gaps in my own understanding, and went back to strengthen the notes for those phases.
 
-I'm now working through additional topics given by my mentor, outside the original roadmap: path-based IP grouping was added to the log analysis notes, and the OSI model is now complete — the 7 layers, distinguishing them in real scenarios, encapsulation/decapsulation, what routers actually do to MAC/IP headers, and a real packet capture with `tcpdump`. Along the way, I ran a real `traceroute`/`ping` comparison against Cloudflare, Google, Claude.ai, and Türkiye Sigorta, and observed why different organizations handle ICMP traffic differently (transparency vs. security risk). Up next: routing & forwarding, a deeper dive into DNS (including the resolver chain, record types, and research into real cloud provider outages), and more hands-on work with Nginx.
+I'm now working through additional topics given by my mentor, outside the original roadmap: path-based IP grouping was added to the log analysis notes, the OSI model is complete (encapsulation/decapsulation, router behavior, ICMP, and a comparative `traceroute`/`ping` test across real-world providers), and routing & forwarding is also done — analyzed a real routing table, learned the static/dynamic routing distinction, and investigated an unexpectedly active `ip_forward` setting, which turned out to be a direct result of having Docker installed. Currently starting on the DNS resolution chain — using `dig +trace` to follow the real resolution process from root servers down to authoritative servers. Up next: the rest of DNS (record types, TTL, research into real cloud provider outages), and more hands-on work with Nginx.
 
 I'm also gradually translating the notes from already-completed phases into Turkish (bilingual format: `README-EN.md` / `README-TR.md`) — Phases 1 and 2 are done so far.
 
@@ -313,6 +313,23 @@ _Then started on the OSI model. After learning the 7 layers conceptually, practi
 - **Milestones & Deliverables:**
   - 🪵 Path-Based Grouping: [Log Analysis Notes (EN](./08-Linux-Log-Analysis/README-EN.md) / [TR)](./08-Linux-Log-Analysis/README-TR.md) updated
   - 🌐 OSI Model (In Progress): [OSI Model Notes (EN](./18-Linux-Networking-Fundamentals/README-EN.md) / [TR)](./18-Linux-Networking-Fundamentals/README-TR.md)
+
+### 🔹 June 29, 2026 | Completing OSI, Routing & Forwarding, DNS Resolution Chain
+
+_Finished the OSI model entirely: went deep into encapsulation/decapsulation, clarifying that MAC headers change at every router hop while IP headers stay the same. Learned ICMP, and ran a real `traceroute`/`ping` comparison against Cloudflare, Google, Claude.ai, and my own company's website (Türkiye Sigorta), observing how each organization's ICMP policy differed — a network-level echo of the Least Privilege principle from earlier phases._
+
+_Then moved on to routing and forwarding. Examined my own real routing table with `ip route`, learned the difference between static and dynamic routing. Checking `ip_forward` showed it unexpectedly active — first assumed it was a hosting-provider default, but research showed it's actually a normal consequence of having Docker installed, since containers need it to reach the internet._
+
+_Finally started on the DNS resolution chain — learned the hierarchy between recursive resolvers, root servers, TLD servers, and authoritative servers, and used `dig +trace` to watch this process happen in real time (from root servers down through the `.com` TLD servers). This topic isn't finished yet — to be continued tomorrow._
+
+- **Tasks & Objectives:**
+  - Completed encapsulation/decapsulation in the OSI model, clarified what routers do to MAC/IP headers.
+  - Learned ICMP, and observed different organizations' security policies through a real `traceroute`/`ping` comparison.
+  - Learned routing and forwarding concepts using a real routing table.
+  - Investigated why `ip_forward` was active, confirming the Docker connection.
+  - Started the DNS resolution chain, following a real resolution process with `dig +trace`.
+- **Milestones & Deliverables:**
+  - 🌐 OSI Model (Complete) & Routing/Forwarding: [Notes (EN](./18-Linux-Networking-Fundamentals/README-EN.md) / [TR)](./18-Linux-Networking-Fundamentals/README-TR.md)
 
 ---
 

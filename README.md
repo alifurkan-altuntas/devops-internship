@@ -1,4 +1,4 @@
-# 🚀 DevOps & Linux Altyapı Yolculuğu - Türkiye Sigorta
+\*# 🚀 DevOps & Linux Altyapı Yolculuğu - Türkiye Sigorta
 
 🌐 [Read in English](./README-EN.md)
 
@@ -8,7 +8,7 @@ Bu repo, stajım boyunca takip ettiğim öğrenme sürecimi, altyapı otomasyonu
 
 Verilen Linux yol haritasının tüm 17 fazını, son mini proje dahil, tamamladım — Nginx, Docker, Git ve SSH, gerçek (kiralık) bir sunucuda kurulu, ve bu repodan doğrudan çekilen bir sayfayı sunuyor. Bu süreçte ayrıca genel bir tekrar turu da yaptım: yol haritasının mezuniyet kriterlerindeki senaryo sorularını sesli olarak cevapladım, kendi bilgimde bazı eksikler buldum, ve bu fazların notlarını geri dönüp güçlendirdim.
 
-Şu an, asıl yol haritasının dışında, eğitmenimin verdiği ek konular üzerinde çalışıyorum: log analizine `sed` ile path bazlı IP gruplama eklendi, ve OSI modeli tamamlandı — 7 katman, gerçek senaryolarla katman ayırt etme, encapsulation/decapsulation, router'ların MAC/IP header'larına ne yaptığı, ve `tcpdump` ile gerçek bir paket yakalama. Bu süreçte, Cloudflare, Google, Claude.ai, ve Türkiye Sigorta'ya karşı gerçek bir `traceroute`/`ping` karşılaştırması yaparak, kurumların ICMP trafiğini neden farklı politikalarla ele aldığını (şeffaflık vs. güvenlik riski) gözlemledim. Sırada routing & forwarding, DNS'in derinlemesine işlenmesi (resolver zinciri, kayıt tipleri, ve gerçek cloud sağlayıcı kesintileri üzerine araştırma dahil), ve Nginx ile daha kapsamlı pratik var.
+Şu an, asıl yol haritasının dışında, eğitmenimin verdiği ek konular üzerinde çalışıyorum: log analizine `sed` ile path bazlı IP gruplama eklendi, OSI modeli tamamlandı (encapsulation/decapsulation, router davranışı, ICMP, ve gerçek dünya sağlayıcıları arasında karşılaştırmalı bir `traceroute`/`ping` testi dahil), ve routing & forwarding konusu da tamamlandı — gerçek bir routing tablosu analiz edildi, statik/dinamik routing farkı öğrenildi, ve sunucuda beklenmedik şekilde aktif çıkan `ip_forward` ayarının, kurulu olan Docker'dan kaynaklandığı araştırılarak doğrulandı. Şu an DNS sorgu zincirine başlanmış durumda — `dig +trace` ile root sunuculardan başlayıp authoritative sunuculara kadar olan gerçek çözümleme sürecini izliyorum. Sırada DNS'in kalan kısmı (kayıt tipleri, TTL, gerçek cloud sağlayıcı kesintileri üzerine araştırma), ve Nginx ile daha kapsamlı pratik var.
 
 Ayrıca, daha önce tamamlanan fazların notlarını da kademeli olarak Türkçe'ye çeviriyorum (iki dilli format: `README-EN.md` / `README-TR.md`), şu ana kadar Faz 1 ve 2 tamamlandı.
 
@@ -313,6 +313,23 @@ _Sonra OSI modeline başladım. 7 katmanı kavramsal olarak öğrendikten sonra,
 - **Kilometre Taşları & Çıktılar:**
   - 🪵 Path Bazlı Gruplama: [Log Analizi Notları (EN](./08-Linux-Log-Analysis/README-EN.md) / [TR)](./08-Linux-Log-Analysis/README-TR.md) güncellendi
   - 🌐 OSI Modeli (Devam Ediyor): [OSI Modeli Notları (EN](./18-Linux-Networking-Fundamentals/README-EN.md) / [TR)](./18-Linux-Networking-Fundamentals/README-TR.md)
+
+### 🔹 29 Haziran 2026 | OSI Tamamlama, Routing & Forwarding, DNS Sorgu Zinciri
+
+_OSI modelini tamamen bitirdim: encapsulation/decapsulation'ı derinlemesine işledim, her router'da MAC header'ının değişip IP header'ının değişmediğini netleştirdim. ICMP protokolünü öğrendim, ve Cloudflare, Google, Claude.ai, ve kendi şirketimin (Türkiye Sigorta) web sitesine karşı gerçek bir `traceroute`/`ping` karşılaştırması yaparak, hangi kurumun ICMP trafiğine nasıl bir politika izlediğini gözlemledim — bu, önceki fazlarda öğrendiğim Least Privilege prensibinin ağ seviyesindeki bir yansımasıydı._
+
+_Sonra routing ve forwarding konusuna geçtim. `ip route` ile gerçek routing tablomu inceledim, statik ve dinamik routing arasındaki farkı öğrendim. `ip_forward` ayarını kontrol ettiğimde beklenmedik şekilde aktif çıktı — önce sunucu sağlayıcıdan kaynaklandığını düşündüm, ama araştırınca bunun Docker'ın container'ların internete çıkabilmesi için gereken, tamamen normal bir davranış olduğunu öğrendim._
+
+_Son olarak DNS sorgu zincirine başladım — recursive resolver, root sunucular, TLD sunucular, ve authoritative sunucular arasındaki hiyerarşiyi öğrendim, `dig +trace` ile bu sürecin gerçek zamanlı çıktısını gördüm (root sunuculardan `.com` TLD sunucularına kadar). Bu konu henüz tamamlanmadı, yarın devam edilecek._
+
+- **Görevler & Hedefler:**
+  - OSI modelinde encapsulation/decapsulation'ı tamamladım, router'ların MAC/IP header'larına ne yaptığını netleştirdim.
+  - ICMP protokolünü öğrendim, gerçek bir `traceroute`/`ping` karşılaştırmasıyla farklı kurumların güvenlik politikalarını gözlemledim.
+  - Routing ve forwarding kavramlarını, gerçek bir routing tablosu üzerinde öğrendim.
+  - `ip_forward` ayarının neden aktif olduğunu araştırarak, Docker bağlantısını doğruladım.
+  - DNS sorgu zincirine başladım, `dig +trace` ile gerçek bir çözümleme sürecini izledim.
+- **Kilometre Taşları & Çıktılar:**
+  - 🌐 OSI Modeli (Tamamlandı) & Routing/Forwarding: [Notlar (EN](./18-Linux-Networking-Fundamentals/README-EN.md) / [TR)](./18-Linux-Networking-Fundamentals/README-TR.md)
 
 ---
 
