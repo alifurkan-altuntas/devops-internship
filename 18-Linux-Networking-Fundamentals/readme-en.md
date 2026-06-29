@@ -114,7 +114,51 @@ This is the same underlying idea as the Least Privilege principle from earlier p
 
 ---
 
-## 📊 Quick Reference
+## 6. Routing & Forwarding
+
+These two terms map almost directly onto their plain English meanings, which made them easier to keep straight:
+
+- **Routing** = the planning step. Routers (or a host's own routing table) work out _which path_ a packet should take to reach a destination.
+- **Forwarding** = the execution step. Once a path is known, this is the act of actually sending the packet along — moving it one hop further forward.
+
+Simple analogy: routing is Google Maps calculating the best route; forwarding is actually turning at each intersection along that route.
+
+### Reading a Real Routing Table
+
+```bash
+ip route
+```
+
+```text
+default via 91.151.88.1 dev ens192 proto static
+91.151.88.0/24 dev ens192 proto kernel scope link src 91.151.88.38
+172.17.0.0/16 dev docker0 proto kernel scope link src 172.17.0.1 linkdown
+```
+
+- **Line 1 (`default via ...`)** — the fallback rule: if no other rule matches, send the packet to this gateway. `proto static` means this was configured manually (in this case, by the hosting provider's default setup), not auto-discovered.
+- **Line 2 (`91.151.88.0/24 ... scope link`)** — anything in this IP range is on the same local network and can be reached directly, no gateway needed. `proto kernel` means this rule was generated automatically by the kernel when the interface got its IP.
+- **Line 3 (`172.17.0.0/16 ... docker0 ... linkdown`)** — Docker's own virtual network for containers. `linkdown` here just meant no containers were actively running at the time (`docker ps -a` confirmed two containers in `Exited` state, not running) — the interface exists but isn't currently active.
+
+### Static vs. Dynamic Routing
+
+The `proto static` / `proto kernel` tags hint at this distinction:
+
+- **Static routing**: a human manually defines a rule ("to reach X, go via Y"). Simple, but doesn't adapt — if a path breaks, it stays broken until someone fixes it by hand. Appropriate for small setups with one obvious path out, like this server.
+- **Dynamic routing**: routers automatically discover and update best paths by talking to each other, using protocols like **BGP** (used between large networks/ISPs across the internet) or **OSPF** (common inside large corporate networks). Adapts automatically if a path fails.
+
+### IP Forwarding
+
+Normally, a server only processes packets addressed to itself. **IP forwarding** is the kernel setting that allows a machine to instead pick up a packet _not_ addressed to it and pass it along — acting like a router.
+
+```bash
+cat /proc/sys/net/ipv4/ip_forward
+```
+
+Expected this to return `0` (off) on a plain web server with no obvious reason to route traffic for others. It returned `1` (on) instead — an unexpected result worth actually investigating rather than guessing at.
+
+**What it turned out to be:** Docker. Per official documentation, container platforms like Docker rely on IP forwarding specifically so that containers can reach the outside world — the host has to forward traffic between the isolated container network (`docker0`, `172.17.0.0/16`) and the real network. Most Linux systems keep this off by default for security reasons, but installing Docker is exactly the kind of use case that requires turning it on. So `ip_forward=1` here isn't a random leftover setting or a hosting-provider default — it's a direct, expected consequence of having Docker installed.
+
+---
 
 | Layer            | Job                                       | Real Example Seen                                        |
 | ---------------- | ----------------------------------------- | -------------------------------------------------------- |

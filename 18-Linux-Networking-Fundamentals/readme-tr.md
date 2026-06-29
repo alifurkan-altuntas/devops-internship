@@ -71,12 +71,12 @@ Alıcı tarafta bu işlem tersten gerçekleşir (**decapsulation**) — her katm
 
 Bir paket sadece bir kez sarılıp, hedefte bir kez açılmıyor — yol üzerindeki **her router**, paketi kısmen açıp yeniden sarıyor:
 
-| Katman              | Router'ın Yaptığı Şey                                                                                             |
-| ------------------- | ----------------------------------------------------------------------------------------------------------------- |
-| Layer 7 (HTTP, vb.) | Hiç dokunulmaz, görmezden gelinir                                                                                 |
-| Layer 4 (TCP/port)  | Temel routing için genelde dokunulmaz                                                                             |
-| Layer 3 (IP)        | **Sadece okunur** — paketin nereye gideceğine karar vermek için kullanılır, ama IP adresinin kendisi hiç değişmez |
-| Layer 2 (MAC)       | Her hop'ta **sökülür ve yeniden yazılır**                                                                         |
+| Katman | Router'ın Yaptığı Şey |
+| --- | --- |
+| Layer 7 (HTTP, vb.) | Hiç dokunulmaz, görmezden gelinir |
+| Layer 4 (TCP/port) | Temel routing için genelde dokunulmaz |
+| Layer 3 (IP) | **Sadece okunur** — paketin nereye gideceğine karar vermek için kullanılır, ama IP adresinin kendisi hiç değişmez |
+| Layer 2 (MAC) | Her hop'ta **sökülür ve yeniden yazılır** |
 
 **MAC değişirken IP neden değişmiyor:** IP adresi nihai hedef — paket kaç router'dan geçerse geçsin aynı kalmalı. MAC adresi ise sadece **tek bir yerel ağ segmenti** içinde anlamlı, bu yüzden her router, eski MAC'i söküp, paketin girdiği **bir sonraki** yerel segment için yeni bir MAC header eklemek zorunda.
 
@@ -95,12 +95,12 @@ Basit benzetme: IP adresi, bir zarfın üzerindeki nihai adres gibi — yolculuk
 
 Aynı sunucudan, birden fazla gerçek hedefe `traceroute` çalıştırılarak, başarısızlıkların **yerel** (sunucunun kendi ağı) mı yoksa **hedefe özgü** mü olduğu ayrıldı:
 
-| Hedef                    | `traceroute` tamamlandı mı?                                                                                                                    | `ping` sonucu                                                        |
-| ------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------- |
-| `1.1.1.1` (Cloudflare)   | ✅ Hedefe ulaştı                                                                                                                               | (ayrıca test edilmedi — traceroute zaten ulaşılabilirliği doğruladı) |
-| `claude.ai`              | ✅ Hedefe ulaştı                                                                                                                               | (aynı)                                                               |
-| `google.com` / `8.8.8.8` | ❌ Hiç tamamlanmadı (4. hop'tan sonra sessizlik)                                                                                               | ✅ `ping` başarılı, %0 paket kaybı                                   |
-| `turkiyesigorta.com.tr`  | ❌ Hiç tamamlanmadı, ama sonraki hop'larda şirketin iç ağına ait `10.x.x.x` adresleri görüldü, paketin şirketin iç ağına ulaştığını gösteriyor | ❌ `ping` tamamen başarısız — %100 paket kaybı                       |
+| Hedef | `traceroute` tamamlandı mı? | `ping` sonucu |
+| --- | --- | --- |
+| `1.1.1.1` (Cloudflare) | ✅ Hedefe ulaştı | (ayrıca test edilmedi — traceroute zaten ulaşılabilirliği doğruladı) |
+| `claude.ai` | ✅ Hedefe ulaştı | (aynı) |
+| `google.com` / `8.8.8.8` | ❌ Hiç tamamlanmadı (4. hop'tan sonra sessizlik) | ✅ `ping` başarılı, %0 paket kaybı |
+| `turkiyesigorta.com.tr` | ❌ Hiç tamamlanmadı, ama sonraki hop'larda şirketin iç ağına ait `10.x.x.x` adresleri görüldü, paketin şirketin iç ağına ulaştığını gösteriyor | ❌ `ping` tamamen başarısız — %100 paket kaybı |
 
 **Sonuç:** Cloudflare ve Claude.ai'ın traceroute'ları aynı makineden sorunsuz tamamlandığı için, sorun **yerel ağda/sağlayıcıda değil** — her hedefin ICMP'ye cevap verme **kendi politikası** farklılık gösteriyor.
 
@@ -114,24 +114,67 @@ Bu, önceki fazlarda (SSH, sudoers) öğrenilen Least Privilege prensibinin **ay
 
 ---
 
-## 📊 Hızlı Referans
+## 6. Routing & Forwarding
 
-| Katman           | İşi                                      | Görülen Gerçek Örnek                                           |
-| ---------------- | ---------------------------------------- | -------------------------------------------------------------- |
-| 7 - Application  | Protokolün kendisi (HTTP, DNS, SSH, FTP) | Paket yakalamasında görünen `GET / HTTP/1.1`                   |
-| 6 - Presentation | Şifreleme / format                       | `https://`'da TLS; düz `http://`'da yok                        |
-| 5 - Session      | Bağlantının yaşam döngüsü                | SSH oturum süresi                                              |
-| 4 - Transport    | TCP/UDP, portlar                         | Paket yakalamasındaki port 80                                  |
-| 3 - Network      | IP, yönlendirme                          | Her router tarafından okunan (değiştirilmeyen) kaynak/hedef IP |
-| 2 - Data Link    | MAC, yerel ağ teslimi                    | Her router hop'unda sökülüp yeniden yazılır                    |
-| 1 - Physical     | Ham sinyal iletimi                       | Bu seviyede doğrudan gözlemlenemedi                            |
+Bu iki terim, İngilizce anlamlarıyla doğrudan örtüşüyor, bu da akılda tutmayı kolaylaştırdı:
 
-| Kavram                | Özet                                                                                                                                               |
-| --------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Encapsulation         | Her katman, inerken (L7 → L1) veriyi kendi header'ıyla sarar                                                                                       |
-| Decapsulation         | Her katman, çıkarken (L1 → L7) kendi header'ını soyar                                                                                              |
-| Router davranışı      | Yönlendirmek için IP'yi (Layer 3) okur; her hop'ta MAC'i (Layer 2) söker ve yeniden yazar; Layer 7'ye hiç dokunmaz                                 |
-| ICMP                  | `ping` (Echo Request/Reply) ve `traceroute` (Time Exceeded) tarafından kullanılan bir Layer 3 kontrol protokolü                                    |
+- **Routing** = planlama adımı. Router'lar (veya bir host'un kendi routing tablosu), bir paketin hedefe ulaşmak için **hangi yolu** kullanması gerektiğini hesaplar.
+- **Forwarding** = uygulama adımı. Yol belirlendikten sonra, paketi gerçekten **bir adım ileri** göndermek.
+
+Basit benzetme: routing, Google Maps'in en iyi rotayı hesaplaması; forwarding, o rota boyunca her kavşakta gerçekten dönmek.
+
+### Gerçek Bir Routing Tablosunu Okumak
+
+```bash
+ip route
+```
+```text
+default via 91.151.88.1 dev ens192 proto static
+91.151.88.0/24 dev ens192 proto kernel scope link src 91.151.88.38
+172.17.0.0/16 dev docker0 proto kernel scope link src 172.17.0.1 linkdown
+```
+
+- **1. Satır (`default via ...`)** — yedek kural: başka bir kural eşleşmezse, paketi bu gateway'e gönder. `proto static`, bu kuralın elle (bu durumda, sunucu sağlayıcının varsayılan kurulumuyla) yapılandırıldığını, otomatik keşfedilmediğini gösterir.
+- **2. Satır (`91.151.88.0/24 ... scope link`)** — bu IP aralığındaki herhangi bir şeye, gateway'e gerek kalmadan **doğrudan** ulaşılabilir, çünkü aynı yerel ağda. `proto kernel`, bu kuralın, interface'e IP atandığında **kernel tarafından otomatik** oluşturulduğunu gösterir.
+- **3. Satır (`172.17.0.0/16 ... docker0 ... linkdown`)** — Docker'ın container'lar için kendi sanal ağı. Buradaki `linkdown`, sadece o an **aktif çalışan hiçbir container olmadığını** gösteriyordu (`docker ps -a`, iki container'ın `Exited` durumda olduğunu, çalışmadığını doğruladı) — interface var ama şu an aktif değil.
+
+### Statik vs Dinamik Routing
+
+`proto static` / `proto kernel` etiketleri bu ayrıma işaret ediyor:
+
+- **Statik routing**: bir insan, elle bir kural tanımlar ("X'e ulaşmak için, Y'den geç"). Basit, ama uyum sağlamaz — bir yol kesilirse, biri elle düzeltene kadar kesik kalır. Bu sunucu gibi, tek bir belirgin çıkış yolu olan küçük kurulumlar için uygundur.
+- **Dinamik routing**: router'lar, birbirleriyle konuşarak en iyi yolları **otomatik olarak keşfeder ve güncellerler**, **BGP** (internetteki büyük ağlar/ISP'ler arası kullanılır) veya **OSPF** (büyük kurumsal ağlar içinde yaygın) gibi protokoller kullanarak. Bir yol başarısız olursa otomatik olarak uyum sağlar.
+
+### IP Forwarding
+
+Normalde, bir sunucu sadece **kendisine adreslenmiş** paketleri işler. **IP forwarding**, bir makinenin, **kendisine adreslenmemiş** bir paketi alıp, onu bir router gibi davranarak **iletmesine** izin veren kernel ayarıdır.
+
+```bash
+cat /proc/sys/net/ipv4/ip_forward
+```
+
+Düz bir web sunucusunda, başkalarının trafiğini yönlendirmesi için açık bir sebep olmadığından, `0` (kapalı) dönmesi bekleniyordu. Bunun yerine `1` (açık) döndü — tahmin etmek yerine **gerçekten araştırılması gereken** beklenmedik bir sonuç.
+
+**Gerçek sebep:** Docker. Resmi dokümantasyona göre, Docker gibi container platformları, container'ların dış dünyaya ulaşabilmesi için **özellikle** IP forwarding'e dayanır — host, izole container ağı (`docker0`, `172.17.0.0/16`) ile gerçek ağ arasında trafiği yönlendirmek zorundadır. Çoğu Linux sistemi, güvenlik sebepleriyle bunu varsayılan olarak kapalı tutar, ama Docker kurmak, tam olarak bunu açmayı gerektiren bir kullanım senaryosudur. Yani buradaki `ip_forward=1`, rastgele kalmış bir ayar veya sunucu sağlayıcının varsayılanı değil — **Docker'ın kurulu olmasının doğrudan, beklenen bir sonucu.**
+
+---
+
+| Katman | İşi | Görülen Gerçek Örnek |
+| --- | --- | --- |
+| 7 - Application | Protokolün kendisi (HTTP, DNS, SSH, FTP) | Paket yakalamasında görünen `GET / HTTP/1.1` |
+| 6 - Presentation | Şifreleme / format | `https://`'da TLS; düz `http://`'da yok |
+| 5 - Session | Bağlantının yaşam döngüsü | SSH oturum süresi |
+| 4 - Transport | TCP/UDP, portlar | Paket yakalamasındaki port 80 |
+| 3 - Network | IP, yönlendirme | Her router tarafından okunan (değiştirilmeyen) kaynak/hedef IP |
+| 2 - Data Link | MAC, yerel ağ teslimi | Her router hop'unda sökülüp yeniden yazılır |
+| 1 - Physical | Ham sinyal iletimi | Bu seviyede doğrudan gözlemlenemedi |
+
+| Kavram | Özet |
+| --- | --- |
+| Encapsulation | Her katman, inerken (L7 → L1) veriyi kendi header'ıyla sarar |
+| Decapsulation | Her katman, çıkarken (L1 → L7) kendi header'ını soyar |
+| Router davranışı | Yönlendirmek için IP'yi (Layer 3) okur; her hop'ta MAC'i (Layer 2) söker ve yeniden yazar; Layer 7'ye hiç dokunmaz |
+| ICMP | `ping` (Echo Request/Reply) ve `traceroute` (Time Exceeded) tarafından kullanılan bir Layer 3 kontrol protokolü |
 | ICMP neden engellenir | İç ağ topolojisini gizler ve saldırı yüzeyini azaltır — politika, bir kurumun şeffaflığa mı yoksa risk azaltmaya mı öncelik verdiğine göre değişir |
 
 ---
