@@ -6,9 +6,11 @@ Bu repo, stajım boyunca takip ettiğim öğrenme sürecimi, altyapı otomasyonu
 
 ## 📍 Şu An Neredeyim
 
-Verilen Linux yol haritasının tüm 17 fazını, son mini proje dahil, tamamladım — Nginx, Docker, Git ve SSH, gerçek (kiralık) bir sunucuda (yerel bir VM değil) kurulu, ve bu repodan doğrudan çekilen bir sayfayı sunuyor. Bu süreçte ayrıca genel bir tekrar turu da yaptım: yol haritasının mezuniyet kriterlerindeki senaryo sorularını sesli olarak cevapladım, kendi bilgimde bazı eksikler buldum (sürekli unuttuğum bazı komut syntax'ları, yarım öğrendiğim birkaç kavram), ve bu fazların notlarını sadece "burada hata yaptım" diye not edip geçmek yerine, geri dönüp güçlendirdim.
+Verilen Linux yol haritasının tüm 17 fazını, son mini proje dahil, tamamladım — Nginx, Docker, Git ve SSH, gerçek (kiralık) bir sunucuda kurulu, ve bu repodan doğrudan çekilen bir sayfayı sunuyor. Bu süreçte ayrıca genel bir tekrar turu da yaptım: yol haritasının mezuniyet kriterlerindeki senaryo sorularını sesli olarak cevapladım, kendi bilgimde bazı eksikler buldum, ve bu fazların notlarını geri dönüp güçlendirdim.
 
-Şu an, asıl yol haritasının dışında, eğitmenimin verdiği ek konular üzerinde çalışıyorum: log analizine `sed` ile path bazlı IP gruplama eklendi, OSI modeline başlandı (7 katman, gerçek senaryolarla katman ayırt etme, ve `tcpdump` ile gerçek bir paket üzerinde doğrulama — encapsulation/decapsulation kısmı henüz tamamlanmadı, devam ediyor). Sırada routing & forwarding, DNS'in derinlemesine işlenmesi, ve Nginx ile daha kapsamlı pratik var.
+Şu an, asıl yol haritasının dışında, eğitmenimin verdiği ek konular üzerinde çalışıyorum: log analizine `sed` ile path bazlı IP gruplama eklendi, ve OSI modeli tamamlandı — 7 katman, gerçek senaryolarla katman ayırt etme, encapsulation/decapsulation, router'ların MAC/IP header'larına ne yaptığı, ve `tcpdump` ile gerçek bir paket yakalama. Bu süreçte, Cloudflare, Google, Claude.ai, ve Türkiye Sigorta'ya karşı gerçek bir `traceroute`/`ping` karşılaştırması yaparak, kurumların ICMP trafiğini neden farklı politikalarla ele aldığını (şeffaflık vs. güvenlik riski) gözlemledim. Sırada routing & forwarding, DNS'in derinlemesine işlenmesi (resolver zinciri, kayıt tipleri, ve gerçek cloud sağlayıcı kesintileri üzerine araştırma dahil), ve Nginx ile daha kapsamlı pratik var.
+
+Ayrıca, daha önce tamamlanan fazların notlarını da kademeli olarak Türkçe'ye çeviriyorum (iki dilli format: `README-EN.md` / `README-TR.md`), şu ana kadar Faz 1 ve 2 tamamlandı.
 
 Bununla paralel, Udemy'deki Docker (A'dan Z'ye) kursuna ve YouTube networking playlist'ine devam ediyorum.
 

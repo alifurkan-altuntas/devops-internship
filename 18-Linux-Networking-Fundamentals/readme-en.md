@@ -1,6 +1,6 @@
-# 🌐 OSI Model — Layers, Real Scenarios, and a First Look at Packets
+# 🌐 OSI Model — Layers, Real Scenarios, and Real Packet Verification
 
-⚠️ **Status: In progress.** The 7 layers and how to identify which ones are active in a real scenario are solid. Encapsulation/decapsulation is introduced but not yet fully worked through — to be continued.
+✅ **Status: Completed.** The 7 layers, real-scenario layer identification, encapsulation/decapsulation, router behavior, and ICMP/traceroute behavior across real-world providers have all been worked through and verified hands-on.
 
 ---
 
@@ -29,7 +29,7 @@ Not every operation uses all 7 layers — this was the most useful realization f
 - **Layer 3** — the query needs to be routed to a DNS server via IP.
 - **Layer 4** — DNS typically uses UDP, port 53.
 - **Layer 7** — DNS itself is an application-layer protocol.
-- **Layer 6 — not used.** A plain DNS query has no encryption or format conversion happening. (Initially guessed Layer 6 would be involved here — wrong. Layer 6 only matters when something is actually being encrypted/transformed, and classic DNS isn't.)
+- **Layer 6 — not used.** A plain DNS query has no encryption or format conversion happening.
 
 ### `curl https://example.com` (HTTPS)
 
@@ -41,9 +41,9 @@ Not every operation uses all 7 layers — this was the most useful realization f
 - **Layers 1–4** — always required (physical transmission, MAC, IP routing, TCP + port 22).
 - **Layer 5** — session management (the connection has a defined start, duration, and end).
 - **Layer 6** — SSH encrypts its traffic by default, so this is active.
-- **Layer 7** — SSH itself is an application-layer protocol, same category as HTTP or FTP. This is true *regardless* of whether DNS was involved.
+- **Layer 7** — SSH itself is an application-layer protocol, same category as HTTP or FTP. This is true _regardless_ of whether DNS was involved.
 
-**Key clarification reached here:** Layer 7 isn't about which *tool* is being used (PuTTY, a terminal, an FTP client) — it's about which *protocol* is being spoken. SSH via PuTTY and SSH via a terminal's `ssh` command are both Layer 7 = SSH. Connecting by IP instead of a domain name just means DNS (a separate Layer 7 protocol) isn't involved — it doesn't remove SSH itself from Layer 7.
+**Key clarification reached here:** Layer 7 isn't about which _tool_ is being used (PuTTY, a terminal, an FTP client) — it's about which _protocol_ is being spoken. Connecting by IP instead of a domain name just means DNS (a separate Layer 7 protocol) isn't involved — it doesn't remove SSH itself from Layer 7.
 
 ---
 
@@ -52,11 +52,9 @@ Not every operation uses all 7 layers — this was the most useful realization f
 - **Layer 3 (IP)** is the address — like the address written on an envelope ("which city, which street").
 - **Layer 2 (MAC)** is what actually gets the envelope to the right house on that street, within the local network.
 
-Without Layer 3, there'd be no destination address at all. Without Layer 2, having an address wouldn't matter — there'd be no way to actually hand the data to the next device (e.g. the local router) to get it moving toward that destination.
-
 ---
 
-## 4. Encapsulation (introduced, not yet fully covered)
+## 4. Encapsulation and Decapsulation
 
 As data travels down from Layer 7 to Layer 1 to actually be sent, each layer wraps it in its own header — like nesting envelopes inside each other:
 
@@ -67,67 +65,75 @@ As data travels down from Layer 7 to Layer 1 to actually be sent, each layer wra
       [Layer 7: the actual data — e.g. an HTTP request]
 ```
 
-On the receiving end, this happens in reverse (**decapsulation**) — each layer strips off its own header and passes what's left up to the next layer, until the original data (e.g. the HTTP request) reaches the application at Layer 7.
+On the receiving end, this happens in reverse (**decapsulation**) — each layer strips off its own header and passes what's left up to the next layer, until the original data reaches the application at Layer 7.
 
-**Important real-world note:** in practice, Layers 5 and 6 usually don't appear as separate, visible headers in actual packets — their jobs (session handling, encryption) tend to be absorbed into the application-layer protocol itself (e.g. TLS sits conceptually at Layer 6, but isn't a distinct "Layer 6 header" you'd see in a packet capture). This is part of why the simpler 4-layer TCP/IP model is more commonly used in practice than the full 7-layer OSI model — OSI is mainly a teaching tool.
+### What Actually Happens at Each Router Along the Way
 
-| OSI (7 layers) | TCP/IP (4 layers) |
-| --- | --- |
-| 7 - Application | Application |
-| 6 - Presentation | Application |
-| 5 - Session | Application |
-| 4 - Transport | Transport |
-| 3 - Network | Internet |
-| 2 - Data Link | Link |
-| 1 - Physical | Link |
+A packet doesn't just get encapsulated once and decapsulated once at the final destination — each router along the path partially decapsulates and re-encapsulates it:
+
+| Layer                | What a router does with it                                                                                    |
+| -------------------- | ------------------------------------------------------------------------------------------------------------- |
+| Layer 7 (HTTP, etc.) | Never touched — completely ignored                                                                            |
+| Layer 4 (TCP/port)   | Generally not touched for basic routing                                                                       |
+| Layer 3 (IP)         | **Read only** — used to decide where to forward the packet, but the IP addresses themselves are never changed |
+| Layer 2 (MAC)        | **Stripped and rewritten** at every hop                                                                       |
+
+**Why MAC changes but IP doesn't:** the IP address is the final destination — it has to stay the same no matter how many routers the packet passes through. The MAC address is only meaningful within a single local network segment, so each router has to strip the old one off and attach a new MAC header relevant to the _next_ local segment the packet is entering.
+
+Simple analogy: the IP address is like the final address written on an envelope — it never changes in transit. The MAC address is like a local courier's handoff code — it gets replaced at every depot the envelope passes through, because each depot only needs to know how to get it to the _next_ depot.
 
 ---
 
-## 5. First Look: Seeing Layers in a Real Packet
+## 5. ICMP, and Why `traceroute` Sometimes Goes Nowhere
 
-A log line from Nginx only shows what reaches Layer 7 — the lower-layer headers are already stripped away by the time the application sees the request:
+**ICMP (Internet Control Message Protocol)** is a control/diagnostic protocol — it doesn't carry application data, it carries status and error messages about the network itself. It operates at Layer 3, alongside IP.
 
-```
-172.68.50.150 - - [26/Jun/2026:03:55:24 +0000] "GET / HTTP/1.1" 200 425 "-" "Mozilla/5.0 ..."
-```
+- **`ping`** sends an ICMP **Echo Request**; a reply (**Echo Reply**) means "I'm here."
+- **`traceroute`** sends packets with deliberately low TTL values. When a router's TTL hits zero, it responds with an ICMP **"Time Exceeded"** message — this is how traceroute discovers each hop along the path.
 
-To actually see the lower layers, the raw traffic itself has to be captured — not the application's log:
+### Real Test: Comparing Providers
 
-```bash
-sudo apt install tcpdump -y
-sudo tcpdump -i any port 80 -nn -X
-```
+Ran `traceroute` against several real targets from the same server, to isolate whether failures were local (the server's own network) or specific to the destination:
 
-Running `curl localhost` while this was capturing showed the real request as a packet:
+| Target                   | `traceroute` completed?                                                                                                                 | `ping` result                                                      |
+| ------------------------ | --------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------ |
+| `1.1.1.1` (Cloudflare)   | ✅ Reached the destination                                                                                                              | (not separately tested — traceroute itself confirmed reachability) |
+| `claude.ai`              | ✅ Reached the destination                                                                                                              | (same)                                                             |
+| `google.com` / `8.8.8.8` | ❌ Never completed (silence past hop 4)                                                                                                 | ✅ `ping` succeeded, 0% packet loss                                |
+| `turkiyesigorta.com.tr`  | ❌ Never completed, but later hops showed internal `10.x.x.x` addresses, suggesting the packet did reach the company's internal network | ❌ `ping` failed completely — 100% packet loss                     |
 
-```text
-14:46:34.548687 lo In IP6 ::1.39502 > ::1.80: Flags [P.], seq 1:73, ... length 72: HTTP: GET / HTTP/1.1
-        ...
-        4745 5420 2f20 4854 5450 2f31 2e31 0d0a   GET / HTTP/1.1..
-        486f 7374 3a20 6c6f 6361 6c68 6f73 740d   Host: localhost.
-```
+**Conclusion:** since Cloudflare and Claude.ai's traceroutes completed cleanly from the same machine, the local network/provider wasn't the problem — each destination's _own_ policy on responding to ICMP is what varied.
 
-Breaking down what's actually visible here:
-- **`::1.39502 > ::1.80`** — this is Layer 3 (the `::1` IPv6 addresses) and Layer 4 (the ports — `.39502` source, `.80` destination, i.e. Nginx) sitting right next to each other in the same line.
-- **`GET / HTTP/1.1`** and the readable text in the hex dump — this is Layer 7, the actual HTTP request, sitting in plain, unencrypted text.
-- **No Layer 6 activity** — because this was `http://`, not `https://`, there's no encryption, so the request is fully readable in the capture. (Repeating this with `https://` would show unreadable, encrypted bytes instead — not yet tested.)
+### Why Different Organizations Handle This Differently
 
-This confirmed, concretely, that OSI layers aren't just an abstract diagram — the IP, the port, and the actual HTTP text are genuinely sitting inside the same captured packet, layered the way the model describes.
+- **Cloudflare** leaves it fully open — as an infrastructure/network provider, transparency and demonstrable performance are part of their value proposition.
+- **Google** allows `ping` but blocks `traceroute` — a basic "are you alive" check is low-risk and widely used by monitoring tools, but exposing internal network topology (which `traceroute` would reveal) is an unnecessary risk for a major, constantly-targeted infrastructure.
+- **Türkiye Sigorta** blocks ICMP entirely — consistent with a deny-by-default security posture common in finance/insurance, where ICMP has essentially no business value but does carry some risk, so it's fully disabled rather than partially allowed.
+
+This is the same underlying idea as the Least Privilege principle from earlier phases (SSH, sudoers) — applied here to network-level access instead of command-level access: allow only what's actually needed, weighed against the risk of what's exposed.
 
 ---
 
 ## 📊 Quick Reference
 
-| Layer | Job | Real Example Seen |
-| --- | --- | --- |
-| 7 - Application | The protocol itself (HTTP, DNS, SSH, FTP) | `GET / HTTP/1.1` visible in the packet capture |
-| 6 - Presentation | Encryption / format | TLS in `https://`; absent in plain `http://` |
-| 5 - Session | Connection lifecycle | SSH session duration |
-| 4 - Transport | TCP/UDP, ports | Port 80 (`::1.80`) in the capture |
-| 3 - Network | IP, routing | `::1` source/destination IP in the capture |
-| 2 - Data Link | MAC, local network delivery | Not directly visible in this capture (loopback) |
-| 1 - Physical | Raw signal transmission | Not directly observable at this level |
+| Layer            | Job                                       | Real Example Seen                                        |
+| ---------------- | ----------------------------------------- | -------------------------------------------------------- |
+| 7 - Application  | The protocol itself (HTTP, DNS, SSH, FTP) | `GET / HTTP/1.1` visible in a packet capture             |
+| 6 - Presentation | Encryption / format                       | TLS in `https://`; absent in plain `http://`             |
+| 5 - Session      | Connection lifecycle                      | SSH session duration                                     |
+| 4 - Transport    | TCP/UDP, ports                            | Port 80 in a packet capture                              |
+| 3 - Network      | IP, routing                               | Source/destination IP read (not modified) by each router |
+| 2 - Data Link    | MAC, local network delivery               | Stripped and rewritten at every router hop               |
+| 1 - Physical     | Raw signal transmission                   | Not directly observable at this level                    |
+
+| Concept               | Summary                                                                                                                                       |
+| --------------------- | --------------------------------------------------------------------------------------------------------------------------------------------- |
+| Encapsulation         | Each layer wraps data in its own header on the way down (L7 → L1)                                                                             |
+| Decapsulation         | Each layer strips its own header on the way up (L1 → L7)                                                                                      |
+| Router behavior       | Reads IP (Layer 3) to route; strips and rewrites MAC (Layer 2) at every hop; never touches Layer 7                                            |
+| ICMP                  | A Layer 3 control protocol used by `ping` (Echo Request/Reply) and `traceroute` (Time Exceeded)                                               |
+| Why ICMP gets blocked | Hides internal network topology and reduces attack surface — policy varies by how much an organization values transparency vs. risk reduction |
 
 ---
 
-ℹ️ _Next steps: finish encapsulation/decapsulation in more depth, then move on to routing & forwarding._
+ℹ️ _Tested directly: real packet capture with `tcpdump`, and a comparative `traceroute`/`ping` test across Cloudflare, Google, Claude.ai, and Türkiye Sigorta to observe different real-world ICMP policies._

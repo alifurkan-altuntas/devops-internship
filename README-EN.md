@@ -4,11 +4,13 @@
 
 Welcome to my DevOps engineering journal. This repository documents my learning path, infrastructure automation practices, error resolutions, and Linux systems administration tasks during my internship.
 
-### 📍 Where I Am Now
+## 📍 Where I Am Now
 
-I've completed all 17 phases of the assigned Linux roadmap, including the final mini-project — Nginx, Docker, Git, and SSH configured on an actual rented server (not a local VM), serving a page pulled directly from this repository. Along the way I also did a full review pass: went through the roadmap's graduation-style scenario questions out loud, found a few gaps in my own understanding (some command syntax I kept forgetting, a couple of concepts I'd half-learned), and went back to strengthen the notes for those phases rather than just noting "I got this wrong" and moving on.
+I've completed all 17 phases of the assigned Linux roadmap, including the final mini-project — Nginx, Docker, Git, and SSH configured on an actual rented server, serving a page pulled directly from this repository. Along the way I also did a full review pass: went through the roadmap's graduation-style scenario questions out loud, found a few gaps in my own understanding, and went back to strengthen the notes for those phases.
 
-I'm now working through additional topics given by my mentor, outside the original roadmap: path-based IP grouping was added to the log analysis notes, and I've started on the OSI model (the 7 layers, distinguishing which ones are active in real scenarios, and verifying one with a real `tcpdump` packet capture — encapsulation/decapsulation isn't fully done yet, so this is marked as in progress). Up next: routing & forwarding, a deeper dive into DNS, and more hands-on work with Nginx.
+I'm now working through additional topics given by my mentor, outside the original roadmap: path-based IP grouping was added to the log analysis notes, and the OSI model is now complete — the 7 layers, distinguishing them in real scenarios, encapsulation/decapsulation, what routers actually do to MAC/IP headers, and a real packet capture with `tcpdump`. Along the way, I ran a real `traceroute`/`ping` comparison against Cloudflare, Google, Claude.ai, and Türkiye Sigorta, and observed why different organizations handle ICMP traffic differently (transparency vs. security risk). Up next: routing & forwarding, a deeper dive into DNS (including the resolver chain, record types, and research into real cloud provider outages), and more hands-on work with Nginx.
+
+I'm also gradually translating the notes from already-completed phases into Turkish (bilingual format: `README-EN.md` / `README-TR.md`) — Phases 1 and 2 are done so far.
 
 Continuing the Udemy course on Docker (A'dan Z'ye) and the YouTube networking playlist alongside this.
 
