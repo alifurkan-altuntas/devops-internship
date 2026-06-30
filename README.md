@@ -8,7 +8,11 @@ Bu repo, stajım boyunca takip ettiğim öğrenme sürecimi, altyapı otomasyonu
 
 Verilen Linux yol haritasının tüm 17 fazını, son mini proje dahil, tamamladım — Nginx, Docker, Git ve SSH, gerçek (kiralık) bir sunucuda kurulu, ve bu repodan doğrudan çekilen bir sayfayı sunuyor. Bu süreçte ayrıca genel bir tekrar turu da yaptım: yol haritasının mezuniyet kriterlerindeki senaryo sorularını sesli olarak cevapladım, kendi bilgimde bazı eksikler buldum, ve bu fazların notlarını geri dönüp güçlendirdim.
 
-Şu an, asıl yol haritasının dışında, eğitmenimin verdiği ek konular üzerinde çalışıyorum: log analizine `sed` ile path bazlı IP gruplama eklendi, OSI modeli tamamlandı (encapsulation/decapsulation, router davranışı, ICMP, ve gerçek dünya sağlayıcıları arasında karşılaştırmalı bir `traceroute`/`ping` testi dahil), ve routing & forwarding konusu da tamamlandı — gerçek bir routing tablosu analiz edildi, statik/dinamik routing farkı öğrenildi, ve sunucuda beklenmedik şekilde aktif çıkan `ip_forward` ayarının, kurulu olan Docker'dan kaynaklandığı araştırılarak doğrulandı. Şu an DNS sorgu zincirine başlanmış durumda — `dig +trace` ile root sunuculardan başlayıp authoritative sunuculara kadar olan gerçek çözümleme sürecini izliyorum. Sırada DNS'in kalan kısmı (kayıt tipleri, TTL, gerçek cloud sağlayıcı kesintileri üzerine araştırma), ve Nginx ile daha kapsamlı pratik var.
+Şu an, asıl yol haritasının dışında, eğitmenimin verdiği ek konular üzerinde çalışıyorum. Log analizine `sed` ile path bazlı IP gruplama eklendi. OSI modeli ve routing & forwarding konuları tamamlandı (encapsulation/decapsulation, router davranışı, ICMP, gerçek dünya sağlayıcıları arasında karşılaştırmalı `traceroute`/`ping` testi, gerçek bir routing tablosu analizi, ve sunucuda aktif çıkan `ip_forward` ayarının Docker'dan kaynaklandığının araştırılması) — bu fazda 15 soruluk bir quiz çözüldü, %100 sonuçla.
+
+DNS konusu da artık tamamlandı: resolver zinciri (root → TLD → authoritative) `dig +trace` ile gerçek zamanlı izlendi, TTL'in gerçekten geri saydığı doğrulandı, negative caching (`NXDOMAIN`) test edildi, ve 8 kayıt tipinin (A, AAAA, CNAME, MX, TXT, NS, SRV, PTR) hepsi gerçek domain'ler (google.com, turkiyesigorta.com.tr, claude.ai) üzerinde sorgulanarak öğrenildi. Ayrıca, AWS, Cloudflare, ve Google Cloud'un gerçek, DNS-ilişkili kesintileri araştırıldı, kaynakçalı bir belgeye dönüştürüldü.
+
+Sırada Nginx ile daha kapsamlı pratik (reverse proxy, path rewrite, path engelleme) var — eğitmenimin özellikle takip ettiği bir konu.
 
 Ayrıca, daha önce tamamlanan fazların notlarını da kademeli olarak Türkçe'ye çeviriyorum (iki dilli format: `README-EN.md` / `README-TR.md`), şu ana kadar Faz 1 ve 2 tamamlandı.
 
@@ -35,7 +39,7 @@ Bununla paralel, Udemy'deki Docker (A'dan Z'ye) kursuna ve YouTube networking pl
 - [15-Linux-Cron-Automation](./15-Linux-Cron-Automation/): `cron` ve `at` ile zamanlama, gerçek bir `sudo`-cron-içinde debug hikayesi, ve `logrotate`'e bir bakış. ([EN](./15-Linux-Cron-Automation/README-EN.md) / [TR](./15-Linux-Cron-Automation/README-TR.md))
 - [16-Git-Basics](./16-Git-Basics/): `git clone`, branching, merging, ve bu repo üzerinde gerçekten çözülen bir push-reddedildi/editör-takıldı çakışması.
 - [17-Mini-Project](./17-Mini-Project/): Gerçek bir kiralık sunucuda Nginx, Docker, Git, ve SSH kurulumu — bu repodan çekilip canlıya alınan statik bir sayfa.
-- [18-Linux-Networking-Fundamentals](./18-Linux-Networking-Fundamentals/): OSI modeli, katmanları gerçek senaryolarla ayırt etme, ve `tcpdump` ile gerçek bir paket yakalama (devam ediyor). ([EN](./18-Linux-Networking-Fundamentals/README-EN.md) / [TR](./18-Linux-Networking-Fundamentals/README-TR.md))
+- [18-Linux-Networking-Fundamentals](./18-Linux-Networking-Fundamentals/): OSI modeli, routing & forwarding, ve DNS (resolver zinciri, kayıt tipleri, TTL) — gerçek senaryolarla ve `tcpdump`/`dig +trace` ile doğrulanmış. Ayrıca AWS/Cloudflare/Google Cloud'un gerçek kesintilerine dair araştırma içerir. ([EN](./18-Linux-Networking-Fundamentals/README-EN.md) / [TR](./18-Linux-Networking-Fundamentals/README-TR.md) — Outage araştırması: [EN](./18-Linux-Networking-Fundamentals/dns-outages-EN.md) / [TR](./18-Linux-Networking-Fundamentals/dns-outages-TR.md))
 
 ### 📝 Değerlendirme & Sınav Materyalleri
 
@@ -330,6 +334,27 @@ _Son olarak DNS sorgu zincirine başladım — recursive resolver, root sunucula
   - DNS sorgu zincirine başladım, `dig +trace` ile gerçek bir çözümleme sürecini izledim.
 - **Kilometre Taşları & Çıktılar:**
   - 🌐 OSI Modeli (Tamamlandı) & Routing/Forwarding: [Notlar (EN](./18-Linux-Networking-Fundamentals/README-EN.md) / [TR)](./18-Linux-Networking-Fundamentals/README-TR.md)
+
+### 🔹 30 Haziran 2026 | DNS Kayıt Tipleri, TTL, ve Cloud Outage Araştırması
+
+_DNS'in kalan kısmını tamamladım. Önce, dünkü `dig +trace` çıktısını satır satır analiz ettim — root sunuculardan TLD'ye, oradan authoritative sunucuya kadar olan zinciri, kendi telefon rehberi benzetmemle ("birine soruyorum, o da bilmiyor ama bilen birini biliyor" zinciri) anladım. Her seviyede 13 (veya 4) yedek sunucu olduğunu, ama sadece birinin gerçekten sorgulandığını fark ettim — bu, IPv6 zaman aşımı yaşanan gerçek bir örnekte (otomatik olarak IPv4'e geçiş) doğrulandı._
+
+_TTL'i, aynı sorguyu art arda iki kere çalıştırarak test ettim — TTL'in gerçekten azaldığını (141 → 139) ve ikinci sorgunun anında (0ms) geldiğini gördüm, cache'in nasıl çalıştığını somut olarak kanıtladım. Negative caching'i de (`NXDOMAIN`) test ettim, var olmayan bir domain için bile bir TTL olduğunu öğrendim._
+
+_Sonra 8 DNS kayıt tipinin (A, AAAA, CNAME, MX, TXT, NS, SRV, PTR) hepsini, gerçek domain'ler üzerinde tek tek sorguladım. Kendi domain'im olsaydı (alifurkan.com) bunları nasıl kullanacağımı somut bir senaryo üzerinden düşündüm. Türkiye Sigorta'nın 3 farklı mail sunucusu (failover için) olduğunu, Azure DNS kullandığını; Google'ın bazı alt domain'lerde CNAME yerine doğrudan çoklu A kaydı kullandığını; Cloudflare ve Google'ın kendi IP'lerine bilinçli olarak PTR kaydı atadığını (one.one.one.one, dns.google) kendi başıma keşfettim ve doğruladım._
+
+_Son olarak, AWS, Cloudflare, ve Google Cloud'un gerçek, yakın tarihli kesintilerini araştırdım — AWS'nin DynamoDB'sinde bir DNS kaydının otomasyon hatasıyla tamamen silinmesi, Cloudflare'in DNSSEC imzalarının süresinin dolmasıyla yaşadığı kesinti, ve Google'ın (DNS değil, yetkilendirme kaynaklı) kesintisini karşılaştırarak, "her büyük kesinti DNS değildir" ayrımını da net bir şekilde gördüm. Bunu ayrı, kaynakçalı bir belgeye yazdım._
+
+- **Görevler & Hedefler:**
+  - `dig +trace` çıktısını detaylı analiz ettim, resolver zincirinin (root → TLD → authoritative) her adımını kavradım.
+  - TTL'in gerçekten azaldığını ve cache'in çalıştığını, art arda iki sorguyla kanıtladım.
+  - Negative caching'i (`NXDOMAIN`) test ettim.
+  - 8 DNS kayıt tipini (A, AAAA, CNAME, MX, TXT, NS, SRV, PTR), gerçek domain'ler üzerinde sorgulayarak öğrendim.
+  - `nslookup`, `host`, `resolvectl` debug araçlarını test ettim.
+  - AWS, Cloudflare, ve Google Cloud'un gerçek DNS-ilişkili kesintilerini araştırdım, kaynakçalı bir belge oluşturdum.
+- **Kilometre Taşları & Çıktılar:**
+  - 🌐 DNS (Tamamlandı): [Networking Notları (EN](./18-Linux-Networking-Fundamentals/README-EN.md) / [TR)](./18-Linux-Networking-Fundamentals/README-TR.md)
+  - 🔥 Cloud Outage Araştırması: [Notlar (EN](./18-Linux-Networking-Fundamentals/dns-outages-EN.md) / [TR)](./18-Linux-Networking-Fundamentals/dns-outages-TR.md)
 
 ---
 

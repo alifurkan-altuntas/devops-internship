@@ -8,7 +8,11 @@ Welcome to my DevOps engineering journal. This repository documents my learning 
 
 I've completed all 17 phases of the assigned Linux roadmap, including the final mini-project — Nginx, Docker, Git, and SSH configured on an actual rented server, serving a page pulled directly from this repository. Along the way I also did a full review pass: went through the roadmap's graduation-style scenario questions out loud, found a few gaps in my own understanding, and went back to strengthen the notes for those phases.
 
-I'm now working through additional topics given by my mentor, outside the original roadmap: path-based IP grouping was added to the log analysis notes, the OSI model is complete (encapsulation/decapsulation, router behavior, ICMP, and a comparative `traceroute`/`ping` test across real-world providers), and routing & forwarding is also done — analyzed a real routing table, learned the static/dynamic routing distinction, and investigated an unexpectedly active `ip_forward` setting, which turned out to be a direct result of having Docker installed. Currently starting on the DNS resolution chain — using `dig +trace` to follow the real resolution process from root servers down to authoritative servers. Up next: the rest of DNS (record types, TTL, research into real cloud provider outages), and more hands-on work with Nginx.
+I'm now working through additional topics given by my mentor, outside the original roadmap. Path-based IP grouping was added to the log analysis notes. The OSI model and routing & forwarding are complete (encapsulation/decapsulation, router behavior, ICMP, a comparative `traceroute`/`ping` test across real-world providers, a real routing table analysis, and investigating why `ip_forward` was active — turned out to be Docker) — scored 15/15 on a quiz covering this phase.
+
+DNS is also complete now: followed the resolver chain (root → TLD → authoritative) live with `dig +trace`, confirmed TTL actually counting down, tested negative caching (`NXDOMAIN`), and queried all 8 record types (A, AAAA, CNAME, MX, TXT, NS, SRV, PTR) against real domains (google.com, turkiyesigorta.com.tr, claude.ai). Also researched real, DNS-related outages from AWS, Cloudflare, and Google Cloud, turning the findings into a sourced document.
+
+Up next: more hands-on work with Nginx (reverse proxy, path rewrite, path blocking) — a topic my mentor has specifically been following up on.
 
 I'm also gradually translating the notes from already-completed phases into Turkish (bilingual format: `README-EN.md` / `README-TR.md`) — Phases 1 and 2 are done so far.
 
@@ -35,7 +39,7 @@ Continuing the Udemy course on Docker (A'dan Z'ye) and the YouTube networking pl
 - [15-Linux-Cron-Automation](./15-Linux-Cron-Automation/): Scheduling with `cron` and `at`, a real `sudo`-in-cron debugging story, and a look at `logrotate`. ([EN](./15-Linux-Cron-Automation/README-EN.md) / [TR](./15-Linux-Cron-Automation/README-TR.md))
 - [16-Git-Basics](./16-Git-Basics/): `git clone`, branching, merging, and a real push-rejected/editor-stuck conflict resolved on this exact repo.
 - [17-Mini-Project](./17-Mini-Project/): Nginx, Docker, Git, and SSH set up on a real rented server — a static page pulled from this repo and published live.
-- [18-Linux-Networking-Fundamentals](./18-Linux-Networking-Fundamentals/): OSI model, distinguishing layers in real scenarios, and a real packet capture with `tcpdump` (in progress). ([EN](./18-Linux-Networking-Fundamentals/README-EN.md) / [TR](./18-Linux-Networking-Fundamentals/README-TR.md))
+- [18-Linux-Networking-Fundamentals](./18-Linux-Networking-Fundamentals/): OSI model, routing & forwarding, and DNS (resolver chain, record types, TTL) — verified hands-on with `tcpdump` and `dig +trace`. Also includes research into real outages from AWS/Cloudflare/Google Cloud. ([EN](./18-Linux-Networking-Fundamentals/README-EN.md) / [TR](./18-Linux-Networking-Fundamentals/README-TR.md) — Outage research: [EN](./18-Linux-Networking-Fundamentals/dns-outages-EN.md) / [TR](./18-Linux-Networking-Fundamentals/dns-outages-TR.md))
 
 ### 📝 Evaluation & Assessment Artifacts
 
@@ -330,6 +334,27 @@ _Finally started on the DNS resolution chain — learned the hierarchy between r
   - Started the DNS resolution chain, following a real resolution process with `dig +trace`.
 - **Milestones & Deliverables:**
   - 🌐 OSI Model (Complete) & Routing/Forwarding: [Notes (EN](./18-Linux-Networking-Fundamentals/README-EN.md) / [TR)](./18-Linux-Networking-Fundamentals/README-TR.md)
+
+### 🔹 June 30, 2026 | DNS Record Types, TTL, and Cloud Outage Research
+
+_Finished the rest of DNS. First, went through yesterday's `dig +trace` output line by line — understood the chain from root servers to TLD to the authoritative server using my own phone-book analogy ("I ask someone, they don't know but know who does" chain). Noticed each level has 13 (or 4) backup servers, but only one is actually queried — confirmed directly with a real IPv6 timeout case (automatic fallback to IPv4)._
+
+_Tested TTL by running the same query twice in a row — saw the TTL actually decrease (141 → 139) and the second query return instantly (0ms), concrete proof of how caching works. Also tested negative caching (`NXDOMAIN`), learning that even a non-existent domain has its own TTL._
+
+_Then queried all 8 DNS record types (A, AAAA, CNAME, MX, TXT, NS, SRV, PTR) one by one against real domains. Worked through how I'd actually use each one if I had my own domain (alifurkan.com). Discovered and confirmed on my own that Türkiye Sigorta runs three mail servers (for failover) and uses Azure DNS; that Google skips CNAME in favor of multiple direct A records on some subdomains; and that Cloudflare and Google deliberately set matching PTR records for their own IPs (one.one.one.one, dns.google)._
+
+_Finally, researched real, recent outages from AWS, Cloudflare, and Google Cloud — comparing AWS's DynamoDB DNS record being deleted by an automation bug, Cloudflare's outage from expired DNSSEC signatures, and Google's outage (authorization-related, not DNS), which made the "not every major outage is a DNS problem" distinction clear. Wrote this up as a separate, sourced document._
+
+- **Tasks & Objectives:**
+  - Analyzed `dig +trace` output in detail, understood every step of the resolver chain (root → TLD → authoritative).
+  - Confirmed TTL actually decreasing and caching working, via two consecutive queries.
+  - Tested negative caching (`NXDOMAIN`).
+  - Learned all 8 DNS record types (A, AAAA, CNAME, MX, TXT, NS, SRV, PTR) by querying real domains.
+  - Tested `nslookup`, `host`, and `resolvectl` debug tools.
+  - Researched real DNS-related outages from AWS, Cloudflare, and Google Cloud, producing a sourced document.
+- **Milestones & Deliverables:**
+  - 🌐 DNS (Complete): [Networking Notes (EN](./18-Linux-Networking-Fundamentals/README-EN.md) / [TR)](./18-Linux-Networking-Fundamentals/README-TR.md)
+  - 🔥 Cloud Outage Research: [Notes (EN](./18-Linux-Networking-Fundamentals/dns-outages-EN.md) / [TR)](./18-Linux-Networking-Fundamentals/dns-outages-TR.md)
 
 ---
 

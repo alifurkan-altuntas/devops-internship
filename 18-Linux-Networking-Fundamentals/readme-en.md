@@ -160,6 +160,104 @@ Expected this to return `0` (off) on a plain web server with no obvious reason t
 
 ---
 
+## 7. DNS — How Domain Resolution Actually Works
+
+### The Resolver Chain
+
+When resolving a domain name, DNS doesn't ask a single server — it follows a **hierarchical chain**, where each level points one step closer to the answer.
+
+```
+You → Recursive Resolver → Root Server → TLD Server (.com) → Authoritative Server → Answer!
+```
+
+- **Recursive Resolver**: where your query first lands (your ISP's DNS, or a public one like `8.8.8.8`). Its job is to walk the entire chain on your behalf and hand you back just the final result.
+- **Root Server**: doesn't know the real IP, but knows which servers handle `.com`, `.org`, etc., and points there.
+- **TLD Server**: still doesn't know the real IP, but knows which servers are authoritative for the specific domain, and points there.
+- **Authoritative Server**: the one that actually knows — this is where the real answer comes from.
+
+At each level, there are multiple redundant servers available (e.g. 13 root servers, several TLD servers, several authoritative servers) — but only **one is actually queried**, chosen essentially at random. The others exist purely as backups, in case the chosen one doesn't respond. This was directly observed: a real `dig +trace google.com` showed three IPv6 timeouts to one of Google's authoritative servers before successfully falling back to a different one (`ns2.google.com`) over IPv4.
+
+### Watching the Real Chain (`dig +trace`)
+
+```bash
+dig +trace google.com
+```
+
+A real run showed all four stages in sequence: the local resolver returning the 13 root server names, one root server (chosen at random) pointing to the 13 `.com` TLD servers, one TLD server pointing to Google's four authoritative servers (`ns1`-`ns4.google.com`), and finally one authoritative server (`ns2.google.com`) returning the real answer:
+
+```
+google.com.    300    IN    A    172.217.20.78
+```
+
+Each step in the trace also showed lines like `DS` and `RRSIG` — these are **DNSSEC** signatures, used to cryptographically verify that DNS answers haven't been tampered with. Not covered in depth here (advanced topic), but worth knowing they exist — and as the outage research document in this same folder shows, a real Cloudflare incident in 2023 happened specifically because these signatures expired and couldn't be validated.
+
+### TTL — Why Some Records Cache Longer Than Others
+
+The `300` in the answer above is the **TTL (Time To Live)**, in seconds — how long that answer can be cached before it needs to be looked up again.
+
+Different record types had very different TTLs in the same trace:
+
+```
+.                  6677     ← root servers, hours-long TTL
+com.               172800   ← TLD records, 2 days
+google.com.  A     300      ← actual IP, only 5 minutes
+```
+
+This is a deliberate trade-off: records that almost never change (root/TLD servers) get long TTLs to minimize unnecessary queries. Records that might change frequently (a company's actual IP, especially with load balancing) get short TTLs so updates propagate quickly.
+
+**Confirmed directly**: running the same `dig google.com` query twice in a row showed the TTL counting down (141 → 139, two seconds apart) and the second query taking 0ms instead of 34ms — proof the second answer came straight from cache, with no chain to walk.
+
+### Negative Caching (NXDOMAIN)
+
+Querying a domain that doesn't exist returns `NXDOMAIN`, along with a TTL for _that negative answer_ (found in the SOA record's last field):
+
+```bash
+dig thereisnodomainlikethat.com
+```
+
+```
+;; status: NXDOMAIN
+com.   900   IN   SOA   a.gtld-servers.net. ...
+```
+
+The `900` here means "this domain doesn't exist" is itself cached for 15 minutes — so repeated queries for the same non-existent domain don't re-walk the whole chain every time. This prevents unnecessary load from things like typos or scanning bots repeatedly hitting non-existent names.
+
+### Record Types
+
+| Type      | Purpose                                                            | Real Example Observed                                                                                                                                               |
+| --------- | ------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **A**     | Domain → IPv4 address                                              | `google.com → 142.251.38.238`                                                                                                                                       |
+| **AAAA**  | Domain → IPv6 address                                              | `google.com → 2a00:1450:4017:801::200e`                                                                                                                             |
+| **CNAME** | Domain → another domain name (alias)                               | `google.com` itself has none (apex domains can't have CNAME); `www.google.com` also has none — Google uses direct A records (8 of them, for load balancing) instead |
+| **MX**    | Where mail for this domain should be delivered                     | `google.com → 10 smtp.google.com.`; `turkiyesigorta.com.tr` has three, with priorities 10/20/30 for failover                                                        |
+| **TXT**   | Free-form text, used for ownership verification and email security | Google's `google.com` TXT records included site verifications for Facebook, Apple, DocuSign, and an SPF record                                                      |
+| **NS**    | Which servers are authoritative for this domain                    | `google.com` uses its own servers; `turkiyesigorta.com.tr` uses Microsoft Azure DNS; `claude.ai` uses Cloudflare                                                    |
+| **SRV**   | Host + port for a specific service                                 | Tested `_sip._tcp.google.com` — returned NXDOMAIN, since Google doesn't run that service there; SRV records only exist for services a domain actually runs          |
+| **PTR**   | Reverse lookup: IP → domain name                                   | `8.8.8.8 → dns.google.`; `1.1.1.1` and `1.0.0.1` both → `one.one.one.one.`                                                                                          |
+
+A few real findings worth noting:
+
+- **CNAME can't exist at the apex/root of a domain** — `google.com` itself must carry other record types (NS, SOA), so a CNAME there would conflict. Only subdomains can use CNAME.
+- **Big companies often skip CNAME entirely** for high-traffic subdomains, using multiple direct A records instead (as seen with `www.google.com` returning 8 different IPs) — likely for performance, since CNAME adds an extra resolution step.
+- **PTR records are optional, not automatic.** Cloudflare and Google deliberately set up matching PTR records (`1.1.1.1 → one.one.one.one`, and `one.one.one.one` itself resolves back to `1.1.1.1` via its own A record) for brand consistency — but plenty of IPs (e.g. a random `8.4.4.8` tested) have no PTR record at all. This matters in practice mainly for mail servers, where missing/mismatched PTR records increase the chance of being flagged as spam.
+- **MX priority** (the number before the mail server name) determines order: lower numbers are tried first. `turkiyesigorta.com.tr`'s three MX records (priorities 10, 20, 30) are a real example of mail server failover — if the primary is down, mail automatically routes to the backup.
+
+### Debug Tools Beyond `dig`
+
+```bash
+nslookup google.com    # older, simpler alternative to dig
+host google.com        # even more minimal output
+resolvectl status      # not a query tool — shows the system's own DNS configuration
+```
+
+`resolvectl status` revealed this server's actual DNS setup: `Current DNS Server: 8.8.4.4`, with `8.8.8.8` and `8.8.4.4` (Google's public resolvers) configured by the hosting provider as defaults — confirming the server doesn't run its own DNS resolution, it just forwards to Google.
+
+### Real-World Cloud Outages
+
+A separate document in this folder covers researched, real DNS-related (and DNS-adjacent) outages from AWS, Cloudflare, and Google Cloud — connecting these concepts to actual large-scale failures. See [dns-outages-EN.md](./dns-outages-EN.md).
+
+---
+
 | Layer            | Job                                       | Real Example Seen                                        |
 | ---------------- | ----------------------------------------- | -------------------------------------------------------- |
 | 7 - Application  | The protocol itself (HTTP, DNS, SSH, FTP) | `GET / HTTP/1.1` visible in a packet capture             |
