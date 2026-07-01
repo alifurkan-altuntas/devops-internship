@@ -8,11 +8,11 @@ Bu repo, stajım boyunca takip ettiğim öğrenme sürecimi, altyapı otomasyonu
 
 Verilen Linux yol haritasının tüm 17 fazını, son mini proje dahil, tamamladım — Nginx, Docker, Git ve SSH, gerçek (kiralık) bir sunucuda kurulu, ve bu repodan doğrudan çekilen bir sayfayı sunuyor. Bu süreçte ayrıca genel bir tekrar turu da yaptım: yol haritasının mezuniyet kriterlerindeki senaryo sorularını sesli olarak cevapladım, kendi bilgimde bazı eksikler buldum, ve bu fazların notlarını geri dönüp güçlendirdim.
 
-Şu an, asıl yol haritasının dışında, eğitmenimin verdiği ek konular üzerinde çalışıyorum. Log analizine `sed` ile path bazlı IP gruplama eklendi. OSI modeli ve routing & forwarding konuları tamamlandı (encapsulation/decapsulation, router davranışı, ICMP, gerçek dünya sağlayıcıları arasında karşılaştırmalı `traceroute`/`ping` testi, gerçek bir routing tablosu analizi, ve sunucuda aktif çıkan `ip_forward` ayarının Docker'dan kaynaklandığının araştırılması) — bu fazda 15 soruluk bir quiz çözüldü, %100 sonuçla.
+Şu an, asıl yol haritasının dışında, eğitmenimin verdiği ek konular üzerinde çalışıyorum. Log analizine `sed` ile path bazlı IP gruplama eklendi. OSI modeli ve routing & forwarding konuları tamamlandı, DNS derinlemesine işlendi (resolver zinciri, 8 kayıt tipi, TTL, negative caching, debug araçları, ve gerçek cloud kesintileri araştırması) — her biri için quiz çözüldü, 3'ünde de %100 alındı.
 
-DNS konusu da artık tamamlandı: resolver zinciri (root → TLD → authoritative) `dig +trace` ile gerçek zamanlı izlendi, TTL'in gerçekten geri saydığı doğrulandı, negative caching (`NXDOMAIN`) test edildi, ve 8 kayıt tipinin (A, AAAA, CNAME, MX, TXT, NS, SRV, PTR) hepsi gerçek domain'ler (google.com, turkiyesigorta.com.tr, claude.ai) üzerinde sorgulanarak öğrenildi. Ayrıca, AWS, Cloudflare, ve Google Cloud'un gerçek, DNS-ilişkili kesintileri araştırıldı, kaynakçalı bir belgeye dönüştürüldü.
+Nginx derinleşmesi de tamamlandı: Python backend servisleriyle reverse proxy kuruldu, path bazlı yönlendirme yapıldı (`/users/` → 3000, `/computers/` → 4000), path rewrite ve path engelleme (`allow`/`deny`) gerçek sunucuda test edildi. Ayrıca forward proxy kavramı için Squid kurulup Windows sistem proxy olarak ayarlandı — tarayıcıdan çıkan tüm trafiğin (bu konuşmanın trafiği dahil) Squid üzerinden geçtiği logda doğrudan gözlemlendi.
 
-Sırada Nginx ile daha kapsamlı pratik (reverse proxy, path rewrite, path engelleme) var — eğitmenimin özellikle takip ettiği bir konu.
+Sırada 20 test case yazımı (Nginx config'ini kapsayan geniş senaryolar) ve kalan fazların (03'ten itibaren) Türkçe/İngilizce belge dönüşümü var.
 
 Ayrıca, daha önce tamamlanan fazların notlarını da kademeli olarak Türkçe'ye çeviriyorum (iki dilli format: `README-EN.md` / `README-TR.md`), şu ana kadar Faz 1 ve 2 tamamlandı.
 
@@ -40,6 +40,7 @@ Bununla paralel, Udemy'deki Docker (A'dan Z'ye) kursuna ve YouTube networking pl
 - [16-Git-Basics](./16-Git-Basics/): `git clone`, branching, merging, ve bu repo üzerinde gerçekten çözülen bir push-reddedildi/editör-takıldı çakışması.
 - [17-Mini-Project](./17-Mini-Project/): Gerçek bir kiralık sunucuda Nginx, Docker, Git, ve SSH kurulumu — bu repodan çekilip canlıya alınan statik bir sayfa.
 - [18-Linux-Networking-Fundamentals](./18-Linux-Networking-Fundamentals/): OSI modeli, routing & forwarding, ve DNS (resolver zinciri, kayıt tipleri, TTL) — gerçek senaryolarla ve `tcpdump`/`dig +trace` ile doğrulanmış. Ayrıca AWS/Cloudflare/Google Cloud'un gerçek kesintilerine dair araştırma içerir. ([EN](./18-Linux-Networking-Fundamentals/README-EN.md) / [TR](./18-Linux-Networking-Fundamentals/README-TR.md) — Outage araştırması: [EN](./18-Linux-Networking-Fundamentals/dns-outages-EN.md) / [TR](./18-Linux-Networking-Fundamentals/dns-outages-TR.md))
+- [19-Nginx-Derinlestirme](./19-Nginx-Derinlestirme/): Reverse proxy, path bazlı yönlendirme, path rewrite, path engelleme, ve forward proxy (Squid) — gerçek bir sunucuda uygulamalı olarak test edildi. ([EN](./19-Nginx-Derinlestirme/README-EN.md) / [TR](./19-Nginx-Derinlestirme/README-TR.md))
 
 ### 📝 Değerlendirme & Sınav Materyalleri
 
@@ -355,6 +356,21 @@ _Son olarak, AWS, Cloudflare, ve Google Cloud'un gerçek, yakın tarihli kesinti
 - **Kilometre Taşları & Çıktılar:**
   - 🌐 DNS (Tamamlandı): [Networking Notları (EN](./18-Linux-Networking-Fundamentals/README-EN.md) / [TR)](./18-Linux-Networking-Fundamentals/README-TR.md)
   - 🔥 Cloud Outage Araştırması: [Notlar (EN](./18-Linux-Networking-Fundamentals/dns-outages-EN.md) / [TR)](./18-Linux-Networking-Fundamentals/dns-outages-TR.md)
+
+### 🔹 1 Temmuz 2026 | Nginx Derinleşme — Reverse Proxy, Path Yönetimi, Forward Proxy
+
+_Nginx derinleşme fazını tamamladım. Python'un yerleşik HTTP sunucusunu backend olarak kullanarak Nginx'i önüne koydum — gelen isteklerin artık backend logunda `127.0.0.1`'den (Nginx'ten) geldiğini görerek reverse proxy'nin gerçekten çalıştığını doğruladım. Sonra aynı Nginx üzerinden path bazlı yönlendirme kurdum: `/users/` → port 3000, `/computers/` → port 4000. Path rewrite'ı (`proxy_pass`'teki sondaki `/` farkı) test ederken, slash olmadan 404 aldım, ekleyince 200 — "klasörün içine gir" mantığını bu şekilde kavradım. Path engelleme kısmında `return 403` ile `deny all`'ı birlikte kullanınca localhost da engellenmeye başladı, `return 403`'ü kaldırınca düzeldi — bu gerçek bir hataydı, belgeye de girdi._
+
+_Forward proxy için Squid kurdum. Windows'ta sistem proxy olarak `91.151.88.38:3128` ayarladım, tarayıcıdan `ifconfig.me`'ye girince kendi IP'm yerine sunucunun IP'si göründü. Squid logunda Windows'tan çıkan tüm trafiği (`claude.ai`, `apple.com`, `windows.com` dahil) gördüm — proxy'nin gerçekten çalıştığını ve bütün verinin internete çıkarken Squid üzerinden geçtiğini doğrudan gözlemledim._
+
+- **Görevler & Hedefler:**
+  - Nginx'i reverse proxy olarak yapılandırdım, backend logundan doğruladım.
+  - Path bazlı yönlendirme kurdum (3 farklı servis, 3 farklı port).
+  - Path rewrite'ı (trailing slash farkı) test ederek öğrendim.
+  - Path engellemeyi (`allow`/`deny`) iç/dış ağ ayrımıyla uyguladım.
+  - Squid ile forward proxy kurup, Windows trafiğinin tamamının proxy'den geçtiğini logda doğruladım.
+- **Kilometre Taşları & Çıktılar:**
+  - 🌐 Nginx Derinleşme: [Notlar (EN](./19-Nginx-Derinlestirme/README-EN.md) / [TR)](./19-Nginx-Derinlestirme/README-TR.md)
 
 ---
 

@@ -8,11 +8,11 @@ Welcome to my DevOps engineering journal. This repository documents my learning 
 
 I've completed all 17 phases of the assigned Linux roadmap, including the final mini-project — Nginx, Docker, Git, and SSH configured on an actual rented server, serving a page pulled directly from this repository. Along the way I also did a full review pass: went through the roadmap's graduation-style scenario questions out loud, found a few gaps in my own understanding, and went back to strengthen the notes for those phases.
 
-I'm now working through additional topics given by my mentor, outside the original roadmap. Path-based IP grouping was added to the log analysis notes. The OSI model and routing & forwarding are complete (encapsulation/decapsulation, router behavior, ICMP, a comparative `traceroute`/`ping` test across real-world providers, a real routing table analysis, and investigating why `ip_forward` was active — turned out to be Docker) — scored 15/15 on a quiz covering this phase.
+I'm now working through additional topics given by my mentor, outside the original roadmap. Path-based IP grouping was added to log analysis. OSI model and routing & forwarding are complete, DNS was covered in depth (resolver chain, 8 record types, TTL, negative caching, debug tools, and real cloud outage research) — scored 15/15 on all three quizzes.
 
-DNS is also complete now: followed the resolver chain (root → TLD → authoritative) live with `dig +trace`, confirmed TTL actually counting down, tested negative caching (`NXDOMAIN`), and queried all 8 record types (A, AAAA, CNAME, MX, TXT, NS, SRV, PTR) against real domains (google.com, turkiyesigorta.com.tr, claude.ai). Also researched real, DNS-related outages from AWS, Cloudflare, and Google Cloud, turning the findings into a sourced document.
+Nginx deep dive is also complete: set up a reverse proxy with Python backend services, configured path-based routing (`/users/` → 3000, `/computers/` → 4000), tested path rewrite and path blocking (`allow`/`deny`) on a real server. Also set up Squid as a forward proxy, configured Windows to use it as a system proxy — confirmed in the Squid access log that all outgoing Windows traffic (including this conversation's traffic via `claude.ai`) was passing through Squid.
 
-Up next: more hands-on work with Nginx (reverse proxy, path rewrite, path blocking) — a topic my mentor has specifically been following up on.
+Up next: 20 test cases covering the Nginx config, and converting remaining phases (03 onwards) to bilingual documentation.
 
 I'm also gradually translating the notes from already-completed phases into Turkish (bilingual format: `README-EN.md` / `README-TR.md`) — Phases 1 and 2 are done so far.
 
@@ -40,6 +40,7 @@ Continuing the Udemy course on Docker (A'dan Z'ye) and the YouTube networking pl
 - [16-Git-Basics](./16-Git-Basics/): `git clone`, branching, merging, and a real push-rejected/editor-stuck conflict resolved on this exact repo.
 - [17-Mini-Project](./17-Mini-Project/): Nginx, Docker, Git, and SSH set up on a real rented server — a static page pulled from this repo and published live.
 - [18-Linux-Networking-Fundamentals](./18-Linux-Networking-Fundamentals/): OSI model, routing & forwarding, and DNS (resolver chain, record types, TTL) — verified hands-on with `tcpdump` and `dig +trace`. Also includes research into real outages from AWS/Cloudflare/Google Cloud. ([EN](./18-Linux-Networking-Fundamentals/README-EN.md) / [TR](./18-Linux-Networking-Fundamentals/README-TR.md) — Outage research: [EN](./18-Linux-Networking-Fundamentals/dns-outages-EN.md) / [TR](./18-Linux-Networking-Fundamentals/dns-outages-TR.md))
+- [19-Nginx-Derinlestirme](./19-Nginx-Derinlestirme/): Reverse proxy, path-based routing, path rewrite, path blocking, and forward proxy (Squid) — all tested hands-on on a real server. ([EN](./19-Nginx-Derinlestirme/README-EN.md) / [TR](./19-Nginx-Derinlestirme/README-TR.md))
 
 ### 📝 Evaluation & Assessment Artifacts
 
@@ -355,6 +356,21 @@ _Finally, researched real, recent outages from AWS, Cloudflare, and Google Cloud
 - **Milestones & Deliverables:**
   - 🌐 DNS (Complete): [Networking Notes (EN](./18-Linux-Networking-Fundamentals/README-EN.md) / [TR)](./18-Linux-Networking-Fundamentals/README-TR.md)
   - 🔥 Cloud Outage Research: [Notes (EN](./18-Linux-Networking-Fundamentals/dns-outages-EN.md) / [TR)](./18-Linux-Networking-Fundamentals/dns-outages-TR.md)
+
+### 🔹 July 1, 2026 | Nginx Deep Dive — Reverse Proxy, Path Management, Forward Proxy
+
+_Completed the Nginx deep dive phase. Used Python's built-in HTTP server as a backend and put Nginx in front of it — confirmed the reverse proxy was working by seeing requests arrive in the backend log from `127.0.0.1` (Nginx) instead of the user's actual IP. Then set up path-based routing: `/users/` → port 3000, `/computers/` → port 4000. Learned path rewrite through the trailing slash difference in `proxy_pass` — without it, got 404; with it, got 200, because the system wasn't interpreting the path as "go into that folder" without the slash. During path blocking, using `return 403` alongside `deny all` caused localhost to be blocked too — removing it fixed the issue. A real mistake that made it into the notes._
+
+_Set up Squid as a forward proxy. Configured Windows to use `91.151.88.38:3128` as a system proxy, visited `ifconfig.me` in the browser and saw the server's IP instead of my real Windows IP. The Squid access log showed all Windows outgoing traffic — `claude.ai`, `apple.com`, `windows.com` included — passing through the proxy. Directly confirmed that the proxy was working and all data leaving the machine was going through Squid._
+
+- **Tasks & Objectives:**
+  - Configured Nginx as a reverse proxy, verified via backend log.
+  - Set up path-based routing (3 different services, 3 different ports).
+  - Learned path rewrite (trailing slash difference) through hands-on testing.
+  - Applied path blocking with internal/external distinction (`allow`/`deny`).
+  - Set up Squid as a forward proxy, confirmed all Windows traffic passing through it via the access log.
+- **Milestones & Deliverables:**
+  - 🌐 Nginx Deep Dive: [Notes (EN](./19-Nginx-Derinlestirme/README-EN.md) / [TR)](./19-Nginx-Derinlestirme/README-TR.md)
 
 ---
 

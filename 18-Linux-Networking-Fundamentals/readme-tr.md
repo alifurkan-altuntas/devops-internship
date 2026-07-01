@@ -177,6 +177,8 @@ Sen → Recursive Resolver → Root Sunucu → TLD Sunucu (.com) → Authoritati
 
 Her seviyede, birden fazla yedek sunucu var (örn. 13 root sunucu, birkaç TLD sunucu, birkaç authoritative sunucu) — ama **sadece biri** gerçekten sorgulanır, esasen rastgele seçilerek. Diğerleri, seçilen cevap vermezse diye, sadece **yedek olarak** duruyor. Bu doğrudan gözlemlendi: gerçek bir `dig +trace google.com`, Google'ın authoritative sunucularından birine 3 kere IPv6 üzerinden zaman aşımı yaşadıktan sonra, başarıyla farklı birine (`ns2.google.com`) IPv4 üzerinden geçtiğini gösterdi.
 
+**Örnek:** Birine telefon numarası soruyorsunuz, o bilmiyor ama "şu 13 kişi biliyor" diyor. O 13 kişiden birini rastgele seçip soruyorsunuz, o da "bilmiyorum ama bu konuyu bilen 13 kişi var" diyor. O 13 kişiden birini rastgele seçip soruyorsunuz, o diyor ki "bilmiyorum ama bu kişinin 4 tane numarası var." 4 numaradan birini rastgele arıyorsunuz ve kişiye ulaşıyorsunuz. Eğer seçtiğiniz cevap vermezse, sıradakini deniyorsunuz.
+
 ### Gerçek Zinciri İzlemek (`dig +trace`)
 
 ```bash
@@ -207,6 +209,8 @@ Bu, bilinçli bir denge: neredeyse hiç değişmeyen kayıtlar (root/TLD sunucul
 
 **Doğrudan doğrulandı**: aynı `dig google.com` sorgusunu art arda iki kere çalıştırmak, TTL'in geri saydığını (141 → 139, iki saniye arayla) ve ikinci sorgunun 34ms yerine 0ms sürdüğünü gösterdi — ikinci cevabın, hiç zincir dolaşmadan, doğrudan cache'den geldiğinin kanıtı.
 
+**Örnek:** Kendi telefon rehberiniz var ve numaraları insanlara tekrar tekrar sormak yerine, bir kez öğrenip kaydediyorsunuz. Sık kullandığınız numaraları haftada bir doğruluğunu kontrol ederken, nadiren kullandıklarınızı ayda bir, var olup olmadığından emin olmak istediğiniz numaraları ise 2-3 haftada bir kontrol ediyorsunuz — sürekli tekrar tekrar sormak hem zaman kaybı, hem iş yükü, hem de gereksiz yük.
+
 ### Negative Caching (NXDOMAIN)
 
 Var olmayan bir domain'i sorgulamak `NXDOMAIN` döndürür, _o negatif cevap için_ bir TTL ile birlikte (SOA kaydının son alanında bulunur):
@@ -221,6 +225,8 @@ com.   900   IN   SOA   a.gtld-servers.net. ...
 ```
 
 Buradaki `900`, "bu domain yok" bilgisinin kendisinin 15 dakika boyunca cache'lendiği anlamına gelir — bu yüzden aynı var olmayan domain için tekrarlanan sorgular, her seferinde tüm zinciri tekrar dolaşmaz. Bu, yazım hataları veya var olmayan isimlere tekrar tekrar çarpan tarama botları gibi şeylerden kaynaklanan gereksiz yükü önler.
+
+**Örnek:** Telefon rehberinizdeki var olmayan numaraları ne çok sık ne çok nadir kontrol ediyorsunuz — zaten sahibi yoktu, ama belki birinin o numarayı aldığını öğrenmek için ara sıra bakıyorsunuz. Ne kullandığınız numaralar kadar sık, ne de hiç bakmayacak kadar nadir.
 
 ### Kayıt Tipleri
 
@@ -241,6 +247,14 @@ Belirtmeye değer birkaç gerçek bulgu:
 - **Büyük şirketler genelde, yüksek trafikli alt domain'ler için CNAME'i tamamen atlıyor**, bunun yerine birden fazla doğrudan A kaydı kullanıyor (`www.google.com`'un 8 farklı IP döndürmesinde görüldüğü gibi) — muhtemelen performans için, çünkü CNAME ekstra bir çözümleme adımı ekliyor.
 - **PTR kayıtları isteğe bağlı, otomatik değil.** Cloudflare ve Google, marka tutarlılığı için bilinçli olarak eşleşen PTR kayıtları kurmuş (`1.1.1.1 → one.one.one.one`, ve `one.one.one.one`'ın kendisi de kendi A kaydı üzerinden `1.1.1.1`'e geri çözümleniyor) — ama birçok IP'nin (örn. test edilen rastgele `8.4.4.8`) hiç PTR kaydı yok. Bu, pratikte en çok mail sunucuları için önemli, çünkü eksik/uyumsuz PTR kayıtları, spam olarak işaretlenme ihtimalini artırır.
 - **MX önceliği** (mail sunucu isminden önceki sayı), sırayı belirler: düşük sayılar önce denenir. `turkiyesigorta.com.tr`'nin üç MX kaydı (öncelik 10, 20, 30), gerçek bir mail sunucu failover örneği — ana sunucu çökerse, mail otomatik olarak yedeğe yönlenir.
+
+**Örnek (MX):** Google apartmanı kapıya bir not asmış: "Kargo ve postacılar, gönderileri dairelere değil kapıcıya teslim etsin — kapıcı ilgili dairelere ulaştıracak." Birden fazla kapıcı varsa (mx1, mx2, mx3), önce birincisine gidilir, o yoksa ikincisine, o da yoksa üçüncüsüne.
+
+**Örnek (CNAME):** Birinin hem resmi ismi hem de lakabı olması gibi — "Ali Furkan" dersen de, "Furkan" dersen de aynı kişiye ulaşırsın. CNAME de böyle: farklı bir isim ama aynı yere gidiyor.
+
+**Örnek (PTR):** Profesyonel kurumlar bunu çift taraflı yapıyor — öyle de yazılsa böyle de yazılsa "aynı yere gidiyoruz" demeye getiriyorlar. Cloudflare, `1.1.1.1` yazsan da `one.one.one.one` yazsan da aynı yere ulaştırıyor.
+
+**Örnek (TXT):** Kargo firmaları kendi kargocularına özel bir kod veriyor ve diyor ki: "Bundan sonra apartmanlara gittiğinde bu kodu göster. Kodu olmayan biri Google adına geliyorum diyorsa, o gerçek değildir." Her servis (Apple, Facebook, Microsoft) kendi kodunu veriyor, Google da bunları TXT kaydına ekliyor.
 
 ### `dig` Dışındaki Debug Araçları
 
