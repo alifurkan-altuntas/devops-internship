@@ -16,14 +16,17 @@ This repo had already been using this flow throughout every phase — this secti
 ### `git clone`
 
 Downloads a full copy of a remote repository to the local machine:
+
 ```bash
 git clone https://github.com/user/repo.git
 ```
+
 Not used directly on this repo (it was created locally and connected to GitHub from the start), but this is the command that would be used to pull this exact repo down onto a different machine.
 
 ### `git commit` / `git push`
 
 Already in regular use throughout this journal:
+
 ```bash
 git add file
 git commit -m "message"
@@ -41,7 +44,8 @@ A branch is an isolated line of work, separate from `main`, that doesn't affect 
 ```bash
 git checkout -b test-branch
 ```
-This creates `test-branch` and switches to it in one step.
+
+Creates `test-branch` and switches to it in one step.
 
 ### Confirming isolation
 
@@ -58,7 +62,9 @@ dir
 ```bash
 git merge test-branch
 ```
+
 Output:
+
 ```text
 Updating 64cd35a..f41fc2a
 Fast-forward
@@ -83,6 +89,7 @@ git commit -m "clean up test branch demo file"
 ```bash
 git push origin main
 ```
+
 ```text
 ! [rejected]        main -> main (fetch first)
 hint: Updates were rejected because the remote contains work that you do not
@@ -97,7 +104,7 @@ This meant GitHub's copy of `main` had changes that the local copy didn't — li
 git pull origin main
 ```
 
-This time, instead of a clean fast-forward, both local and remote had diverged — Git needed to create a real merge commit, which requires a commit message. Git tried to open the configured editor to write that message:
+This time, instead of a clean fast-forward, both local and remote had diverged — Git needed to create a real merge commit, which requires a commit message. Git tried to open the configured editor:
 
 ```text
 hint: Waiting for your editor to close the file...
@@ -115,18 +122,20 @@ git config --global core.editor "notepad"
 git commit
 ```
 
-This time Notepad opened with an auto-generated merge message; saving and closing it completed the merge:
+Notepad opened with an auto-generated merge message; saving and closing it completed the merge:
+
 ```text
 [main e48d7b4] Merge branch 'main' of https://github.com/.../devops-internship
 ```
 
-`git config --global` applies to every repository on the machine, not just this one — so this fixes the editor issue going forward, not just for this repo.
+`git config --global` applies to every repository on the machine, not just this one — so this fixes the editor issue going forward.
 
 ### Push succeeded
 
 ```bash
 git push origin main
 ```
+
 ```text
 1a7283e..e48d7b4  main -> main
 ```
@@ -144,15 +153,15 @@ git push origin main
 
 ## 📊 Command Reference
 
-| Command | Purpose |
-| --- | --- |
-| **`git clone <url>`** | Downloads a full copy of a remote repo locally. |
-| **`git branch`** | Lists local branches (does *not* create one without a name). |
-| **`git branch <name>`** | Creates a new branch. |
-| **`git checkout -b <name>`** | Creates a new branch and switches to it in one step. |
-| **`git merge <branch>`** | Merges the named branch into the branch currently checked out. |
-| **`git pull`** | Fetches and merges remote changes into the local branch. |
-| **`git push origin main`** | Sends local commits on `main` to the remote repository. |
+| Command                                         | Purpose                                                                   |
+| ----------------------------------------------- | ------------------------------------------------------------------------- |
+| **`git clone <url>`**                           | Downloads a full copy of a remote repo locally.                           |
+| **`git branch`**                                | Lists local branches (does _not_ create one without a name).              |
+| **`git branch <name>`**                         | Creates a new branch.                                                     |
+| **`git checkout -b <name>`**                    | Creates a new branch and switches to it in one step.                      |
+| **`git merge <branch>`**                        | Merges the named branch into the branch currently checked out.            |
+| **`git pull`**                                  | Fetches and merges remote changes into the local branch.                  |
+| **`git push origin main`**                      | Sends local commits on `main` to the remote repository.                   |
 | **`git config --global core.editor "notepad"`** | Sets the default editor Git uses for commit/merge messages, machine-wide. |
 
 ---

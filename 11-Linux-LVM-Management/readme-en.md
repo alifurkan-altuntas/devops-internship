@@ -8,11 +8,11 @@ This document covers LVM basics: physical volumes, volume groups, logical volume
 
 ### The Problem With Traditional Partitioning
 
-With a regular partition (e.g. via `fdisk`), the size is essentially fixed at creation time. If a partition runs out of space later — a growing database, accumulating logs — resizing it is difficult, often risky, and frequently requires downtime or even rebuilding the disk layout from scratch.
+With a regular partition (e.g. via `fdisk`), the size is essentially fixed at creation time. If a partition runs out of space later — a growing database, accumulating logs — resizing it is difficult, often risky, and frequently requires downtime or rebuilding the disk layout from scratch.
 
 ### How LVM Solves This
 
-LVM works like resource pooling — conceptually similar to how a hypervisor pools physical RAM/CPU and hands out slices of it to individual VMs. The physical disk space goes into a shared pool first, and usable volumes are then carved out of that pool as needed:
+LVM works like resource pooling — conceptually similar to how a hypervisor pools physical RAM/CPU and hands out slices to individual VMs. The physical disk space goes into a shared pool first, and usable volumes are carved out of that pool as needed:
 
 ```
 Physical Disk(s) → Volume Group (the pool) → Logical Volume(s) (slices handed out)
@@ -39,7 +39,7 @@ sudo lvextend -l +10G /dev/disk_pool/data_volume
 sudo resize2fs /dev/disk_pool/data_volume
 ```
 
-No unmounting, no rebuilding, no downtime — the volume just grows into space that was already reserved in the pool.
+No unmounting, no rebuilding, no downtime — the volume just grows into space already reserved in the pool.
 
 ---
 
@@ -69,7 +69,7 @@ While testing with large disk writes, the VM froze completely.
    kernel:watchdog: BUG: soft lockup - CPU#1 stuck for 33s! [vmtoolsd:726]
    ```
 
-3. **Root Cause:** The VM uses a thin-provisioned virtual disk on the host. Writing 50GB of zeros caused the VM's disk file to actually grow by 50GB on the host. This filled the host's disk completely, which caused the hypervisor to stall the VM's I/O and network, freezing the guest.
+3. **Root Cause:** The VMs were installed on the same local disk as the host machine. The VM used a thin-provisioned virtual disk — writing 50GB of zeros caused the VM's disk file to actually grow by 50GB on the host. This filled the host's disk completely, causing the hypervisor to stall the VM's I/O and network, freezing the guest.
 
 ### 🛠️ Fix
 
@@ -114,8 +114,8 @@ Using smaller MB-sized files this time to avoid repeating the disk-space inciden
    ```bash
    sudo pvcreate /dev/loop1                                  # turn the new loop device into a PV
    sudo vgextend test_pool /dev/loop1                        # add it to the existing pool
-   sudo lvextend -l +100%FREE /dev/test_pool/test_data        # grow the logical volume
-   sudo resize2fs /dev/test_pool/test_data                    # resize the filesystem to match
+   sudo lvextend -l +100%FREE /dev/test_pool/test_data       # grow the logical volume
+   sudo resize2fs /dev/test_pool/test_data                   # resize the filesystem to match
    ```
 
 ---

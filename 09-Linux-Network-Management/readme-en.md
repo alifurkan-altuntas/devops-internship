@@ -24,7 +24,7 @@ Forces the query to go directly to Google's public DNS server, skipping any loca
 
 ### The Actual Troubleshooting Flow
 
-If DNS resolution is failing, the goal is to isolate **where** the problem is — locally, or further out:
+If DNS resolution is failing, the goal is to isolate **where** the problem is:
 
 1. **Try the default resolver, then a public one:**
 
@@ -48,7 +48,9 @@ If DNS resolution is failing, the goal is to isolate **where** the problem is �
    ```bash
    ping 8.8.8.8
    ```
-   If a raw IP isn't reachable either, the problem isn't DNS specifically — it's the network connection itself. If the IP works but domain names don't resolve, that confirms it's a DNS-layer issue specifically, not a general connectivity one.
+   If a raw IP isn't reachable either, the problem isn't DNS — it's the network connection itself. If the IP works but domain names don't resolve, that confirms it's a DNS-layer issue specifically.
+
+> 💡 For an in-depth treatment of DNS (resolver chain, record types, TTL, debug tools) see [18-Linux-Networking-Fundamentals](../18-Linux-Networking-Fundamentals/).
 
 ---
 
@@ -60,12 +62,10 @@ sudo ss -lntp | grep :80
 
 ### `-l` vs `-a`
 
-These are easy to confuse:
-
-| Flag     | Shows                                                                                                              |
-| -------- | ------------------------------------------------------------------------------------------------------------------ |
-| **`-l`** | Only **listening** sockets — i.e. what's actually waiting for incoming connections on a port.                      |
-| **`-a`** | **Both** listening sockets **and** established connections — a superset of `-l`, not a separate alternative to it. |
+| Flag     | Shows                                                                                                        |
+| -------- | ------------------------------------------------------------------------------------------------------------ |
+| **`-l`** | Only **listening** sockets — what's actually waiting for incoming connections on a port.                     |
+| **`-a`** | **Both** listening sockets **and** established connections — a superset of `-l`, not a separate alternative. |
 
 For "what's listening on port X," `-l` is the direct and sufficient answer:
 

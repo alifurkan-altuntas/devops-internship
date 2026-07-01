@@ -14,11 +14,11 @@ lrwxrwxrwx  1 altun altun     7 Jun 19 18:09 link -> target
 
 The very first character indicates the **type**, not a permission:
 
-| Character | Meaning                                        |
-| --------- | ---------------------------------------------- |
-| `-`       | Regular file (no special letter — just a dash) |
-| `d`       | **D**irectory                                  |
-| `l`       | Symbolic **l**ink                              |
+| Character | Meaning           |
+| --------- | ----------------- |
+| `-`       | Regular file      |
+| `d`       | **D**irectory     |
+| `l`       | Symbolic **l**ink |
 
 The remaining 9 characters are split into three groups of 3 (`rwx`), representing **user (owner)**, **group**, and **others**, in that order.
 
@@ -55,23 +55,21 @@ chmod 750 file
 ### Worked Examples
 
 - **`chmod 700`** — user has full access (rwx); group and others have nothing. Useful for private files only the owner should touch.
-- **`chmod 555`** — everyone (user, group, others) can read and execute, but nobody can write. Common for shared, read-only scripts.
+- **`chmod 555`** — everyone can read and execute, but nobody can write. Common for shared, read-only scripts.
 - **`chmod 074`** — user has no permissions at all; group has full access; others can only read. An unusual but valid combination — there's no rule that the owner needs the most access.
 
 ### File vs. Directory Maximum Permissions
 
-This is easy to get backwards, so worth stating clearly:
-
 - **Files**: maximum is `666` (rw-rw-rw-) by default — execute isn't meaningful for a file unless it's actually a script/binary, so it isn't granted automatically.
-- **Directories**: maximum is `777` (rwxrwxrwx) by default — the execute bit on a directory means "permission to enter/traverse it" (`cd` into it, list its contents). Without `x`, a directory can't be entered at all, even if `r` is set.
+- **Directories**: maximum is `777` (rwxrwxrwx) by default — the execute bit on a directory means "permission to enter/traverse it". Without `x`, a directory can't be entered at all, even if `r` is set.
 
-This is exactly why `umask` math (covered below) subtracts from `666` for files and `777` for directories — they have different baselines.
+This is exactly why `umask` math subtracts from `666` for files and `777` for directories — they have different baselines.
 
 ---
 
 ## 3. Shared Directory with Sticky Bit
 
-A shared folder with full write access (`777`) introduces a vulnerability: any user can cross-delete or alter files belonging to other operators. The **sticky bit** fixes this.
+A shared folder with full write access (`777`) introduces a vulnerability: any user can delete or alter files belonging to others. The **sticky bit** fixes this.
 
 ### 🛠️ Steps
 
@@ -88,13 +86,13 @@ A shared folder with full write access (`777`) introduces a vulnerability: any u
    sudo chmod +t /tmp/test
    ```
 
-   _Alternative absolute command:_ `sudo chmod 1777 /tmp/test`
+   Alternative: `sudo chmod 1777 /tmp/test`
 
-3. **Status Verification:**
+3. **Status verification:**
    ```bash
    ls -ld /tmp/test
    ```
-   _Expected output:_ `drwxrwxrwt ... /tmp/test` — the trailing **`t`** indicates the active sticky bit.
+   Expected output: `drwxrwxrwt ... /tmp/test` — the trailing **`t`** indicates the active sticky bit.
 
 ### 🔐 How It Works
 
@@ -105,12 +103,12 @@ The sticky bit does **not** restrict reading or modification directly. Instead, 
 - Root retains full control.
 - Other users — even with write permission on the directory — cannot delete or rename files owned by someone else.
 
-Widely used on shared temp locations like `/tmp`, where everyone needs write access but cross-user deletion must be blocked.
+**Example:** Think of a shared office desk. Anyone can put their belongings on it, anyone can see and even use what's there — but **no one can throw away someone else's things.** Only the owner of an item can remove it. `/tmp` works exactly like this — a place where everyone can write, but no one can delete someone else's files.
 
 ### 🔒 Test Results
 
-- **Test Case A:** User `altun` runs `touch /tmp/test/test.txt` — succeeds.
-- **Test Case B:** User `devopstester` tries `rm /tmp/test/test.txt` — fails:
+- **Test A:** User `altun` runs `touch /tmp/test/test.txt` — succeeds. ✅
+- **Test B:** User `devopstester` tries `rm /tmp/test/test.txt` — fails:
   ```text
   rm: cannot remove '/tmp/test/test.txt': Operation not permitted
   ```
@@ -133,13 +131,13 @@ sudo chgrp -R wheel /tmp/test           # change group only
 
 ## 5. Default Permission Masking (`umask`)
 
-`umask` controls the default permissions of newly created files and directories, by subtracting from the baseline maximums covered above.
+`umask` controls the default permissions of newly created files and directories, by subtracting from the baseline maximums.
 
 ```bash
 umask
 ```
 
-_Default return:_ `0022`
+Default return: `0022`
 
 ### The Math
 
@@ -154,7 +152,7 @@ touch hardened.conf
 ls -l hardened.conf
 ```
 
-_Result:_ `-rw-------` (`666 - 077 = 600`) — only the owner has access.
+Result: `-rw-------` (`666 - 077 = 600`) — only the owner has access.
 
 ---
 

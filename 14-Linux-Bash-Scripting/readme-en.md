@@ -8,7 +8,8 @@ This document covers Bash variables, command substitution, numeric comparisons, 
 
 Write a script that checks disk usage and prints a warning if it exceeds 80%.
 
-Expected output style:
+Expected output:
+
 ```
 WARNING: Disk usage is 85%
 ```
@@ -23,17 +24,18 @@ WARNING: Disk usage is 85%
 df -h /
 ```
 
-Output looks like:
+Output:
+
 ```text
 Filesystem      Size  Used Avail Use% Mounted on
 /dev/sda1        20G  9.0G   10G   47% /
 ```
 
-The `Use%` column is what we need — but on its own, this output isn't usable directly in a script. It needs to be narrowed down to just the number.
+The `Use%` column is what's needed — but this output isn't directly usable in a script. It needs to be narrowed down to just the number.
 
 ### Isolating the right line
 
-Using `NR==2` (from the earlier Core Linux phase) skips the header row and grabs only the data row:
+Using `NR==2` skips the header row and grabs only the data row:
 
 ```bash
 df -h / | awk 'NR==2 {print $5}'
@@ -63,13 +65,13 @@ usage=$(df -h / | awk 'NR==2 {print $5}' | cut -d'%' -f1)
 
 Bash doesn't use `>` or `<` for numeric comparisons inside `[ ]` — it uses specific flags:
 
-| Operator | Meaning |
-| --- | --- |
-| `-gt` | greater than |
-| `-lt` | less than |
-| `-ge` | greater or equal |
-| `-le` | less or equal |
-| `-eq` | equal |
+| Operator | Meaning          |
+| -------- | ---------------- |
+| `-gt`    | greater than     |
+| `-lt`    | less than        |
+| `-ge`    | greater or equal |
+| `-le`    | less or equal    |
+| `-eq`    | equal            |
 
 ```bash
 if [ $usage -gt 80 ]; then
@@ -80,6 +82,7 @@ fi
 ### A real error along the way
 
 Writing this the first time produced:
+
 ```text
 ./disk_check.sh: line 4: [48: command not found
 ```
@@ -112,22 +115,22 @@ The curly braces in `${usage}%` aren't strictly required everywhere, but they cl
 
 ## 5. Why No Loop or Function Here
 
-The task only needed to check a single value once — adding a `for` loop or wrapping it in a `function` wouldn't have served a real purpose for this specific script. Both make sense once there's an actual repeating or reusable need (e.g. checking multiple mount points, or running on a schedule via `cron`) — forcing them in just to "use everything" would've been artificial rather than useful.
+The task only needed to check a single value once — adding a `for` loop or wrapping it in a `function` wouldn't have served a real purpose for this specific script. Both make sense once there's an actual repeating or reusable need (e.g. checking multiple mount points, or running on a schedule via `cron`) — forcing them in just to "use everything" would have been artificial rather than useful.
 
 ---
 
 ## 📊 Command Reference
 
-| Concept | Example | Purpose |
-| --- | --- | --- |
-| **Variable assignment** | `name="value"` | No spaces around `=`. |
-| **Command substitution** | `var=$(command)` | Stores a command's output in a variable. |
-| **`awk 'NR==2'`** | `awk 'NR==2 {print $5}'` | Selects a specific line by number. |
-| **`cut -d -f`** | `cut -d'%' -f1` | Splits text by a delimiter and picks a field. |
-| **Numeric comparison** | `[ $a -gt $b ]` | Bash's way of comparing numbers (`-gt`, `-lt`, `-eq`, etc.). |
-| **`if`/`else`/`fi`** | see above | Bash conditional block; closed with `fi`, not `end`. |
-| **`chmod +x`** | `chmod +x script.sh` | Grants execute permission so the script can be run directly. |
-| **`./script.sh`** | `./script.sh` | Runs an executable script in the current directory. |
+| Concept                  | Example                  | Purpose                                                      |
+| ------------------------ | ------------------------ | ------------------------------------------------------------ |
+| **Variable assignment**  | `name="value"`           | No spaces around `=`.                                        |
+| **Command substitution** | `var=$(command)`         | Stores a command's output in a variable.                     |
+| **`awk 'NR==2'`**        | `awk 'NR==2 {print $5}'` | Selects a specific line by number.                           |
+| **`cut -d -f`**          | `cut -d'%' -f1`          | Splits text by a delimiter and picks a field.                |
+| **Numeric comparison**   | `[ $a -gt $b ]`          | Bash's way of comparing numbers (`-gt`, `-lt`, `-eq`, etc.). |
+| **`if`/`else`/`fi`**     | see above                | Bash conditional block; closed with `fi`, not `end`.         |
+| **`chmod +x`**           | `chmod +x script.sh`     | Grants execute permission so the script can be run directly. |
+| **`./script.sh`**        | `./script.sh`            | Runs an executable script in the current directory.          |
 
 ---
 
