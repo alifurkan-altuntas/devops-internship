@@ -1,4 +1,4 @@
-\*# 🚀 DevOps & Linux Altyapı Yolculuğu - Türkiye Sigorta
+# 🚀 DevOps & Linux Altyapı Yolculuğu - Türkiye Sigorta
 
 🌐 [Read in English](./README-EN.md)
 
