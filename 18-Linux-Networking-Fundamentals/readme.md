@@ -131,7 +131,7 @@ ip route
 
 ```text
 default via 91.151.88.1 dev ens192 proto static
-91.151.88.0/24 dev ens192 proto kernel scope link src 91.151.88.38
+91.151.88.0/24 dev ens192 proto kernel scope link src <SERVER_IP>
 172.17.0.0/16 dev docker0 proto kernel scope link src 172.17.0.1 linkdown
 ```
 

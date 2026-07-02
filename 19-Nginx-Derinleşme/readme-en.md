@@ -10,7 +10,7 @@ Nginx, acting as a **reverse proxy**, receives incoming requests and forwards th
 
 **Why it's used:**
 
-- Backend services' ports/IPs stay hidden from the outside world with that privacy happens
+- Backend services' ports/IPs stay hidden from the outside world
 - A single entry point (port 80/443) manages multiple services
 - Load balancing, SSL termination, rate limiting all happen at Nginx — the backend doesn't carry that load
 
@@ -68,7 +68,7 @@ sudo nginx -t && sudo systemctl reload nginx
 Request to port 80 from outside (Windows):
 
 ```
-PS C:\> curl http://91.151.88.38
+PS C:\> curl http://<SERVER_IP>
 <h1>Backend Service Running - Port 8080</h1>
 ```
 
@@ -124,13 +124,13 @@ location /computers/ {
 ### Test Results
 
 ```
-PS C:\> curl http://91.151.88.38/
+PS C:\> curl http://<SERVER_IP>/
 <h1>Backend Service Running - Port 8080</h1>
 
-PS C:\> curl http://91.151.88.38/users/
+PS C:\> curl http://<SERVER_IP>/users/
 <h1>Users Service</h1>
 
-PS C:\> curl http://91.151.88.38/computers/
+PS C:\> curl http://<SERVER_IP>/computers/
 <h1>Computers Service</h1>
 ```
 
@@ -156,7 +156,7 @@ proxy_pass http://localhost:3000/   →  /users/list  →  localhost:3000/list  
 Requesting `/users` (no trailing slash) triggers a `301 Moved Permanently` to `/users/`. This is Nginx's standard behavior when a `location /users/` block is defined. `curl -L` follows the redirect automatically:
 
 ```bash
-curl -L http://91.151.88.38/users
+curl -L http://<SERVER_IP>/users
 # <h1>Users Service</h1>
 ```
 
@@ -179,6 +179,7 @@ location /admin {
 ```nginx
 location /admin {
     allow 127.0.0.1;
+    allow ::1;
     deny all;
 }
 ```
@@ -186,21 +187,44 @@ location /admin {
 Nginx reads rules **top to bottom**, stopping at the first match:
 
 1. Coming from `127.0.0.1`? → Allow
-2. Anyone else? → 403
+2. Coming from `::1`? → Allow
+3. Anyone else? → 403
 
-**Example:** A security guard placed at the office door with one instruction: "Only let in people coming from inside the building (localhost). Turn everyone else away."
+**Why `allow ::1` is also needed:** `allow 127.0.0.1` is technically correct — but on Ubuntu and some other systems, when you type `localhost`, the system resolves it as IPv6 (`::1`) rather than IPv4 (`127.0.0.1`). Nginx treats these as two different addresses. This was directly observed during testing:
+
+```bash
+curl -v http://localhost/admin 2>&1 | grep "Connected"
+# * Connected to localhost (::1) port 80
+```
+
+When `localhost` was used, the request came from `::1`. With only `allow 127.0.0.1` in the config, Nginx couldn't find `::1` in the allow list and fell through to `deny all` — returning 403. Adding `allow ::1` fixed it.
+
+Writing the IP directly bypasses this — `127.0.0.1` goes over IPv4 and `allow 127.0.0.1` is sufficient on its own:
+
+```bash
+curl -v http://127.0.0.1/admin 2>&1 | grep "Connected"
+# * Connected to 127.0.0.1 (127.0.0.1) port 80
+```
+
+For a portable, safe config, include both addresses.
+
+**Example:** A security guard placed at the office door with one instruction: "Only let in people from inside (localhost). Turn everyone else away." But localhost has two doors — one IPv4, one IPv6. If you only put one on the allow list, someone coming through the other door gets turned away even though they're from inside.
 
 ### Test Results
 
 ```bash
-# From inside (localhost)
+# From inside — localhost (IPv6)
 curl http://localhost/admin
-# → Backend response (allowed through)
+# → 404 Not Found (allowed through, reached backend, but no /admin file exists)
+
+# From inside — direct IPv4
+curl http://127.0.0.1/admin
+# → 404 Not Found (allowed through, reached backend, but no /admin file exists)
 ```
 
 ```
 # From outside (Windows)
-PS C:\> curl http://91.151.88.38/admin
+PS C:\> curl http://<SERVER_IP>/admin
 <html><head><title>403 Forbidden</title></head>
 <body><center><h1>403 Forbidden</h1></center></body></html>
 ```
@@ -235,7 +259,7 @@ Added to `/etc/squid/squid.conf` (for testing only):
 http_access allow all
 ```
 
-Windows system proxy set to `91.151.88.38:3128`. Visiting `ifconfig.me` in the browser returned **Squid's IP** (`91.151.88.38`) instead of the real Windows IP (`37.154.226.48`).
+Windows system proxy set to `<SERVER_IP>:3128`. Visiting `ifconfig.me` in the browser returned **Squid's IP** (`<SERVER_IP>`) instead of the real Windows IP (`37.154.226.48`).
 
 The Squid access log confirmed **all Windows traffic** was passing through Squid:
 
@@ -261,9 +285,9 @@ After testing, `http_access allow all` was removed and the Windows proxy setting
 | `proxy_set_header Host $host`             | Pass the original domain name to the backend        |
 | `proxy_set_header X-Real-IP $remote_addr` | Pass the real user IP to the backend                |
 | `deny all`                                | Block all requests (returns 403)                    |
-| `allow 127.0.0.1`                         | Allow only localhost                                |
+| `allow 127.0.0.1` / `allow ::1`           | Allow localhost (both IPv4 and IPv6)                |
 | `location /path/`                         | Define a rule for a specific path                   |
 
 ---
 
-ℹ️ _All tests performed on a real Ubuntu VPS (`91.151.88.38`). Python's built-in HTTP server was used as the backend service._
+ℹ️ _All tests performed on a real Ubuntu VPS (`<SERVER_IP>`). Python's built-in HTTP server was used as the backend service._

@@ -12,7 +12,7 @@ Verilen Linux yol haritasının tüm 17 fazını, son mini proje dahil, tamamlad
 
 Nginx derinleşmesi de tamamlandı: Python backend servisleriyle reverse proxy kuruldu, path bazlı yönlendirme yapıldı (`/users/` → 3000, `/computers/` → 4000), path rewrite ve path engelleme (`allow`/`deny`) gerçek sunucuda test edildi. Ayrıca forward proxy kavramı için Squid kurulup Windows sistem proxy olarak ayarlandı — tarayıcıdan çıkan tüm trafiğin (bu konuşmanın trafiği dahil) Squid üzerinden geçtiği logda doğrudan gözlemlendi.
 
-Sırada 20 test case yazımı (Nginx config'ini kapsayan geniş senaryolar) ve kalan fazların (03'ten itibaren) Türkçe/İngilizce belge dönüşümü var.
+Sırada 20 test case yazımı (Nginx config'ini kapsayan geniş senaryolar).
 
 Ayrıca, daha önce tamamlanan fazların notlarını da kademeli olarak Türkçe'ye çeviriyorum (iki dilli format: `README-EN.md` / `README.md`), şu ana kadar Faz 1 ve 2 tamamlandı.
 
@@ -22,25 +22,25 @@ Bununla paralel, Udemy'deki Docker (A'dan Z'ye) kursuna ve YouTube networking pl
 
 ## 📁 Repo Yapısı
 
-- [01-Linux-Basics](./01-Linux-Basics/): Temel Linux komutları ve metin işleme (`awk`, `grep`, `cut`), ve özel otomasyon scriptleri. ([EN](./01-Linux-Basics/README-EN.md) / [TR](./01-Linux-Basics/README.md))
-- [02-Vagrant-Automation](./02-Vagrant-Automation/): Infrastructure as Code (IaC) ortamları, ve çoklu dağıtım provisioning. ([EN](./02-Vagrant-Automation/README-EN.md) / [TR](./02-Vagrant-Automation/README.md))
-- [03-File-System-Management](./03-File-System-Management/): Depolama diagnostiği, disk yazma işlemleri (`dd`), ve sıralama pipeline'ları. ([EN](./03-File-System-Management/README-EN.md) / [TR](./03-File-System-Management/README.md))
-- [04-User-Privilege-Management](./04-User-Privilege-Management/): Kimlik erişim kontrolü, sistem grup yaşam döngüleri, ve sudoers yapılandırması (Least Privilege Prensibi). ([EN](./04-User-Privilege-Management/README-EN.md) / [TR](./04-User-Privilege-Management/README.md))
-- [05-Linux-Permissions](./05-Linux-Permissions/): Dosya sistemi erişim kontrolü, recursive sahiplik değişiklikleri, ve sticky bit izolasyonu. ([EN](./05-Linux-Permissions/README-EN.md) / [TR](./05-Linux-Permissions/README.md))
-- [06-Linux-Process-Management](./06-Linux-Process-Management/): Süreç durum izleme, CPU önceliği ayarlamaları (`nice`/`renice`), ve sinyaller. ([EN](./06-Linux-Process-Management/README-EN.md) / [TR](./06-Linux-Process-Management/README.md))
-- [07-Linux-Service-Management](./07-Linux-Service-Management/): Systemd servis yönetimi, kesintisiz yeniden yüklemeler, ve journalctl ile log yönetimi. ([EN](./07-Linux-Service-Management/README-EN.md) / [TR](./07-Linux-Service-Management/README.md))
-- [08-Linux-Log-Analysis](./08-Linux-Log-Analysis/): Log işleme pipeline'ları, `sed`, ve dağıtımlar arası IPv4/IPv6 farkları. ([EN](./08-Linux-Log-Analysis/README-EN.md) / [TR](./08-Linux-Log-Analysis/README.md))
-- [09-Linux-Network-Management](./09-Linux-Network-Management/): DNS sorguları, dinleyen portları kontrol etme, ve TLS sertifika doğrulama. ([EN](./09-Linux-Network-Management/README-EN.md) / [TR](./09-Linux-Network-Management/README.md))
-- [10-Linux-Storage-Management](./10-Linux-Storage-Management/): Disk partition'lama, `ext4` ile formatlama, ve `/etc/fstab` üzerinden kalıcı mount'lar. ([EN](./10-Linux-Storage-Management/README-EN.md) / [TR](./10-Linux-Storage-Management/README.md))
-- [11-Linux-LVM-Management](./11-Linux-LVM-Management/): LVM kurulumu, canlı volume büyütme, ve bir disk-alanı olayının anlatımı. ([EN](./11-Linux-LVM-Management/README-EN.md) / [TR](./11-Linux-LVM-Management/README.md))
-- [12-Linux-SSH-Management](./12-Linux-SSH-Management/): Key çiftleri ile şifresiz SSH erişimi, SSH config kısayolları, ve SCP/SFTP ile dosya transferleri. ([EN](./12-Linux-SSH-Management/README-EN.md) / [TR](./12-Linux-SSH-Management/README.md))
-- [13-Linux-Proxy-Management](./13-Linux-Proxy-Management/): Forward vs reverse proxy kavramları, Nginx'in `proxy_pass`'i, ve gerçek bir 502 Bad Gateway debug hikayesi. ([EN](./13-Linux-Proxy-Management/README-EN.md) / [TR](./13-Linux-Proxy-Management/README.md))
-- [14-Linux-Bash-Scripting](./14-Linux-Bash-Scripting/): Değişkenler, komut yerine geçirme (command substitution), sayısal koşullar, ve bir disk kullanım uyarı scripti. ([EN](./14-Linux-Bash-Scripting/README-EN.md) / [TR](./14-Linux-Bash-Scripting/README.md))
-- [15-Linux-Cron-Automation](./15-Linux-Cron-Automation/): `cron` ve `at` ile zamanlama, gerçek bir `sudo`-cron-içinde debug hikayesi, ve `logrotate`'e bir bakış. ([EN](./15-Linux-Cron-Automation/README-EN.md) / [TR](./15-Linux-Cron-Automation/README.md))
-- [16-Git-Basics](./16-Git-Basics/): `git clone`, branching, merging, ve bu repo üzerinde gerçekten çözülen bir push-reddedildi/editör-takıldı çakışması. ([EN](./16-Git-Basics/README-EN.md) / [TR](./16-Git-Basics/README.md))
-- [17-Mini-Project](./17-Mini-Project/): Gerçek bir kiralık sunucuda Nginx, Docker, Git, ve SSH kurulumu — bu repodan çekilip canlıya alınan statik bir sayfa. ([EN](./17-Mini-Project/README-EN.md) / [TR](./17-Mini-Project/README.md))
-- [18-Linux-Networking-Fundamentals](./18-Linux-Networking-Fundamentals/): OSI modeli, routing & forwarding, ve DNS (resolver zinciri, kayıt tipleri, TTL) — gerçek senaryolarla ve `tcpdump`/`dig +trace` ile doğrulanmış. Ayrıca AWS/Cloudflare/Google Cloud'un gerçek kesintilerine dair araştırma içerir. ([EN](./18-Linux-Networking-Fundamentals/README-EN.md) / [TR](./18-Linux-Networking-Fundamentals/README.md) — Outage araştırması: [EN](./18-Linux-Networking-Fundamentals/dns-outages-EN.md) / [TR](./18-Linux-Networking-Fundamentals/dns-outages-TR.md))
-- [19-Nginx-Derinlestirme](./19-Nginx-Derinlestirme/): Reverse proxy, path bazlı yönlendirme, path rewrite, path engelleme, ve forward proxy (Squid) — gerçek bir sunucuda uygulamalı olarak test edildi. ([EN](./19-Nginx-Derinlestirme/README-EN.md) / [TR](./19-Nginx-Derinlestirme/README.md))
+- [01-Linux-Basics](./01-Linux-Basics/): Temel Linux komutları ve metin işleme (`awk`, `grep`, `cut`), ve özel otomasyon scriptleri. ([EN](./01-Linux-Basics/readme-en.md) / [TR](./01-Linux-Basics/readme.md))
+- [02-Vagrant-Automation](./02-Vagrant-Automation/): Infrastructure as Code (IaC) ortamları, ve çoklu dağıtım provisioning. ([EN](./02-Vagrant-Automation/readme-en.md) / [TR](./02-Vagrant-Automation/readme.md))
+- [03-File-System-Management](./03-File-System-Management/): Depolama diagnostiği, disk yazma işlemleri (`dd`), ve sıralama pipeline'ları. ([EN](./03-File-System-Management/readme-en.md) / [TR](./03-File-System-Management/readme.md))
+- [04-User-Privilege-Management](./04-User-Privilege-Management/): Kimlik erişim kontrolü, sistem grup yaşam döngüleri, ve sudoers yapılandırması (Least Privilege Prensibi). ([EN](./04-User-Privilege-Management/readme-en.md) / [TR](./04-User-Privilege-Management/readme.md))
+- [05-Linux-Permissions](./05-Linux-Permissions/): Dosya sistemi erişim kontrolü, recursive sahiplik değişiklikleri, ve sticky bit izolasyonu. ([EN](./05-Linux-Permissions/readme-en.md) / [TR](./05-Linux-Permissions/readme.md))
+- [06-Linux-Process-Management](./06-Linux-Process-Management/): Süreç durum izleme, CPU önceliği ayarlamaları (`nice`/`renice`), ve sinyaller. ([EN](./06-Linux-Process-Management/readme-en.md) / [TR](./06-Linux-Process-Management/readme.md))
+- [07-Linux-Service-Management](./07-Linux-Service-Management/): Systemd servis yönetimi, kesintisiz yeniden yüklemeler, ve journalctl ile log yönetimi. ([EN](./07-Linux-Service-Management/readme-en.md) / [TR](./07-Linux-Service-Management/readme.md))
+- [08-Linux-Log-Analysis](./08-Linux-Log-Analysis/): Log işleme pipeline'ları, `sed`, ve dağıtımlar arası IPv4/IPv6 farkları. ([EN](./08-Linux-Log-Analysis/readme-en.md) / [TR](./08-Linux-Log-Analysis/readme.md))
+- [09-Linux-Network-Management](./09-Linux-Network-Management/): DNS sorguları, dinleyen portları kontrol etme, ve TLS sertifika doğrulama. ([EN](./09-Linux-Network-Management/readme-en.md) / [TR](./09-Linux-Network-Management/readme.md))
+- [10-Linux-Storage-Management](./10-Linux-Storage-Management/): Disk partition'lama, `ext4` ile formatlama, ve `/etc/fstab` üzerinden kalıcı mount'lar. ([EN](./10-Linux-Storage-Management/readme-en.md) / [TR](./10-Linux-Storage-Management/readme.md))
+- [11-Linux-LVM-Management](./11-Linux-LVM-Management/): LVM kurulumu, canlı volume büyütme, ve bir disk-alanı olayının anlatımı. ([EN](./11-Linux-LVM-Management/readme-en.md) / [TR](./11-Linux-LVM-Management/readme.md))
+- [12-Linux-SSH-Management](./12-Linux-SSH-Management/): Key çiftleri ile şifresiz SSH erişimi, SSH config kısayolları, ve SCP/SFTP ile dosya transferleri. ([EN](./12-Linux-SSH-Management/readme-en.md) / [TR](./12-Linux-SSH-Management/readme.md))
+- [13-Linux-Proxy-Management](./13-Linux-Proxy-Management/): Forward vs reverse proxy kavramları, Nginx'in `proxy_pass`'i, ve gerçek bir 502 Bad Gateway debug hikayesi. ([EN](./13-Linux-Proxy-Management/readme-en.md) / [TR](./13-Linux-Proxy-Management/readme.md))
+- [14-Linux-Bash-Scripting](./14-Linux-Bash-Scripting/): Değişkenler, komut yerine geçirme (command substitution), sayısal koşullar, ve bir disk kullanım uyarı scripti. ([EN](./14-Linux-Bash-Scripting/readme-en.md) / [TR](./14-Linux-Bash-Scripting/readme.md))
+- [15-Linux-Cron-Automation](./15-Linux-Cron-Automation/): `cron` ve `at` ile zamanlama, gerçek bir `sudo`-cron-içinde debug hikayesi, ve `logrotate`'e bir bakış. ([EN](./15-Linux-Cron-Automation/readme-en.md) / [TR](./15-Linux-Cron-Automation/readme.md))
+- [16-Git-Basics](./16-Git-Basics/): `git clone`, branching, merging, ve bu repo üzerinde gerçekten çözülen bir push-reddedildi/editör-takıldı çakışması. ([EN](./16-Git-Basics/readme-en.md) / [TR](./16-Git-Basics/readme.md))
+- [17-Mini-Project](./17-Mini-Project/): Gerçek bir kiralık sunucuda Nginx, Docker, Git, ve SSH kurulumu — bu repodan çekilip canlıya alınan statik bir sayfa. ([EN](./17-Mini-Project/readme-en.md) / [TR](./17-Mini-Project/readme.md))
+- [18-Linux-Networking-Fundamentals](./18-Linux-Networking-Fundamentals/): OSI modeli, routing & forwarding, ve DNS (resolver zinciri, kayıt tipleri, TTL) — gerçek senaryolarla ve `tcpdump`/`dig +trace` ile doğrulanmış. Ayrıca AWS/Cloudflare/Google Cloud'un gerçek kesintilerine dair araştırma içerir. ([EN](./18-Linux-Networking-Fundamentals/readme-en.md) / [TR](./18-Linux-Networking-Fundamentals/readme.md) — Outage araştırması: [EN](./18-Linux-Networking-Fundamentals/dns-outages-EN.md) / [TR](./18-Linux-Networking-Fundamentals/dns-outages-TR.md))
+- [19-Nginx-Derinlestirme](./19-Nginx-Derinlestirme/): Reverse proxy, path bazlı yönlendirme, path rewrite, path engelleme, ve forward proxy (Squid) — gerçek bir sunucuda uygulamalı olarak test edildi. ([EN](./19-Nginx-Derinlestirme/readme-en.md) / [TR](./19-Nginx-Derinlestirme/readme.md))
 
 ### 📝 Değerlendirme & Sınav Materyalleri
 
@@ -77,8 +77,8 @@ _Daha önce Vagrant kullanmamıştım — önceki sanallaştırma deneyimim dire
   - Temel Linux komutlarını araştırdım ve kurumsal yapılandırma standartlarını analiz ettim (Rocky Linux'ta FQDN varsayılanları).
   - Canlı sistem metriklerini izlemek için bir shell scripti yazdım.
 - **Kilometre Taşları & Çıktılar:**
-  - 🛠️ Otomatik Ortam Kurulumu: [Vagrant Logları & Sorun Giderme (EN](./02-Vagrant-Automation/README-EN.md) / [TR)](./02-Vagrant-Automation/README.md)
-  - 📜 Linux Temelleri & Özel Script: [Linux Temelleri Notları (EN](./01-Linux-Basics/README-EN.md) / [TR)](./01-Linux-Basics/README.md)
+  - 🛠️ Otomatik Ortam Kurulumu: [Vagrant Logları & Sorun Giderme (EN](./02-Vagrant-Automation/readme-en.md) / [TR)](./02-Vagrant-Automation/readme.md)
+  - 📜 Linux Temelleri & Özel Script: [Linux Temelleri Notları (EN](./01-Linux-Basics/readme-en.md) / [TR)](./01-Linux-Basics/readme.md)
 
 ### 🔹 18 Haziran 2026 | Dosya Sistemi & Depolama Diagnostiği
 
@@ -90,7 +90,7 @@ _`dd` ile `fallocate` arasındaki farkı sadece okumak yerine gerçekten görmek
   - `dd` ve `fallocate`'in disk yazmalarını nasıl ele aldığını karşılaştırdım (sparse vs fiziksel allocation).
   - Sistemdeki en büyük 10 dosyayı listelemek için `find`, `du`, ve `sort` ile bir komut pipeline'ı kurdum.
 - **Kilometre Taşları & Çıktılar:**
-  - 🗂️ Dosya Sistemi İşlemleri & Pipeline'lar: [Depolama Diagnostiği & Komut Matrisi (EN](./03-File-System-Management/README-EN.md) / [TR)](./03-File-System-Management/README.md)
+  - 🗂️ Dosya Sistemi İşlemleri & Pipeline'lar: [Depolama Diagnostiği & Komut Matrisi (EN](./03-File-System-Management/readme-en.md) / [TR)](./03-File-System-Management/readme.md)
 
 ### 🔹 18 Haziran 2026 | Kimlik Erişim Kontrolü & Güvenlik Sıkılaştırma (Least Privilege)
 
@@ -102,7 +102,7 @@ _Sudoers kısıtlamasının nasıl çalıştığını gerçekten anlamak için, 
   - `visudo` ve `/etc/sudoers` mimarisi üzerinden özel olarak yapılandırılmış, kısıtlı bir operatör hesabı (`devopstester`) oluşturdum.
   - Kullanıcıyı, root alanına (`ALL=(root)`) açıkça yönlendirilmiş, _sadece_ `systemctl restart nginx` çalıştırabilecek şekilde kısıtladım — kimlik doğrulama isteminin ek bir güvenlik katmanı olarak korunmasını sağlarken, yetkisiz işlemleri (örn. `systemctl stop nginx`) başarıyla bloke ettim.
 - **Kilometre Taşları & Çıktılar:**
-  - 🔑 Rol-Bazlı Erişim Kontrolleri: [Kullanıcı Yönetimi & Sudoers Kısıtlamaları (EN](./04-User-Privilege-Management/README-EN.md) / [TR)](./04-User-Privilege-Management/README.md)
+  - 🔑 Rol-Bazlı Erişim Kontrolleri: [Kullanıcı Yönetimi & Sudoers Kısıtlamaları (EN](./04-User-Privilege-Management/readme-en.md) / [TR)](./04-User-Privilege-Management/readme.md)
 
 ### 🔹 19 Haziran 2026 | Genel Tekrar & Quiz Sonuçları
 
@@ -127,7 +127,7 @@ _İzin sayıları (`755` veya `777` gibi) ilk başta bana mantıklı gelmedi —
   - Özel **Sticky Bit** ayrıcalıklarıyla (`+t`) yapılandırılmış, paylaşılan bir test dizini (`/tmp/test`) kurdum.
   - Yetkisiz kullanıcıların, bağımsız operatör profilleri arasında başkalarının dosyalarını silemediğini başarıyla test ettim ve doğruladım, ortam bütünlüğünü koruyarak.
 - **Kilometre Taşları & Çıktılar:**
-  - 🔑 Güvenlik Sıkılaştırma Çalışma Alanı: [Depolama Diagnostiği & İzinler Matrisi (EN](./05-Linux-Permissions/README-EN.md) / [TR)](./05-Linux-Permissions/README.md)
+  - 🔑 Güvenlik Sıkılaştırma Çalışma Alanı: [Depolama Diagnostiği & İzinler Matrisi (EN](./05-Linux-Permissions/readme-en.md) / [TR)](./05-Linux-Permissions/readme.md)
   - 📊 Doğrulama Diagnostiği: [Faz 5 Değerlendirme Analitiği](./05-Linux-Permissions/quiz-results.md)
 
 ### 🔹 19 Haziran 2026 | Linux Süreç Yönetimi
@@ -140,7 +140,7 @@ _`htop`'un varsayılan olarak kurulu olmadığını fark ettim ve önce kurulumd
   - `top` ve `htop`'u karşılaştırdım.
   - `nice` ve `renice` ile CPU önceliği zamanlamasını pratik ettim.
 - **Kilometre Taşları & Çıktılar:**
-  - ⚙️ Süreç İşlemleri Çalışma Alanı: [Süreç Yönetimi Notları (EN](./06-Linux-Process-Management/README-EN.md) / [TR)](./06-Linux-Process-Management/README.md)
+  - ⚙️ Süreç İşlemleri Çalışma Alanı: [Süreç Yönetimi Notları (EN](./06-Linux-Process-Management/readme-en.md) / [TR)](./06-Linux-Process-Management/readme.md)
   - 📊 Performans Değerlendirmesi: [Faz 6 Temiz Doğrulama Analitiği (%100 Skor)](./06-Linux-Process-Management/quiz-results.md)
 
 ### 🔹 19 Haziran 2026 | Servis Yönetimi & Loglama
@@ -153,7 +153,7 @@ _Rocky Linux'un `apt` kullanmadığını, bunun yerine `dnf`/`yum` kullandığı
   - `enable` (reboot'lar arası kalıcı) ile `start` (şimdi çalıştırır)'ı karşılaştırdım.
   - Kesintisiz config değişiklikleri için `reload`'u, logları canlı takip etmek için `journalctl -u -f`'i kullandım.
 - **Kilometre Taşları & Çıktılar:**
-  - 🏗️ Servis Kontrol Çalışma Alanı: [Systemd Daemon Yaşam Döngüleri & Yapılandırmaları (EN](./07-Linux-Service-Management/README-EN.md) / [TR)](./07-Linux-Service-Management/README.md)
+  - 🏗️ Servis Kontrol Çalışma Alanı: [Systemd Daemon Yaşam Döngüleri & Yapılandırmaları (EN](./07-Linux-Service-Management/readme-en.md) / [TR)](./07-Linux-Service-Management/readme.md)
   - 📊 Quiz Sonuçları: [Faz 7 Performans Değerlendirmesi (%100 Skor)](./07-Linux-Service-Management/quiz-results.md)
 
 ### 🔹 19 Haziran 2026 | Linux Log Analizi
@@ -166,7 +166,7 @@ _Ubuntu'nun localhost için IPv6 loopback adresini (`::1`) döndürmesini beklem
   - Ubuntu'nun minimal imajındaki eksik `curl`'u elle kurarak düzelttim.
   - En çok istek gönderen IP'leri bulmak ve 404 hatalarını path'e göre saymak için `grep`/`awk`/`sort`/`uniq` pipeline'ları kurdum.
 - **Kilometre Taşları & Çıktılar:**
-  - 🪵 Metin İşleme Çalışma Alanı: [Log Analizi Notları (EN](./08-Linux-Log-Analysis/README-EN.md) / [TR)](./08-Linux-Log-Analysis/README.md)
+  - 🪵 Metin İşleme Çalışma Alanı: [Log Analizi Notları (EN](./08-Linux-Log-Analysis/readme-en.md) / [TR)](./08-Linux-Log-Analysis/readme.md)
   - 📊 Quiz Sonuçları: [Faz 8 Performans Değerlendirmesi (%100 Skor)](./08-Linux-Log-Analysis/quiz-results.md)
 
 ### 🔹 21 Haziran 2026 | Networking & TLS
@@ -178,7 +178,7 @@ _İlk kez bir TLS sertifikasını doğrudan inceledim — ilk başta tam olarak 
   - Hem IPv4 hem IPv6 üzerinden, bir portu hangi sürecin dinlediğini bulmak için `ss -lntp`'yi kullandım.
   - Bir sertifikanın trust chain'ini, issuer'ını, ve bitiş tarihini incelemek için `openssl s_client`'ı kullandım.
 - **Kilometre Taşları & Çıktılar:**
-  - 🌐 Networking Çalışma Alanı: [Network & TLS Notları (EN](./09-Linux-Network-Management/README-EN.md) / [TR)](./09-Linux-Network-Management/README.md)
+  - 🌐 Networking Çalışma Alanı: [Network & TLS Notları (EN](./09-Linux-Network-Management/readme-en.md) / [TR)](./09-Linux-Network-Management/readme.md)
   - 📊 Quiz Sonuçları: [Faz 9 Quiz Sonuçları](./09-Linux-Network-Management/quiz-results.md)
 
 ### 🔹 22 Haziran 2026 | Depolama & LVM
@@ -191,8 +191,8 @@ _Bu faz gerçek bir hata içeriyordu: `dd` ile test ederken host makinenin diski
   - `dd` ile host diskini doldurmanın sebep olduğu bir VM dondurmasından kurtuldum, ve bunu önlemek için `fallocate`'e geçtim.
   - Bir mantıksal volume'u ve dosya sistemini, unmount etmeden, canlı olarak büyüttüm.
 - **Kilometre Taşları & Çıktılar:**
-  - 💾 Depolama Çalışma Alanı: [Depolama Yönetimi Notları (EN](./10-Linux-Storage-Management/README-EN.md) / [TR)](./10-Linux-Storage-Management/README.md)
-  - 🏗️ LVM Çalışma Alanı: [LVM Yönetimi Notları (EN](./11-Linux-LVM-Management/README-EN.md) / [TR)](./11-Linux-LVM-Management/README.md)
+  - 💾 Depolama Çalışma Alanı: [Depolama Yönetimi Notları (EN](./10-Linux-Storage-Management/readme-en.md) / [TR)](./10-Linux-Storage-Management/readme.md)
+  - 🏗️ LVM Çalışma Alanı: [LVM Yönetimi Notları (EN](./11-Linux-LVM-Management/readme-en.md) / [TR)](./11-Linux-LVM-Management/readme.md)
   - 📊 Quiz Sonuçları: [Faz 10 Quiz Sonuçları](./10-Linux-Storage-Management/quiz-results.md) / [Faz 11 Quiz Sonuçları](./11-Linux-LVM-Management/quiz-results.md)
 
 ### 🔹 22 Haziran 2026 | SSH, SCP & SFTP
@@ -206,7 +206,7 @@ _Windows'ta `ssh-copy-id` mevcut değildi, bu yüzden aynı şeyi elle yapmam ge
   - Yanlış key dosyası kullanmaktan kaynaklanan bir `Permission denied (publickey)` hatasını debug ettim, ve `-i` ile bir SSH config dosyasıyla düzelttim.
   - Host ve VM arasında `scp` ve `sftp` ile dosya transferi yaptım.
 - **Kilometre Taşları & Çıktılar:**
-  - 🔐 SSH Çalışma Alanı: [SSH, SCP & SFTP Notları (EN](./12-Linux-SSH-Management/README-EN.md) / [TR)](./12-Linux-SSH-Management/README.md)
+  - 🔐 SSH Çalışma Alanı: [SSH, SCP & SFTP Notları (EN](./12-Linux-SSH-Management/readme-en.md) / [TR)](./12-Linux-SSH-Management/readme.md)
   - 📊 Quiz Sonuçları: [Faz 12 Quiz Sonuçları](./12-Linux-SSH-Management/quiz-results.md)
 
 ### 🔹 22 Haziran 2026 | Forward & Reverse Proxy
@@ -219,7 +219,7 @@ _Bu faz, tamamen pratik olmaktan çok ağırlıklı olarak kavramsaldı. Forward
   - `proxy_pass`'in backend VM'in gerçek IP'si yerine `localhost`'a işaret etmesinden kaynaklanan gerçek bir `502 Bad Gateway`'i tespit ettim ve diagnoz ettim.
   - Bir 502 hatasının tam olarak ne anlama geldiğini (proxy backend'e ulaşamadı) diğer hata kodlarına kıyasla öğrendim.
 - **Kilometre Taşları & Çıktılar:**
-  - 🔀 Proxy Çalışma Alanı: [Forward & Reverse Proxy Notları (EN](./13-Linux-Proxy-Management/README-EN.md) / [TR)](./13-Linux-Proxy-Management/README.md)
+  - 🔀 Proxy Çalışma Alanı: [Forward & Reverse Proxy Notları (EN](./13-Linux-Proxy-Management/readme-en.md) / [TR)](./13-Linux-Proxy-Management/readme.md)
   - 📊 Quiz Sonuçları: [Faz 13 Quiz Sonuçları](./13-Linux-Proxy-Management/quiz-results.md)
 
 ### 🔹 22 Haziran 2026 | Bash Scripting
@@ -233,7 +233,7 @@ _Disk kullanımı %80'i geçtiğinde uyarı veren bir script yazdım, bunu zaten
   - Koşul syntax'ındaki bir boşluk eksikliğinden kaynaklanan gerçek bir `[48: command not found` hatasını debug ettim.
   - Scripti `chmod +x` ile çalıştırılabilir yaptım ve `./script.sh` ile doğrudan çalıştırdım.
 - **Kilometre Taşları & Çıktılar:**
-  - 🐚 Bash Scripting Çalışma Alanı: [Bash Scripting Notları (EN](./14-Linux-Bash-Scripting/README-EN.md) / [TR)](./14-Linux-Bash-Scripting/README.md)
+  - 🐚 Bash Scripting Çalışma Alanı: [Bash Scripting Notları (EN](./14-Linux-Bash-Scripting/readme-en.md) / [TR)](./14-Linux-Bash-Scripting/readme.md)
   - 📊 Quiz Sonuçları: [Faz 14 Quiz Sonuçları](./14-Linux-Bash-Scripting/quiz-results.md)
 
 ### 🔹 22 Haziran 2026 | Cron & Otomasyon
@@ -248,7 +248,7 @@ _İki script yazdım — biri disk kullanım raporları için, biri Nginx loglar
   - Her iki scripti de `crontab -e` ile her gece saat 02:00'de çalışacak şekilde zamanladım.
   - Bu tür log yönetimi için standart gerçek dünya aracı olan `logrotate`'e baktım.
 - **Kilometre Taşları & Çıktılar:**
-  - ⏰ Cron & Otomasyon Çalışma Alanı: [Cron & Otomasyon Notları (EN](./15-Linux-Cron-Automation/README-EN.md) / [TR)](./15-Linux-Cron-Automation/README.md)
+  - ⏰ Cron & Otomasyon Çalışma Alanı: [Cron & Otomasyon Notları (EN](./15-Linux-Cron-Automation/readme-en.md) / [TR)](./15-Linux-Cron-Automation/readme.md)
   - 📊 Quiz Sonuçları: [Faz 15 Quiz Sonuçları](./15-Linux-Cron-Automation/quiz-results.md)
 
 ### 🔹 23 Haziran 2026 | DevOps - Linux Temelleri (Udemy Kursu)
@@ -283,7 +283,7 @@ _`git branch` ve `git merge`'i doğrudan bu repo üzerinde test ettim — bir te
   - Yanlış yapılandırılmış, var olmayan bir editör path'inden kaynaklanan takılı bir `git pull`/merge'i diagnoz ettim ve düzelttim.
   - Git'in varsayılan editörünü global olarak yeniden yapılandırdım (`git config --global core.editor`).
 - **Kilometre Taşları & Çıktılar:**
-  - 🔧 Git Çalışma Alanı: [Git Notları (EN](./16-Git-Basics/README-EN.md) / [TR)](./16-Git-Basics/README.md)
+  - 🔧 Git Çalışma Alanı: [Git Notları (EN](./16-Git-Basics/readme-en.md) / [TR)](./16-Git-Basics/readme.md)
   - 📊 Quiz Sonuçları: [Faz 16 Quiz Sonuçları](./16-Git-Basics/quiz-results.md)
 
 ### 🔹 24 Haziran 2026 | Genel Tekrar & Mini Proje (Gerçek Sunucu)
@@ -300,8 +300,8 @@ _Sonra bu hafta satın alınan gerçek sunucuda mini projeyi yaptım — root ol
   - Git'i kurdum, bu repoyu klonladım, ve Nginx üzerinden ondan statik bir sayfa yayınladım.
   - Eski bir deployment sorununu (kaynak dosya vs sunulan dosya) ve bir HTTPS-vs-HTTP bağlantı sorununu debug ettim.
 - **Kilometre Taşları & Çıktılar:**
-  - 📝 Derinleştirilmiş Notlar: [Depolama](./10-Linux-Storage-Management/README.md) · [Servis Yönetimi](./07-Linux-Service-Management/README.md) · [İzinler](./05-Linux-Permissions/README.md) · [Log Analizi](./08-Linux-Log-Analysis/README.md) · [Network](./09-Linux-Network-Management/README.md) · [LVM](./11-Linux-LVM-Management/README.md)
-  - 🚀 Mini Proje: [Mini Proje Notları (EN](./17-Mini-Project/README-EN.md) / [TR)](./17-Mini-Project/README.md)
+  - 📝 Derinleştirilmiş Notlar: [Depolama](./10-Linux-Storage-Management/readme.md) · [Servis Yönetimi](./07-Linux-Service-Management/readme.md) · [İzinler](./05-Linux-Permissions/readme.md) · [Log Analizi](./08-Linux-Log-Analysis/readme.md) · [Network](./09-Linux-Network-Management/readme.md) · [LVM](./11-Linux-LVM-Management/readme.md)
+  - 🚀 Mini Proje: [Mini Proje Notları (EN](./17-Mini-Project/readme-en.md) / [TR)](./17-Mini-Project/readme.md)
 
 ### 🔹 26 Haziran 2026 | Path Bazlı Gruplama & OSI Modeli (Devam Ediyor)
 
@@ -316,8 +316,8 @@ _Sonra OSI modeline başladım. 7 katmanı kavramsal olarak öğrendikten sonra,
   - Encapsulation kavramını öğrendim, ve `tcpdump` kurup gerçek bir HTTP isteğini paket seviyesinde yakaladım.
   - OSI fazını, encapsulation/decapsulation tam bitmediği için "devam ediyor" olarak işaretledim.
 - **Kilometre Taşları & Çıktılar:**
-  - 🪵 Path Bazlı Gruplama: [Log Analizi Notları (EN](./08-Linux-Log-Analysis/README-EN.md) / [TR)](./08-Linux-Log-Analysis/README.md) güncellendi
-  - 🌐 OSI Modeli (Devam Ediyor): [OSI Modeli Notları (EN](./18-Linux-Networking-Fundamentals/README-EN.md) / [TR)](./18-Linux-Networking-Fundamentals/README.md)
+  - 🪵 Path Bazlı Gruplama: [Log Analizi Notları (EN](./08-Linux-Log-Analysis/readme-en.md) / [TR)](./08-Linux-Log-Analysis/readme.md) güncellendi
+  - 🌐 OSI Modeli (Devam Ediyor): [OSI Modeli Notları (EN](./18-Linux-Networking-Fundamentals/readme-en.md) / [TR)](./18-Linux-Networking-Fundamentals/readme.md)
 
 ### 🔹 29 Haziran 2026 | OSI Tamamlama, Routing & Forwarding, DNS Sorgu Zinciri
 
@@ -334,7 +334,7 @@ _Son olarak DNS sorgu zincirine başladım — recursive resolver, root sunucula
   - `ip_forward` ayarının neden aktif olduğunu araştırarak, Docker bağlantısını doğruladım.
   - DNS sorgu zincirine başladım, `dig +trace` ile gerçek bir çözümleme sürecini izledim.
 - **Kilometre Taşları & Çıktılar:**
-  - 🌐 OSI Modeli (Tamamlandı) & Routing/Forwarding: [Notlar (EN](./18-Linux-Networking-Fundamentals/README-EN.md) / [TR)](./18-Linux-Networking-Fundamentals/README.md)
+  - 🌐 OSI Modeli (Tamamlandı) & Routing/Forwarding: [Notlar (EN](./18-Linux-Networking-Fundamentals/readme-en.md) / [TR)](./18-Linux-Networking-Fundamentals/readme.md)
 
 ### 🔹 30 Haziran 2026 | DNS Kayıt Tipleri, TTL, ve Cloud Outage Araştırması
 
@@ -354,14 +354,14 @@ _Son olarak, AWS, Cloudflare, ve Google Cloud'un gerçek, yakın tarihli kesinti
   - `nslookup`, `host`, `resolvectl` debug araçlarını test ettim.
   - AWS, Cloudflare, ve Google Cloud'un gerçek DNS-ilişkili kesintilerini araştırdım, kaynakçalı bir belge oluşturdum.
 - **Kilometre Taşları & Çıktılar:**
-  - 🌐 DNS (Tamamlandı): [Networking Notları (EN](./18-Linux-Networking-Fundamentals/README-EN.md) / [TR)](./18-Linux-Networking-Fundamentals/README.md)
+  - 🌐 DNS (Tamamlandı): [Networking Notları (EN](./18-Linux-Networking-Fundamentals/readme-en.md) / [TR)](./18-Linux-Networking-Fundamentals/readme.md)
   - 🔥 Cloud Outage Araştırması: [Notlar (EN](./18-Linux-Networking-Fundamentals/dns-outages-EN.md) / [TR)](./18-Linux-Networking-Fundamentals/dns-outages-TR.md)
 
 ### 🔹 1 Temmuz 2026 | Nginx Derinleşme — Reverse Proxy, Path Yönetimi, Forward Proxy
 
 _Nginx derinleşme fazını tamamladım. Python'un yerleşik HTTP sunucusunu backend olarak kullanarak Nginx'i önüne koydum — gelen isteklerin artık backend logunda `127.0.0.1`'den (Nginx'ten) geldiğini görerek reverse proxy'nin gerçekten çalıştığını doğruladım. Sonra aynı Nginx üzerinden path bazlı yönlendirme kurdum: `/users/` → port 3000, `/computers/` → port 4000. Path rewrite'ı (`proxy_pass`'teki sondaki `/` farkı) test ederken, slash olmadan 404 aldım, ekleyince 200 — "klasörün içine gir" mantığını bu şekilde kavradım. Path engelleme kısmında `return 403` ile `deny all`'ı birlikte kullanınca localhost da engellenmeye başladı, `return 403`'ü kaldırınca düzeldi — bu gerçek bir hataydı, belgeye de girdi._
 
-_Forward proxy için Squid kurdum. Windows'ta sistem proxy olarak `91.151.88.38:3128` ayarladım, tarayıcıdan `ifconfig.me`'ye girince kendi IP'm yerine sunucunun IP'si göründü. Squid logunda Windows'tan çıkan tüm trafiği (`claude.ai`, `apple.com`, `windows.com` dahil) gördüm — proxy'nin gerçekten çalıştığını ve bütün verinin internete çıkarken Squid üzerinden geçtiğini doğrudan gözlemledim._
+_Forward proxy için Squid kurdum. Windows'ta sistem proxy olarak `<SERVER_IP>:3128` ayarladım, tarayıcıdan `ifconfig.me`'ye girince kendi IP'm yerine sunucunun IP'si göründü. Squid logunda Windows'tan çıkan tüm trafiği (`claude.ai`, `apple.com`, `windows.com` dahil) gördüm — proxy'nin gerçekten çalıştığını ve bütün verinin internete çıkarken Squid üzerinden geçtiğini doğrudan gözlemledim._
 
 - **Görevler & Hedefler:**
   - Nginx'i reverse proxy olarak yapılandırdım, backend logundan doğruladım.
@@ -370,7 +370,23 @@ _Forward proxy için Squid kurdum. Windows'ta sistem proxy olarak `91.151.88.38:
   - Path engellemeyi (`allow`/`deny`) iç/dış ağ ayrımıyla uyguladım.
   - Squid ile forward proxy kurup, Windows trafiğinin tamamının proxy'den geçtiğini logda doğruladım.
 - **Kilometre Taşları & Çıktılar:**
-  - 🌐 Nginx Derinleşme: [Notlar (EN](./19-Nginx-Derinlestirme/README-EN.md) / [TR)](./19-Nginx-Derinlestirme/README.md)
+  - 🌐 Nginx Derinleşme: [Notlar (EN](./19-Nginx-Derinlestirme/readme-en.md) / [TR)](./19-Nginx-Derinlestirme/readme.md)
+
+### 🔹 2 Temmuz 2026 | Nginx Test Senaryoları & Belge Güncellemeleri
+
+_Nginx config'ini 20 farklı senaryodan geçirdim — routing, path engelleme, rewrite, hata durumları. 19 tanesi beklediğim gibi geldi, bir tanesi gelmedi: `curl http://localhost/admin` deyince 403 aldım, oysa config'de `allow 127.0.0.1` vardı ve izin vermesi gerekiyordu. Önceki Linux eğitimlerinden Ubuntu'nun IPv6'yı tercih ettiğini hatırladım, ama bunu test etmem lazımdı. `curl -v` ile baktım — Ubuntu `localhost`'u `::1` (IPv6) olarak çözümlüyordu, `127.0.0.1` (IPv4) olarak değil. Nginx bu iki adresi ayrı ayrı değerlendiriyor, bu yüzden `allow 127.0.0.1` yetmiyordu. Config'e `allow ::1` ekledim, düzeldi. Sonra `127.0.0.1` ile direkt de test ettim — o da çalıştı, çünkü IPv4 üzerinden gidiyor. İkisini birden yazmanın doğru yaklaşım olduğunu kanıtlamış oldum._
+
+_Aynı zamanda önceki fazların (03–19) Türkçe/İngilizce belge dönüşümünü tamamladım. Nginx README'sinde de IPv6 meselesini ve doğru test sonuçlarını güncelledim._
+
+- **Görevler & Hedefler:**
+  - 20 test senaryosu yazıp gerçek sunucuda denedim.
+  - TC-11'de IPv6/IPv4 çakışmasını keşfettim, `allow ::1` ekleyerek çözdüm.
+  - Nginx README (TR + EN) güncellendi — `allow ::1`, açıklama, test sonuçları.
+  - test-cases.md ve test-cases-EN.md oluşturuldu.
+  - 03–19 arası tüm fazların bilingual belge dönüşümü tamamlandı.
+- **Kilometre Taşları & Çıktılar:**
+  - 🧪 Test Senaryoları: [TR](./19-Nginx-Derinlestirme/test-cases.md) / [EN](./19-Nginx-Derinlestirme/test-cases-en.md)
+  - 🌐 Nginx Derinleşme: [README (TR](./19-Nginx-Derinlestirme/readme.md) / [EN)](./19-Nginx-Derinlestirme/readme-en.md)
 
 ---
 

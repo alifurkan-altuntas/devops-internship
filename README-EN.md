@@ -12,9 +12,9 @@ I'm now working through additional topics given by my mentor, outside the origin
 
 Nginx deep dive is also complete: set up a reverse proxy with Python backend services, configured path-based routing (`/users/` → 3000, `/computers/` → 4000), tested path rewrite and path blocking (`allow`/`deny`) on a real server. Also set up Squid as a forward proxy, configured Windows to use it as a system proxy — confirmed in the Squid access log that all outgoing Windows traffic (including this conversation's traffic via `claude.ai`) was passing through Squid.
 
-Up next: 20 test cases covering the Nginx config, and converting remaining phases (03 onwards) to bilingual documentation.
+Up next: 20 test cases covering the Nginx config.
 
-I'm also gradually translating the notes from already-completed phases into Turkish (bilingual format: `README-EN.md` / `README-TR.md`) — Phases 1 and 2 are done so far.
+All phases (01–19) now have bilingual documentation (`README-EN.md` / `README.md`).
 
 Continuing the Udemy course on Docker (A'dan Z'ye) and the YouTube networking playlist alongside this.
 
@@ -22,25 +22,25 @@ Continuing the Udemy course on Docker (A'dan Z'ye) and the YouTube networking pl
 
 ## 📁 Repository Structure
 
-- [01-Linux-Basics](./01-Linux-Basics/): Core Linux commands and text processing (`awk`, `grep`, `cut`), and custom automation scripts. ([EN](./01-Linux-Basics/README-EN.md) / [TR](./01-Linux-Basics/README-TR.md))
-- [02-Vagrant-Automation](./02-Vagrant-Automation/): Infrastructure as Code (IaC) environments, and multi-distro provisioning. ([EN](./02-Vagrant-Automation/README-EN.md) / [TR](./02-Vagrant-Automation/README-TR.md))
-- [03-File-System-Management](./03-File-System-Management/): Storage diagnostics, disk write operations (`dd`), and sorting pipelines.
-- [04-User-Privilege-Management](./04-User-Privilege-Management/): Identity access control, system group lifecycles, and sudoers configuration (Least Privilege Principle).
-- [05-Linux-Permissions](./05-Linux-Permissions/): File system access control, recursive ownership changes, and sticky bit isolation.
-- [06-Linux-Process-Management](./06-Linux-Process-Management/): Process status monitoring, CPU priority adjustments (`nice`/`renice`), and signals.
-- [07-Linux-Service-Management](./07-Linux-Service-Management/): Systemd service management, zero-downtime reloads, and Log Management with journalctl.
-- [08-Linux-Log-Analysis](./08-Linux-Log-Analysis/): Log parsing pipelines, `sed`, and IPv4/IPv6 differences across distros. ([EN](./08-Linux-Log-Analysis/README-EN.md) / [TR](./08-Linux-Log-Analysis/README-TR.md))
-- [09-Linux-Network-Management](./09-Linux-Network-Management/): DNS lookups, checking listening ports, and TLS certificate verification.
-- [10-Linux-Storage-Management](./10-Linux-Storage-Management/): Disk partitioning, formatting with `ext4`, and persistent mounts via `/etc/fstab`.
-- [11-Linux-LVM-Management](./11-Linux-LVM-Management/): LVM setup, live volume resizing, and a disk-space incident writeup.
-- [12-Linux-SSH-Management](./12-Linux-SSH-Management/): Passwordless SSH access via key pairs, SSH config shortcuts, and file transfers with SCP/SFTP.
-- [13-Linux-Proxy-Management](./13-Linux-Proxy-Management/): Forward vs reverse proxy concepts, Nginx's `proxy_pass`, and a real 502 Bad Gateway debugging story.
-- [14-Linux-Bash-Scripting](./14-Linux-Bash-Scripting/): Variables, command substitution, numeric conditions, and a disk usage alert script.
-- [15-Linux-Cron-Automation](./15-Linux-Cron-Automation/): Scheduling with `cron` and `at`, a real `sudo`-in-cron debugging story, and a look at `logrotate`. ([EN](./15-Linux-Cron-Automation/README-EN.md) / [TR](./15-Linux-Cron-Automation/README-TR.md))
-- [16-Git-Basics](./16-Git-Basics/): `git clone`, branching, merging, and a real push-rejected/editor-stuck conflict resolved on this exact repo.
-- [17-Mini-Project](./17-Mini-Project/): Nginx, Docker, Git, and SSH set up on a real rented server — a static page pulled from this repo and published live.
-- [18-Linux-Networking-Fundamentals](./18-Linux-Networking-Fundamentals/): OSI model, routing & forwarding, and DNS (resolver chain, record types, TTL) — verified hands-on with `tcpdump` and `dig +trace`. Also includes research into real outages from AWS/Cloudflare/Google Cloud. ([EN](./18-Linux-Networking-Fundamentals/README-EN.md) / [TR](./18-Linux-Networking-Fundamentals/README-TR.md) — Outage research: [EN](./18-Linux-Networking-Fundamentals/dns-outages-EN.md) / [TR](./18-Linux-Networking-Fundamentals/dns-outages-TR.md))
-- [19-Nginx-Derinlestirme](./19-Nginx-Derinlestirme/): Reverse proxy, path-based routing, path rewrite, path blocking, and forward proxy (Squid) — all tested hands-on on a real server. ([EN](./19-Nginx-Derinlestirme/README-EN.md) / [TR](./19-Nginx-Derinlestirme/README-TR.md))
+- [01-Linux-Basics](./01-Linux-Basics/): Core Linux commands and text processing (`awk`, `grep`, `cut`), and custom automation scripts. ([EN](./01-Linux-Basics/readme-en.md) / [TR](./01-Linux-Basics/readme.md))
+- [02-Vagrant-Automation](./02-Vagrant-Automation/): Infrastructure as Code (IaC) environments, and multi-distro provisioning. ([EN](./02-Vagrant-Automation/readme-en.md) / [TR](./02-Vagrant-Automation/readme.md))
+- [03-File-System-Management](./03-File-System-Management/): Storage diagnostics, disk write operations (`dd`), and sorting pipelines. ([EN](./03-File-System-Management/readme-en.md) / [TR](./03-File-System-Management/readme.md))
+- [04-User-Privilege-Management](./04-User-Privilege-Management/): Identity access control, system group lifecycles, and sudoers configuration (Least Privilege Principle). ([EN](./04-User-Privilege-Management/readme-en.md) / [TR](./04-User-Privilege-Management/readme.md))
+- [05-Linux-Permissions](./05-Linux-Permissions/): File system access control, recursive ownership changes, and sticky bit isolation. ([EN](./05-Linux-Permissions/readme-en.md) / [TR](./05-Linux-Permissions/readme.md))
+- [06-Linux-Process-Management](./06-Linux-Process-Management/): Process status monitoring, CPU priority adjustments (`nice`/`renice`), and signals. ([EN](./06-Linux-Process-Management/readme-en.md) / [TR](./06-Linux-Process-Management/readme.md))
+- [07-Linux-Service-Management](./07-Linux-Service-Management/): Systemd service management, zero-downtime reloads, and Log Management with journalctl. ([EN](./07-Linux-Service-Management/readme-en.md) / [TR](./07-Linux-Service-Management/readme.md))
+- [08-Linux-Log-Analysis](./08-Linux-Log-Analysis/): Log parsing pipelines, `sed`, and IPv4/IPv6 differences across distros. ([EN](./08-Linux-Log-Analysis/readme-en.md) / [TR](./08-Linux-Log-Analysis/readme.md))
+- [09-Linux-Network-Management](./09-Linux-Network-Management/): DNS lookups, checking listening ports, and TLS certificate verification. ([EN](./09-Linux-Network-Management/readme-en.md) / [TR](./09-Linux-Network-Management/readme.md))
+- [10-Linux-Storage-Management](./10-Linux-Storage-Management/): Disk partitioning, formatting with `ext4`, and persistent mounts via `/etc/fstab`. ([EN](./10-Linux-Storage-Management/readme-en.md) / [TR](./10-Linux-Storage-Management/readme.md))
+- [11-Linux-LVM-Management](./11-Linux-LVM-Management/): LVM setup, live volume resizing, and a disk-space incident writeup. ([EN](./11-Linux-LVM-Management/readme-en.md) / [TR](./11-Linux-LVM-Management/readme.md))
+- [12-Linux-SSH-Management](./12-Linux-SSH-Management/): Passwordless SSH access via key pairs, SSH config shortcuts, and file transfers with SCP/SFTP. ([EN](./12-Linux-SSH-Management/readme-en.md) / [TR](./12-Linux-SSH-Management/readme.md))
+- [13-Linux-Proxy-Management](./13-Linux-Proxy-Management/): Forward vs reverse proxy concepts, Nginx's `proxy_pass`, and a real 502 Bad Gateway debugging story. ([EN](./13-Linux-Proxy-Management/readme-en.md) / [TR](./13-Linux-Proxy-Management/readme.md))
+- [14-Linux-Bash-Scripting](./14-Linux-Bash-Scripting/): Variables, command substitution, numeric conditions, and a disk usage alert script. ([EN](./14-Linux-Bash-Scripting/readme-en.md) / [TR](./14-Linux-Bash-Scripting/readme.md))
+- [15-Linux-Cron-Automation](./15-Linux-Cron-Automation/): Scheduling with `cron` and `at`, a real `sudo`-in-cron debugging story, and a look at `logrotate`. ([EN](./15-Linux-Cron-Automation/readme-en.md) / [TR](./15-Linux-Cron-Automation/readme.md))
+- [16-Git-Basics](./16-Git-Basics/): `git clone`, branching, merging, and a real push-rejected/editor-stuck conflict resolved on this exact repo. ([EN](./16-Git-Basics/readme-en.md) / [TR](./16-Git-Basics/readme.md))
+- [17-Mini-Project](./17-Mini-Project/): Nginx, Docker, Git, and SSH set up on a real rented server — a static page pulled from this repo and published live. ([EN](./17-Mini-Project/readme-en.md) / [TR](./17-Mini-Project/readme.md))
+- [18-Linux-Networking-Fundamentals](./18-Linux-Networking-Fundamentals/): OSI model, routing & forwarding, and DNS (resolver chain, record types, TTL) — verified hands-on with `tcpdump` and `dig +trace`. Also includes research into real outages from AWS/Cloudflare/Google Cloud. ([EN](./18-Linux-Networking-Fundamentals/readme-en.md) / [TR](./18-Linux-Networking-Fundamentals/readme.md) — Outage research: [EN](./18-Linux-Networking-Fundamentals/dns-outages-EN.md) / [TR](./18-Linux-Networking-Fundamentals/dns-outages-TR.md))
+- [19-Nginx-Derinlestirme](./19-Nginx-Derinlestirme/): Reverse proxy, path-based routing, path rewrite, path blocking, and forward proxy (Squid) — all tested hands-on on a real server. ([EN](./19-Nginx-Derinlestirme/readme-en.md) / [TR](./19-Nginx-Derinlestirme/readme.md))
 
 ### 📝 Evaluation & Assessment Artifacts
 
@@ -77,8 +77,8 @@ _Hadn't used Vagrant before — my previous virtualization experience was with V
   - Explored core Linux commands and analyzed enterprise configuration standards (FQDN defaults on Rocky Linux).
   - Wrote a shell script to monitor live system metrics.
 - **Milestones & Deliverables:**
-  - 🛠️ Automated Environment Setup: See [Vagrant Logs & Troubleshooting (EN](./02-Vagrant-Automation/README-EN.md) / [TR)](./02-Vagrant-Automation/README-TR.md)
-  - 📜 Linux Basics & Custom Script: See [Linux Basics Notes (EN](./01-Linux-Basics/README-EN.md) / [TR)](./01-Linux-Basics/README-TR.md)
+  - 🛠️ Automated Environment Setup: See [Vagrant Logs & Troubleshooting (EN](./02-Vagrant-Automation/readme-en.md) / [TR)](./02-Vagrant-Automation/readme.md)
+  - 📜 Linux Basics & Custom Script: See [Linux Basics Notes (EN](./01-Linux-Basics/readme-en.md) / [TR)](./01-Linux-Basics/readme.md)
 
 ### 🔹 June 18, 2026 | File System & Storage Diagnostics
 
@@ -166,7 +166,7 @@ _Wasn't expecting Ubuntu to return the IPv6 loopback address (`::1`) for localho
   - Fixed missing `curl` on Ubuntu's minimal image by installing it manually.
   - Built `grep`/`awk`/`sort`/`uniq` pipelines to find top IPs and count 404 errors by path.
 - **Milestones & Deliverables:**
-  - 🪵 Text Process Workspace: See [Log Analysis Notes (EN](./08-Linux-Log-Analysis/README-EN.md) / [TR)](./08-Linux-Log-Analysis/README-TR.md)
+  - 🪵 Text Process Workspace: See [Log Analysis Notes (EN](./08-Linux-Log-Analysis/readme-en.md) / [TR)](./08-Linux-Log-Analysis/readme.md)
   - 📊 Quiz Results: See [Phase 8 Performance Evaluation (100% Score)](./08-Linux-Log-Analysis/quiz-results.md)
 
 ### 🔹 June 21, 2026 | Networking & TLS
@@ -248,7 +248,7 @@ _Wrote two scripts — one for disk usage reports, one for archiving Nginx logs 
   - Scheduled both scripts with `crontab -e` to run nightly at 02:00.
   - Looked into `logrotate` as the standard real-world tool for this kind of log management.
 - **Milestones & Deliverables:**
-  - ⏰ Cron & Automation Workspace: See [Cron & Automation Notes (EN](./15-Linux-Cron-Automation/README-EN.md) / [TR)](./15-Linux-Cron-Automation/README-TR.md)
+  - ⏰ Cron & Automation Workspace: See [Cron & Automation Notes (EN](./15-Linux-Cron-Automation/readme-en.md) / [TR)](./15-Linux-Cron-Automation/readme.md)
   - 📊 Quiz Results: See [Phase 15 Quiz Results](./15-Linux-Cron-Automation/quiz-results.md)
 
 ### 🔹 June 23, 2026 | DevOps - Linux Temelleri (Udemy Course)
@@ -316,8 +316,8 @@ _Then started on the OSI model. After learning the 7 layers conceptually, practi
   - Learned the concept of encapsulation, and installed `tcpdump` to capture a real HTTP request at the packet level.
   - Marked the OSI phase as "in progress," since encapsulation/decapsulation isn't fully covered yet.
 - **Milestones & Deliverables:**
-  - 🪵 Path-Based Grouping: [Log Analysis Notes (EN](./08-Linux-Log-Analysis/README-EN.md) / [TR)](./08-Linux-Log-Analysis/README-TR.md) updated
-  - 🌐 OSI Model (In Progress): [OSI Model Notes (EN](./18-Linux-Networking-Fundamentals/README-EN.md) / [TR)](./18-Linux-Networking-Fundamentals/README-TR.md)
+  - 🪵 Path-Based Grouping: [Log Analysis Notes (EN](./08-Linux-Log-Analysis/readme-en.md) / [TR)](./08-Linux-Log-Analysis/readme.md) updated
+  - 🌐 OSI Model (In Progress): [OSI Model Notes (EN](./18-Linux-Networking-Fundamentals/readme-en.md) / [TR)](./18-Linux-Networking-Fundamentals/readme.md)
 
 ### 🔹 June 29, 2026 | Completing OSI, Routing & Forwarding, DNS Resolution Chain
 
@@ -334,7 +334,7 @@ _Finally started on the DNS resolution chain — learned the hierarchy between r
   - Investigated why `ip_forward` was active, confirming the Docker connection.
   - Started the DNS resolution chain, following a real resolution process with `dig +trace`.
 - **Milestones & Deliverables:**
-  - 🌐 OSI Model (Complete) & Routing/Forwarding: [Notes (EN](./18-Linux-Networking-Fundamentals/README-EN.md) / [TR)](./18-Linux-Networking-Fundamentals/README-TR.md)
+  - 🌐 OSI Model (Complete) & Routing/Forwarding: [Notes (EN](./18-Linux-Networking-Fundamentals/readme-en.md) / [TR)](./18-Linux-Networking-Fundamentals/readme.md)
 
 ### 🔹 June 30, 2026 | DNS Record Types, TTL, and Cloud Outage Research
 
@@ -354,14 +354,14 @@ _Finally, researched real, recent outages from AWS, Cloudflare, and Google Cloud
   - Tested `nslookup`, `host`, and `resolvectl` debug tools.
   - Researched real DNS-related outages from AWS, Cloudflare, and Google Cloud, producing a sourced document.
 - **Milestones & Deliverables:**
-  - 🌐 DNS (Complete): [Networking Notes (EN](./18-Linux-Networking-Fundamentals/README-EN.md) / [TR)](./18-Linux-Networking-Fundamentals/README-TR.md)
+  - 🌐 DNS (Complete): [Networking Notes (EN](./18-Linux-Networking-Fundamentals/readme-en.md) / [TR)](./18-Linux-Networking-Fundamentals/readme.md)
   - 🔥 Cloud Outage Research: [Notes (EN](./18-Linux-Networking-Fundamentals/dns-outages-EN.md) / [TR)](./18-Linux-Networking-Fundamentals/dns-outages-TR.md)
 
 ### 🔹 July 1, 2026 | Nginx Deep Dive — Reverse Proxy, Path Management, Forward Proxy
 
 _Completed the Nginx deep dive phase. Used Python's built-in HTTP server as a backend and put Nginx in front of it — confirmed the reverse proxy was working by seeing requests arrive in the backend log from `127.0.0.1` (Nginx) instead of the user's actual IP. Then set up path-based routing: `/users/` → port 3000, `/computers/` → port 4000. Learned path rewrite through the trailing slash difference in `proxy_pass` — without it, got 404; with it, got 200, because the system wasn't interpreting the path as "go into that folder" without the slash. During path blocking, using `return 403` alongside `deny all` caused localhost to be blocked too — removing it fixed the issue. A real mistake that made it into the notes._
 
-_Set up Squid as a forward proxy. Configured Windows to use `91.151.88.38:3128` as a system proxy, visited `ifconfig.me` in the browser and saw the server's IP instead of my real Windows IP. The Squid access log showed all Windows outgoing traffic — `claude.ai`, `apple.com`, `windows.com` included — passing through the proxy. Directly confirmed that the proxy was working and all data leaving the machine was going through Squid._
+_Set up Squid as a forward proxy. Configured Windows to use `<SERVER_IP>:3128` as a system proxy, visited `ifconfig.me` in the browser and saw the server's IP instead of my real Windows IP. The Squid access log showed all Windows outgoing traffic — `claude.ai`, `apple.com`, `windows.com` included — passing through the proxy. Directly confirmed that the proxy was working and all data leaving the machine was going through Squid._
 
 - **Tasks & Objectives:**
   - Configured Nginx as a reverse proxy, verified via backend log.
@@ -370,7 +370,23 @@ _Set up Squid as a forward proxy. Configured Windows to use `91.151.88.38:3128` 
   - Applied path blocking with internal/external distinction (`allow`/`deny`).
   - Set up Squid as a forward proxy, confirmed all Windows traffic passing through it via the access log.
 - **Milestones & Deliverables:**
-  - 🌐 Nginx Deep Dive: [Notes (EN](./19-Nginx-Derinlestirme/README-EN.md) / [TR)](./19-Nginx-Derinlestirme/README-TR.md)
+  - 🌐 Nginx Deep Dive: [Notes (EN](./19-Nginx-Derinlestirme/readme-en.md) / [TR)](./19-Nginx-Derinlestirme/readme.md)
+
+### 🔹 July 2, 2026 | Nginx Test Cases & Documentation Updates
+
+_Ran the Nginx config through 20 different scenarios — routing, path blocking, rewrite, and error conditions. 19 came back as expected, one didn't: `curl http://localhost/admin` returned 403, even though the config had `allow 127.0.0.1` and should have let it through. From earlier Linux training I remembered Ubuntu tends to prefer IPv6, but I needed to actually verify it. Ran `curl -v` and saw Ubuntu was resolving `localhost` as `::1` (IPv6), not `127.0.0.1` (IPv4). Nginx treats these as two separate addresses, so `allow 127.0.0.1` alone wasn't enough. Added `allow ::1` to the config and it worked. Then tested with `127.0.0.1` directly — that worked too, since it goes over IPv4. Confirmed that writing both is the right approach._
+
+_Also completed the bilingual documentation conversion for all phases (03–19), and updated the Nginx README to reflect the IPv6 finding and correct test results._
+
+- **Tasks & Objectives:**
+  - Wrote and ran 20 test scenarios against the real server.
+  - Discovered the IPv6/IPv4 mismatch in TC-11, fixed it by adding `allow ::1`.
+  - Updated Nginx README (TR + EN) — `allow ::1`, explanation, corrected test results.
+  - Created test-cases.md and test-cases-EN.md.
+  - Completed bilingual documentation for all phases 03–19.
+- **Milestones & Deliverables:**
+  - 🧪 Test Cases: [TR](./19-Nginx-Derinlestirme/test-cases.md) / [EN](./19-Nginx-Derinlestirme/test-cases-en.md)
+  - 🌐 Nginx Deep Dive: [README (TR](./19-Nginx-Derinlestirme/readme.md) / [EN)](./19-Nginx-Derinlestirme/readme-en.md)
 
 ---
 

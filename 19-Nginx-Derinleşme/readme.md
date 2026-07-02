@@ -68,7 +68,7 @@ sudo nginx -t && sudo systemctl reload nginx
 Dışarıdan (Windows'tan) port 80'e istek:
 
 ```
-PS C:\> curl http://91.151.88.38
+PS C:\> curl http://<SERVER_IP>
 <h1>Backend Servisi Çalışıyor - Port 8080</h1>
 ```
 
@@ -124,13 +124,13 @@ location /computers/ {
 ### Test Sonuçları
 
 ```
-PS C:\> curl http://91.151.88.38/
+PS C:\> curl http://<SERVER_IP>/
 <h1>Backend Servisi Çalışıyor - Port 8080</h1>
 
-PS C:\> curl http://91.151.88.38/users/
+PS C:\> curl http://<SERVER_IP>/users/
 <h1>Users Servisi</h1>
 
-PS C:\> curl http://91.151.88.38/computers/
+PS C:\> curl http://<SERVER_IP>/computers/
 <h1>Computers Servisi</h1>
 ```
 
@@ -156,7 +156,7 @@ proxy_pass http://localhost:3000/   →  /users/liste  →  localhost:3000/liste
 `/users` (trailing slash olmadan) yazılınca Nginx otomatik olarak `/users/`'a yönlendiriyor (301 Moved Permanently). `curl -L` ile redirect takip edilebilir:
 
 ```bash
-curl -L http://91.151.88.38/users
+curl -L http://<SERVER_IP>/users
 # <h1>Users Servisi</h1>
 ```
 
@@ -179,6 +179,7 @@ location /admin {
 ```nginx
 location /admin {
     allow 127.0.0.1;
+    allow ::1;
     deny all;
 }
 ```
@@ -186,21 +187,44 @@ location /admin {
 Nginx kuralları **yukarıdan aşağıya** okur, ilk eşleşmede durur:
 
 1. `127.0.0.1`'den mi geliyor? → Geç
-2. Başka biri? → 403
+2. `::1`'den mi geliyor? → Geç
+3. Başka biri? → 403
 
-**Örnek:** Odanın önüne bir güvenlik görevlisi koydunuz. Talimat: "Sadece içeriden (localhost) gelenleri al, dışarıdan gelenleri geri çevir."
+**Neden `allow ::1` de gerekiyor?** `allow 127.0.0.1` teknik olarak doğru — ama Ubuntu gibi bazı sistemlerde `localhost` yazıldığında sistem bunu IPv4 (`127.0.0.1`) değil, IPv6 adresi olan `::1` olarak çözümler. Nginx bu iki adresi farklı şeyler olarak görür. Bu, test sırasında doğrudan gözlemlendi:
+
+```bash
+curl -v http://localhost/admin 2>&1 | grep "Connected"
+# * Connected to localhost (::1) port 80
+```
+
+`localhost` yazılınca istek `::1`'den geliyordu. Config'de sadece `allow 127.0.0.1` varken bu istek izin listesinde bulunamadı ve `deny all`'a düştü — 403. `allow ::1` eklenince düzeldi.
+
+Fakat `127.0.0.1` direkt yazılınca IPv4 üzerinden gidiyor ve `allow 127.0.0.1` yeterli oluyor:
+
+```bash
+curl -v http://127.0.0.1/admin 2>&1 | grep "Connected"
+# * Connected to 127.0.0.1 (127.0.0.1) port 80
+```
+
+Taşınabilir ve güvenli bir config için her iki adresi de yazmak gerekir.
+
+**Örnek:** Odanın önüne bir güvenlik görevlisi koydunuz. Talimat: "Sadece içeriden (localhost) gelenleri al, dışarıdan gelenleri geri çevir." Ama localhost'un iki kapısı var — biri IPv4, biri IPv6. İkisini de izin listesine eklemezsen, birinden gelen içerideki kişiyi dışarıdan zannedip geri çeviriyorsun.
 
 ### Test Sonuçları
 
 ```bash
-# İçeriden (localhost)
+# İçeriden — localhost (IPv6 üzerinden)
 curl http://localhost/admin
-# → Backend cevabı (geçti)
+# → 404 Not Found (izin verildi, backend'e gitti, /admin diye dosya yok)
+
+# İçeriden — direkt IPv4
+curl http://127.0.0.1/admin
+# → 404 Not Found (izin verildi, backend'e gitti, /admin diye dosya yok)
 ```
 
 ```
 # Dışarıdan (Windows)
-PS C:\> curl http://91.151.88.38/admin
+PS C:\> curl http://<SERVER_IP>/admin
 <html><head><title>403 Forbidden</title></head>
 <body><center><h1>403 Forbidden</h1></center></body></html>
 ```
@@ -235,9 +259,9 @@ sudo apt install squid -y
 http_access allow all
 ```
 
-Windows sistem proxy ayarı: `91.151.88.38:3128`
+Windows sistem proxy ayarı: `<SERVER_IP>:3128`
 
-Tarayıcıdan `ifconfig.me`'ye girilince **Squid'in IP'si** (`91.151.88.38`) göründü — gerçek Windows IP'si (`37.154.226.48`) değil.
+Tarayıcıdan `ifconfig.me`'ye girilince **Squid'in IP'si** (`<SERVER_IP>`) göründü — gerçek Windows IP'si (`37.154.226.48`) değil.
 
 Squid logunda Windows'un **tüm trafiğinin** Squid'den geçtiği görüldü:
 
@@ -263,9 +287,9 @@ Test bittikten sonra `http_access allow all` kaldırıldı, Windows proxy ayarı
 | `proxy_set_header Host $host`             | Orijinal domain bilgisini backend'e ilet   |
 | `proxy_set_header X-Real-IP $remote_addr` | Kullanıcının gerçek IP'sini backend'e ilet |
 | `deny all`                                | Tüm istekleri engelle (403)                |
-| `allow 127.0.0.1`                         | Sadece localhost'a izin ver                |
+| `allow 127.0.0.1` / `allow ::1`           | Localhost'a izin ver (IPv4 ve IPv6)        |
 | `location /path/`                         | Belirli bir path için kural tanımla        |
 
 ---
 
-ℹ️ _Tüm testler gerçek bir Ubuntu VPS üzerinde (`91.151.88.38`) yapılmıştır. Backend servisler olarak Python'un yerleşik HTTP sunucusu kullanılmıştır._
+ℹ️ _Tüm testler gerçek bir Ubuntu VPS üzerinde (`<SERVER_IP>`) yapılmıştır. Backend servisler olarak Python'un yerleşik HTTP sunucusu kullanılmıştır._
