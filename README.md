@@ -40,7 +40,7 @@ Bununla paralel, Udemy'deki Docker (A'dan Z'ye) kursuna ve YouTube networking pl
 - [16-Git-Basics](./16-Git-Basics/): `git clone`, branching, merging, ve bu repo üzerinde gerçekten çözülen bir push-reddedildi/editör-takıldı çakışması. ([EN](./16-Git-Basics/readme-en.md) / [TR](./16-Git-Basics/readme.md))
 - [17-Mini-Project](./17-Mini-Project/): Gerçek bir kiralık sunucuda Nginx, Docker, Git, ve SSH kurulumu — bu repodan çekilip canlıya alınan statik bir sayfa. ([EN](./17-Mini-Project/readme-en.md) / [TR](./17-Mini-Project/readme.md))
 - [18-Linux-Networking-Fundamentals](./18-Linux-Networking-Fundamentals/): OSI modeli, routing & forwarding, ve DNS (resolver zinciri, kayıt tipleri, TTL) — gerçek senaryolarla ve `tcpdump`/`dig +trace` ile doğrulanmış. Ayrıca AWS/Cloudflare/Google Cloud'un gerçek kesintilerine dair araştırma içerir. ([EN](./18-Linux-Networking-Fundamentals/readme-en.md) / [TR](./18-Linux-Networking-Fundamentals/readme.md) — Outage araştırması: [EN](./18-Linux-Networking-Fundamentals/dns-outages-EN.md) / [TR](./18-Linux-Networking-Fundamentals/dns-outages-TR.md))
-- [19-Nginx-Derinlestirme](./19-Nginx-Derinlestirme/): Reverse proxy, path bazlı yönlendirme, path rewrite, path engelleme, ve forward proxy (Squid) — gerçek bir sunucuda uygulamalı olarak test edildi. ([EN](./19-Nginx-Derinlestirme/readme-en.md) / [TR](./19-Nginx-Derinlestirme/readme.md))
+- [19-Nginx-Derinleşme](./19-Nginx-Derinleşme/): Reverse proxy, path bazlı yönlendirme, path rewrite, path engelleme, ve forward proxy (Squid) — gerçek bir sunucuda uygulamalı olarak test edildi. ([EN](./19-Nginx-Derinleşme/readme-en.md) / [TR](./19-Nginx-Derinleşme/readme.md))
 
 ### 📝 Değerlendirme & Sınav Materyalleri
 
@@ -370,7 +370,7 @@ _Forward proxy için Squid kurdum. Windows'ta sistem proxy olarak `<SERVER_IP>:3
   - Path engellemeyi (`allow`/`deny`) iç/dış ağ ayrımıyla uyguladım.
   - Squid ile forward proxy kurup, Windows trafiğinin tamamının proxy'den geçtiğini logda doğruladım.
 - **Kilometre Taşları & Çıktılar:**
-  - 🌐 Nginx Derinleşme: [Notlar (EN](./19-Nginx-Derinlestirme/readme-en.md) / [TR)](./19-Nginx-Derinlestirme/readme.md)
+  - 🌐 Nginx Derinleşme: [Notlar (EN](./19-Nginx-Derinleşme/readme-en.md) / [TR)](./19-Nginx-Derinleşme/readme.md)
 
 ### 🔹 2 Temmuz 2026 | Nginx Test Senaryoları & Belge Güncellemeleri
 
@@ -385,8 +385,8 @@ _Aynı zamanda önceki fazların (03–19) Türkçe/İngilizce belge dönüşüm
   - test-cases.md ve test-cases-EN.md oluşturuldu.
   - 03–19 arası tüm fazların bilingual belge dönüşümü tamamlandı.
 - **Kilometre Taşları & Çıktılar:**
-  - 🧪 Test Senaryoları: [TR](./19-Nginx-Derinlestirme/test-cases.md) / [EN](./19-Nginx-Derinlestirme/test-cases-en.md)
-  - 🌐 Nginx Derinleşme: [README (TR](./19-Nginx-Derinlestirme/readme.md) / [EN)](./19-Nginx-Derinlestirme/readme-en.md)
+  - 🧪 Test Senaryoları: [TR](./19-Nginx-Derinleşme/test-cases.md) / [EN](./19-Nginx-Derinleşme/test-cases-en.md)
+  - 🌐 Nginx Derinleşme: [README (TR](./19-Nginx-Derinleşme/readme.md) / [EN)](./19-Nginx-Derinleşme/readme-en.md)
 
 ---
 
