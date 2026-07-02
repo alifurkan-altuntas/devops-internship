@@ -40,7 +40,7 @@ Continuing the Udemy course on Docker (A'dan Z'ye) and the YouTube networking pl
 - [16-Git-Basics](./16-Git-Basics/): `git clone`, branching, merging, and a real push-rejected/editor-stuck conflict resolved on this exact repo. ([EN](./16-Git-Basics/readme-en.md) / [TR](./16-Git-Basics/readme.md))
 - [17-Mini-Project](./17-Mini-Project/): Nginx, Docker, Git, and SSH set up on a real rented server — a static page pulled from this repo and published live. ([EN](./17-Mini-Project/readme-en.md) / [TR](./17-Mini-Project/readme.md))
 - [18-Linux-Networking-Fundamentals](./18-Linux-Networking-Fundamentals/): OSI model, routing & forwarding, and DNS (resolver chain, record types, TTL) — verified hands-on with `tcpdump` and `dig +trace`. Also includes research into real outages from AWS/Cloudflare/Google Cloud. ([EN](./18-Linux-Networking-Fundamentals/readme-en.md) / [TR](./18-Linux-Networking-Fundamentals/readme.md) — Outage research: [EN](./18-Linux-Networking-Fundamentals/dns-outages-EN.md) / [TR](./18-Linux-Networking-Fundamentals/dns-outages-TR.md))
-- [19-Nginx-Derinlestirme](./19-Nginx-Derinlestirme/): Reverse proxy, path-based routing, path rewrite, path blocking, and forward proxy (Squid) — all tested hands-on on a real server. ([EN](./19-Nginx-Derinlestirme/readme-en.md) / [TR](./19-Nginx-Derinlestirme/readme.md))
+- [19-Nginx-Derinleşme](./19-Nginx-Derinleşme/): Reverse proxy, path-based routing, path rewrite, path blocking, and forward proxy (Squid) — all tested hands-on on a real server. ([EN](./19-Nginx-Derinleşme/readme-en.md) / [TR](./19-Nginx-Derinleşme/readme.md))
 
 ### 📝 Evaluation & Assessment Artifacts
 
@@ -370,7 +370,7 @@ _Set up Squid as a forward proxy. Configured Windows to use `<SERVER_IP>:3128` a
   - Applied path blocking with internal/external distinction (`allow`/`deny`).
   - Set up Squid as a forward proxy, confirmed all Windows traffic passing through it via the access log.
 - **Milestones & Deliverables:**
-  - 🌐 Nginx Deep Dive: [Notes (EN](./19-Nginx-Derinlestirme/readme-en.md) / [TR)](./19-Nginx-Derinlestirme/readme.md)
+  - 🌐 Nginx Deep Dive: [Notes (EN](./19-Nginx-Derinleşme/readme-en.md) / [TR)](./19-Nginx-Derinleşme/readme.md)
 
 ### 🔹 July 2, 2026 | Nginx Test Cases & Documentation Updates
 
@@ -385,8 +385,8 @@ _Also completed the bilingual documentation conversion for all phases (03–19),
   - Created test-cases.md and test-cases-EN.md.
   - Completed bilingual documentation for all phases 03–19.
 - **Milestones & Deliverables:**
-  - 🧪 Test Cases: [TR](./19-Nginx-Derinlestirme/test-cases.md) / [EN](./19-Nginx-Derinlestirme/test-cases-en.md)
-  - 🌐 Nginx Deep Dive: [README (TR](./19-Nginx-Derinlestirme/readme.md) / [EN)](./19-Nginx-Derinlestirme/readme-en.md)
+  - 🧪 Test Cases: [TR](./19-Nginx-Derinleşme/test-cases.md) / [EN](./19-Nginx-Derinleşme/test-cases-en.md)
+  - 🌐 Nginx Deep Dive: [README (TR](./19-Nginx-Derinleşme/readme.md) / [EN)](./19-Nginx-Derinleşme/readme-en.md)
 
 ---
 
