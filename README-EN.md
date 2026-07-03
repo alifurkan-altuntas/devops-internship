@@ -6,17 +6,15 @@ Welcome to my DevOps engineering journal. This repository documents my learning 
 
 ## 📍 Where I Am Now
 
-I've completed all 17 phases of the assigned Linux roadmap, including the final mini-project — Nginx, Docker, Git, and SSH configured on an actual rented server, serving a page pulled directly from this repository. Along the way I also did a full review pass: went through the roadmap's graduation-style scenario questions out loud, found a few gaps in my own understanding, and went back to strengthen the notes for those phases.
+Completed all 17 phases of the Linux roadmap, including the mini project — Nginx, Docker, Git, and SSH are set up on a real rented server, serving a page pulled directly from this repo.
 
-I'm now working through additional topics given by my mentor, outside the original roadmap. Path-based IP grouping was added to log analysis. OSI model and routing & forwarding are complete, DNS was covered in depth (resolver chain, 8 record types, TTL, negative caching, debug tools, and real cloud outage research) — scored 15/15 on all three quizzes.
+Beyond the roadmap, worked through additional topics assigned by my mentor: `sed`, `at`, path-based IP grouping, OSI model, routing & forwarding, and DNS in depth (resolver chain, 8 record types, TTL, negative caching, debug tools, real cloud outage research) — scored 15/15 on all three quizzes.
 
-Nginx deep dive is also complete: set up a reverse proxy with Python backend services, configured path-based routing (`/users/` → 3000, `/computers/` → 4000), tested path rewrite and path blocking (`allow`/`deny`) on a real server. Also set up Squid as a forward proxy, configured Windows to use it as a system proxy — confirmed in the Squid access log that all outgoing Windows traffic (including this conversation's traffic via `claude.ai`) was passing through Squid.
+Completed Nginx deep dive: reverse proxy, path-based routing, path rewrite, path blocking, and forward proxy (Squid). Ran 20 test scenarios against the real config — discovered and documented an IPv6/IPv4 mismatch during testing. Also added rate limiting and load balancing on my own initiative (round-robin, failover, `least_conn`, `ip_hash`).
 
-Up next: 20 test cases covering the Nginx config.
+Bilingual documentation (TR/EN) complete for all phases (01–20).
 
-All phases (01–19) now have bilingual documentation (`README-EN.md` / `README.md`).
-
-Continuing the Udemy course on Docker (A'dan Z'ye) and the YouTube networking playlist alongside this.
+Up next: Kubernetes.
 
 ---
 
@@ -41,6 +39,7 @@ Continuing the Udemy course on Docker (A'dan Z'ye) and the YouTube networking pl
 - [17-Mini-Project](./17-Mini-Project/): Nginx, Docker, Git, and SSH set up on a real rented server — a static page pulled from this repo and published live. ([EN](./17-Mini-Project/readme-en.md) / [TR](./17-Mini-Project/readme.md))
 - [18-Linux-Networking-Fundamentals](./18-Linux-Networking-Fundamentals/): OSI model, routing & forwarding, and DNS (resolver chain, record types, TTL) — verified hands-on with `tcpdump` and `dig +trace`. Also includes research into real outages from AWS/Cloudflare/Google Cloud. ([EN](./18-Linux-Networking-Fundamentals/readme-en.md) / [TR](./18-Linux-Networking-Fundamentals/readme.md) — Outage research: [EN](./18-Linux-Networking-Fundamentals/dns-outages-EN.md) / [TR](./18-Linux-Networking-Fundamentals/dns-outages-TR.md))
 - [19-Nginx-Derinleşme](./19-Nginx-Derinleşme/): Reverse proxy, path-based routing, path rewrite, path blocking, and forward proxy (Squid) — all tested hands-on on a real server. ([EN](./19-Nginx-Derinleşme/readme-en.md) / [TR](./19-Nginx-Derinleşme/readme.md))
+- [20-Rate-Limiting-Load-Balancing](./20-Rate-Limiting-Load-Balancing/): Nginx rate limiting (`limit_req_zone`, `burst`, `nodelay`) and load balancing (round-robin, failover, `least_conn`, `ip_hash`). ([TR](./20-Rate-Limiting-Load-Balancing/README.md) / [EN](./20-Rate-Limiting-Load-Balancing/README-EN.md))
 
 ### 📝 Evaluation & Assessment Artifacts
 
@@ -387,6 +386,17 @@ _Also completed the bilingual documentation conversion for all phases (03–19),
 - **Milestones & Deliverables:**
   - 🧪 Test Cases: [TR](./19-Nginx-Derinleşme/test-cases.md) / [EN](./19-Nginx-Derinleşme/test-cases-en.md)
   - 🌐 Nginx Deep Dive: [README (TR](./19-Nginx-Derinleşme/readme.md) / [EN)](./19-Nginx-Derinleşme/readme-en.md)
+
+### 🔹 July 3, 2026 | Rate Limiting & Load Balancing
+
+_For rate limiting, defined a zone with `limit_req_zone` and applied it to all locations — sending 20 requests, the first 12 went through and the rest returned 503. For load balancing, set up a second instance for the users service and defined an upstream block. Round-robin worked, then I killed Instance 1 — Nginx automatically switched to Instance 2, no downtime. When Instance 1 came back, round-robin resumed. Also researched `least_conn` and `ip_hash` — didn't use them in this phase but understood when they're needed._
+
+- **Tasks & Objectives:**
+  - Set up and tested rate limiting (`limit_req_zone`, `burst`, `nodelay`).
+  - Set up load balancing — round-robin, failover, and external testing.
+  - Researched `least_conn` and `ip_hash` methods.
+- **Milestones & Deliverables:**
+  - 🚦 Rate Limiting & Load Balancing: [README (TR](./20-Rate-Limiting-Load-Balancing/README.md) / [EN)](./20-Rate-Limiting-Load-Balancing/README-EN.md)
 
 ---
 

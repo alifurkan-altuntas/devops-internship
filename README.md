@@ -6,17 +6,15 @@ Bu repo, stajım boyunca takip ettiğim öğrenme sürecimi, altyapı otomasyonu
 
 ## 📍 Şu An Neredeyim
 
-Verilen Linux yol haritasının tüm 17 fazını, son mini proje dahil, tamamladım — Nginx, Docker, Git ve SSH, gerçek (kiralık) bir sunucuda kurulu, ve bu repodan doğrudan çekilen bir sayfayı sunuyor. Bu süreçte ayrıca genel bir tekrar turu da yaptım: yol haritasının mezuniyet kriterlerindeki senaryo sorularını sesli olarak cevapladım, kendi bilgimde bazı eksikler buldum, ve bu fazların notlarını geri dönüp güçlendirdim.
+Verilen Linux yol haritasının tüm 17 fazını, son mini proje dahil, tamamladım — Nginx, Docker, Git ve SSH, gerçek (kiralık) bir sunucuda kurulu, ve bu repodan doğrudan çekilen bir sayfayı sunuyor.
 
-Şu an, asıl yol haritasının dışında, eğitmenimin verdiği ek konular üzerinde çalışıyorum. Log analizine `sed` ile path bazlı IP gruplama eklendi. OSI modeli ve routing & forwarding konuları tamamlandı, DNS derinlemesine işlendi (resolver zinciri, 8 kayıt tipi, TTL, negative caching, debug araçları, ve gerçek cloud kesintileri araştırması) — her biri için quiz çözüldü, 3'ünde de %100 alındı.
+Yol haritasının dışında, eğitmenimin verdiği ek konular üzerinde çalıştım: `sed`, `at`, path bazlı IP gruplama, OSI modeli, routing & forwarding, DNS derinlemesine (resolver zinciri, 8 kayıt tipi, TTL, negative caching, debug araçları, cloud kesintileri araştırması) — her biri için quiz çözüldü, 3'ünde de %100 alındı.
 
-Nginx derinleşmesi de tamamlandı: Python backend servisleriyle reverse proxy kuruldu, path bazlı yönlendirme yapıldı (`/users/` → 3000, `/computers/` → 4000), path rewrite ve path engelleme (`allow`/`deny`) gerçek sunucuda test edildi. Ayrıca forward proxy kavramı için Squid kurulup Windows sistem proxy olarak ayarlandı — tarayıcıdan çıkan tüm trafiğin (bu konuşmanın trafiği dahil) Squid üzerinden geçtiği logda doğrudan gözlemlendi.
+Nginx derinleşmesi tamamlandı: reverse proxy, path bazlı yönlendirme, path rewrite, path engelleme, forward proxy (Squid). 20 test senaryosu gerçek sunucuda denendi — test sürecinde IPv6/IPv4 çakışması keşfedildi ve belgelendi. Kendi inisiyatifimle rate limiting ve load balancing de eklendi (round-robin, failover, `least_conn`, `ip_hash`).
 
-Sırada 20 test case yazımı (Nginx config'ini kapsayan geniş senaryolar).
+Tüm fazların (01–20) Türkçe/İngilizce belge dönüşümü tamamlandı.
 
-Ayrıca, daha önce tamamlanan fazların notlarını da kademeli olarak Türkçe'ye çeviriyorum (iki dilli format: `README-EN.md` / `README.md`), şu ana kadar Faz 1 ve 2 tamamlandı.
-
-Bununla paralel, Udemy'deki Docker (A'dan Z'ye) kursuna ve YouTube networking playlist'ine devam ediyorum.
+Sırada Kubernetes fazı var.
 
 ---
 
@@ -41,6 +39,7 @@ Bununla paralel, Udemy'deki Docker (A'dan Z'ye) kursuna ve YouTube networking pl
 - [17-Mini-Project](./17-Mini-Project/): Gerçek bir kiralık sunucuda Nginx, Docker, Git, ve SSH kurulumu — bu repodan çekilip canlıya alınan statik bir sayfa. ([EN](./17-Mini-Project/readme-en.md) / [TR](./17-Mini-Project/readme.md))
 - [18-Linux-Networking-Fundamentals](./18-Linux-Networking-Fundamentals/): OSI modeli, routing & forwarding, ve DNS (resolver zinciri, kayıt tipleri, TTL) — gerçek senaryolarla ve `tcpdump`/`dig +trace` ile doğrulanmış. Ayrıca AWS/Cloudflare/Google Cloud'un gerçek kesintilerine dair araştırma içerir. ([EN](./18-Linux-Networking-Fundamentals/readme-en.md) / [TR](./18-Linux-Networking-Fundamentals/readme.md) — Outage araştırması: [EN](./18-Linux-Networking-Fundamentals/dns-outages-EN.md) / [TR](./18-Linux-Networking-Fundamentals/dns-outages-TR.md))
 - [19-Nginx-Derinleşme](./19-Nginx-Derinleşme/): Reverse proxy, path bazlı yönlendirme, path rewrite, path engelleme, ve forward proxy (Squid) — gerçek bir sunucuda uygulamalı olarak test edildi. ([EN](./19-Nginx-Derinleşme/readme-en.md) / [TR](./19-Nginx-Derinleşme/readme.md))
+- [20-Rate-Limiting-Load-Balancing](./20-Rate-Limiting-Load-Balancing/): Nginx'te rate limiting (`limit_req_zone`, `burst`, `nodelay`) ve load balancing (round-robin, failover, `least_conn`, `ip_hash`). ([TR](./20-Rate-Limiting-Load-Balancing/README.md) / [EN](./20-Rate-Limiting-Load-Balancing/README-EN.md))
 
 ### 📝 Değerlendirme & Sınav Materyalleri
 
@@ -387,6 +386,17 @@ _Aynı zamanda önceki fazların (03–19) Türkçe/İngilizce belge dönüşüm
 - **Kilometre Taşları & Çıktılar:**
   - 🧪 Test Senaryoları: [TR](./19-Nginx-Derinleşme/test-cases.md) / [EN](./19-Nginx-Derinleşme/test-cases-en.md)
   - 🌐 Nginx Derinleşme: [README (TR](./19-Nginx-Derinleşme/readme.md) / [EN)](./19-Nginx-Derinleşme/readme-en.md)
+
+### 🔹 3 Temmuz 2026 | Rate Limiting & Load Balancing
+
+_Rate limiting için `limit_req_zone` ile zone tanımlayıp tüm location'lara uyguladım — 20 istek attığımda ilk 12'si geçti, sonrası 503 döndü. Load balancing için users servisi için ikinci bir instance açıp `upstream` bloğu tanımladım. Round-robin çalıştı, sonra Instance 1'i kapattım — Nginx otomatik olarak Instance 2'ye geçti, hiç kesinti olmadı. Instance 1 geri gelince round-robin'e döndü. `least_conn` ve `ip_hash` yöntemlerini de araştırdım — bu fazda kullanmadım ama ne zaman gerektiğini anladım._
+
+- **Görevler & Hedefler:**
+  - Rate limiting kurdum ve test ettim (`limit_req_zone`, `burst`, `nodelay`).
+  - Load balancing kurdum — round-robin, failover, ve dışarıdan test.
+  - `least_conn` ve `ip_hash` yöntemlerini araştırdım.
+- **Kilometre Taşları & Çıktılar:**
+  - 🚦 Rate Limiting & Load Balancing: [README (TR](./20-Rate-Limiting-Load-Balancing/README.md) / [EN)](./20-Rate-Limiting-Load-Balancing/README-EN.md)
 
 ---
 

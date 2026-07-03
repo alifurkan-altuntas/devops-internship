@@ -292,4 +292,4 @@ Test bittikten sonra `http_access allow all` kaldırıldı, Windows proxy ayarı
 
 ---
 
-ℹ️ _Tüm testler gerçek bir Ubuntu VPS üzerinde (`<SERVER_IP>`) yapılmıştır. Backend servisler olarak Python'un yerleşik HTTP sunucusu kullanılmıştır._
+ℹ️ _Tüm testler gerçek bir Ubuntu VDS üzerinde (`<SERVER_IP>`) yapılmıştır. Backend servisler olarak Python'un yerleşik HTTP sunucusu kullanılmıştır._

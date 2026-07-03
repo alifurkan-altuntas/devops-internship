@@ -290,4 +290,4 @@ After testing, `http_access allow all` was removed and the Windows proxy setting
 
 ---
 
-ℹ️ _All tests performed on a real Ubuntu VPS (`<SERVER_IP>`). Python's built-in HTTP server was used as the backend service._
+ℹ️ _All tests performed on a real Ubuntu VDS (`<SERVER_IP>`). Python's built-in HTTP server was used as the backend service._
