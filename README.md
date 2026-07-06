@@ -14,7 +14,7 @@ Nginx derinleşmesi tamamlandı: reverse proxy, path bazlı yönlendirme, path r
 
 Tüm fazların (01–20) Türkçe/İngilizce belge dönüşümü tamamlandı.
 
-Sırada Kubernetes fazı var.
+Yeni görev: OpenResty ile PostgreSQL, MySQL ve Redis entegrasyonu ve token authentication — tamamlandı.
 
 ---
 
@@ -40,6 +40,7 @@ Sırada Kubernetes fazı var.
 - [18-Linux-Networking-Fundamentals](./18-Linux-Networking-Fundamentals/): OSI modeli, routing & forwarding, ve DNS (resolver zinciri, kayıt tipleri, TTL) — gerçek senaryolarla ve `tcpdump`/`dig +trace` ile doğrulanmış. Ayrıca AWS/Cloudflare/Google Cloud'un gerçek kesintilerine dair araştırma içerir. ([EN](./18-Linux-Networking-Fundamentals/readme-en.md) / [TR](./18-Linux-Networking-Fundamentals/readme.md) — Outage araştırması: [EN](./18-Linux-Networking-Fundamentals/dns-outages-EN.md) / [TR](./18-Linux-Networking-Fundamentals/dns-outages-TR.md))
 - [19-Nginx-Derinleşme](./19-Nginx-Derinleşme/): Reverse proxy, path bazlı yönlendirme, path rewrite, path engelleme, ve forward proxy (Squid) — gerçek bir sunucuda uygulamalı olarak test edildi. ([EN](./19-Nginx-Derinleşme/readme-en.md) / [TR](./19-Nginx-Derinleşme/readme.md))
 - [20-Rate-Limiting-Load-Balancing](./20-Rate-Limiting-Load-Balancing/): Nginx'te rate limiting (`limit_req_zone`, `burst`, `nodelay`) ve load balancing (round-robin, failover, `least_conn`, `ip_hash`). ([TR](./20-Rate-Limiting-Load-Balancing/README.md) / [EN](./20-Rate-Limiting-Load-Balancing/README-EN.md))
+- [21-OpenResty-API](./21-OpenResty-API/): OpenResty ile token authentication, PostgreSQL, MySQL ve Redis entegrasyonu — Docker Compose ile kuruldu. ([TR](./21-OpenResty-API/README.md) / [EN](./21-OpenResty-API/README-EN.md))
 
 ### 📝 Değerlendirme & Sınav Materyalleri
 
@@ -397,6 +398,19 @@ _Rate limiting için `limit_req_zone` ile zone tanımlayıp tüm location'lara u
   - `least_conn` ve `ip_hash` yöntemlerini araştırdım.
 - **Kilometre Taşları & Çıktılar:**
   - 🚦 Rate Limiting & Load Balancing: [README (TR](./20-Rate-Limiting-Load-Balancing/README.md) / [EN)](./20-Rate-Limiting-Load-Balancing/README-EN.md)
+
+### 🔹 6 Temmuz 2026 | OpenResty — Token Authentication, PostgreSQL, MySQL, Redis
+
+_yeni görevi uyguladım: OpenResty ile token korumalı bir API kurdum, PostgreSQL, MySQL ve Redis'i birlikte kullandım. Tüm servisler Docker Compose ile tek komutla ayağa kalktı. OpenResty'nin hazır image'ında pgmoon kütüphanesi yoktu — paket yöneticileri Alpine'da çalışmadı, direkt GitHub'dan çektik. nginx.conf'a `resolver 127.0.0.11` eklemeden container isimleri IP'ye çevrilemiyor, bunu da test sırasında keşfettim. Token olmadan 401, token ile PostgreSQL'den kullanıcılar, MySQL'den ürünler, Redis'ten cache — hepsi çalışıyor._
+
+- **Görevler & Hedefler:**
+  - Docker Compose ile OpenResty, PostgreSQL, MySQL ve Redis kurulumu.
+  - Token authentication — `auth.lua` ile her isteğe token kontrolü.
+  - PostgreSQL (`/users`), MySQL (`/products`), Redis (`/cache`) endpoint'leri.
+  - Dockerfile ile pgmoon kütüphanesi eklendi.
+  - `resolver 127.0.0.11` — container DNS çözümlemesi için gerekli.
+- **Kilometre Taşları & Çıktılar:**
+  - 🔐 OpenResty API: [README (TR](./21-OpenResty-API/README.md) / [EN)](./21-OpenResty-API/README-EN.md)
 
 ---
 

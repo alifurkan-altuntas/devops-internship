@@ -14,7 +14,7 @@ Completed Nginx deep dive: reverse proxy, path-based routing, path rewrite, path
 
 Bilingual documentation (TR/EN) complete for all phases (01–20).
 
-Up next: Kubernetes.
+Completed new task: OpenResty with PostgreSQL, MySQL, Redis integration and token authentication.
 
 ---
 
@@ -40,6 +40,7 @@ Up next: Kubernetes.
 - [18-Linux-Networking-Fundamentals](./18-Linux-Networking-Fundamentals/): OSI model, routing & forwarding, and DNS (resolver chain, record types, TTL) — verified hands-on with `tcpdump` and `dig +trace`. Also includes research into real outages from AWS/Cloudflare/Google Cloud. ([EN](./18-Linux-Networking-Fundamentals/readme-en.md) / [TR](./18-Linux-Networking-Fundamentals/readme.md) — Outage research: [EN](./18-Linux-Networking-Fundamentals/dns-outages-EN.md) / [TR](./18-Linux-Networking-Fundamentals/dns-outages-TR.md))
 - [19-Nginx-Derinleşme](./19-Nginx-Derinleşme/): Reverse proxy, path-based routing, path rewrite, path blocking, and forward proxy (Squid) — all tested hands-on on a real server. ([EN](./19-Nginx-Derinleşme/readme-en.md) / [TR](./19-Nginx-Derinleşme/readme.md))
 - [20-Rate-Limiting-Load-Balancing](./20-Rate-Limiting-Load-Balancing/): Nginx rate limiting (`limit_req_zone`, `burst`, `nodelay`) and load balancing (round-robin, failover, `least_conn`, `ip_hash`). ([TR](./20-Rate-Limiting-Load-Balancing/README.md) / [EN](./20-Rate-Limiting-Load-Balancing/README-EN.md))
+- [21-OpenResty-API](./21-OpenResty-API/): Token authentication with OpenResty, PostgreSQL, MySQL, and Redis integration — deployed with Docker Compose. ([TR](./21-OpenResty-API/README.md) / [EN](./21-OpenResty-API/README-EN.md))
 
 ### 📝 Evaluation & Assessment Artifacts
 
@@ -397,6 +398,19 @@ _For rate limiting, defined a zone with `limit_req_zone` and applied it to all l
   - Researched `least_conn` and `ip_hash` methods.
 - **Milestones & Deliverables:**
   - 🚦 Rate Limiting & Load Balancing: [README (TR](./20-Rate-Limiting-Load-Balancing/README.md) / [EN)](./20-Rate-Limiting-Load-Balancing/README-EN.md)
+
+### 🔹 July 6, 2026 | OpenResty — Token Authentication, PostgreSQL, MySQL, Redis
+
+_Implemented new task: built a token-protected API with OpenResty, connecting to PostgreSQL, MySQL, and Redis. All services came up with a single `docker compose up`. The official OpenResty image didn't include pgmoon — package managers didn't work on Alpine, so pulled it directly from GitHub. Also discovered that `resolver 127.0.0.11` is needed in nginx.conf for container name resolution — without it, Nginx can't resolve "postgres" to an IP. Token missing: 401. Token valid: users from PostgreSQL, products from MySQL, data from Redis cache — all working._
+
+- **Tasks & Objectives:**
+  - Set up OpenResty, PostgreSQL, MySQL, and Redis with Docker Compose.
+  - Token authentication — `auth.lua` checks every incoming request.
+  - PostgreSQL (`/users`), MySQL (`/products`), Redis (`/cache`) endpoints.
+  - Added pgmoon via Dockerfile.
+  - `resolver 127.0.0.11` — required for container DNS resolution.
+- **Milestones & Deliverables:**
+  - 🔐 OpenResty API: [README (TR](./21-OpenResty-API/README.md) / [EN)](./21-OpenResty-API/README-EN.md)
 
 ---
 
