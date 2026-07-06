@@ -58,6 +58,7 @@ Completed new task: OpenResty with PostgreSQL, MySQL, Redis integration and toke
 - [Phase 14 Quiz Logs](./14-Linux-Bash-Scripting/quiz-results.md): Quiz on Bash variables, conditions, and scripting basics.
 - [Phase 15 Quiz Logs](./15-Linux-Cron-Automation/quiz-results.md): Quiz on cron scheduling, sudoers, and log rotation.
 - [Phase 16 Quiz Logs](./16-Git-Basics/quiz-results.md): Quiz on Git branching, merging, and resolving a push conflict.
+- [Phase 19 & 20 Quiz Results](./19-Nginx-Derinlestirme/quiz-results.md): Nginx reverse proxy, path management, forward proxy, rate limiting and load balancing — 15/15.
 
 ### 🎓 Courses & Certifications
 

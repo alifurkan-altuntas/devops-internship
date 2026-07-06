@@ -58,6 +58,7 @@ Yeni görev: OpenResty ile PostgreSQL, MySQL ve Redis entegrasyonu ve token auth
 - [Faz 14 Quiz Sonuçları](./14-Linux-Bash-Scripting/quiz-results.md): Bash değişkenleri, koşullar, ve scripting temelleri üzerine quiz.
 - [Faz 15 Quiz Sonuçları](./15-Linux-Cron-Automation/quiz-results.md): Cron zamanlama, sudoers, ve log rotasyonu üzerine quiz.
 - [Faz 16 Quiz Sonuçları](./16-Git-Basics/quiz-results.md): Git branching, merging, ve bir push çakışması çözme üzerine quiz.
+- [Faz 19 & 20 Quiz Sonuçları](./19-Nginx-Derinleşme/quiz-results.md): Nginx reverse proxy, path yönetimi, forward proxy, rate limiting ve load balancing üzerine quiz — 15/15.
 
 ### 🎓 Kurslar & Sertifikalar
 
