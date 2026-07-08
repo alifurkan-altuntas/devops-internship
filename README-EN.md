@@ -14,7 +14,9 @@ Completed Nginx deep dive: reverse proxy, path-based routing, path rewrite, path
 
 Bilingual documentation (TR/EN) complete for all phases (01–20).
 
-Completed new task: OpenResty (PostgreSQL, MySQL, Redis, token authentication) and rclone with S3 (performance parameters, `rclone serve http`).
+Completed all assigned tasks: OpenResty (PostgreSQL, MySQL, Redis, token authentication) and rclone with S3 (performance parameters, `rclone serve http`, `rclone mount` with cache).
+
+Started Docker deep dive — core concepts and Dockerfile optimization (multi-stage build, layer caching, combining RUN instructions) complete. Up next: Docker Compose with multi-service architecture, volume/network management, and image security.
 
 ---
 
@@ -42,6 +44,7 @@ Completed new task: OpenResty (PostgreSQL, MySQL, Redis, token authentication) a
 - [20-Rate-Limiting-Load-Balancing](./20-Rate-Limiting-Load-Balancing/): Nginx rate limiting (`limit_req_zone`, `burst`, `nodelay`) and load balancing (round-robin, failover, `least_conn`, `ip_hash`). ([TR](./20-Rate-Limiting-Load-Balancing/README.md) / [EN](./20-Rate-Limiting-Load-Balancing/README-EN.md))
 - [21-OpenResty-API](./21-OpenResty-API/): Token authentication with OpenResty, PostgreSQL, MySQL, and Redis integration — deployed with Docker Compose. ([TR](./21-OpenResty-API/README.md) / [EN](./21-OpenResty-API/README-EN.md))
 - [22-rclone-S3](./22-rclone-S3/): Connecting to Amazon S3 with rclone, testing performance parameters, and exposing a private bucket over HTTP with `rclone serve http`. ([TR](./22-rclone-S3/README.md) / [EN](./22-rclone-S3/README-EN.md))
+- [23-Docker-Fundamentals](./23-Docker-Fundamentals/): Docker fundamentals — images, containers, Dockerfile optimization (multi-stage build, layer caching, combining RUN instructions). ([TR](./23-Docker-Fundamentals/README.md) / [EN](./23-Docker-Fundamentals/README-EN.md))
 
 ### 📝 Evaluation & Assessment Artifacts
 
@@ -426,6 +429,18 @@ _Explored rclone, created an Amazon S3 bucket and connected to it. During config
   - Mounted S3 as a local disk with `rclone mount`, tested cache (`--vfs-cache-mode full`, `--vfs-cache-max-size`, `--vfs-cache-max-age`).
 - **Milestones & Deliverables:**
   - 🗄️ rclone & S3: [README (TR](./22-rclone-S3/README.md) / [EN)](./22-rclone-S3/README-EN.md)
+
+### 🔹 July 8, 2026 | Docker Fundamentals — Images, Containers, Dockerfile Optimization
+
+_Had only used Docker for hello-world before. In this phase I learned the core concepts: VM vs container (kernel sharing, only what the service needs), image vs container (template vs running copy), Dockerfile vs docker-compose.yml. Also covered image optimization: choosing the right base image (alpine), multi-stage build (keep dev kit out of the final image), layer caching (least-changing at the top, most-changing at the bottom), and combining RUN instructions (keep it compact, do two things in one step)._
+
+- **Tasks & Objectives:**
+  - Learned VM vs container differences.
+  - Clarified image and container concepts.
+  - Understood Dockerfile vs docker-compose.yml.
+  - Learned multi-stage build, layer caching, and RUN combining techniques.
+- **Milestones & Deliverables:**
+  - 🐳 Docker Fundamentals: [README (TR](./23-Docker-Fundamentals/README.md) / [EN)](./23-Docker-Fundamentals/README-EN.md)
 
 ---
 
