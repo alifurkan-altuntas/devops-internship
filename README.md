@@ -14,7 +14,9 @@ Nginx derinleşmesi tamamlandı: reverse proxy, path bazlı yönlendirme, path r
 
 Tüm fazların (01–20) Türkçe/İngilizce belge dönüşümü tamamlandı.
 
-Yeni görev: OpenResty (PostgreSQL, MySQL, Redis, token authentication) ve rclone ile S3 entegrasyonu (performans parametreleri, `rclone serve http`). — tamamlandı.
+OpenResty (PostgreSQL, MySQL, Redis, token authentication) ve rclone ile S3 entegrasyonu (performans parametreleri, `rclone serve http`, `rclone mount` ve cache).
+
+Docker derinleşmesine başlandı — temel kavramlar, Dockerfile optimizasyonu (multi-stage build, layer caching, RUN birleştirme) tamamlandı. Sırada Docker Compose ile çok servisli mimari, volume/network yönetimi ve image güvenliği var.
 
 ---
 
@@ -42,6 +44,8 @@ Yeni görev: OpenResty (PostgreSQL, MySQL, Redis, token authentication) ve rclon
 - [20-Rate-Limiting-Load-Balancing](./20-Rate-Limiting-Load-Balancing/): Nginx'te rate limiting (`limit_req_zone`, `burst`, `nodelay`) ve load balancing (round-robin, failover, `least_conn`, `ip_hash`). ([TR](./20-Rate-Limiting-Load-Balancing/README.md) / [EN](./20-Rate-Limiting-Load-Balancing/README-EN.md))
 - [21-OpenResty-API](./21-OpenResty-API/): OpenResty ile token authentication, PostgreSQL, MySQL ve Redis entegrasyonu — Docker Compose ile kuruldu. ([TR](./21-OpenResty-API/README.md) / [EN](./21-OpenResty-API/README-EN.md))
 - [22-rclone-S3](./22-rclone-S3/): rclone ile Amazon S3 bağlantısı, performans parametreleri testi ve `rclone serve http` ile private bucket'ı dışarıya açma. ([TR](./22-rclone-S3/README.md) / [EN](./22-rclone-S3/README-EN.md))
+- [23-Docker-Fundamentals](./23-Docker-Fundamentals/): Docker temelleri — image, container, Dockerfile optimizasyonu (multi-stage build, layer caching, RUN birleştirme). ([TR](./23-Docker-Fundamentals/README.md) / [EN](./23-Docker-Fundamentals/README-EN.md))
+
 
 ### 📝 Değerlendirme & Sınav Materyalleri
 
@@ -426,6 +430,19 @@ _rclone'u inceledim, Amazon S3 bucket'ı oluşturdum ve bağlandım. Yapılandı
   - `rclone mount` ile S3 yerel disk olarak bağlandı, cache testi yapıldı (`--vfs-cache-mode full`, `--vfs-cache-max-size`, `--vfs-cache-max-age`).
 - **Kilometre Taşları & Çıktılar:**
   - 🗄️ rclone & S3: [README (TR](./22-rclone-S3/README.md) / [EN)](./22-rclone-S3/README-EN.md)
+
+### 🔹 8 Temmuz 2026 | Docker Temelleri — Image, Container, Dockerfile Optimizasyonu
+
+_Docker'ı daha önce sadece hello-world ile test etmiştim. Bu fazda temel kavramları öğrendim: VM ile container farkı (kernel paylaşımı, sadece servisin ihtiyacı olanlar), image ve container farkı (şablon vs çalışan kopya), Dockerfile vs docker-compose.yml farkı. Image optimizasyon tekniklerini de işledim: doğru base image seçimi (alpine), multi-stage build (dev kit final image'a girmesin), layer caching (en az değişen üste, en çok değişen alta), ve RUN satırlarını birleştirme (kompakt hale getir, bir adımda 2 iş)._
+
+- **Görevler & Hedefler:**
+  - VM vs container farkı öğrenildi.
+  - Image ve container kavramları netleşti.
+  - Dockerfile vs docker-compose.yml farkı anlaşıldı.
+  - Multi-stage build, layer caching ve RUN birleştirme teknikleri öğrenildi.
+- **Kilometre Taşları & Çıktılar:**
+  - 🐳 Docker Temelleri: [README (TR](./23-Docker-Fundamentals/README.md) / [EN)](./23-Docker-Fundamentals/README-EN.md)
+
 
 ---
 
