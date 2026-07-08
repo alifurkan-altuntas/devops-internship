@@ -416,13 +416,14 @@ _Implemented new task: built a token-protected API with OpenResty, connecting to
 
 ### 🔹 July 8, 2026 | rclone & Amazon S3 — Cloud Storage and Secure Access
 
-_Explored rclone, created an Amazon S3 bucket and connected to it. During configuration I typed `EU` for the location constraint instead of `eu-central-1` — assumed `EU` would cover all European regions, but it has to match the region exactly. Caught the error and fixed it. Tested performance parameters: `--transfers`, `--checkers`, `--buffer-size`, `--fast-list`, `--bwlimit`. A 64MB buffer created overhead with 10 small files, 16MB was more balanced. Used `rclone serve http` to expose the private bucket on port 8090 — files in S3 became browsable from a browser without any AWS credentials._
+_Explored rclone, created an Amazon S3 bucket and connected to it. During configuration I typed `EU` for the location constraint instead of `eu-central-1` — assumed `EU` would cover all European regions, but it has to match the region exactly. Caught the error and fixed it. Tested performance parameters: `--transfers`, `--checkers`, `--buffer-size`, `--fast-list`, `--bwlimit`. A 64MB buffer created overhead with 10 small files, 16MB was more balanced. Testing `--fast-list` in isolation showed a 25% speed improvement. Used `rclone serve http` to expose the private bucket on port 8090 — files in S3 became browsable from a browser without any AWS credentials. Mounted S3 as a local disk with `rclone mount` — reads that took 1.2s without cache dropped to 0.030s with cache (42x faster). Also tested `--vfs-cache-max-age 10s` — after the cache expired, the file was re-downloaded from S3._
 
 - **Tasks & Objectives:**
   - Created AWS S3 bucket, connected via rclone.
   - Encountered and fixed a location_constraint mismatch error.
   - Tested performance parameters (`--transfers`, `--checkers`, `--buffer-size`, `--fast-list`, `--bwlimit`).
   - Exposed a private S3 bucket over HTTP with `rclone serve http`.
+  - Mounted S3 as a local disk with `rclone mount`, tested cache (`--vfs-cache-mode full`, `--vfs-cache-max-size`, `--vfs-cache-max-age`).
 - **Milestones & Deliverables:**
   - 🗄️ rclone & S3: [README (TR](./22-rclone-S3/README.md) / [EN)](./22-rclone-S3/README-EN.md)
 

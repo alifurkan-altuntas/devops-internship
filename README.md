@@ -416,13 +416,14 @@ _yeni görevi uyguladım: OpenResty ile token korumalı bir API kurdum, PostgreS
 
 ### 🔹 8 Temmuz 2026 | rclone & Amazon S3 — Bulut Depolama ve Güvenli Erişim
 
-_rclone'u inceledim, Amazon S3 bucket'ı oluşturdum ve bağlandım. Yapılandırma sırasında location constraint için `EU` yazdım, `eu-central-1` yazmam gerekirken — `EU`'nun tüm AB bölgelerini kapsadığını zannediyordum ama region ile birebir eşleşmesi gerekiyormuş. Hatayı görünce düzelttim. Performans parametrelerini test ettim: `--transfers`, `--checkers`, `--buffer-size`, `--fast-list`, `--bwlimit`. 64MB buffer 10 küçük dosyada overhead yarattı, 16MB daha dengeli oldu. `rclone serve http` ile private bucket'ı port 8090'da dışarıya açtım — tarayıcıdan S3'teki dosyalara hiçbir AWS kimlik bilgisi kullanmadan erişilebildi._
+_rclone'u inceledim, Amazon S3 bucket'ı oluşturdum ve bağlandım. Yapılandırma sırasında location constraint için `EU` yazdım, `eu-central-1` yazmam gerekirken — `EU`'nun tüm AB bölgelerini kapsadığını zannediyordum ama region ile birebir eşleşmesi gerekiyormuş. Hatayı görünce düzelttim. Performans parametrelerini test ettim: `--transfers`, `--checkers`, `--buffer-size`, `--fast-list`, `--bwlimit`. 64MB buffer 10 küçük dosyada overhead yarattı, 16MB daha dengeli oldu. `--fast-list` tek başına test edildiğinde %25 hız farkı yarattı. `rclone serve http` ile private bucket'ı port 8090'da dışarıya açtım — tarayıcıdan S3'teki dosyalara hiçbir AWS kimlik bilgisi kullanmadan erişilebildi. `rclone mount` ile S3'ü yerel disk gibi bağladım, cache olmadan 1.2s süren okuma cache ile 0.030s'ye düştü — 42 kat daha hızlı. `--vfs-cache-max-age 10s` ile cache'in dolduğunu da test ettim, süre dolunca dosya tekrar S3'ten indirildi._
 
 - **Görevler & Hedefler:**
   - AWS S3 bucket oluşturuldu, rclone ile bağlandı.
   - location_constraint hatası yaşandı ve çözüldü.
   - Performans parametreleri test edildi (`--transfers`, `--checkers`, `--buffer-size`, `--fast-list`, `--bwlimit`).
   - `rclone serve http` ile private S3 bucket'ı HTTP üzerinden dışarıya açıldı.
+  - `rclone mount` ile S3 yerel disk olarak bağlandı, cache testi yapıldı (`--vfs-cache-mode full`, `--vfs-cache-max-size`, `--vfs-cache-max-age`).
 - **Kilometre Taşları & Çıktılar:**
   - 🗄️ rclone & S3: [README (TR](./22-rclone-S3/README.md) / [EN)](./22-rclone-S3/README-EN.md)
 
