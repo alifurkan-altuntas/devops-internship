@@ -84,23 +84,35 @@ Dizin listelemeyi tek bir API isteğiyle yapar. Milyonlarca dosya olan bucket'la
 
 ### Test Sonuçları
 
-10 tane 5MB'lık dosya (toplam 50MB) ile iki farklı ayar denedim:
+10 tane 5MB'lık dosya (toplam 50MB) ile testler:
+
+**Test 1 — Varsayılan vs Performans parametreleri:**
 
 ```bash
-# Test 1 — Varsayılan
 time rclone copy ~/test-files s3:alifurkan-devops/test1 -P
 # Elapsed time: 1.1s / real: 1.507s
 
-# Test 2 — Performans parametreleriyle
 time rclone copy ~/test-files s3:alifurkan-devops/test2 -P \
   --transfers 16 --checkers 16 --buffer-size 16M --fast-list
 # Elapsed time: 1.0s / real: 1.373s
 ```
 
-|          | Varsayılan | Performans parametreleriyle |
-| -------- | ---------- | --------------------------- |
-| **Süre** | 1.507s     | 1.373s                      |
-| **Hız**  | ~50 MB/s   | ~50 MB/s                    |
+**Test 2 — `--fast-list` izole test:**
+
+```bash
+time rclone copy ~/test-files s3:alifurkan-devops/test1 -P --transfers 4
+# Elapsed time: 1.4s / real: 1.851s / Hız: 39 MB/s
+
+time rclone copy ~/test-files s3:alifurkan-devops/test2 -P --transfers 4 --fast-list
+# Elapsed time: 1.0s / real: 1.400s / Hız: 50 MB/s
+```
+
+|          | `--fast-list` olmadan | `--fast-list` ile |
+| -------- | --------------------- | ----------------- |
+| **Süre** | 1.851s                | 1.400s            |
+| **Hız**  | 39 MB/s               | 50 MB/s           |
+
+`--fast-list` az sayıda dosyada bile %25 fark yarattı — listeleme overhead'i beklenenden büyükmüş.
 
 Fark küçük çünkü dosyalar küçük ve az. İlk denemede `--buffer-size 64M` kullanmıştım, bu sefer daha yavaş oldu — 640MB RAM ayrılmaya çalışılması overhead yarattı. 16M'a düşürünce dengelendi.
 
@@ -150,7 +162,78 @@ Bu mantık Nginx'teki reverse proxy ile aynı — kullanıcı arkadaki sistemi g
 
 ---
 
-## 📊 Komut Referansı
+## `rclone mount` — S3'ü Yerel Disk Gibi Kullanmak
+
+`rclone serve http` S3'ü HTTP üzerinden sunarken, `rclone mount` S3'ü sanki yerel bir disk gibi sisteme bağlar. `/mnt/s3`'e girdiğinde S3'teki dosyaları kendi diskindeymiş gibi görürsün.
+
+### Kurulum
+
+```bash
+sudo mkdir -p /mnt/s3
+sudo chown altun:altun /mnt/s3
+```
+
+### Cache Olmadan Mount
+
+```bash
+rclone mount s3:alifurkan-devops /mnt/s3 --daemon
+```
+
+**`--daemon`** — arka planda çalıştır demek. Terminali bloke etmez, komut verince geri döner.
+
+```bash
+ls /mnt/s3
+# test1  test2
+```
+
+Her okumada S3'e istek gidiyor:
+
+```bash
+time cat /mnt/s3/test1/file1.bin > /dev/null
+# real 0m1.247s
+```
+
+### Cache ile Mount
+
+```bash
+fusermount3 -u /mnt/s3   # önce kapat
+
+rclone mount s3:alifurkan-devops /mnt/s3 \
+  --vfs-cache-mode full \
+  --vfs-cache-max-size 2G \
+  --vfs-cache-max-age 24h \
+  --daemon
+```
+
+- **`--vfs-cache-mode full`** → hem okuma hem yazma cache'le
+- **`--vfs-cache-max-size 2G`** → cache için maksimum 2GB disk kullan
+- **`--vfs-cache-max-age 24h`** → 24 saat erişilmeyen cache'i sil
+
+**Örnek:** Deponun derinlerinden bir eşyayı alıp yakındaki rafa koyuyorsun — ilk seferinde depoya gidiyorsun (zaman alır), sonrasında hep yakındaki raftan alıyorsun (hızlı). `--vfs-cache-max-age` ise "yakındaki rafta ne kadar kalsın" — süre dolunca raftan kaldır, lazım olunca tekrar depoya git. Redis'teki TTL mantığıyla aynı.
+
+### Test Sonuçları
+
+```bash
+time cat /mnt/s3/test1/file1.bin > /dev/null   # ilk okuma
+# real 0m2.047s  → S3'ten indirdi, cache'e yazdı
+
+time cat /mnt/s3/test1/file1.bin > /dev/null   # ikinci okuma
+# real 0m0.030s  → cache'den geldi (42x daha hızlı)
+```
+
+`--vfs-cache-max-age 10s` ile test edildi — 10 saniye sonra cache doldu, dosya tekrar S3'ten indirildi:
+
+| Okuma | Süre    | Ne oldu                                              |
+| ----- | ------- | ---------------------------------------------------- |
+| 1.    | 2.322s  | S3'ten indirdi, cache'e yazdı                        |
+| 2-7.  | ~0.030s | Cache'den geldi                                      |
+| 8.    | 1.354s  | 10 saniye geçti, cache doldu, S3'ten yeniden indirdi |
+
+### Mount'u Kapatmak
+
+```bash
+fusermount3 -u /mnt/s3
+```
 
 ### Temel Komutlar
 
@@ -175,6 +258,19 @@ rclone delete s3:alifurkan-devops/test --rmdirs
 
 # Private S3'ü HTTP üzerinden sun
 rclone serve http s3:alifurkan-devops --addr :8090
+
+# S3'ü yerel disk olarak bağla
+rclone mount s3:alifurkan-devops /mnt/s3 --daemon
+
+# Cache ile bağla
+rclone mount s3:alifurkan-devops /mnt/s3 \
+  --vfs-cache-mode full \
+  --vfs-cache-max-size 2G \
+  --vfs-cache-max-age 24h \
+  --daemon
+
+# Mount'u kapat
+fusermount3 -u /mnt/s3
 ```
 
 ### Performans Parametreleriyle Yükleme

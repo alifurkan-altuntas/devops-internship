@@ -84,27 +84,39 @@ To use half of a 10 Mbit/s connection:
 
 ### Test Results
 
-Tested with 10 files × 5MB each (50MB total):
+10 files × 5MB each (50MB total):
+
+**Test 1 — Default vs performance parameters:**
 
 ```bash
-# Test 1 — Default
 time rclone copy ~/test-files s3:alifurkan-devops/test1 -P
 # Elapsed time: 1.1s / real: 1.507s
 
-# Test 2 — With performance parameters
 time rclone copy ~/test-files s3:alifurkan-devops/test2 -P \
   --transfers 16 --checkers 16 --buffer-size 16M --fast-list
 # Elapsed time: 1.0s / real: 1.373s
 ```
 
-|           | Default  | With performance parameters |
-| --------- | -------- | --------------------------- |
-| **Time**  | 1.507s   | 1.373s                      |
-| **Speed** | ~50 MB/s | ~50 MB/s                    |
+**Test 2 — `--fast-list` in isolation:**
 
-The difference is small because the files are small and few. The first attempt used `--buffer-size 64M` and was actually slower — 640MB RAM allocation created overhead. Dropping to 16M balanced it out.
+```bash
+time rclone copy ~/test-files s3:alifurkan-devops/test1 -P --transfers 4
+# Elapsed time: 1.4s / real: 1.851s / Speed: 39 MB/s
 
-**Performance parameters make a real difference with hundreds of files or GB-scale data.** The lesson: adjust parameters based on file size and connection, not blindly.
+time rclone copy ~/test-files s3:alifurkan-devops/test2 -P --transfers 4 --fast-list
+# Elapsed time: 1.0s / real: 1.400s / Speed: 50 MB/s
+```
+
+|           | Without `--fast-list` | With `--fast-list` |
+| --------- | --------------------- | ------------------ |
+| **Time**  | 1.851s                | 1.400s             |
+| **Speed** | 39 MB/s               | 50 MB/s            |
+
+`--fast-list` made a 25% difference even with a small number of files — the listing overhead was bigger than expected.
+
+The difference between default and full performance parameters was small because the files are small and few. The first attempt used `--buffer-size 64M` and was actually slower — 640MB RAM allocation created overhead. Dropping to 16M balanced it out.
+
+**Performance parameters make a real difference with hundreds of files or GB-scale data.** Adjust parameters based on file size and connection, not blindly.
 
 ---
 
@@ -150,7 +162,78 @@ This is the same logic as Nginx's reverse proxy — users see only the front-fac
 
 ---
 
-## 📊 Command Reference
+## `rclone mount` — Using S3 as a Local Disk
+
+While `rclone serve http` serves S3 over HTTP, `rclone mount` attaches S3 to the system as if it were a local disk. Going into `/mnt/s3` shows the S3 files as if they were on your own disk.
+
+### Setup
+
+```bash
+sudo mkdir -p /mnt/s3
+sudo chown altun:altun /mnt/s3
+```
+
+### Mount Without Cache
+
+```bash
+rclone mount s3:alifurkan-devops /mnt/s3 --daemon
+```
+
+**`--daemon`** — run in the background. Doesn't block the terminal, returns immediately after starting.
+
+```bash
+ls /mnt/s3
+# test1  test2
+```
+
+Every read goes to S3:
+
+```bash
+time cat /mnt/s3/test1/file1.bin > /dev/null
+# real 0m1.247s
+```
+
+### Mount With Cache
+
+```bash
+fusermount3 -u /mnt/s3   # unmount first
+
+rclone mount s3:alifurkan-devops /mnt/s3 \
+  --vfs-cache-mode full \
+  --vfs-cache-max-size 2G \
+  --vfs-cache-max-age 24h \
+  --daemon
+```
+
+- **`--vfs-cache-mode full`** → cache both reads and writes
+- **`--vfs-cache-max-size 2G`** → use up to 2GB of disk for cache
+- **`--vfs-cache-max-age 24h`** → remove cache entries not accessed in 24 hours
+
+**Example:** Like taking an item from the back of the warehouse and putting it on the nearby shelf — the first time you have to go all the way to the back (takes time), but after that you always grab it from the nearby shelf (fast). `--vfs-cache-max-age` is "how long does it stay on the nearby shelf" — when the time runs out, clear it off, and go back to the warehouse next time it's needed. Same logic as TTL in Redis.
+
+### Test Results
+
+```bash
+time cat /mnt/s3/test1/file1.bin > /dev/null   # first read
+# real 0m2.047s  → downloaded from S3, written to cache
+
+time cat /mnt/s3/test1/file1.bin > /dev/null   # second read
+# real 0m0.030s  → served from cache (42x faster)
+```
+
+Tested with `--vfs-cache-max-age 10s` — after 10 seconds the cache expired and the file was re-downloaded from S3:
+
+| Read    | Time    | What happened                                           |
+| ------- | ------- | ------------------------------------------------------- |
+| 1st     | 2.322s  | Downloaded from S3, written to cache                    |
+| 2nd–7th | ~0.030s | Served from cache                                       |
+| 8th     | 1.354s  | 10 seconds passed, cache expired, re-downloaded from S3 |
+
+### Unmounting
+
+```bash
+fusermount3 -u /mnt/s3
+```
 
 ### Basic Commands
 
@@ -175,6 +258,19 @@ rclone delete s3:alifurkan-devops/test --rmdirs
 
 # Serve private S3 over HTTP
 rclone serve http s3:alifurkan-devops --addr :8090
+
+# Mount S3 as a local disk
+rclone mount s3:alifurkan-devops /mnt/s3 --daemon
+
+# Mount with cache
+rclone mount s3:alifurkan-devops /mnt/s3 \
+  --vfs-cache-mode full \
+  --vfs-cache-max-size 2G \
+  --vfs-cache-max-age 24h \
+  --daemon
+
+# Unmount
+fusermount3 -u /mnt/s3
 ```
 
 ### High-Performance Upload
