@@ -14,7 +14,7 @@ Nginx derinleşmesi tamamlandı: reverse proxy, path bazlı yönlendirme, path r
 
 Tüm fazların (01–20) Türkçe/İngilizce belge dönüşümü tamamlandı.
 
-Yeni görev: OpenResty ile PostgreSQL, MySQL ve Redis entegrasyonu ve token authentication — tamamlandı.
+Yeni görev: OpenResty (PostgreSQL, MySQL, Redis, token authentication) ve rclone ile S3 entegrasyonu (performans parametreleri, `rclone serve http`). — tamamlandı.
 
 ---
 
@@ -41,6 +41,7 @@ Yeni görev: OpenResty ile PostgreSQL, MySQL ve Redis entegrasyonu ve token auth
 - [19-Nginx-Derinleşme](./19-Nginx-Derinleşme/): Reverse proxy, path bazlı yönlendirme, path rewrite, path engelleme, ve forward proxy (Squid) — gerçek bir sunucuda uygulamalı olarak test edildi. ([EN](./19-Nginx-Derinleşme/readme-en.md) / [TR](./19-Nginx-Derinleşme/readme.md))
 - [20-Rate-Limiting-Load-Balancing](./20-Rate-Limiting-Load-Balancing/): Nginx'te rate limiting (`limit_req_zone`, `burst`, `nodelay`) ve load balancing (round-robin, failover, `least_conn`, `ip_hash`). ([TR](./20-Rate-Limiting-Load-Balancing/README.md) / [EN](./20-Rate-Limiting-Load-Balancing/README-EN.md))
 - [21-OpenResty-API](./21-OpenResty-API/): OpenResty ile token authentication, PostgreSQL, MySQL ve Redis entegrasyonu — Docker Compose ile kuruldu. ([TR](./21-OpenResty-API/README.md) / [EN](./21-OpenResty-API/README-EN.md))
+- [22-rclone-S3](./22-rclone-S3/): rclone ile Amazon S3 bağlantısı, performans parametreleri testi ve `rclone serve http` ile private bucket'ı dışarıya açma. ([TR](./22-rclone-S3/README.md) / [EN](./22-rclone-S3/README-EN.md))
 
 ### 📝 Değerlendirme & Sınav Materyalleri
 
@@ -412,6 +413,18 @@ _yeni görevi uyguladım: OpenResty ile token korumalı bir API kurdum, PostgreS
   - `resolver 127.0.0.11` — container DNS çözümlemesi için gerekli.
 - **Kilometre Taşları & Çıktılar:**
   - 🔐 OpenResty API: [README (TR](./21-OpenResty-API/README.md) / [EN)](./21-OpenResty-API/README-EN.md)
+
+### 🔹 8 Temmuz 2026 | rclone & Amazon S3 — Bulut Depolama ve Güvenli Erişim
+
+_rclone'u inceledim, Amazon S3 bucket'ı oluşturdum ve bağlandım. Yapılandırma sırasında location constraint için `EU` yazdım, `eu-central-1` yazmam gerekirken — `EU`'nun tüm AB bölgelerini kapsadığını zannediyordum ama region ile birebir eşleşmesi gerekiyormuş. Hatayı görünce düzelttim. Performans parametrelerini test ettim: `--transfers`, `--checkers`, `--buffer-size`, `--fast-list`, `--bwlimit`. 64MB buffer 10 küçük dosyada overhead yarattı, 16MB daha dengeli oldu. `rclone serve http` ile private bucket'ı port 8090'da dışarıya açtım — tarayıcıdan S3'teki dosyalara hiçbir AWS kimlik bilgisi kullanmadan erişilebildi._
+
+- **Görevler & Hedefler:**
+  - AWS S3 bucket oluşturuldu, rclone ile bağlandı.
+  - location_constraint hatası yaşandı ve çözüldü.
+  - Performans parametreleri test edildi (`--transfers`, `--checkers`, `--buffer-size`, `--fast-list`, `--bwlimit`).
+  - `rclone serve http` ile private S3 bucket'ı HTTP üzerinden dışarıya açıldı.
+- **Kilometre Taşları & Çıktılar:**
+  - 🗄️ rclone & S3: [README (TR](./22-rclone-S3/README.md) / [EN)](./22-rclone-S3/README-EN.md)
 
 ---
 

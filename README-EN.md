@@ -14,7 +14,7 @@ Completed Nginx deep dive: reverse proxy, path-based routing, path rewrite, path
 
 Bilingual documentation (TR/EN) complete for all phases (01–20).
 
-Completed new task: OpenResty with PostgreSQL, MySQL, Redis integration and token authentication.
+Completed new task: OpenResty (PostgreSQL, MySQL, Redis, token authentication) and rclone with S3 (performance parameters, `rclone serve http`).
 
 ---
 
@@ -41,6 +41,7 @@ Completed new task: OpenResty with PostgreSQL, MySQL, Redis integration and toke
 - [19-Nginx-Derinleşme](./19-Nginx-Derinleşme/): Reverse proxy, path-based routing, path rewrite, path blocking, and forward proxy (Squid) — all tested hands-on on a real server. ([EN](./19-Nginx-Derinleşme/readme-en.md) / [TR](./19-Nginx-Derinleşme/readme.md))
 - [20-Rate-Limiting-Load-Balancing](./20-Rate-Limiting-Load-Balancing/): Nginx rate limiting (`limit_req_zone`, `burst`, `nodelay`) and load balancing (round-robin, failover, `least_conn`, `ip_hash`). ([TR](./20-Rate-Limiting-Load-Balancing/README.md) / [EN](./20-Rate-Limiting-Load-Balancing/README-EN.md))
 - [21-OpenResty-API](./21-OpenResty-API/): Token authentication with OpenResty, PostgreSQL, MySQL, and Redis integration — deployed with Docker Compose. ([TR](./21-OpenResty-API/README.md) / [EN](./21-OpenResty-API/README-EN.md))
+- [22-rclone-S3](./22-rclone-S3/): Connecting to Amazon S3 with rclone, testing performance parameters, and exposing a private bucket over HTTP with `rclone serve http`. ([TR](./22-rclone-S3/README.md) / [EN](./22-rclone-S3/README-EN.md))
 
 ### 📝 Evaluation & Assessment Artifacts
 
@@ -412,6 +413,18 @@ _Implemented new task: built a token-protected API with OpenResty, connecting to
   - `resolver 127.0.0.11` — required for container DNS resolution.
 - **Milestones & Deliverables:**
   - 🔐 OpenResty API: [README (TR](./21-OpenResty-API/README.md) / [EN)](./21-OpenResty-API/README-EN.md)
+
+### 🔹 July 8, 2026 | rclone & Amazon S3 — Cloud Storage and Secure Access
+
+_Explored rclone, created an Amazon S3 bucket and connected to it. During configuration I typed `EU` for the location constraint instead of `eu-central-1` — assumed `EU` would cover all European regions, but it has to match the region exactly. Caught the error and fixed it. Tested performance parameters: `--transfers`, `--checkers`, `--buffer-size`, `--fast-list`, `--bwlimit`. A 64MB buffer created overhead with 10 small files, 16MB was more balanced. Used `rclone serve http` to expose the private bucket on port 8090 — files in S3 became browsable from a browser without any AWS credentials._
+
+- **Tasks & Objectives:**
+  - Created AWS S3 bucket, connected via rclone.
+  - Encountered and fixed a location_constraint mismatch error.
+  - Tested performance parameters (`--transfers`, `--checkers`, `--buffer-size`, `--fast-list`, `--bwlimit`).
+  - Exposed a private S3 bucket over HTTP with `rclone serve http`.
+- **Milestones & Deliverables:**
+  - 🗄️ rclone & S3: [README (TR](./22-rclone-S3/README.md) / [EN)](./22-rclone-S3/README-EN.md)
 
 ---
 
