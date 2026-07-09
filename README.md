@@ -16,7 +16,7 @@ Tüm fazların (01–20) Türkçe/İngilizce belge dönüşümü tamamlandı.
 
 OpenResty (PostgreSQL, MySQL, Redis, token authentication) ve rclone ile S3 entegrasyonu (performans parametreleri, `rclone serve http`, `rclone mount` ve cache).
 
-Docker derinleşmesine başlandı — temel kavramlar, Dockerfile optimizasyonu (multi-stage build, layer caching, RUN birleştirme) tamamlandı. Sırada Docker Compose ile çok servisli mimari, volume/network yönetimi ve image güvenliği var.
+Docker derinleşmesine devam ediliyor — kavramsal kısım ve uygulamalı testler (image boyutu karşılaştırması, layer caching, Docker Compose volumes/networks) tamamlandı. Sırada non-root container ve image güvenliği var.
 
 ---
 
@@ -41,11 +41,10 @@ Docker derinleşmesine başlandı — temel kavramlar, Dockerfile optimizasyonu 
 - [17-Mini-Project](./17-Mini-Project/): Gerçek bir kiralık sunucuda Nginx, Docker, Git, ve SSH kurulumu — bu repodan çekilip canlıya alınan statik bir sayfa. ([EN](./17-Mini-Project/readme-en.md) / [TR](./17-Mini-Project/readme.md))
 - [18-Linux-Networking-Fundamentals](./18-Linux-Networking-Fundamentals/): OSI modeli, routing & forwarding, ve DNS (resolver zinciri, kayıt tipleri, TTL) — gerçek senaryolarla ve `tcpdump`/`dig +trace` ile doğrulanmış. Ayrıca AWS/Cloudflare/Google Cloud'un gerçek kesintilerine dair araştırma içerir. ([EN](./18-Linux-Networking-Fundamentals/readme-en.md) / [TR](./18-Linux-Networking-Fundamentals/readme.md) — Outage araştırması: [EN](./18-Linux-Networking-Fundamentals/dns-outages-EN.md) / [TR](./18-Linux-Networking-Fundamentals/dns-outages-TR.md))
 - [19-Nginx-Derinleşme](./19-Nginx-Derinleşme/): Reverse proxy, path bazlı yönlendirme, path rewrite, path engelleme, ve forward proxy (Squid) — gerçek bir sunucuda uygulamalı olarak test edildi. ([EN](./19-Nginx-Derinleşme/readme-en.md) / [TR](./19-Nginx-Derinleşme/readme.md))
-- [20-Rate-Limiting-Load-Balancing](./20-Rate-Limiting-Load-Balancing/): Nginx'te rate limiting (`limit_req_zone`, `burst`, `nodelay`) ve load balancing (round-robin, failover, `least_conn`, `ip_hash`). ([TR](./20-Rate-Limiting-Load-Balancing/README.md) / [EN](./20-Rate-Limiting-Load-Balancing/README-EN.md))
-- [21-OpenResty-API](./21-OpenResty-API/): OpenResty ile token authentication, PostgreSQL, MySQL ve Redis entegrasyonu — Docker Compose ile kuruldu. ([TR](./21-OpenResty-API/README.md) / [EN](./21-OpenResty-API/README-EN.md))
-- [22-rclone-S3](./22-rclone-S3/): rclone ile Amazon S3 bağlantısı, performans parametreleri testi ve `rclone serve http` ile private bucket'ı dışarıya açma. ([TR](./22-rclone-S3/README.md) / [EN](./22-rclone-S3/README-EN.md))
-- [23-Docker-Fundamentals](./23-Docker-Fundamentals/): Docker temelleri — image, container, Dockerfile optimizasyonu (multi-stage build, layer caching, RUN birleştirme). ([TR](./23-Docker-Fundamentals/README.md) / [EN](./23-Docker-Fundamentals/README-EN.md))
-
+- [20-Rate-Limiting-Load-Balancing](./20-Rate-Limiting-Load-Balancing/): Nginx'te rate limiting (`limit_req_zone`, `burst`, `nodelay`) ve load balancing (round-robin, failover, `least_conn`, `ip_hash`). ([TR](./20-Rate-Limiting-Load-Balancing/readme.md) / [EN](./20-Rate-Limiting-Load-Balancing/readme-en.md))
+- [21-OpenResty-API](./21-OpenResty-API/): OpenResty ile token authentication, PostgreSQL, MySQL ve Redis entegrasyonu — Docker Compose ile kuruldu. ([TR](./21-OpenResty-API/readme.md) / [EN](./21-OpenResty-API/readme-en.md))
+- [22-rclone-S3](./22-rclone-S3/): rclone ile Amazon S3 bağlantısı, performans parametreleri testi ve `rclone serve http` ile private bucket'ı dışarıya açma. ([TR](./22-rclone-S3/readme.md) / [EN](./22-rclone-S3/readme-en.md))
+- [23-Docker-Fundamentals](./23-Docker-Fundamentals/): Docker temelleri — image, container, Dockerfile optimizasyonu (multi-stage build, layer caching, RUN birleştirme), Docker Compose ile volume/network yönetimi. ([TR](./23-Docker-Fundamentals/readme.md) / [EN](./23-Docker-Fundamentals/readme-en.md)) — Uygulamalı: ([TR](./23-Docker-Fundamentals/practice.md) / [EN](./23-Docker-Fundamentals/practice-en.md))
 
 ### 📝 Değerlendirme & Sınav Materyalleri
 
@@ -392,7 +391,7 @@ _Aynı zamanda önceki fazların (03–19) Türkçe/İngilizce belge dönüşüm
   - 03–19 arası tüm fazların bilingual belge dönüşümü tamamlandı.
 - **Kilometre Taşları & Çıktılar:**
   - 🧪 Test Senaryoları: [TR](./19-Nginx-Derinleşme/test-cases.md) / [EN](./19-Nginx-Derinleşme/test-cases-en.md)
-  - 🌐 Nginx Derinleşme: [README (TR](./19-Nginx-Derinleşme/readme.md) / [EN)](./19-Nginx-Derinleşme/readme-en.md)
+  - 🌐 Nginx Derinleşme: [Notlar (TR](./19-Nginx-Derinleşme/readme.md) / [EN)](./19-Nginx-Derinleşme/readme-en.md)
 
 ### 🔹 3 Temmuz 2026 | Rate Limiting & Load Balancing
 
@@ -403,7 +402,7 @@ _Rate limiting için `limit_req_zone` ile zone tanımlayıp tüm location'lara u
   - Load balancing kurdum — round-robin, failover, ve dışarıdan test.
   - `least_conn` ve `ip_hash` yöntemlerini araştırdım.
 - **Kilometre Taşları & Çıktılar:**
-  - 🚦 Rate Limiting & Load Balancing: [README (TR](./20-Rate-Limiting-Load-Balancing/README.md) / [EN)](./20-Rate-Limiting-Load-Balancing/README-EN.md)
+  - 🚦 Rate Limiting & Load Balancing: [Notlar (TR](./20-Rate-Limiting-Load-Balancing/readme.md) / [EN)](./20-Rate-Limiting-Load-Balancing/readme-en.md)
 
 ### 🔹 6 Temmuz 2026 | OpenResty — Token Authentication, PostgreSQL, MySQL, Redis
 
@@ -416,7 +415,7 @@ _yeni görevi uyguladım: OpenResty ile token korumalı bir API kurdum, PostgreS
   - Dockerfile ile pgmoon kütüphanesi eklendi.
   - `resolver 127.0.0.11` — container DNS çözümlemesi için gerekli.
 - **Kilometre Taşları & Çıktılar:**
-  - 🔐 OpenResty API: [README (TR](./21-OpenResty-API/README.md) / [EN)](./21-OpenResty-API/README-EN.md)
+  - 🔐 OpenResty API: [Notlar (TR](./21-OpenResty-API/readme.md) / [EN)](./21-OpenResty-API/readme-en.md)
 
 ### 🔹 8 Temmuz 2026 | rclone & Amazon S3 — Bulut Depolama ve Güvenli Erişim
 
@@ -429,7 +428,7 @@ _rclone'u inceledim, Amazon S3 bucket'ı oluşturdum ve bağlandım. Yapılandı
   - `rclone serve http` ile private S3 bucket'ı HTTP üzerinden dışarıya açıldı.
   - `rclone mount` ile S3 yerel disk olarak bağlandı, cache testi yapıldı (`--vfs-cache-mode full`, `--vfs-cache-max-size`, `--vfs-cache-max-age`).
 - **Kilometre Taşları & Çıktılar:**
-  - 🗄️ rclone & S3: [README (TR](./22-rclone-S3/README.md) / [EN)](./22-rclone-S3/README-EN.md)
+  - 🗄️ rclone & S3: [Notlar (TR](./22-rclone-S3/readme.md) / [EN)](./22-rclone-S3/readme-en.md)
 
 ### 🔹 8 Temmuz 2026 | Docker Temelleri — Image, Container, Dockerfile Optimizasyonu
 
@@ -441,8 +440,18 @@ _Docker'ı daha önce sadece hello-world ile test etmiştim. Bu fazda temel kavr
   - Dockerfile vs docker-compose.yml farkı anlaşıldı.
   - Multi-stage build, layer caching ve RUN birleştirme teknikleri öğrenildi.
 - **Kilometre Taşları & Çıktılar:**
-  - 🐳 Docker Temelleri: [README (TR](./23-Docker-Fundamentals/README.md) / [EN)](./23-Docker-Fundamentals/README-EN.md)
+  - 🐳 Docker Temelleri: [Notlar (TR](./23-Docker-Fundamentals/readme.md) / [EN)](./23-Docker-Fundamentals/readme-en.md)
 
+### 🔹 9 Temmuz 2026 | Docker — Uygulamalı Testler (Image Boyutu, Layer Caching, Compose)
+
+_Docker kavramsal öğrenimini uygulamaya döktüm. İki Dockerfile yazdım — single-stage ve multi-stage — aynı işi yapan iki image'ın boyut farkını gördüm: 1.62GB vs 191MB. Layer caching'i `time` komutuyla ölçtüm: requirements.txt değişmeyince pip install cache'den geldi, değişince yeniden çalıştı. Docker Compose ile volumes ve networks test ettim — container silinip yeniden başlatılınca veriler kaybolmadı, volume host'ta kaldı. Networks için frontend/backend ayrımı kurdum, db sadece backend ağında, dışarıdan direkt erişilemiyor._
+
+- **Görevler & Hedefler:**
+  - Single-stage vs multi-stage build karşılaştırması yapıldı.
+  - Layer caching iki farklı senaryoda test edildi.
+  - Docker Compose ile volume ve network yönetimi denendi.
+- **Kilometre Taşları & Çıktılar:**
+  - 🐳 Docker Uygulamalı: [Notlar (TR](./23-Docker-Fundamentals/practice.md) / [EN)](./23-Docker-Fundamentals/practice-en.md)
 
 ---
 

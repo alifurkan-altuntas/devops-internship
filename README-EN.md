@@ -16,7 +16,7 @@ Bilingual documentation (TR/EN) complete for all phases (01–20).
 
 Completed all assigned tasks: OpenResty (PostgreSQL, MySQL, Redis, token authentication) and rclone with S3 (performance parameters, `rclone serve http`, `rclone mount` with cache).
 
-Started Docker deep dive — core concepts and Dockerfile optimization (multi-stage build, layer caching, combining RUN instructions) complete. Up next: Docker Compose with multi-service architecture, volume/network management, and image security.
+Docker deep dive ongoing — conceptual phase and hands-on tests complete (image size comparison, layer caching, Docker Compose volumes/networks). Up next: non-root containers and image security.
 
 ---
 
@@ -41,10 +41,10 @@ Started Docker deep dive — core concepts and Dockerfile optimization (multi-st
 - [17-Mini-Project](./17-Mini-Project/): Nginx, Docker, Git, and SSH set up on a real rented server — a static page pulled from this repo and published live. ([EN](./17-Mini-Project/readme-en.md) / [TR](./17-Mini-Project/readme.md))
 - [18-Linux-Networking-Fundamentals](./18-Linux-Networking-Fundamentals/): OSI model, routing & forwarding, and DNS (resolver chain, record types, TTL) — verified hands-on with `tcpdump` and `dig +trace`. Also includes research into real outages from AWS/Cloudflare/Google Cloud. ([EN](./18-Linux-Networking-Fundamentals/readme-en.md) / [TR](./18-Linux-Networking-Fundamentals/readme.md) — Outage research: [EN](./18-Linux-Networking-Fundamentals/dns-outages-EN.md) / [TR](./18-Linux-Networking-Fundamentals/dns-outages-TR.md))
 - [19-Nginx-Derinleşme](./19-Nginx-Derinleşme/): Reverse proxy, path-based routing, path rewrite, path blocking, and forward proxy (Squid) — all tested hands-on on a real server. ([EN](./19-Nginx-Derinleşme/readme-en.md) / [TR](./19-Nginx-Derinleşme/readme.md))
-- [20-Rate-Limiting-Load-Balancing](./20-Rate-Limiting-Load-Balancing/): Nginx rate limiting (`limit_req_zone`, `burst`, `nodelay`) and load balancing (round-robin, failover, `least_conn`, `ip_hash`). ([TR](./20-Rate-Limiting-Load-Balancing/README.md) / [EN](./20-Rate-Limiting-Load-Balancing/README-EN.md))
-- [21-OpenResty-API](./21-OpenResty-API/): Token authentication with OpenResty, PostgreSQL, MySQL, and Redis integration — deployed with Docker Compose. ([TR](./21-OpenResty-API/README.md) / [EN](./21-OpenResty-API/README-EN.md))
-- [22-rclone-S3](./22-rclone-S3/): Connecting to Amazon S3 with rclone, testing performance parameters, and exposing a private bucket over HTTP with `rclone serve http`. ([TR](./22-rclone-S3/README.md) / [EN](./22-rclone-S3/README-EN.md))
-- [23-Docker-Fundamentals](./23-Docker-Fundamentals/): Docker fundamentals — images, containers, Dockerfile optimization (multi-stage build, layer caching, combining RUN instructions). ([TR](./23-Docker-Fundamentals/README.md) / [EN](./23-Docker-Fundamentals/README-EN.md))
+- [20-Rate-Limiting-Load-Balancing](./20-Rate-Limiting-Load-Balancing/): Nginx rate limiting (`limit_req_zone`, `burst`, `nodelay`) and load balancing (round-robin, failover, `least_conn`, `ip_hash`). ([TR](./20-Rate-Limiting-Load-Balancing/readme.md) / [EN](./20-Rate-Limiting-Load-Balancing/readme-en.md))
+- [21-OpenResty-API](./21-OpenResty-API/): Token authentication with OpenResty, PostgreSQL, MySQL, and Redis integration — deployed with Docker Compose. ([TR](./21-OpenResty-API/readme.md) / [EN](./21-OpenResty-API/readme-en.md))
+- [22-rclone-S3](./22-rclone-S3/): Connecting to Amazon S3 with rclone, testing performance parameters, and exposing a private bucket over HTTP with `rclone serve http`. ([TR](./22-rclone-S3/readme.md) / [EN](./22-rclone-S3/readme-en.md))
+- [23-Docker-Fundamentals](./23-Docker-Fundamentals/): Docker fundamentals — images, containers, Dockerfile optimization (multi-stage build, layer caching, combining RUN instructions), Docker Compose with volume/network management. ([TR](./23-Docker-Fundamentals/readme.md) / [EN](./23-Docker-Fundamentals/readme-en.md)) — Hands-on: ([TR](./23-Docker-Fundamentals/practice.md) / [EN](./23-Docker-Fundamentals/practice-en.md))
 
 ### 📝 Evaluation & Assessment Artifacts
 
@@ -391,7 +391,7 @@ _Also completed the bilingual documentation conversion for all phases (03–19),
   - Completed bilingual documentation for all phases 03–19.
 - **Milestones & Deliverables:**
   - 🧪 Test Cases: [TR](./19-Nginx-Derinleşme/test-cases.md) / [EN](./19-Nginx-Derinleşme/test-cases-en.md)
-  - 🌐 Nginx Deep Dive: [README (TR](./19-Nginx-Derinleşme/readme.md) / [EN)](./19-Nginx-Derinleşme/readme-en.md)
+  - 🌐 Nginx Deep Dive: [Notes (TR](./19-Nginx-Derinleşme/readme.md) / [EN)](./19-Nginx-Derinleşme/readme-en.md)
 
 ### 🔹 July 3, 2026 | Rate Limiting & Load Balancing
 
@@ -402,7 +402,7 @@ _For rate limiting, defined a zone with `limit_req_zone` and applied it to all l
   - Set up load balancing — round-robin, failover, and external testing.
   - Researched `least_conn` and `ip_hash` methods.
 - **Milestones & Deliverables:**
-  - 🚦 Rate Limiting & Load Balancing: [README (TR](./20-Rate-Limiting-Load-Balancing/README.md) / [EN)](./20-Rate-Limiting-Load-Balancing/README-EN.md)
+  - 🚦 Rate Limiting & Load Balancing: [Notes (TR](./20-Rate-Limiting-Load-Balancing/readme.md) / [EN)](./20-Rate-Limiting-Load-Balancing/readme-en.md)
 
 ### 🔹 July 6, 2026 | OpenResty — Token Authentication, PostgreSQL, MySQL, Redis
 
@@ -415,7 +415,7 @@ _Implemented new task: built a token-protected API with OpenResty, connecting to
   - Added pgmoon via Dockerfile.
   - `resolver 127.0.0.11` — required for container DNS resolution.
 - **Milestones & Deliverables:**
-  - 🔐 OpenResty API: [README (TR](./21-OpenResty-API/README.md) / [EN)](./21-OpenResty-API/README-EN.md)
+  - 🔐 OpenResty API: [Notes (TR](./21-OpenResty-API/readme.md) / [EN)](./21-OpenResty-API/readme-en.md)
 
 ### 🔹 July 8, 2026 | rclone & Amazon S3 — Cloud Storage and Secure Access
 
@@ -428,7 +428,7 @@ _Explored rclone, created an Amazon S3 bucket and connected to it. During config
   - Exposed a private S3 bucket over HTTP with `rclone serve http`.
   - Mounted S3 as a local disk with `rclone mount`, tested cache (`--vfs-cache-mode full`, `--vfs-cache-max-size`, `--vfs-cache-max-age`).
 - **Milestones & Deliverables:**
-  - 🗄️ rclone & S3: [README (TR](./22-rclone-S3/README.md) / [EN)](./22-rclone-S3/README-EN.md)
+  - 🗄️ rclone & S3: [Notes (TR](./22-rclone-S3/readme.md) / [EN)](./22-rclone-S3/readme-en.md)
 
 ### 🔹 July 8, 2026 | Docker Fundamentals — Images, Containers, Dockerfile Optimization
 
@@ -440,7 +440,18 @@ _Had only used Docker for hello-world before. In this phase I learned the core c
   - Understood Dockerfile vs docker-compose.yml.
   - Learned multi-stage build, layer caching, and RUN combining techniques.
 - **Milestones & Deliverables:**
-  - 🐳 Docker Fundamentals: [README (TR](./23-Docker-Fundamentals/README.md) / [EN)](./23-Docker-Fundamentals/README-EN.md)
+  - 🐳 Docker Fundamentals: [Notes (TR](./23-Docker-Fundamentals/readme.md) / [EN)](./23-Docker-Fundamentals/readme-en.md)
+
+### 🔹 July 9, 2026 | Docker — Hands-On Tests (Image Size, Layer Caching, Compose)
+
+_Turned the conceptual Docker learning into practice. Wrote two Dockerfiles — single-stage and multi-stage — and saw the size difference between two images doing the same job: 1.62GB vs 191MB. Measured layer caching with `time`: when requirements.txt didn't change, pip install came from cache; when it changed, it ran again. Tested volumes and networks with Docker Compose — container removed and restarted, data survived because the volume stayed on the host. Set up a frontend/backend network split — db is only on the backend network, not directly reachable from outside._
+
+- **Tasks & Objectives:**
+  - Single-stage vs multi-stage build comparison done.
+  - Layer caching tested in two different scenarios.
+  - Volume and network management tested with Docker Compose.
+- **Milestones & Deliverables:**
+  - 🐳 Docker Hands-On: [Notes (TR](./23-Docker-Fundamentals/practice.md) / [EN)](./23-Docker-Fundamentals/practice-en.md)
 
 ---
 
