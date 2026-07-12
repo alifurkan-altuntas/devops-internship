@@ -16,7 +16,7 @@ Tüm fazların (01–20) Türkçe/İngilizce belge dönüşümü tamamlandı.
 
 OpenResty (PostgreSQL, MySQL, Redis, token authentication) ve rclone ile S3 entegrasyonu (performans parametreleri, `rclone serve http`, `rclone mount` ve cache).
 
-Docker derinleşmesine devam ediliyor — kavramsal kısım ve uygulamalı testler (image boyutu karşılaştırması, layer caching, Docker Compose volumes/networks) tamamlandı. Sırada non-root container ve image güvenliği var.
+Docker derinleşmesine devam ediliyor — kavramsal kısım, uygulamalı testler ve güvenlik konuları tamamlandı (non-root container, `.dockerignore`, Trivy).
 
 ---
 
@@ -45,6 +45,7 @@ Docker derinleşmesine devam ediliyor — kavramsal kısım ve uygulamalı testl
 - [21-OpenResty-API](./21-OpenResty-API/): OpenResty ile token authentication, PostgreSQL, MySQL ve Redis entegrasyonu — Docker Compose ile kuruldu. ([TR](./21-OpenResty-API/readme.md) / [EN](./21-OpenResty-API/readme-en.md))
 - [22-rclone-S3](./22-rclone-S3/): rclone ile Amazon S3 bağlantısı, performans parametreleri testi ve `rclone serve http` ile private bucket'ı dışarıya açma. ([TR](./22-rclone-S3/readme.md) / [EN](./22-rclone-S3/readme-en.md))
 - [23-Docker-Fundamentals](./23-Docker-Fundamentals/): Docker temelleri — image, container, Dockerfile optimizasyonu (multi-stage build, layer caching, RUN birleştirme), Docker Compose ile volume/network yönetimi. ([TR](./23-Docker-Fundamentals/readme.md) / [EN](./23-Docker-Fundamentals/readme-en.md)) — Uygulamalı: ([TR](./23-Docker-Fundamentals/practice.md) / [EN](./23-Docker-Fundamentals/practice-en.md))
+- [24-Docker-Security](./24-Docker-Security/): Docker güvenliği — non-root container, `.dockerignore`, Trivy ile image scanning. ([TR](./24-Docker-Security/readme.md) / [EN](./24-Docker-Security/readme-en.md)) — Uygulamalı: ([TR](./24-Docker-Security/practice.md) / [EN](./24-Docker-Security/practice-en.md))
 
 ### 📝 Değerlendirme & Sınav Materyalleri
 
@@ -452,6 +453,17 @@ _Docker kavramsal öğrenimini uygulamaya döktüm. İki Dockerfile yazdım — 
   - Docker Compose ile volume ve network yönetimi denendi.
 - **Kilometre Taşları & Çıktılar:**
   - 🐳 Docker Uygulamalı: [Notlar (TR](./23-Docker-Fundamentals/practice.md) / [EN)](./23-Docker-Fundamentals/practice-en.md)
+
+### 🔹 10 Temmuz 2026 | Docker Güvenliği — Non-Root Container, .dockerignore, Trivy
+
+_Docker güvenliğini üç katmanda ele aldım. Non-root container: varsayılan olarak her container root çalışıyor — root container `/etc/passwd`'ı silebildi, non-root `Permission denied` aldı. `.dockerignore`: `COPY . .` ile `.env` dosyasındaki şifreler image'a giriyor, `.dockerignore` ile bunu önledik — olmadan ve varken iki ayrı test yaptık. `.dockerignore`'un kendisini de listeye ekledik, gereksiz bilgi vermemek için. Trivy ile image scanning: `python:3.11` → 412 açık, `python:3.11-slim` → 20 açık — 20 kat fark, sadece slim image kullanarak._
+
+- **Görevler & Hedefler:**
+  - Non-root container oluşturuldu ve test edildi.
+  - `.dockerignore` ile hassas dosya koruması sağlandı.
+  - Trivy ile `python:3.11` ve `python:3.11-slim` karşılaştırması yapıldı (412 vs 20 açık).
+- **Kilometre Taşları & Çıktılar:**
+  - 🔒 Docker Güvenliği: [README (TR](./24-Docker-Security/readme.md) / [EN)](./24-Docker-Security/readme-en.md) — Uygulamalı: ([TR](./24-Docker-Security/practice.md) / [EN](./24-Docker-Security/practice-en.md))
 
 ---
 

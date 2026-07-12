@@ -16,7 +16,7 @@ Bilingual documentation (TR/EN) complete for all phases (01–20).
 
 Completed all assigned tasks: OpenResty (PostgreSQL, MySQL, Redis, token authentication) and rclone with S3 (performance parameters, `rclone serve http`, `rclone mount` with cache).
 
-Docker deep dive ongoing — conceptual phase and hands-on tests complete (image size comparison, layer caching, Docker Compose volumes/networks). Up next: non-root containers and image security.
+Docker deep dive ongoing — conceptual phase, hands-on tests, and security topics complete (non-root containers, `.dockerignore`, Trivy).
 
 ---
 
@@ -45,6 +45,7 @@ Docker deep dive ongoing — conceptual phase and hands-on tests complete (image
 - [21-OpenResty-API](./21-OpenResty-API/): Token authentication with OpenResty, PostgreSQL, MySQL, and Redis integration — deployed with Docker Compose. ([TR](./21-OpenResty-API/readme.md) / [EN](./21-OpenResty-API/readme-en.md))
 - [22-rclone-S3](./22-rclone-S3/): Connecting to Amazon S3 with rclone, testing performance parameters, and exposing a private bucket over HTTP with `rclone serve http`. ([TR](./22-rclone-S3/readme.md) / [EN](./22-rclone-S3/readme-en.md))
 - [23-Docker-Fundamentals](./23-Docker-Fundamentals/): Docker fundamentals — images, containers, Dockerfile optimization (multi-stage build, layer caching, combining RUN instructions), Docker Compose with volume/network management. ([TR](./23-Docker-Fundamentals/readme.md) / [EN](./23-Docker-Fundamentals/readme-en.md)) — Hands-on: ([TR](./23-Docker-Fundamentals/practice.md) / [EN](./23-Docker-Fundamentals/practice-en.md))
+- [24-Docker-Security](./24-Docker-Security/): Docker security — non-root containers, `.dockerignore`, image scanning with Trivy. ([TR](./24-Docker-Security/readme.md) / [EN](./24-Docker-Security/readme-en.md)) — Hands-on: ([TR](./24-Docker-Security/practice.md) / [EN](./24-Docker-Security/practice-en.md))
 
 ### 📝 Evaluation & Assessment Artifacts
 
@@ -452,6 +453,17 @@ _Turned the conceptual Docker learning into practice. Wrote two Dockerfiles — 
   - Volume and network management tested with Docker Compose.
 - **Milestones & Deliverables:**
   - 🐳 Docker Hands-On: [Notes (TR](./23-Docker-Fundamentals/practice.md) / [EN)](./23-Docker-Fundamentals/practice-en.md)
+
+### 🔹 July 10, 2026 | Docker Security — Non-Root Containers, .dockerignore, Trivy
+
+_Covered Docker security at three layers. Non-root container: every container runs as root by default — the root container deleted `/etc/passwd`, the non-root got `Permission denied`. `.dockerignore`: `COPY . .` lets `.env` secrets into the image — tested both without and with `.dockerignore`. Also added `.dockerignore` itself to the list to avoid sharing unnecessary information. Trivy image scanning: `python:3.11` → 412 vulnerabilities, `python:3.11-slim` → 20 — 20x difference just from using the slim image._
+
+- **Tasks & Objectives:**
+  - Built and tested a non-root container.
+  - Protected sensitive files with `.dockerignore`.
+  - Compared `python:3.11` and `python:3.11-slim` with Trivy (412 vs 20 vulnerabilities).
+- **Milestones & Deliverables:**
+  - 🔒 Docker Security: [README (TR](./24-Docker-Security/readme.md) / [EN)](./24-Docker-Security/readme-en.md) — Hands-on: ([TR](./24-Docker-Security/practice.md) / [EN](./24-Docker-Security/practice-en.md))
 
 ---
 
