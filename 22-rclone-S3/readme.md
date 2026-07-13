@@ -302,4 +302,117 @@ rclone copy ~/klasor s3:alifurkan-devops/yedek \
 
 ---
 
+## `rclone serve http` — Cache ve Güvenlik
+
+### Cache Neden Lazım
+
+Cache olmadan denedim — 10 paralel istek attım, bir an dondu sandım. 9 saniye bekledi. Sonra cache açık aynı testi yapınca 0.194 saniyede bitti. Her istek S3'e gidince bu kadar yavaşlıyor — 10 kullanıcı aynı dosyayı isterse S3'e 10 ayrı istek gidiyor, hem yavaş hem pahalı.
+
+**Tezgah benzetmesi:** Mağazada her müşteri gelince deponun derinlerine gidip aynı ürünü getiriyorsun. Cache ile ilk müşteriden sonra ürünü tezgaha koyuyorsun — sonraki müşteriler tezgahtan alıyor, depoya gitmene gerek kalmıyor.
+
+```bash
+# Cache'li — 10 paralel istek
+time (for i in {1..10}; do
+  curl -s -u admin:sifre http://localhost:8090/test1/file1.bin > /dev/null &
+done; wait)
+# real 0m0.194s
+
+# Cache'siz — aynı test
+# real 0m9.033s
+```
+
+**46 kat fark** — sadece cache açıp kapatarak.
+
+### VFS Cache Parametreleri
+
+```bash
+rclone serve http s3:alifurkan-devops --addr :8090 \
+  --vfs-cache-mode full \
+  --vfs-cache-max-size 10G \
+  --vfs-cache-max-age 24h \
+  --dir-cache-time 1h \
+  --buffer-size 32M \
+  --rc --rc-addr :5572 --rc-no-auth \
+  --log-file ~/rclone-http.log \
+  --log-level INFO &
+```
+
+| Parametre                  | Açıklama                                                                                   |
+| -------------------------- | ------------------------------------------------------------------------------------------ |
+| `--vfs-cache-mode full`    | Dosyaları diske cache'le — S3'e sürekli gitme                                              |
+| `--vfs-cache-max-size 10G` | Cache için max 10GB disk — dolarsa en az kullanılanı sil                                   |
+| `--vfs-cache-max-age 24h`  | 24 saat erişilmeyen dosyayı cache'den sil — tezgahta yer kaplıyor, kimse bakmıyorsa kaldır |
+| `--dir-cache-time 1h`      | Dizin listesini 1 saat cache'le                                                            |
+| `--buffer-size 32M`        | Her dosya için 32MB RAM'de ön yükle                                                        |
+| `--rc --rc-addr :5572`     | Remote control aç, 5572 portunda dinle                                                     |
+| `--rc-no-auth`             | Remote control için şifre isteme                                                           |
+| `--log-file`               | Log dosyasına yaz                                                                          |
+
+### Dir Cache — Yeni Dosyalar Neden Görünmüyor
+
+`tarayici.txt` dosyasını S3'e yükledim, tarayıcıda hemen görünmedi. Şaşırmadım — cache'lemiştik, görünmez diye düşündüm. `--dir-cache-time 1h` yüzünden dizin listesi 1 saat boyunca cache'de kalıyor, rclone S3'e bakmıyor.
+
+![Yeni dosya görünmüyor](images/nofile.png)
+
+`rclone rc vfs/forget` ile cache'i temizleyince tarayıcıda göründü:
+
+```bash
+rclone rc vfs/forget
+```
+
+![Cache temizlendikten sonra dosya göründü](images/file.png)
+
+**Trade-off:** `--dir-cache-time` uzun olursa S3'e daha az istek gider ama yeni dosyalar geç görünür. Kısa olursa yeni dosyalar hızlı görünür ama S3'e daha sık istek gider. `vfs/forget` ile ikisi arasında denge kurulabilir — gerektiğinde manuel temizle.
+
+### Auth — Güvenlik
+
+Canlıda herkese açık olmayacak. `--user` ve `--pass` flag'leri ile şifre komut satırında açık görünüyor — log'a da giriyor. Gizlilik gereği şifreyi açık tutamazsın, environment variable kullandım:
+
+```bash
+export RCLONE_USER=admin
+export RCLONE_PASS=gizlisifre123
+
+rclone serve http s3:alifurkan-devops --addr :8090 ...
+```
+
+Böylece şifre log'da `XXXX` olarak maskeleniyor — açık görünmüyor.
+
+Test sonuçları:
+
+- Auth olmadan → `401 Unauthorized`
+- Auth ile → `200 OK`
+- Tarayıcıdan → login ekranı çıktı:
+
+![Auth login ekranı](images/auth.png)
+
+### Remote Control ile Cache Temizleme
+
+`--rc` ile rclone'u çalışırken yönetebiliyorum — durdurup yeniden başlatmadan `vfs/forget` gibi komutlar gönderebiliyorum.
+
+```bash
+# Cache'i temizle — yeni dosyalar hemen görünsün
+rclone rc vfs/forget
+```
+
+**Mağaza interkomu:** Mağaza açıkken müdüre "tezgahı yenile" diyebiliyorsun. `--rc` o interkom, `rclone rc vfs/forget` ise "tezgah listesini yenile" komutu — mağazayı kapatmana gerek yok.
+
+### Canlı Kullanım İçin Tam Komut
+
+```bash
+export RCLONE_USER=admin
+export RCLONE_PASS=gizlisifre123
+
+rclone serve http s3:bucket-adi --addr :8090 \
+  --vfs-cache-mode full \
+  --vfs-cache-max-size 10G \
+  --vfs-cache-max-age 24h \
+  --dir-cache-time 1h \
+  --buffer-size 32M \
+  --rc --rc-addr :5572 --rc-no-auth \
+  --log-file ~/rclone-http.log \
+  --log-level INFO
+```
+
+---
+
 ℹ️ _Tüm testler gerçek bir Ubuntu VDS ve Amazon S3 (eu-central-1) üzerinde yapılmıştır._

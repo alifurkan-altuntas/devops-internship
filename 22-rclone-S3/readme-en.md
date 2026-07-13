@@ -302,4 +302,117 @@ rclone copy ~/folder s3:alifurkan-devops/backup \
 
 ---
 
+## `rclone serve http` — Cache and Security
+
+### Why Cache is Necessary
+
+Tested without cache first — sent 10 parallel requests, it froze for a moment, took 9 seconds. Then ran the same test with cache on and it finished in 0.194 seconds. Every request hitting S3 directly slows things down that much — 10 users asking for the same file means 10 separate requests to S3, slow and expensive.
+
+**Counter analogy:** Every customer walks in and you go to the back of the warehouse to get the same product. With cache, after the first customer you put it on the counter — the next customers get it from there, no more warehouse trips.
+
+```bash
+# With cache — 10 parallel requests
+time (for i in {1..10}; do
+  curl -s -u admin:pass http://localhost:8090/test1/file1.bin > /dev/null &
+done; wait)
+# real 0m0.194s
+
+# Without cache — same test
+# real 0m9.033s
+```
+
+**46x faster** — just by enabling cache.
+
+### VFS Cache Parameters
+
+```bash
+rclone serve http s3:alifurkan-devops --addr :8090 \
+  --vfs-cache-mode full \
+  --vfs-cache-max-size 10G \
+  --vfs-cache-max-age 24h \
+  --dir-cache-time 1h \
+  --buffer-size 32M \
+  --rc --rc-addr :5572 --rc-no-auth \
+  --log-file ~/rclone-http.log \
+  --log-level INFO &
+```
+
+| Parameter                  | Description                                                                 |
+| -------------------------- | --------------------------------------------------------------------------- |
+| `--vfs-cache-mode full`    | Cache files to disk — stop hitting S3 constantly                            |
+| `--vfs-cache-max-size 10G` | Max 10GB disk for cache — evict least-used when full                        |
+| `--vfs-cache-max-age 24h`  | Remove files not accessed in 24 hours — taking up counter space for nothing |
+| `--dir-cache-time 1h`      | Cache directory listings for 1 hour                                         |
+| `--buffer-size 32M`        | Pre-load 32MB per file in RAM                                               |
+| `--rc --rc-addr :5572`     | Enable remote control on port 5572                                          |
+| `--rc-no-auth`             | No auth required for remote control                                         |
+| `--log-file`               | Write logs to file                                                          |
+
+### Dir Cache — Why New Files Don't Appear Immediately
+
+Uploaded `tarayici.txt` to S3, it didn't show up in the browser right away. Wasn't surprised — we had caching on, figured that was why. With `--dir-cache-time 1h`, the directory listing stays in cache for 1 hour, rclone doesn't check S3 again.
+
+![New file not visible](images/nofile.png)
+
+Cleared the cache with `rclone rc vfs/forget` and it appeared:
+
+```bash
+rclone rc vfs/forget
+```
+
+![File visible after cache cleared](images/file.png)
+
+**Trade-off:** Longer `--dir-cache-time` means fewer requests to S3 but new files appear later. Shorter means new files appear faster but S3 gets hit more often. `vfs/forget` lets you balance between the two — clear manually when needed.
+
+### Auth — Security
+
+This won't be open to everyone in production. Using `--user` and `--pass` flags exposes the password in the command line and it ends up in logs too. For privacy, you can't leave the password visible, so used environment variables instead:
+
+```bash
+export RCLONE_USER=admin
+export RCLONE_PASS=gizlisifre123
+
+rclone serve http s3:alifurkan-devops --addr :8090 ...
+```
+
+This way the password shows up as `XXXX` in logs — not exposed.
+
+Test results:
+
+- Without auth → `401 Unauthorized`
+- With auth → `200 OK`
+- From browser → login screen appeared:
+
+![Auth login screen](images/auth.png)
+
+### Clearing Cache with Remote Control
+
+With `--rc` I can manage rclone while it's running — no need to stop and restart to send commands like `vfs/forget`.
+
+```bash
+# Clear cache — new files appear immediately
+rclone rc vfs/forget
+```
+
+**Shop intercom:** You can tell the manager "refresh the counter" while the shop is still open. `--rc` is that intercom, `rclone rc vfs/forget` is the "refresh the counter listing" command — no need to close the shop.
+
+### Full Command for Production Use
+
+```bash
+export RCLONE_USER=admin
+export RCLONE_PASS=gizlisifre123
+
+rclone serve http s3:bucket-name --addr :8090 \
+  --vfs-cache-mode full \
+  --vfs-cache-max-size 10G \
+  --vfs-cache-max-age 24h \
+  --dir-cache-time 1h \
+  --buffer-size 32M \
+  --rc --rc-addr :5572 --rc-no-auth \
+  --log-file ~/rclone-http.log \
+  --log-level INFO
+```
+
+---
+
 ℹ️ _All tests performed on a real Ubuntu VDS and Amazon S3 (eu-central-1)._
