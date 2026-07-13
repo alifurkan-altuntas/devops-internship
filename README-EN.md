@@ -12,11 +12,11 @@ Beyond the roadmap, worked through additional topics assigned by my mentor: `sed
 
 Completed Nginx deep dive: reverse proxy, path-based routing, path rewrite, path blocking, and forward proxy (Squid). Ran 20 test scenarios against the real config — discovered and documented an IPv6/IPv4 mismatch during testing. Also added rate limiting and load balancing on my own initiative (round-robin, failover, `least_conn`, `ip_hash`).
 
-Bilingual documentation (TR/EN) complete for all phases (01–20).
+Completed OpenResty (PostgreSQL, MySQL, Redis, token authentication) and rclone with S3 — performance parameters, `rclone serve http` cache and security (VFS cache, dir cache, auth, remote control), `rclone mount` and VFS cache.
 
-Completed all assigned tasks: OpenResty (PostgreSQL, MySQL, Redis, token authentication) and rclone with S3 (performance parameters, `rclone serve http`, `rclone mount` with cache).
+Docker deep dive ongoing — conceptual phase, hands-on tests, and security topics complete (non-root containers, `.dockerignore`, Trivy). Up next: Kubernetes.
 
-Docker deep dive ongoing — conceptual phase, hands-on tests, and security topics complete (non-root containers, `.dockerignore`, Trivy).
+Bilingual documentation (TR/EN) complete for all phases (01–24).
 
 ---
 
@@ -464,6 +464,18 @@ _Covered Docker security at three layers. Non-root container: every container ru
   - Compared `python:3.11` and `python:3.11-slim` with Trivy (412 vs 20 vulnerabilities).
 - **Milestones & Deliverables:**
   - 🔒 Docker Security: [README (TR](./24-Docker-Security/readme.md) / [EN)](./24-Docker-Security/readme-en.md) — Hands-on: ([TR](./24-Docker-Security/practice.md) / [EN](./24-Docker-Security/practice-en.md))
+
+### 🔹 July 13, 2026 | rclone serve http — Cache and Security
+
+_Took a deep dive into cache and security for `rclone serve http`. Without cache, 10 parallel requests took 9 seconds — felt like it froze. With cache, the same test finished in 0.194 seconds, 46x faster. Uploaded a new file to S3 and it didn't appear in the browser — because `--dir-cache-time 1h` kept the directory listing in cache. Cleared it with `rclone rc vfs/forget` and it appeared. For auth, `--user` and `--pass` flags wrote the password openly into logs — used environment variables instead to hide it. Remote control (`--rc`) lets me manage rclone without stopping it._
+
+- **Tasks & Objectives:**
+  - VFS cache performance test — cache: 0.194s vs no cache: 9.033s.
+  - Dir cache behavior tested — manual clearing with `vfs/forget`.
+  - Auth set up, password hidden with environment variable.
+  - Cache management with remote control.
+- **Milestones & Deliverables:**
+  - 🗄️ rclone serve http Cache: [readme.md](./22-rclone-S3/readme.md) / [readme-en.md](./22-rclone-S3/readme-en.md)
 
 ---
 
