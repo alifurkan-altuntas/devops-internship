@@ -14,7 +14,7 @@ Completed Nginx deep dive: reverse proxy, path-based routing, path rewrite, path
 
 Completed OpenResty (PostgreSQL, MySQL, Redis, token authentication) and rclone with S3 — performance parameters, `rclone serve http` cache and security (VFS cache, dir cache, auth, remote control), `rclone mount` and VFS cache.
 
-Docker deep dive ongoing — conceptual phase, hands-on tests, and security topics complete (non-root containers, `.dockerignore`, Trivy). Up next: Kubernetes.
+DDocker deep dive ongoing — basic security (non-root, .dockerignore, Trivy) and advanced security (distroless, read-only, resource limits, BuildKit, Hadolint) complete. Up next: docker-bench-security, image signing, seccomp, kaniko, jib, then Kubernetes.
 
 Bilingual documentation (TR/EN) complete for all phases (01–24).
 
@@ -46,6 +46,7 @@ Bilingual documentation (TR/EN) complete for all phases (01–24).
 - [22-rclone-S3](./22-rclone-S3/): Connecting to Amazon S3 with rclone, testing performance parameters, and exposing a private bucket over HTTP with `rclone serve http`. ([TR](./22-rclone-S3/readme.md) / [EN](./22-rclone-S3/readme-en.md))
 - [23-Docker-Fundamentals](./23-Docker-Fundamentals/): Docker fundamentals — images, containers, Dockerfile optimization (multi-stage build, layer caching, combining RUN instructions), Docker Compose with volume/network management. ([TR](./23-Docker-Fundamentals/readme.md) / [EN](./23-Docker-Fundamentals/readme-en.md)) — Hands-on: ([TR](./23-Docker-Fundamentals/practice.md) / [EN](./23-Docker-Fundamentals/practice-en.md))
 - [24-Docker-Security](./24-Docker-Security/): Docker security — non-root containers, `.dockerignore`, image scanning with Trivy. ([TR](./24-Docker-Security/readme.md) / [EN](./24-Docker-Security/readme-en.md)) — Hands-on: ([TR](./24-Docker-Security/practice.md) / [EN](./24-Docker-Security/practice-en.md))
+- [25-Docker-Advanced-Security](./25-Docker-Advanced-Security/): Distroless image, read-only filesystem, resource limits, BuildKit (parallel build + secret mount), Hadolint, image tag immutability. ([TR](./25-Docker-Advanced-Security/readme.md) / [EN](./25-Docker-Advanced-Security/readme-en.md))
 
 ### 📝 Evaluation & Assessment Artifacts
 
@@ -476,6 +477,21 @@ _Took a deep dive into cache and security for `rclone serve http`. Without cache
   - Cache management with remote control.
 - **Milestones & Deliverables:**
   - 🗄️ rclone serve http Cache: [readme.md](./22-rclone-S3/readme.md) / [readme-en.md](./22-rclone-S3/readme-en.md)
+
+### 🔹 July 17, 2026 | Docker Advanced Security
+
+_Covered distroless images, read-only filesystem, resource limits, BuildKit, and Hadolint. Distroless has no shell at all — even if someone breaks in, there are no tools to run. 94MB and zero CRITICAL vulnerabilities. Read-only prevents disk writes. Tested memory + swap limits with OOM Kill — exit code 137. Questioned and tested BuildKit parallel builds, proved it with different base images: 41s vs 31s. Secret mount keeps secrets out of image history. Hadolint caught WORKDIR and --no-cache-dir issues before build._
+
+- **Tasks & Objectives:**
+  - Distroless image built and shell test performed.
+  - Read-only filesystem and --tmpfs tested.
+  - Memory + swap resource limits tested (OOM Kill proved).
+  - BuildKit parallel build questioned, tested, proved.
+  - BuildKit secret mount tested.
+  - Hadolint Dockerfile linting performed.
+  - Image tag immutability — SHA pinning learned.
+- **Milestones & Deliverables:**
+  - 🔒 Docker Advanced Security: [TR](./25-Docker-Advanced-Security/readme.md) / [EN](./25-Docker-Advanced-Security/readme-en.md)
 
 ---
 

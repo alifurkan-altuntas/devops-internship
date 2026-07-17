@@ -14,7 +14,7 @@ Nginx derinleşmesi tamamlandı: reverse proxy, path bazlı yönlendirme, path r
 
 OpenResty (PostgreSQL, MySQL, Redis, token authentication) ve rclone ile S3 entegrasyonu tamamlandı — performans parametreleri, `rclone serve http` cache ve güvenlik (VFS cache, dir cache, auth, remote control), `rclone mount` ve VFS cache.
 
-Docker derinleşmesine devam ediliyor — kavramsal kısım, uygulamalı testler ve güvenlik konuları tamamlandı (non-root container, `.dockerignore`, Trivy). Sırada Kubernetes var.
+Docker derinleşmesi devam ediyor — temel güvenlik (non-root, .dockerignore, Trivy) ve ileri seviye güvenlik (distroless, read-only, resource limits, BuildKit, Hadolint) tamamlandı. Sırada docker-bench-security, image signing, seccomp, kaniko, jib ve ardından Kubernetes var.
 
 Tüm fazların (01–24) Türkçe/İngilizce belge dönüşümü tamamlandı.
 
@@ -46,6 +46,7 @@ Tüm fazların (01–24) Türkçe/İngilizce belge dönüşümü tamamlandı.
 - [22-rclone-S3](./22-rclone-S3/): rclone ile Amazon S3 bağlantısı, performans parametreleri testi ve `rclone serve http` ile private bucket'ı dışarıya açma. ([TR](./22-rclone-S3/readme.md) / [EN](./22-rclone-S3/readme-en.md))
 - [23-Docker-Fundamentals](./23-Docker-Fundamentals/): Docker temelleri — image, container, Dockerfile optimizasyonu (multi-stage build, layer caching, RUN birleştirme), Docker Compose ile volume/network yönetimi. ([TR](./23-Docker-Fundamentals/readme.md) / [EN](./23-Docker-Fundamentals/readme-en.md)) — Uygulamalı: ([TR](./23-Docker-Fundamentals/practice.md) / [EN](./23-Docker-Fundamentals/practice-en.md))
 - [24-Docker-Security](./24-Docker-Security/): Docker güvenliği — non-root container, `.dockerignore`, Trivy ile image scanning. ([TR](./24-Docker-Security/readme.md) / [EN](./24-Docker-Security/readme-en.md)) — Uygulamalı: ([TR](./24-Docker-Security/practice.md) / [EN](./24-Docker-Security/practice-en.md))
+- [25-Docker-Advanced-Security](./25-Docker-Advanced-Security/): Distroless image, read-only filesystem, resource limits, BuildKit (paralel build + secret mount), Hadolint, image tag immutability. ([TR](./25-Docker-Advanced-Security/readme.md) / [EN](./25-Docker-Advanced-Security/readme-en.md))
 
 ### 📝 Değerlendirme & Sınav Materyalleri
 
@@ -476,6 +477,21 @@ _`rclone serve http` için cache ve güvenlik konularını derinlemesine inceled
   - Remote control ile cache yönetimi.
 - **Kilometre Taşları & Çıktılar:**
   - 🗄️ rclone serve http Cache: [readme.md](./22-rclone-S3/readme.md) / [readme-en.md](./22-rclone-S3/readme-en.md)
+
+### 🔹 17 Temmuz 2026 | Docker İleri Seviye Güvenlik
+
+_Distroless image, read-only filesystem, resource limits, BuildKit ve Hadolint konularını öğrendim. Distroless'ta shell bile yok — sızılsa bile çalıştıracak araç yok, 94MB ve CRITICAL açık sıfır. Read-only ile diske yazılamıyor. Memory + swap limiti ile OOM Kill test ettim — exit code 137. BuildKit paralel build'i sorguladım, test ettim, farklı base image ile kanıtladım: 41s vs 31s. Secret mount ile şifre image history'ye girmiyor. Hadolint Dockerfile'daki WORKDIR ve --no-cache-dir hatalarını build öncesi yakaladı._
+
+- **Görevler & Hedefler:**
+  - Distroless image kurulumu ve shell testi yapıldı.
+  - Read-only filesystem ve --tmpfs test edildi.
+  - Memory + swap resource limits test edildi (OOM Kill kanıtlandı).
+  - BuildKit paralel build sorgulandı, test edildi, kanıtlandı.
+  - BuildKit secret mount ile şifre güvenliği test edildi.
+  - Hadolint ile Dockerfile lint yapıldı.
+  - Image tag immutability — SHA ile sabitleme öğrenildi.
+- **Kilometre Taşları & Çıktılar:**
+  - 🔒 Docker İleri Seviye Güvenlik: [TR](./25-Docker-Advanced-Security/readme.md) / [EN](./25-Docker-Advanced-Security/readme-en.md)
 
 ---
 
