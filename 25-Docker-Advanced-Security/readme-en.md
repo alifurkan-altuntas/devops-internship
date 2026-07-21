@@ -225,18 +225,255 @@ FROM python:3.11-slim@sha256:e031123e3d85762b141ad1cbc56452ba69c6e722ebf2f042cc0
 
 ---
 
-## 📊 Summary
+---
 
-| Technique               | What It Achieves                                   |
-| ----------------------- | -------------------------------------------------- |
-| Distroless image        | 94MB, no shell, zero CRITICAL vulnerabilities      |
-| Read-only filesystem    | No disk writes, malicious files can't be dropped   |
-| Resource limits         | Server resources can't be exhausted, OOM Kill      |
-| BuildKit parallel build | Independent stages run simultaneously — faster     |
-| BuildKit secret mount   | Secrets never enter image history                  |
-| Hadolint                | Dockerfile errors caught before building           |
-| Image tag immutability  | SHA pinning — every build produces the same result |
+## 7. docker-bench-security
+
+Trivy worked for image and container security. For scanning the Docker installation itself, we used docker-bench-security. Like an external auditor visiting a company — it checks the system against CIS (Center for Internet Security) standards. Which settings are correct, which are critical, which are low priority — it checks each one against production environment expectations.
+
+**What is CIS:** Center for Internet Security — industry-standard security rules built from real attack data and expert consensus from security researchers, companies, and universities worldwide. They publish separate benchmarks for Docker, Kubernetes, Linux, and others. Updated periodically — we used CIS Docker Benchmark 1.6.0.
+
+### Installation and Run
+
+```bash
+git clone https://github.com/docker/docker-bench-security.git
+cd docker-bench-security
+sudo sh docker-bench-security.sh 2>/dev/null | tail -20
+```
+
+### Result Types
+
+| Type   | Meaning                |
+| ------ | ---------------------- |
+| [PASS] | Secure ✅              |
+| [WARN] | Needs attention ⚠️     |
+| [NOTE] | Manual review required |
+| [INFO] | Informational only     |
+
+### Our Results
+
+```
+Checks: 117
+Score: 7
+```
+
+**PASS:**
+
+- Docker version is up to date (29.6.0) ✅
+- Logging level set to 'info' ✅
+- No insecure registries in use ✅
+- Swarm mode disabled — Swarm checks auto-PASS ✅
+
+**WARN:**
+
+- No separate partition for containers
+- Audit logging not enabled for Docker files
+- Network traffic between containers on default bridge not restricted
+
+**Note:** This is a development/test environment. The WARN items are things that should be addressed in a production environment. Blind trust isn't the right approach — CIS benchmark is a starting point, and the person who understands the system decides what's actually necessary.
 
 ---
 
-ℹ️ _All tests performed on a real Ubuntu VPS._
+## 8. Image Signing (Cosign)
+
+We signed container images with our own key to verify their authenticity and that they haven't been tampered with. Like an HTTPS certificate — it proves the content came from the real owner and hasn't been modified.
+
+**Cosign** — an open source image signing tool by the Sigstore project. Becoming the standard in the Kubernetes ecosystem.
+
+### Installation
+
+```bash
+wget https://github.com/sigstore/cosign/releases/latest/download/cosign-linux-amd64
+chmod +x cosign-linux-amd64
+sudo mv cosign-linux-amd64 /usr/local/bin/cosign
+```
+
+### Generating a Key Pair
+
+```bash
+cosign generate-key-pair
+# cosign.key → private key (for signing)
+# cosign.pub → public key (for verification)
+```
+
+### Signing an Image
+
+```bash
+# Push image to registry first
+docker tag python-good alifurkanaltuntas/python-good:v1.0
+docker push alifurkanaltuntas/python-good:v1.0
+
+# Sign with SHA — safer than signing by tag
+IMAGE_SHA=$(docker inspect alifurkanaltuntas/python-good:v1.0 --format '{{index .RepoDigests 0}}')
+cosign sign --key cosign.key $IMAGE_SHA
+```
+
+Signing by tag triggers a warning from Cosign: "tag can be redirected to a different image, use SHA." SHA can't be changed — if the image changes, the SHA changes.
+
+### Verifying the Signature
+
+```bash
+cosign verify --key cosign.pub $IMAGE_SHA 2>/dev/null | python3 -m json.tool
+```
+
+```json
+[
+  {
+    "critical": {
+      "identity": {
+        "docker-reference": "index.docker.io/alifurkanaltuntas/python-good@sha256:d5a3da9..."
+      },
+      "image": {
+        "docker-manifest-digest": "sha256:d5a3da9..."
+      }
+    }
+  }
+]
+```
+
+### Tampered Image Test
+
+```bash
+# Acted like an attacker — pushed a different image to the same tag
+docker tag python-bad alifurkanaltuntas/python-good:v1.0
+docker push alifurkanaltuntas/python-good:v1.0
+
+# Verification fails — image was tampered with!
+cosign verify --key cosign.pub alifurkanaltuntas/python-good:v1.0
+# Error: no signatures found
+```
+
+The image content changed, the SHA changed, the signature didn't match — Cosign said "this image has been modified."
+
+**Real world scenario:** An attacker breaches the registry and replaces the image with a malicious version. Another server runs `cosign verify` and gets "signature mismatch" — the image is not run. Without Cosign, nobody would notice.
+
+---
+
+## 9. Seccomp
+
+Short for "Secure Computing" — a Linux kernel feature that restricts the system calls a container can make to the kernel (opening files, network access, spawning processes...). Docker already applies a default profile (visible via `docker info | grep seccomp`).
+
+We wrote a custom profile blocking the `mkdir` syscall:
+
+```bash
+docker run --rm python-good mkdir /tmp/testdir && echo "mkdir worked"
+# mkdir worked
+
+docker run --rm --security-opt seccomp=/tmp/seccomp-test.json python-good mkdir /tmp/testdir
+# mkdir: cannot create directory '/tmp/testdir': Operation not permitted
+```
+
+Three modes: `SCMP_ACT_ALLOW` (allow), `SCMP_ACT_ERRNO` (return error), `SCMP_ACT_KILL` (kill the process).
+
+---
+
+## 10. AppArmor
+
+Where seccomp restricts system calls, AppArmor restricts **file, network, and resource access** — not "which tools you can use" but "which rooms you can enter." Docker already applies a `docker-default` profile.
+
+We wrote a custom profile blocking a file from being read:
+
+```bash
+docker run --rm -v /tmp/secret.txt:/tmp/secret.txt python-good cat /tmp/secret.txt
+# secret data
+
+docker run --rm --security-opt apparmor=docker-python-test \
+  -v /tmp/secret.txt:/tmp/secret.txt python-good cat /tmp/secret.txt
+# cat: /tmp/secret.txt: Permission denied
+```
+
+|           | Seccomp                | AppArmor                        |
+| --------- | ---------------------- | ------------------------------- |
+| Restricts | System calls           | File, network, resource access  |
+| In Docker | Default profile active | `docker-default` profile active |
+
+---
+
+## 11. Kaniko
+
+`docker build` needs the Docker daemon, and the daemon runs with root privileges — giving a Kubernetes pod root access is a serious security risk. **Kaniko** solves this by never connecting to the Docker daemon at all, running as a normal user inside a CI/CD pod.
+
+```bash
+docker run --rm -v $(pwd):/workspace -v ~/.docker/config.json:/kaniko/.docker/config.json:ro \
+  gcr.io/kaniko-project/executor:latest \
+  --context /workspace --dockerfile /workspace/Dockerfile.good \
+  --destination alifurkanaltuntas/python-good:kaniko
+# Pushed index.docker.io/alifurkanaltuntas/python-good@sha256:5ace3811c...
+```
+
+**Proof:** we counted the Docker daemon's image count before and after running Kaniko — it never changed, meaning the daemon was never involved. Kaniko's own image doesn't even have a shell (trying `which docker` failed to find `sh`).
+
+---
+
+## 12. Jib
+
+Jib is for Java only. Kaniko works with any language but requires a Dockerfile — Jib doesn't even need one, building and pushing directly as a Maven plugin.
+
+```bash
+mvn compile jib:build
+# BUILD SUCCESS — Built and pushed image as alifurkanaltuntas/jib-demo:v1.0
+```
+
+|            | Kaniko   | Jib        |
+| ---------- | -------- | ---------- |
+| Language   | Any      | Java only  |
+| Dockerfile | Required | Not needed |
+
+---
+
+## 13. Falco (Runtime Security)
+
+Trivy scans images before build (static). Falco is more like a security guard watching live camera feeds — it watches what happens **inside a running container** and flags it as suspicious or not (via eBPF, tracking kernel syscalls in real time).
+
+We opened a shell inside a container, and Falco caught it:
+
+```
+Notice A shell was spawned in a container with an attached terminal
+  user=root process=sh command=sh
+  container_image_repository=python-good container_image_tag=latest
+```
+
+Which container, which user, which command, exact timestamp — all captured. In production these alerts can be routed to Slack/PagerDuty.
+
+---
+
+## 14. SBOM (Syft + Grype)
+
+Trivy scans on demand — it needs the image to exist. SBOM works differently: it can be used for retrospective reporting, and when a vulnerability is found in one package, you can check which other images contain it too.
+
+```bash
+syft python-good --output spdx-json > sbom.json
+# 127 packages catalogued
+
+grype sbom:./sbom.json
+# 207 vulnerability matches (7 critical, 36 high, 70 medium, 7 low)
+```
+
+**Syft** = take a photo (list the components), **Grype** = look at that photo and find the problems. The `sbom.json` file persists — even if the image is deleted, this file can still be scanned retrospectively.
+
+---
+
+---
+
+## 📊 Summary
+
+| Technique              | What It Provides                                               |
+| ---------------------- | -------------------------------------------------------------- |
+| Distroless image       | 94MB, no shell, zero CRITICAL vulnerabilities                  |
+| Read-only filesystem   | Disk can't be written to, no malicious files can be dropped    |
+| Resource limits        | Server resources can't be exhausted, OOM Kill                  |
+| BuildKit               | Parallel build + secret mount                                  |
+| Hadolint               | Catches Dockerfile mistakes before build                       |
+| Image tag immutability | Pinning with SHA — same result every build                     |
+| docker-bench-security  | Scans Docker's installation against CIS benchmark — 117 checks |
+| Image signing (Cosign) | Signs images — tampering shows "no signatures found"           |
+| Seccomp                | Restricts system calls                                         |
+| AppArmor               | Restricts file/network/resource access                         |
+| Kaniko                 | Daemon-less, rootless image builds in CI/CD                    |
+| Jib                    | Dockerfile-less builds for Java                                |
+| Falco                  | Real-time detection of anomalous runtime behavior              |
+| SBOM (Syft+Grype)      | Persistent, retrospectively scannable component inventory      |
+
+---
+
+ℹ️ _All tests were performed on a real Ubuntu VPS._

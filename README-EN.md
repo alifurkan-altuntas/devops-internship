@@ -14,7 +14,7 @@ Completed Nginx deep dive: reverse proxy, path-based routing, path rewrite, path
 
 Completed OpenResty (PostgreSQL, MySQL, Redis, token authentication) and rclone with S3 — performance parameters, `rclone serve http` cache and security (VFS cache, dir cache, auth, remote control), `rclone mount` and VFS cache.
 
-DDocker deep dive ongoing — basic security (non-root, .dockerignore, Trivy) and advanced security (distroless, read-only, resource limits, BuildKit, Hadolint) complete. Up next: docker-bench-security, image signing, seccomp, kaniko, jib, then Kubernetes.
+Docker deep dive ongoing — basic security (non-root, .dockerignore, Trivy) and advanced security (distroless, read-only, resource limits, BuildKit, Hadolint, docker-bench-security, Cosign, seccomp, AppArmor, Kaniko, Jib, Falco, SBOM) are complete. IaC scanning (Trivy config, HEALTHCHECK) is also complete. Up next: Kubernetes.
 
 Bilingual documentation (TR/EN) complete for all phases (01–24).
 
@@ -46,7 +46,8 @@ Bilingual documentation (TR/EN) complete for all phases (01–24).
 - [22-rclone-S3](./22-rclone-S3/): Connecting to Amazon S3 with rclone, testing performance parameters, and exposing a private bucket over HTTP with `rclone serve http`. ([TR](./22-rclone-S3/readme.md) / [EN](./22-rclone-S3/readme-en.md))
 - [23-Docker-Fundamentals](./23-Docker-Fundamentals/): Docker fundamentals — images, containers, Dockerfile optimization (multi-stage build, layer caching, combining RUN instructions), Docker Compose with volume/network management. ([TR](./23-Docker-Fundamentals/readme.md) / [EN](./23-Docker-Fundamentals/readme-en.md)) — Hands-on: ([TR](./23-Docker-Fundamentals/practice.md) / [EN](./23-Docker-Fundamentals/practice-en.md))
 - [24-Docker-Security](./24-Docker-Security/): Docker security — non-root containers, `.dockerignore`, image scanning with Trivy. ([TR](./24-Docker-Security/readme.md) / [EN](./24-Docker-Security/readme-en.md)) — Hands-on: ([TR](./24-Docker-Security/practice.md) / [EN](./24-Docker-Security/practice-en.md))
-- [25-Docker-Advanced-Security](./25-Docker-Advanced-Security/): Distroless image, read-only filesystem, resource limits, BuildKit (parallel build + secret mount), Hadolint, image tag immutability. ([TR](./25-Docker-Advanced-Security/readme.md) / [EN](./25-Docker-Advanced-Security/readme-en.md))
+- [25-Docker-Advanced-Security](./25-Docker-Advanced-Security/): Distroless image, read-only filesystem, resource limits, BuildKit, Hadolint, image tag immutability, docker-bench-security, image signing (Cosign), seccomp, AppArmor, Kaniko, Jib, Falco, SBOM (Syft+Grype). ([TR](./25-Docker-Advanced-Security/readme.md) / [EN](./25-Docker-Advanced-Security/readme-en.md)) — Hands-on: ([TR](./25-Docker-Advanced-Security/practice.md) / [EN](./25-Docker-Advanced-Security/practice-en.md))
+- [26-IaC-Scanning](./26-IaC-Scanning/): Static scanning of Dockerfile/YAML with Trivy config, HEALTHCHECK. ([TR](./26-IaC-Scanning/readme.md) / [EN](./26-IaC-Scanning/readme-en.md)) — Hands-on: ([TR](./26-IaC-Scanning/practice.md) / [EN](./26-IaC-Scanning/practice-en.md))
 
 ### 📝 Evaluation & Assessment Artifacts
 
@@ -478,20 +479,54 @@ _Took a deep dive into cache and security for `rclone serve http`. Without cache
 - **Milestones & Deliverables:**
   - 🗄️ rclone serve http Cache: [readme.md](./22-rclone-S3/readme.md) / [readme-en.md](./22-rclone-S3/readme-en.md)
 
-### 🔹 July 17, 2026 | Docker Advanced Security
+### 🔹 July 17, 2026 | Docker Advanced Security — Distroless, Read-Only, BuildKit
 
-_Covered distroless images, read-only filesystem, resource limits, BuildKit, and Hadolint. Distroless has no shell at all — even if someone breaks in, there are no tools to run. 94MB and zero CRITICAL vulnerabilities. Read-only prevents disk writes. Tested memory + swap limits with OOM Kill — exit code 137. Questioned and tested BuildKit parallel builds, proved it with different base images: 41s vs 31s. Secret mount keeps secrets out of image history. Hadolint caught WORKDIR and --no-cache-dir issues before build._
+_Started Docker Advanced Security. Distroless image: unlike Alpine, there's no shell at all — trying `sh` gave "no such file or directory", and it comes to 94MB with zero CRITICAL vulnerabilities. Read-only filesystem: `--read-only` blocked writes to disk, `--tmpfs` allowed writing to RAM but not disk. Resource limits: restricting memory + swap together meant RAM filled up with nowhere to go, and the kernel killed the container — exit code 137. BuildKit: couldn't confirm the parallel build claim on the first test since I used the same base image — retested with different base images and proved it, 41s vs 31s. Secret mount kept a password out of image history. Hadolint: caught a missing WORKDIR and a missing --no-cache-dir before build._
 
 - **Tasks & Objectives:**
-  - Distroless image built and shell test performed.
-  - Read-only filesystem and --tmpfs tested.
-  - Memory + swap resource limits tested (OOM Kill proved).
-  - BuildKit parallel build questioned, tested, proved.
-  - BuildKit secret mount tested.
-  - Hadolint Dockerfile linting performed.
-  - Image tag immutability — SHA pinning learned.
+  - Set up and tested a distroless image, including the no-shell test.
+  - Tested read-only filesystem and --tmpfs.
+  - Tested memory + swap resource limits (proved OOM Kill).
+  - Questioned, tested, and proved BuildKit's parallel build.
+  - Linted Dockerfile with Hadolint, learned image tag immutability.
 - **Milestones & Deliverables:**
-  - 🔒 Docker Advanced Security: [TR](./25-Docker-Advanced-Security/readme.md) / [EN](./25-Docker-Advanced-Security/readme-en.md)
+  - 🔒 Docker Advanced Security: [README (TR](./25-Docker-Advanced-Security/readme.md) / [EN)](./25-Docker-Advanced-Security/readme-en.md) — Hands-on: ([TR](./25-Docker-Advanced-Security/practice.md) / [EN](./25-Docker-Advanced-Security/practice-en.md))
+
+### 🔹 July 18, 2026 | Docker Advanced Security — docker-bench-security, Image Signing
+
+_docker-bench-security: scanned my Docker installation itself against the CIS benchmark — 117 checks, like an outside auditor visiting a company, and since ours is a test environment the WARNs didn't apply directly. Image signing (Cosign): signed my container images with my own key to verify authenticity and detect tampering — deliberately tampered with an image and pushed it to the same tag, and Cosign caught it with "no signatures found."_
+
+- **Tasks & Objectives:**
+  - Installed docker-bench-security, scanned against CIS Docker Benchmark 1.6.0.
+  - Generated a key pair with Cosign, signed and verified an image.
+  - Proved Cosign catches tampering with a modified-image test.
+- **Milestones & Deliverables:**
+  - 🔒 Docker Advanced Security: [README (TR](./25-Docker-Advanced-Security/readme.md) / [EN)](./25-Docker-Advanced-Security/readme-en.md) — Hands-on: ([TR](./25-Docker-Advanced-Security/practice.md) / [EN](./25-Docker-Advanced-Security/practice-en.md))
+
+### 🔹 July 19, 2026 | Docker Advanced Security — Seccomp, AppArmor, Kaniko, Jib
+
+_Seccomp: restricted the system calls a container can make to the kernel — blocked mkdir with a custom profile, and while the normal container worked fine, the seccomp'd one got "Operation not permitted." AppArmor: restricted file access — blocked reading a file with a custom profile, and while the normal container could read it, the AppArmor'd one got "Permission denied." Kaniko: learned it's needed for CI/CD pipelines, and confirmed with 3 separate proofs (log terminology, absence of a shell, unchanged image count) that it builds without root privileges or the Docker daemon. Jib: saw it builds Java images without a Dockerfile at all._
+
+- **Tasks & Objectives:**
+  - Wrote a custom seccomp profile, blocked the mkdir syscall.
+  - Wrote a custom AppArmor profile, blocked file reads.
+  - Built an image with Kaniko without the Docker daemon, and proved it.
+  - Built a Dockerfile-less Java image with Jib.
+- **Milestones & Deliverables:**
+  - 🔒 Docker Advanced Security: [README (TR](./25-Docker-Advanced-Security/readme.md) / [EN)](./25-Docker-Advanced-Security/readme-en.md) — Hands-on: ([TR](./25-Docker-Advanced-Security/practice.md) / [EN](./25-Docker-Advanced-Security/practice-en.md))
+
+### 🔹 July 20, 2026 | Docker Advanced Security — Falco, SBOM & IaC Scanning
+
+_Falco: learned it's like a security guard watching live camera feeds, monitoring what happens inside a running container — opened a shell inside a container, missed the alert on the first try since it writes to stdout not to logs, caught it once I looked in the right place. SBOM (Syft+Grype): generated a 127-package list with Syft, scanned it with Grype and found 207 vulnerabilities — saw that SBOM can still be scanned retrospectively even after the image is deleted. IaC Scanning: statically scanned Dockerfiles with Trivy's `config` mode, discovered docker-compose isn't supported, found and fixed missing USER and HEALTHCHECK, then tested HEALTHCHECK's real healthy/unhealthy states live._
+
+- **Tasks & Objectives:**
+  - Installed Falco, proved its runtime alerting with a shell-spawn test inside a container.
+  - Generated an SBOM with Syft (127 packages), scanned it with Grype (207 matches).
+  - Ran static IaC/Dockerfile scanning with Trivy config — found docker-compose isn't supported.
+  - Wrote a clean Dockerfile with HEALTHCHECK, tested healthy/unhealthy states live.
+- **Milestones & Deliverables:**
+  - 🔒 Docker Advanced Security: [README (TR](./25-Docker-Advanced-Security/readme.md) / [EN)](./25-Docker-Advanced-Security/readme-en.md) — Hands-on: ([TR](./25-Docker-Advanced-Security/practice.md) / [EN](./25-Docker-Advanced-Security/practice-en.md))
+  - 🔍 IaC Scanning: [README (TR](./26-IaC-Scanning/readme.md) / [EN)](./26-IaC-Scanning/readme-en.md) — Hands-on: ([TR](./26-IaC-Scanning/practice.md) / [EN](./26-IaC-Scanning/practice-en.md))
 
 ---
 

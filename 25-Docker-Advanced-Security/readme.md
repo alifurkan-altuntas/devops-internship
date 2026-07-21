@@ -225,17 +225,250 @@ FROM python:3.11-slim@sha256:e031123e3d85762b141ad1cbc56452ba69c6e722ebf2f042cc0
 
 ---
 
+## 7. docker-bench-security
+
+Trivy image ve container güvenliği için çalışıyordu. Docker kurulumunun kendisi için güvenlik taraması yapmak için docker-bench-security kullandık. Firmalara dışarıdan denetlemeye gelenler gibi — sistemi CIS (Center for Internet Security) standartlarına göre inceliyor. Hangi ayarlar doğru, hangileri kritik, hangileri düşük önem derecesinde — production ortamına göre tek tek kontrol ediyor.
+
+**CIS nedir:** Center for Internet Security — dünya genelinde güvenlik uzmanları, şirketler ve araştırmacıların gerçek saldırı verileri ve uzman konsensüsüyle oluşturduğu endüstri standardı güvenlik kuralları. Docker, Kubernetes, Linux gibi sistemler için ayrı ayrı benchmark yayınlıyorlar. Periyodik güncelleniyor — biz CIS Docker Benchmark 1.6.0 kullandık.
+
+### Kurulum ve Çalıştırma
+
+```bash
+git clone https://github.com/docker/docker-bench-security.git
+cd docker-bench-security
+sudo sh docker-bench-security.sh 2>/dev/null | tail -20
+```
+
+### Sonuç Tipleri
+
+| Tip    | Anlamı                     |
+| ------ | -------------------------- |
+| [PASS] | Güvenli ✅                 |
+| [WARN] | Dikkat edilmesi gereken ⚠️ |
+| [NOTE] | Manuel kontrol gerekli     |
+| [INFO] | Sadece bilgi               |
+
+### Sonuçlarımız
+
+```
+Checks: 117
+Score: 7
+```
+
+**PASS olanlar:**
+
+- Docker versiyonu güncel (29.6.0) ✅
+- Logging seviyesi 'info' ✅
+- Güvensiz registry kullanılmıyor ✅
+- Swarm mode kapalı — Swarm kontrolleri otomatik PASS ✅
+
+**WARN olanlar:**
+
+- Container'lar için ayrı partition yok
+- Docker dosyaları için audit logging açık değil
+- Default bridge üzerinde container'lar arası network kısıtlanmamış
+
+**Not:** Bu ortam geliştirme/test ortamı. WARN olan konular production ortamında tek tek kapatılması gereken açıklar. Kör güven olmaz — CIS benchmark bir başlangıç noktası, sistemi anlayan kişi neyin gerekli olduğuna kendisi karar verir.
+
+---
+
+## 8. Image Signing (Cosign)
+
+Container image'larını kendi imzamızla imzaladık ki doğruluğunu ve değiştirilmediğini teyit edebilelim. HTTPS sertifikası gibi — sitenin gerçek sahibinden geldiğini ve içeriğin değiştirilmediğini kanıtlıyor.
+
+**Cosign** — Sigstore projesi tarafından geliştirilen açık kaynak image imzalama aracı. Kubernetes ekosisteminde standart haline geliyor.
+
+### Kurulum
+
+```bash
+wget https://github.com/sigstore/cosign/releases/latest/download/cosign-linux-amd64
+chmod +x cosign-linux-amd64
+sudo mv cosign-linux-amd64 /usr/local/bin/cosign
+```
+
+### Key Pair Oluşturma
+
+```bash
+cosign generate-key-pair
+# cosign.key → private key (imzalamak için)
+# cosign.pub → public key (doğrulamak için)
+```
+
+### Image'ı İmzalama
+
+```bash
+# Önce image'ı registry'e push et
+docker tag python-good alifurkanaltuntas/python-good:v1.0
+docker push alifurkanaltuntas/python-good:v1.0
+
+# SHA ile imzala — tag yerine SHA kullanmak daha güvenli
+IMAGE_SHA=$(docker inspect alifurkanaltuntas/python-good:v1.0 --format '{{index .RepoDigests 0}}')
+cosign sign --key cosign.key $IMAGE_SHA
+```
+
+Tag ile imzalarsak Cosign uyarı veriyor: "tag başka bir image'a yönlendirilebilir, SHA kullan." SHA değiştirilemez — image değiştirilirse SHA değişir.
+
+### İmza Doğrulama
+
+```bash
+cosign verify --key cosign.pub $IMAGE_SHA 2>/dev/null | python3 -m json.tool
+```
+
+```json
+[
+  {
+    "critical": {
+      "identity": {
+        "docker-reference": "index.docker.io/alifurkanaltuntas/python-good@sha256:d5a3da9..."
+      },
+      "image": {
+        "docker-manifest-digest": "sha256:d5a3da9..."
+      }
+    }
+  }
+]
+```
+
+### Değiştirilmiş Image Testi
+
+```bash
+# Saldırgan gibi davrandık — aynı tag'e farklı image push ettik
+docker tag python-bad alifurkanaltuntas/python-good:v1.0
+docker push alifurkanaltuntas/python-good:v1.0
+
+# Doğrulama başarısız — image değiştirilmiş!
+cosign verify --key cosign.pub alifurkanaltuntas/python-good:v1.0
+# Error: no signatures found
+```
+
+Image'ın içeriği değişti, SHA değişti, imza eşleşmedi — Cosign "bu image değiştirilmiş" dedi.
+
+**Gerçek dünya senaryosu:** Saldırgan registry'e sızıp image'ı zararlı kodla değiştirdi. Başka sunucu `cosign verify` yapınca "imza eşleşmiyor" aldı — image çalıştırılmadı. Cosign olmadan kimse fark etmezdi.
+
+---
+
+## 9. Seccomp
+
+"Secure Computing" kısaltması — Linux kernel'in bir özelliği, container'ın kernel'e yaptığı sistem çağrılarını (system call: dosya oku, ağa bağlan...) kısıtlıyor. Docker varsayılan olarak zaten bir profil uyguluyor (`docker info | grep seccomp` ile görülüyor).
+
+Özel bir profil yazıp `mkdir` çağrısını engelledik:
+
+```bash
+docker run --rm python-good mkdir /tmp/testdir && echo "mkdir çalıştı"
+# mkdir çalıştı
+
+docker run --rm --security-opt seccomp=/tmp/seccomp-test.json python-good mkdir /tmp/testdir
+# mkdir: cannot create directory '/tmp/testdir': Operation not permitted
+```
+
+3 mod var: `SCMP_ACT_ALLOW` (izin ver), `SCMP_ACT_ERRNO` (hata döndür), `SCMP_ACT_KILL` (process'i öldür).
+
+---
+
+## 10. AppArmor
+
+Seccomp sistem çağrılarını kısıtlarken, AppArmor **dosya, ağ ve kaynak erişimini** kısıtlıyor — "hangi araçları kullanabilirsin" değil "hangi odalara girebilirsin." Docker'da `docker-default` profili zaten aktif.
+
+Özel bir profille bir dosyayı okumayı engelledik:
+
+```bash
+docker run --rm -v /tmp/secret.txt:/tmp/secret.txt python-good cat /tmp/secret.txt
+# gizli veri
+
+docker run --rm --security-opt apparmor=docker-python-test \
+  -v /tmp/secret.txt:/tmp/secret.txt python-good cat /tmp/secret.txt
+# cat: /tmp/secret.txt: Permission denied
+```
+
+|             | Seccomp                 | AppArmor                       |
+| ----------- | ----------------------- | ------------------------------ |
+| Ne kısıtlar | Sistem çağrıları        | Dosya, ağ, kaynak erişimi      |
+| Docker'da   | Varsayılan profil aktif | `docker-default` profili aktif |
+
+---
+
+## 11. Kaniko
+
+`docker build` Docker daemon'a ihtiyaç duyuyor, daemon root yetkisiyle çalışıyor — Kubernetes pod'una root vermek güvenlik riski. **Kaniko** bunu Docker daemon'a hiç bağlanmadan çözüyor, CI/CD pod'unda normal kullanıcı olarak çalışıyor.
+
+```bash
+docker run --rm -v $(pwd):/workspace -v ~/.docker/config.json:/kaniko/.docker/config.json:ro \
+  gcr.io/kaniko-project/executor:latest \
+  --context /workspace --dockerfile /workspace/Dockerfile.good \
+  --destination alifurkanaltuntas/python-good:kaniko
+# Pushed index.docker.io/alifurkanaltuntas/python-good@sha256:5ace3811c...
+```
+
+**Kanıtladık:** Kaniko çalışmadan önce ve sonra Docker daemon'ın image sayısı sayıldı, hiç değişmedi — Docker daemon işleme hiç dahil olmadı. Kaniko image'ının içinde shell bile yok (`which docker` denendiğinde `sh` bulunamadı).
+
+---
+
+## 12. Jib
+
+Jib Java içindi, sadece Java. Kaniko her dilde çalışıyordu ama Dockerfile gerektiriyordu — Jib Dockerfile'a bile ihtiyaç duymuyor, doğrudan Maven plugin'i olarak build edip push ediyor.
+
+```bash
+mvn compile jib:build
+# BUILD SUCCESS — Built and pushed image as alifurkanaltuntas/jib-demo:v1.0
+```
+
+|            | Kaniko  | Jib         |
+| ---------- | ------- | ----------- |
+| Dil        | Her dil | Sadece Java |
+| Dockerfile | Gerekli | Gerekmiyor  |
+
+---
+
+## 13. Falco (Runtime Security)
+
+Trivy image'ı build öncesi (statik) tarıyor. Falco bir nevi canlı kameraları izleyen güvenlik görevlisi gibi — container **çalışırken** içinde olanları izliyor, tehlikeli ya da değil olarak sınıflandırıyor (eBPF ile kernel system call'larını izleyerek).
+
+Container içinde shell açtık, Falco yakaladı:
+
+```
+Notice A shell was spawned in a container with an attached terminal
+  user=root process=sh command=sh
+  container_image_repository=python-good container_image_tag=latest
+```
+
+Hangi container, hangi kullanıcı, hangi komut, tam timestamp — hepsi görünüyor. Production'da bu alertler Slack/PagerDuty'ye gönderilebilir.
+
+---
+
+## 14. SBOM (Syft + Grype)
+
+Trivy anlık tarama — image olması lazım. SBOM geriye dönük raporlama için kullanılabilir; güvenlik sürecinde bir açık tespit edildiğinde diğer hangi image'larda o açığın olduğuna bakılabilir.
+
+```bash
+syft python-good --output spdx-json > sbom.json
+# 127 paket kataloglandı
+
+grype sbom:./sbom.json
+# 207 vulnerability matches (7 critical, 36 high, 70 medium, 7 low)
+```
+
+**Syft** = fotoğraf çek (bileşenleri listele), **Grype** = o fotoğrafa bak, sorunluları bul. `sbom.json` kalıcı — image silinse bile bu dosya üzerinden geriye dönük tarama yapılabiliyor.
+
+---
+
 ## 📊 Özet
 
-| Teknik                 | Ne Sağlıyor                                    |
-| ---------------------- | ---------------------------------------------- |
-| Distroless image       | 94MB, shell yok, CRITICAL açık sıfır           |
-| Read-only filesystem   | Diske yazılamıyor, zararlı dosya bırakılamıyor |
-| Resource limits        | Sunucu kaynakları tüketilemez, OOM Kill        |
-| BuildKit paralel build | Bağımsız stage'ler aynı anda — daha hızlı      |
-| BuildKit secret mount  | Şifreler image history'ye girmiyor             |
-| Hadolint               | Build öncesi Dockerfile hataları yakalanıyor   |
-| Image tag immutability | SHA ile sabitlemek — her build aynı sonuç      |
+| Teknik                 | Ne Sağlıyor                                                          |
+| ---------------------- | -------------------------------------------------------------------- |
+| Distroless image       | 94MB, shell yok, CRITICAL açık sıfır                                 |
+| Read-only filesystem   | Diske yazılamıyor, zararlı dosya bırakılamıyor                       |
+| Resource limits        | Sunucu kaynakları tüketilemez, OOM Kill                              |
+| BuildKit               | Paralel build + secret mount                                         |
+| Hadolint               | Build öncesi Dockerfile hataları yakalanıyor                         |
+| Image tag immutability | SHA ile sabitlemek — her build aynı sonuç                            |
+| docker-bench-security  | Docker kurulumunu CIS benchmark'a göre tarıyor — 117 kontrol         |
+| Image signing (Cosign) | Image imzalanıyor — değiştirilirse "no signatures found"             |
+| Seccomp                | Sistem çağrılarını kısıtlar                                          |
+| AppArmor               | Dosya/ağ/kaynak erişimini kısıtlar                                   |
+| Kaniko                 | Docker daemon ve root olmadan CI/CD pod'unda image build             |
+| Jib                    | Java için Dockerfile'sız build                                       |
+| Falco                  | Runtime'da anormal davranışları gerçek zamanlı tespit                |
+| SBOM (Syft+Grype)      | Kalıcı bileşen listesi — image silinse bile geriye dönük taranabilir |
 
 ---
 

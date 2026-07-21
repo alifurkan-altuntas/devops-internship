@@ -14,7 +14,7 @@ Nginx derinleşmesi tamamlandı: reverse proxy, path bazlı yönlendirme, path r
 
 OpenResty (PostgreSQL, MySQL, Redis, token authentication) ve rclone ile S3 entegrasyonu tamamlandı — performans parametreleri, `rclone serve http` cache ve güvenlik (VFS cache, dir cache, auth, remote control), `rclone mount` ve VFS cache.
 
-Docker derinleşmesi devam ediyor — temel güvenlik (non-root, .dockerignore, Trivy) ve ileri seviye güvenlik (distroless, read-only, resource limits, BuildKit, Hadolint) tamamlandı. Sırada docker-bench-security, image signing, seccomp, kaniko, jib ve ardından Kubernetes var.
+Docker derinleşmesi devam ediyor — temel güvenlik (non-root, .dockerignore, Trivy) ve ileri seviye güvenlik (distroless, read-only, resource limits, BuildKit, Hadolint, docker-bench-security, Cosign, seccomp, AppArmor, Kaniko, Jib, Falco, SBOM) tamamlandı. IaC scanning (Trivy config, HEALTHCHECK) da tamamlandı. Sırada Kubernetes var.
 
 Tüm fazların (01–24) Türkçe/İngilizce belge dönüşümü tamamlandı.
 
@@ -46,7 +46,8 @@ Tüm fazların (01–24) Türkçe/İngilizce belge dönüşümü tamamlandı.
 - [22-rclone-S3](./22-rclone-S3/): rclone ile Amazon S3 bağlantısı, performans parametreleri testi ve `rclone serve http` ile private bucket'ı dışarıya açma. ([TR](./22-rclone-S3/readme.md) / [EN](./22-rclone-S3/readme-en.md))
 - [23-Docker-Fundamentals](./23-Docker-Fundamentals/): Docker temelleri — image, container, Dockerfile optimizasyonu (multi-stage build, layer caching, RUN birleştirme), Docker Compose ile volume/network yönetimi. ([TR](./23-Docker-Fundamentals/readme.md) / [EN](./23-Docker-Fundamentals/readme-en.md)) — Uygulamalı: ([TR](./23-Docker-Fundamentals/practice.md) / [EN](./23-Docker-Fundamentals/practice-en.md))
 - [24-Docker-Security](./24-Docker-Security/): Docker güvenliği — non-root container, `.dockerignore`, Trivy ile image scanning. ([TR](./24-Docker-Security/readme.md) / [EN](./24-Docker-Security/readme-en.md)) — Uygulamalı: ([TR](./24-Docker-Security/practice.md) / [EN](./24-Docker-Security/practice-en.md))
-- [25-Docker-Advanced-Security](./25-Docker-Advanced-Security/): Distroless image, read-only filesystem, resource limits, BuildKit (paralel build + secret mount), Hadolint, image tag immutability. ([TR](./25-Docker-Advanced-Security/readme.md) / [EN](./25-Docker-Advanced-Security/readme-en.md))
+- [25-Docker-Advanced-Security](./25-Docker-Advanced-Security/): Distroless image, read-only filesystem, resource limits, BuildKit, Hadolint, image tag immutability, docker-bench-security, image signing (Cosign), seccomp, AppArmor, Kaniko, Jib, Falco, SBOM (Syft+Grype). ([TR](./25-Docker-Advanced-Security/readme.md) / [EN](./25-Docker-Advanced-Security/readme-en.md)) — Uygulamalı: ([TR](./25-Docker-Advanced-Security/practice.md) / [EN](./25-Docker-Advanced-Security/practice-en.md))
+- [26-IaC-Scanning](./26-IaC-Scanning/): Trivy config ile Dockerfile/YAML statik taraması, HEALTHCHECK. ([TR](./26-IaC-Scanning/readme.md) / [EN](./26-IaC-Scanning/readme-en.md)) — Uygulamalı: ([TR](./26-IaC-Scanning/practice.md) / [EN](./26-IaC-Scanning/practice-en.md))
 
 ### 📝 Değerlendirme & Sınav Materyalleri
 
@@ -478,20 +479,54 @@ _`rclone serve http` için cache ve güvenlik konularını derinlemesine inceled
 - **Kilometre Taşları & Çıktılar:**
   - 🗄️ rclone serve http Cache: [readme.md](./22-rclone-S3/readme.md) / [readme-en.md](./22-rclone-S3/readme-en.md)
 
-### 🔹 17 Temmuz 2026 | Docker İleri Seviye Güvenlik
+### 🔹 17 Temmuz 2026 | Docker İleri Seviye Güvenlik — Distroless, Read-Only, BuildKit
 
-_Distroless image, read-only filesystem, resource limits, BuildKit ve Hadolint konularını öğrendim. Distroless'ta shell bile yok — sızılsa bile çalıştıracak araç yok, 94MB ve CRITICAL açık sıfır. Read-only ile diske yazılamıyor. Memory + swap limiti ile OOM Kill test ettim — exit code 137. BuildKit paralel build'i sorguladım, test ettim, farklı base image ile kanıtladım: 41s vs 31s. Secret mount ile şifre image history'ye girmiyor. Hadolint Dockerfile'daki WORKDIR ve --no-cache-dir hatalarını build öncesi yakaladı._
+_Docker İleri Seviye Güvenlik'e başladım. Distroless image: Alpine'dan farklı olarak shell bile yok — `sh` denendiğinde "no such file or directory" hatası aldım, 94MB ve CRITICAL açık sıfır. Read-only filesystem: `--read-only` ile diske yazma engellendi, `--tmpfs` ile RAM'e yazılabiliyor ama diske değil. Resource limits: memory + swap birlikte kısıtlanınca RAM dolup taşınca kernel container'ı öldürdü — exit code 137. BuildKit: paralel build iddiasını ilk testte doğrulayamadım, aynı base image kullandığım için — farklı base image ile tekrar test edip 41s vs 31s ile kanıtladım. Secret mount ile şifre image history'ye girmedi. Hadolint: WORKDIR eksikliğini ve --no-cache-dir hatasını build öncesi yakaladı._
 
 - **Görevler & Hedefler:**
   - Distroless image kurulumu ve shell testi yapıldı.
   - Read-only filesystem ve --tmpfs test edildi.
   - Memory + swap resource limits test edildi (OOM Kill kanıtlandı).
   - BuildKit paralel build sorgulandı, test edildi, kanıtlandı.
-  - BuildKit secret mount ile şifre güvenliği test edildi.
-  - Hadolint ile Dockerfile lint yapıldı.
-  - Image tag immutability — SHA ile sabitleme öğrenildi.
+  - Hadolint ile Dockerfile lint yapıldı, image tag immutability öğrenildi.
 - **Kilometre Taşları & Çıktılar:**
-  - 🔒 Docker İleri Seviye Güvenlik: [TR](./25-Docker-Advanced-Security/readme.md) / [EN](./25-Docker-Advanced-Security/readme-en.md)
+  - 🔒 Docker İleri Seviye Güvenlik: [README (TR](./25-Docker-Advanced-Security/readme.md) / [EN)](./25-Docker-Advanced-Security/readme-en.md) — Uygulamalı: ([TR](./25-Docker-Advanced-Security/practice.md) / [EN](./25-Docker-Advanced-Security/practice-en.md))
+
+### 🔹 18 Temmuz 2026 | Docker İleri Seviye Güvenlik — docker-bench-security, Image Signing
+
+_docker-bench-security: Docker kurulumumun kendisini CIS benchmark'a göre taradım — 117 kontrol, firmalara dışarıdan denetlemeye gelenler gibi, ortamımız test ortamı olduğu için WARN'lar bizi bağlamıyordu. Image signing (Cosign): container image'larımı kendi imzamla imzaladım ki doğruluğunu ve değiştirilmediğini teyit edebileyim — image'ı kasıtlı değiştirip aynı tag'e push ettim, Cosign "no signatures found" diyerek yakaladı._
+
+- **Görevler & Hedefler:**
+  - docker-bench-security kuruldu, CIS Docker Benchmark 1.6.0'a göre tarama yapıldı.
+  - Cosign ile key pair oluşturuldu, image imzalandı ve doğrulandı.
+  - Değiştirilmiş image testiyle Cosign'ın sahtekârlığı yakaladığı kanıtlandı.
+- **Kilometre Taşları & Çıktılar:**
+  - 🔒 Docker İleri Seviye Güvenlik: [README (TR](./25-Docker-Advanced-Security/readme.md) / [EN)](./25-Docker-Advanced-Security/readme-en.md) — Uygulamalı: ([TR](./25-Docker-Advanced-Security/practice.md) / [EN](./25-Docker-Advanced-Security/practice-en.md))
+
+### 🔹 19 Temmuz 2026 | Docker İleri Seviye Güvenlik — Seccomp, AppArmor, Kaniko, Jib
+
+_Seccomp: container'ın kernel'e yaptığı sistem çağrılarını kısıtladım — özel bir profille mkdir'i engelledim, normal container'da çalışırken seccomp'lu container "Operation not permitted" verdi. AppArmor: dosya erişimini kısıtladım — özel bir profille bir dosyanın okunmasını engelledim, normal container okuyabiliyordu ama AppArmor'lu container "Permission denied" aldı. Kaniko: CI/CD pipeline'lar için gerekli olduğunu öğrendim, root yetkisi ve Docker daemon olmadan build yaptığını 3 ayrı kanıtla (log terimleri, shell yokluğu, image sayısının değişmemesi) doğruladım. Jib: sadece Java için, Dockerfile'sız build yaptığını gördüm._
+
+- **Görevler & Hedefler:**
+  - Seccomp ile özel profil yazıldı, mkdir sistem çağrısı engellendi.
+  - AppArmor ile özel profil yazıldı, dosya okuma engellendi.
+  - Kaniko ile Docker daemon olmadan image build edildi ve kanıtlandı.
+  - Jib ile Dockerfile'sız Java image build edildi.
+- **Kilometre Taşları & Çıktılar:**
+  - 🔒 Docker İleri Seviye Güvenlik: [README (TR](./25-Docker-Advanced-Security/readme.md) / [EN)](./25-Docker-Advanced-Security/readme-en.md) — Uygulamalı: ([TR](./25-Docker-Advanced-Security/practice.md) / [EN](./25-Docker-Advanced-Security/practice-en.md))
+
+### 🔹 20 Temmuz 2026 | Docker İleri Seviye Güvenlik — Falco, SBOM & IaC Scanning
+
+_Falco: bir nevi canlı kameraları izleyen güvenlik görevlisi gibi container çalışırken içindekileri izlediğini öğrendim — container içinde shell açtım, ilk denemede yakalayamadım çünkü loglara değil stdout'a yazıyordu, doğru yerden bakınca yakaladı. SBOM (Syft+Grype): Syft ile 127 paketlik bir liste çıkardım, Grype ile taratıp 207 güvenlik açığı buldum — SBOM'un image silinse bile geriye dönük taranabildiğini gördüm. IaC Scanning: Trivy'nin `config` modu ile Dockerfile'ları statik taradım, docker-compose'un desteklenmediğini keşfettim, USER ve HEALTHCHECK eksikliklerini buldum, düzelttim, ve HEALTHCHECK'in gerçek `healthy`/`unhealthy` durumlarını canlı test ettim._
+
+- **Görevler & Hedefler:**
+  - Falco kuruldu, container içinde shell açma testiyle runtime alert'i kanıtlandı.
+  - Syft ile SBOM oluşturuldu (127 paket), Grype ile taranıp güvenlik açıkları bulundu (207 eşleşme).
+  - Trivy config ile IaC/Dockerfile statik taraması yapıldı — docker-compose'un desteklenmediği görüldü.
+  - HEALTHCHECK eklenmiş temiz bir Dockerfile yazıldı, healthy/unhealthy durumları canlı test edildi.
+- **Kilometre Taşları & Çıktılar:**
+  - 🔒 Docker İleri Seviye Güvenlik: [README (TR](./25-Docker-Advanced-Security/readme.md) / [EN)](./25-Docker-Advanced-Security/readme-en.md) — Uygulamalı: ([TR](./25-Docker-Advanced-Security/practice.md) / [EN](./25-Docker-Advanced-Security/practice-en.md))
+  - 🔍 IaC Scanning: [README (TR](./26-IaC-Scanning/readme.md) / [EN)](./26-IaC-Scanning/readme-en.md) — Uygulamalı: ([TR](./26-IaC-Scanning/practice.md) / [EN](./26-IaC-Scanning/practice-en.md))
 
 ---
 
