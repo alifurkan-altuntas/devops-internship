@@ -1,78 +1,56 @@
-# 🐳 IaC Scanning — Hands-On Tests
+# 🔍 IaC Scanning — Trivy Config, Dockerfile Misconfigurations, HEALTHCHECK
 
-This document covers the hands-on tests behind the concepts explained in readme.md.
+In phase 25 we covered the security of the Docker image and its runtime. This phase covers scanning the infrastructure code itself (Dockerfile, docker-compose.yml, Kubernetes YAML, Terraform) statically.
 
 ---
 
-## 1. Attempting to Scan docker-compose
+## 1. What Is IaC Scanning
+
+Infrastructure as Code — defining infrastructure (servers, networks, security rules) as code instead of setting it up by hand. Dockerfile, docker-compose.yml, and Kubernetes YAML files are all IaC. IaC scanning is like Hadolint checking a Dockerfile — but it scans all infrastructure files, not just Dockerfiles.
+
+**Tool:** Trivy — besides scanning images, `trivy config` also does IaC scanning.
+
+---
+
+## 2. docker-compose Isn't Supported
 
 ```bash
-cd ~/docker-practice
-trivy config docker-compose.yml
-# FATAL error: lstat docker-compose.yml: no such file or directory
-```
-
-Wrong folder. Moved to the correct one:
-
-```bash
-cd ~/compose-practice
 trivy config docker-compose.yml
 # Detected config files   num=0
-# WARN Supported files for scanner(s) not found. scanners=[misconfig]
+# WARN [report] Supported files for scanner(s) not found. scanners=[misconfig]
 ```
 
-The file was found but no findings came up — the compose file was too simple. A deliberately insecure compose file was considered (`privileged: true`, host volume, plaintext secrets), but while trying it, this came up: **this Trivy version doesn't support docker-compose scanning at all.** We moved on to Dockerfiles.
+This Trivy version doesn't support docker-compose scanning. We moved on to Dockerfiles.
 
 ---
 
-## 2. Comparing Dockerfile.bad and Dockerfile.good
+## 3. Scanning a Dockerfile
 
 ```bash
-trivy config ~/docker-practice/Dockerfile.bad
+trivy config Dockerfile.bad
 ```
 
 ```
 Dockerfile.bad (dockerfile)
 Tests: 27 (SUCCESSES: 25, FAILURES: 2)
-DS-0002 (HIGH): Specify at least 1 USER command...
-DS-0026 (LOW): Add HEALTHCHECK instruction...
+DS-0002 (HIGH): Specify at least 1 USER command in Dockerfile with non-root user as argument
+DS-0026 (LOW): Add HEALTHCHECK instruction in your Dockerfile
 ```
 
-```bash
-trivy config ~/docker-practice/Dockerfile.good
-```
+The same two findings showed up in `Dockerfile.good` too — because that file was just a size/vulnerability-count demo using `python:3.11-slim`, and never included a `USER` or `HEALTHCHECK`. IaC scanning and image content scanning (Trivy image) check different things:
 
-```
-Dockerfile.good (dockerfile)
-Tests: 27 (SUCCESSES: 25, FAILURES: 2)
-DS-0002 (HIGH): Specify at least 1 USER command...
-DS-0026 (LOW): Add HEALTHCHECK instruction...
-```
-
-**Unexpected result:** both gave the same 2 warnings. Looking at the content of `Dockerfile.good` explained why:
-
-```dockerfile
-FROM python:3.11 AS builder
-WORKDIR /app
-COPY requirements.txt .
-RUN pip install --user --no-cache-dir -r requirements.txt
-FROM python:3.11-slim
-WORKDIR /app
-COPY --from=builder /root/.local /root/.local
-COPY app.py .
-CMD ["python", "app.py"]
-```
-
-`Dockerfile.good` never had a `USER` at all — it was an old demo focused solely on shrinking image size using `python:3.11-slim`. "Good" here only meant size/vulnerability count; non-root security had been done in a separate file (`python-nonroot`, with `useradd` + `USER appuser`) — the two were never combined.
+| Command        | What It Scans                                                                     |
+| -------------- | --------------------------------------------------------------------------------- |
+| `trivy config` | Static structure of the Dockerfile/YAML — is there a USER, is there a HEALTHCHECK |
+| `trivy image`  | The built image's content — packages, CVEs                                        |
 
 ---
 
-## 3. Building a Clean Dockerfile
+## 4. A Clean Dockerfile
 
-Slim + non-root + healthcheck combined:
+The `USER` and `HEALTHCHECK` missing from both `Dockerfile.bad` and `Dockerfile.good` were added, combining slim + non-root + healthcheck:
 
-```bash
-cat > ~/docker-practice/Dockerfile.clean << 'EOF'
+```dockerfile
 FROM python:3.11 AS builder
 WORKDIR /app
 COPY requirements.txt .
@@ -84,102 +62,50 @@ WORKDIR /home/appuser
 COPY --from=builder /root/.local /home/appuser/.local
 COPY --chown=appuser:appuser app.py .
 USER appuser
-ENV PATH=/home/appuser/.local/bin:$PATH
 HEALTHCHECK --interval=30s --timeout=3s CMD python -c "import sys; sys.exit(0)"
 CMD ["python", "app.py"]
-EOF
-
-trivy config ~/docker-practice/Dockerfile.clean
 ```
 
-```
-Dockerfile.clean (dockerfile)
-Tests: 27 (SUCCESSES: 27, FAILURES: 0)
+```bash
+trivy config Dockerfile.clean
+# Dockerfile.clean (dockerfile)
+# Tests: 27 (SUCCESSES: 27, FAILURES: 0)
 ```
 
-Zero findings — adding USER and HEALTHCHECK passed all 27 rules checked by the static scan.
+**Zero findings** — but that doesn't mean "everything is fixed," it means "we passed the 27 rules this specific config test checks." Other protections like `.dockerignore` and slim images aren't covered by this test — they're checked by separate tests (Trivy image, Hadolint).
 
 ---
 
-## 4. Testing HEALTHCHECK Live
+## 5. HEALTHCHECK
 
-### First Attempt — Container Didn't Show Up
+HEALTHCHECK lets Docker ask "is this container actually working?" Even if the container's process is still running, the application inside it might have crashed or hung — as long as the process hasn't died, Docker won't notice.
+
+### Testing a Real vs Broken Health Check
 
 ```bash
 docker build -f Dockerfile.clean -t python-clean .
 docker run -d --name healthcheck-test python-clean
 docker ps
+# STATUS: Up 55 seconds (healthy)
 ```
-
-`healthcheck-test` was **nowhere in the list**. Investigated why:
 
 ```bash
-docker ps -a | grep healthcheck-test
-# Exited (0) About a minute ago
-
-docker logs healthcheck-test
-# Hello Docker! Updated.
-```
-
-`app.py` content:
-
-```python
-print("Hello Docker! Updated.")
-```
-
-A single line that exits immediately — the container finishes its job and shuts down before the health check even gets a chance to run. `docker ps` doesn't show stopped containers anyway.
-
-### Fix — A Process That Stays Alive
-
-```bash
-cat > ~/docker-practice/app.py << 'EOF'
-import time
-print("Hello Docker! Updated.")
-while True:
-    time.sleep(60)
-EOF
-
-docker rm -f healthcheck-test
-docker build -f Dockerfile.clean -t python-clean .
-docker run -d --name healthcheck-test python-clean
-```
-
-Waited 15-20 seconds and checked:
-
-```bash
-docker ps
-```
-
-```
-CONTAINER ID   IMAGE          STATUS
-7ef850f7e03d   python-clean   Up 55 seconds (healthy)
-```
-
-**`(healthy)` ✅** — seen once the health check actually had time to run.
-
-### Testing a Broken Health Check
-
-```bash
-docker rm -f healthcheck-test
 docker run -d --name healthcheck-test --health-cmd="exit 1" --health-interval=5s python-clean
-```
-
-```bash
 docker ps
+# STATUS: Up 29 seconds (unhealthy)
 ```
 
-```
-CONTAINER ID   IMAGE          STATUS
-16e9638458a8   python-clean   Up 29 seconds (unhealthy)
-```
+Both `(healthy)` and `(unhealthy)` were observed — this is the foundation of how orchestrators like Kubernetes automatically restart or stop routing traffic to a crashed container.
 
-**`(unhealthy)` ✅** — with a deliberately broken command, the container was marked "unhealthy" even though the process was still running.
+---
 
-**Practical significance:** orchestrators like Kubernetes automatically restart an "unhealthy" container or stop routing traffic to it. Without a health check, a crashed service keeps receiving traffic as if it were "alive."
+## 📊 Summary
 
-```bash
-docker rm -f healthcheck-test
-```
+| Check            | What It Provides                                                                     |
+| ---------------- | ------------------------------------------------------------------------------------ |
+| `trivy config`   | Scans the static structure of Dockerfile/YAML — finds missing USER, HEALTHCHECK etc. |
+| Clean Dockerfile | Combining slim + non-root + healthcheck gives zero findings in static scan           |
+| HEALTHCHECK      | Tests whether the container is actually working — healthy/unhealthy                  |
 
 ---
 
