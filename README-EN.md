@@ -14,7 +14,7 @@ Completed Nginx deep dive: reverse proxy, path-based routing, path rewrite, path
 
 Completed OpenResty (PostgreSQL, MySQL, Redis, token authentication) and rclone with S3 — performance parameters, `rclone serve http` cache and security (VFS cache, dir cache, auth, remote control), `rclone mount` and VFS cache.
 
-Docker deep dive ongoing — basic security (non-root, .dockerignore, Trivy) and advanced security (distroless, read-only, resource limits, BuildKit, Hadolint, docker-bench-security, Cosign, seccomp, AppArmor, Kaniko, Jib, Falco, SBOM) are complete. IaC scanning (Trivy config, HEALTHCHECK) is also complete. Up next: Kubernetes.
+Docker Alternatives phase (Podman, containerd, CRI-O, Buildah) is complete — the rootless and daemonless claims were actually tested on the server. Up next: Kubernetes.
 
 Bilingual documentation (TR/EN) complete for all phases (01–24).
 
@@ -48,6 +48,7 @@ Bilingual documentation (TR/EN) complete for all phases (01–24).
 - [24-Docker-Security](./24-Docker-Security/): Docker security — non-root containers, `.dockerignore`, image scanning with Trivy. ([TR](./24-Docker-Security/readme.md) / [EN](./24-Docker-Security/readme-en.md)) — Hands-on: ([TR](./24-Docker-Security/practice.md) / [EN](./24-Docker-Security/practice-en.md))
 - [25-Docker-Advanced-Security](./25-Docker-Advanced-Security/): Distroless image, read-only filesystem, resource limits, BuildKit, Hadolint, image tag immutability, docker-bench-security, image signing (Cosign), seccomp, AppArmor, Kaniko, Jib, Falco, SBOM (Syft+Grype). ([TR](./25-Docker-Advanced-Security/readme.md) / [EN](./25-Docker-Advanced-Security/readme-en.md)) — Hands-on: ([TR](./25-Docker-Advanced-Security/practice.md) / [EN](./25-Docker-Advanced-Security/practice-en.md))
 - [26-IaC-Scanning](./26-IaC-Scanning/): Static scanning of Dockerfile/YAML with Trivy config, HEALTHCHECK. ([TR](./26-IaC-Scanning/readme.md) / [EN](./26-IaC-Scanning/readme-en.md)) — Hands-on: ([TR](./26-IaC-Scanning/practice.md) / [EN](./26-IaC-Scanning/practice-en.md))
+- [27-Docker-Alternatives](./27-Docker-Alternatives/): Podman, containerd, CRI-O, Buildah — rootless/daemonless proofs, build speed comparison. ([TR](./27-Docker-Alternatives/readme.md) / [EN](./27-Docker-Alternatives/readme-en.md)) — Hands-on: ([TR](./27-Docker-Alternatives/practice.md) / [EN](./27-Docker-Alternatives/practice-en.md))
 
 ### 📝 Evaluation & Assessment Artifacts
 
@@ -527,6 +528,18 @@ _Falco: learned it's like a security guard watching live camera feeds, monitorin
 - **Milestones & Deliverables:**
   - 🔒 Docker Advanced Security: [README (TR](./25-Docker-Advanced-Security/readme.md) / [EN)](./25-Docker-Advanced-Security/readme-en.md) — Hands-on: ([TR](./25-Docker-Advanced-Security/practice.md) / [EN](./25-Docker-Advanced-Security/practice-en.md))
   - 🔍 IaC Scanning: [README (TR](./26-IaC-Scanning/readme.md) / [EN)](./26-IaC-Scanning/readme-en.md) — Hands-on: ([TR](./26-IaC-Scanning/practice.md) / [EN](./26-IaC-Scanning/practice-en.md))
+
+### 🔹 July 22, 2026 | Docker Alternatives — Podman, containerd, CRI-O, Buildah
+
+_Researched Docker's alternatives: Podman, containerd, CRI-O, Buildah. Podman: mimics Docker's commands almost exactly but is daemonless and rootless — ran the same container in both and checked process ownership on the host with `ps aux`, Docker's process showed as root, Podman's as a regular user. Also proved the daemonless claim — Podman's service is socket-activated, only runs briefly on request, while Docker's has been continuously active for 3 weeks. containerd: the low-level component inside Docker that 95% of Kubernetes clusters use. Compared build speed too — no meaningful difference (~8%, within measurement-noise range), but discovered Docker's and Podman's image stores are completely isolated from each other._
+
+- **Tasks & Objectives:**
+  - Researched and compared Podman, containerd, CRI-O, and Buildah.
+  - Installed Podman, proved the daemonless claim via systemd service status.
+  - Proved the rootless claim with a host-side process ownership test (Docker: root, Podman: regular user).
+  - Compared build speed between Docker and Podman, discovered image store isolation.
+- **Milestones & Deliverables:**
+  - 🔄 Docker Alternatives: [README (TR](./27-Docker-Alternatives/readme.md) / [EN)](./27-Docker-Alternatives/readme-en.md) — Hands-on: ([TR](./27-Docker-Alternatives/practice.md) / [EN](./27-Docker-Alternatives/practice-en.md))
 
 ---
 

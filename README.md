@@ -14,7 +14,7 @@ Nginx derinleşmesi tamamlandı: reverse proxy, path bazlı yönlendirme, path r
 
 OpenResty (PostgreSQL, MySQL, Redis, token authentication) ve rclone ile S3 entegrasyonu tamamlandı — performans parametreleri, `rclone serve http` cache ve güvenlik (VFS cache, dir cache, auth, remote control), `rclone mount` ve VFS cache.
 
-Docker derinleşmesi devam ediyor — temel güvenlik (non-root, .dockerignore, Trivy) ve ileri seviye güvenlik (distroless, read-only, resource limits, BuildKit, Hadolint, docker-bench-security, Cosign, seccomp, AppArmor, Kaniko, Jib, Falco, SBOM) tamamlandı. IaC scanning (Trivy config, HEALTHCHECK) da tamamlandı. Sırada Kubernetes var.
+Docker Alternatifleri fazı (Podman, containerd, CRI-O, Buildah) tamamlandı — rootless ve daemonless iddiaları sunucuda gerçekten test edildi. Sırada Kubernetes var.
 
 Tüm fazların (01–24) Türkçe/İngilizce belge dönüşümü tamamlandı.
 
@@ -48,6 +48,7 @@ Tüm fazların (01–24) Türkçe/İngilizce belge dönüşümü tamamlandı.
 - [24-Docker-Security](./24-Docker-Security/): Docker güvenliği — non-root container, `.dockerignore`, Trivy ile image scanning. ([TR](./24-Docker-Security/readme.md) / [EN](./24-Docker-Security/readme-en.md)) — Uygulamalı: ([TR](./24-Docker-Security/practice.md) / [EN](./24-Docker-Security/practice-en.md))
 - [25-Docker-Advanced-Security](./25-Docker-Advanced-Security/): Distroless image, read-only filesystem, resource limits, BuildKit, Hadolint, image tag immutability, docker-bench-security, image signing (Cosign), seccomp, AppArmor, Kaniko, Jib, Falco, SBOM (Syft+Grype). ([TR](./25-Docker-Advanced-Security/readme.md) / [EN](./25-Docker-Advanced-Security/readme-en.md)) — Uygulamalı: ([TR](./25-Docker-Advanced-Security/practice.md) / [EN](./25-Docker-Advanced-Security/practice-en.md))
 - [26-IaC-Scanning](./26-IaC-Scanning/): Trivy config ile Dockerfile/YAML statik taraması, HEALTHCHECK. ([TR](./26-IaC-Scanning/readme.md) / [EN](./26-IaC-Scanning/readme-en.md)) — Uygulamalı: ([TR](./26-IaC-Scanning/practice.md) / [EN](./26-IaC-Scanning/practice-en.md))
+- [27-Docker-Alternatives](./27-Docker-Alternatives/): Podman, containerd, CRI-O, Buildah — rootless/daemonless kanıtları, build hızı kıyaslaması. ([TR](./27-Docker-Alternatives/readme.md) / [EN](./27-Docker-Alternatives/readme-en.md)) — Uygulamalı: ([TR](./27-Docker-Alternatives/practice.md) / [EN](./27-Docker-Alternatives/practice-en.md))
 
 ### 📝 Değerlendirme & Sınav Materyalleri
 
@@ -527,6 +528,18 @@ _Falco: bir nevi canlı kameraları izleyen güvenlik görevlisi gibi container 
 - **Kilometre Taşları & Çıktılar:**
   - 🔒 Docker İleri Seviye Güvenlik: [README (TR](./25-Docker-Advanced-Security/readme.md) / [EN)](./25-Docker-Advanced-Security/readme-en.md) — Uygulamalı: ([TR](./25-Docker-Advanced-Security/practice.md) / [EN](./25-Docker-Advanced-Security/practice-en.md))
   - 🔍 IaC Scanning: [README (TR](./26-IaC-Scanning/readme.md) / [EN)](./26-IaC-Scanning/readme-en.md) — Uygulamalı: ([TR](./26-IaC-Scanning/practice.md) / [EN](./26-IaC-Scanning/practice-en.md))
+
+### 🔹 22 Temmuz 2026 | Docker Alternatifleri — Podman, containerd, CRI-O, Buildah
+
+_Docker'ın alternatiflerini araştırdım: Podman, containerd, CRI-O, Buildah. Podman: Docker'ın komutlarını neredeyse birebir taklit ediyor ama daemonless ve rootless — aynı container'ı ikisinde de çalıştırıp host'ta `ps aux` ile baktım, Docker'da process root, Podman'da normal kullanıcı olarak görünüyor. Daemonless iddiasını da kanıtladım — Podman'ın servisi socket-activated, sadece istekte kısa süre çalışıyor, Docker'ınki 3 haftadır sürekli aktif. containerd: Kubernetes cluster'larının %95'inin kullandığı, Docker'ın içindeki düşük seviye bileşen. Build hızını da kıyasladım — ciddi bir fark çıkmadı (~%8, ölçüm gürültüsü sınırında), ama Docker ve Podman'ın image depolarının birbirinden tamamen izole olduğunu keşfettim._
+
+- **Görevler & Hedefler:**
+  - Podman, containerd, CRI-O, Buildah araştırıldı ve karşılaştırıldı.
+  - Podman kuruldu, daemonless iddiası systemd servis durumuyla kanıtlandı.
+  - Rootless iddiası, host'ta process sahipliği testiyle kanıtlandı (Docker: root, Podman: normal kullanıcı).
+  - Docker ile Podman arasında build hızı kıyaslandı, image deposu izolasyonu keşfedildi.
+- **Kilometre Taşları & Çıktılar:**
+  - 🔄 Docker Alternatifleri: [README (TR](./27-Docker-Alternatives/readme.md) / [EN)](./27-Docker-Alternatives/readme-en.md) — Uygulamalı: ([TR](./27-Docker-Alternatives/practice.md) / [EN](./27-Docker-Alternatives/practice-en.md))
 
 ---
 
