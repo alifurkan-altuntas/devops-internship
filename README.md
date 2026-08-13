@@ -14,7 +14,7 @@ Nginx derinleşmesi tamamlandı: reverse proxy, path bazlı yönlendirme, path r
 
 OpenResty (PostgreSQL, MySQL, Redis, token authentication) ve rclone ile S3 entegrasyonu tamamlandı — performans parametreleri, `rclone serve http` cache ve güvenlik (VFS cache, dir cache, auth, remote control), `rclone mount` ve VFS cache.
 
-Docker Alternatifleri fazı (Podman, containerd, CRI-O, Buildah) tamamlandı — rootless ve daemonless iddiaları sunucuda gerçekten test edildi. Sırada Kubernetes var.
+Docker derinleşmesi tamamen bitti — temel kavramlar, güvenlik, ileri seviye güvenlik, IaC scanning, alternatif runtime'lar, ve son olarak Compose volume/network, PHP örneği, Windows containers dahil. Ayrıca Edib Bey'in verdiği SSL/TLS görevi tamamlandı. Sırada Kubernetes var.
 
 Tüm fazların (01–24) Türkçe/İngilizce belge dönüşümü tamamlandı.
 
@@ -44,11 +44,13 @@ Tüm fazların (01–24) Türkçe/İngilizce belge dönüşümü tamamlandı.
 - [20-Rate-Limiting-Load-Balancing](./20-Rate-Limiting-Load-Balancing/): Nginx'te rate limiting (`limit_req_zone`, `burst`, `nodelay`) ve load balancing (round-robin, failover, `least_conn`, `ip_hash`). ([TR](./20-Rate-Limiting-Load-Balancing/readme.md) / [EN](./20-Rate-Limiting-Load-Balancing/readme-en.md))
 - [21-OpenResty-API](./21-OpenResty-API/): OpenResty ile token authentication, PostgreSQL, MySQL ve Redis entegrasyonu — Docker Compose ile kuruldu. ([TR](./21-OpenResty-API/readme.md) / [EN](./21-OpenResty-API/readme-en.md))
 - [22-rclone-S3](./22-rclone-S3/): rclone ile Amazon S3 bağlantısı, performans parametreleri testi ve `rclone serve http` ile private bucket'ı dışarıya açma. ([TR](./22-rclone-S3/readme.md) / [EN](./22-rclone-S3/readme-en.md))
-- [23-Docker-Fundamentals](./23-Docker-Fundamentals/): Docker temelleri — image, container, Dockerfile optimizasyonu (multi-stage build, layer caching, RUN birleştirme), Docker Compose ile volume/network yönetimi. ([TR](./23-Docker-Fundamentals/readme.md) / [EN](./23-Docker-Fundamentals/readme-en.md)) — Uygulamalı: ([TR](./23-Docker-Fundamentals/practice.md) / [EN](./23-Docker-Fundamentals/practice-en.md))
+- [23-Docker-Fundamentals](./23-Docker-Fundamentals/): Image, container, Dockerfile temelleri, multi-stage build, layer caching, Compose volume/network davranışı, Windows containers (kavramsal). ([TR](./23-Docker-Fundamentals/readme.md) / [EN](./23-Docker-Fundamentals/readme-en.md)) — Uygulamalı: ([TR](./23-Docker-Fundamentals/practice.md) / [EN](./23-Docker-Fundamentals/practice-en.md))
 - [24-Docker-Security](./24-Docker-Security/): Docker güvenliği — non-root container, `.dockerignore`, Trivy ile image scanning. ([TR](./24-Docker-Security/readme.md) / [EN](./24-Docker-Security/readme-en.md)) — Uygulamalı: ([TR](./24-Docker-Security/practice.md) / [EN](./24-Docker-Security/practice-en.md))
-- [25-Docker-Advanced-Security](./25-Docker-Advanced-Security/): Distroless image, read-only filesystem, resource limits, BuildKit, Hadolint, image tag immutability, docker-bench-security, image signing (Cosign), seccomp, AppArmor, Kaniko, Jib, Falco, SBOM (Syft+Grype). ([TR](./25-Docker-Advanced-Security/readme.md) / [EN](./25-Docker-Advanced-Security/readme-en.md)) — Uygulamalı: ([TR](./25-Docker-Advanced-Security/practice.md) / [EN](./25-Docker-Advanced-Security/practice-en.md))
+- [25-Docker-Advanced-Security](./25-Docker-Advanced-Security/): Distroless image, read-only filesystem, resource limits, BuildKit, Hadolint, image tag immutability, docker-bench-security, image signing (Cosign), seccomp, AppArmor, Kaniko, Jib, PHP build örneği, Falco, SBOM (Syft+Grype). ([TR](./25-Docker-Advanced-Security/readme.md) / [EN](./25-Docker-Advanced-Security/readme-en.md)) — Uygulamalı: ([TR](./25-Docker-Advanced-Security/practice.md) / [EN](./25-Docker-Advanced-Security/practice-en.md))
 - [26-IaC-Scanning](./26-IaC-Scanning/): Trivy config ile Dockerfile/YAML statik taraması, HEALTHCHECK. ([TR](./26-IaC-Scanning/readme.md) / [EN](./26-IaC-Scanning/readme-en.md)) — Uygulamalı: ([TR](./26-IaC-Scanning/practice.md) / [EN](./26-IaC-Scanning/practice-en.md))
 - [27-Docker-Alternatives](./27-Docker-Alternatives/): Podman, containerd, CRI-O, Buildah — rootless/daemonless kanıtları, build hızı kıyaslaması. ([TR](./27-Docker-Alternatives/readme.md) / [EN](./27-Docker-Alternatives/readme-en.md)) — Uygulamalı: ([TR](./27-Docker-Alternatives/practice.md) / [EN](./27-Docker-Alternatives/practice-en.md))
+  [additionals/ssl](./additionals/ssl/): SSL/TLS'in çalışma mantığının, hiç teknik terim kullanılmadan, tamamen gerçek dünya benzetmesiyle (iki firma arasında mühürlü mektup, noter zinciri, kurumsal evrak kontrol bürosu) anlatımı. ([TR](./additionals/ssl/readme.md) / [EN](./additionals/ssl/readme-en.md))
+- [additionals/security-situation](./additionals/security-situation/): Gerçek bir güvenlik olayı — DNS rebinding ve açık forward proxy (SSRF) ile sunucunun kötüye kullanılması, kök sebep analizi ve çözüm. ([TR](./additionals/security-situation/readme.md) / [EN](./additionals/security-situation/readme-en.md))
 
 ### 📝 Değerlendirme & Sınav Materyalleri
 
@@ -67,6 +69,7 @@ Tüm fazların (01–24) Türkçe/İngilizce belge dönüşümü tamamlandı.
 - [Faz 15 Quiz Sonuçları](./15-Linux-Cron-Automation/quiz-results.md): Cron zamanlama, sudoers, ve log rotasyonu üzerine quiz.
 - [Faz 16 Quiz Sonuçları](./16-Git-Basics/quiz-results.md): Git branching, merging, ve bir push çakışması çözme üzerine quiz.
 - [Faz 19 & 20 Quiz Sonuçları](./19-Nginx-Derinleşme/quiz-results.md): Nginx reverse proxy, path yönetimi, forward proxy, rate limiting ve load balancing üzerine quiz — 15/15.
+- [Docker Derinleşmesi Quiz Sonuçları](./docker-derinlesmesi-quiz.md): Multi-stage build, Compose volume/network, image güvenliği, Jib/BuildKit/Kaniko, Windows containers üzerine quiz — 15/15.
 
 ### 🎓 Kurslar & Sertifikalar
 
@@ -540,6 +543,29 @@ _Docker'ın alternatiflerini araştırdım: Podman, containerd, CRI-O, Buildah. 
   - Docker ile Podman arasında build hızı kıyaslandı, image deposu izolasyonu keşfedildi.
 - **Kilometre Taşları & Çıktılar:**
   - 🔄 Docker Alternatifleri: [README (TR](./27-Docker-Alternatives/readme.md) / [EN)](./27-Docker-Alternatives/readme-en.md) — Uygulamalı: ([TR](./27-Docker-Alternatives/practice.md) / [EN](./27-Docker-Alternatives/practice-en.md))
+
+### 🔹 12 Ağustos 2026 | SSL/TLS Görevi — Edib Bey İçin Basit Anlatım
+
+_"SSL/TLS nasıl çalışır, for dummies tarzda anlat" görevini tamamladım. İlk taslakta teknik terim kullanmıştım, geri bildirim üzerine tamamen baştan yazdım — hiç SSL/TLS terimi kullanmadan, tamamen gerçek dünya benzetmesiyle (iki firma arasında mühürlü mektup, noter zinciri, kurumsal evrak kontrol bürosu) anlattım. Bizans Generalleri Problemi'nin anlatım tarzını örnek aldım. Süreçte kendi sorularımla (açma anahtarını nasıl göndereceğim, session key de çalınabilir mi gibi) akışı adım adım kurdum, mühür/imza ayrımını netleştirdim, ve gerçekliği bozmayan bir ara durak senaryosu (TLS Proxy'nin gerçek karşılığı) inşa ettik._
+
+- **Görevler & Hedefler:**
+  - SSL/TLS'in çalışma mantığı, teknik terim kullanmadan, tamamen benzetmeyle anlatıldı.
+  - İki firma arasındaki mektup senaryosu üzerinden güven zinciri, ortak şifre anlaşması, ve ara durakların işleyişi kuruldu.
+  - TCP'nin sabit/tek yönlü yapısı, gerçek dünyadan fark olarak eklendi.
+- **Kilometre Taşları & Çıktılar:**
+  - 🔐 SSL/TLS Anlatımı: [readme.md](./additionals/ssl/readme.md) / [readme-en.md](./additionals/ssl/readme-en.md)
+
+### 🔹 13 Ağustos 2026 | Docker Derinleşmesi — Kalan Maddelerin Tamamlanması
+
+_Docker derinleşmesi listesindeki kalan üç maddeyi tamamladım. Docker Compose'ta volume davranışını test ettim — container silinip yeniden oluşturulunca verilerin kalıcı olduğunu doğruladım (bilgisayar/harddisk benzetmesi). Network tarafında servislerin container ismiyle birbirini bulduğunu gördüm. PHP ile bir image build ettim, `php:8.2-apache` etiketinin web sunucusunu da içerdiğini gördüm. Windows containers'ı kavramsal olarak inceledim — kernel paylaşımı yüzünden Linux sunucumda çalıştıramadığımı, ama "Docker her yerde çalışır" ifadesinin "aynı kernel ailesinde tutarlı çalışır" anlamına geldiğini anladım. Volume/network ve Windows containers konularını Faz 23'e (Docker Temelleri), PHP örneğini Faz 25'e (Jib/Kaniko'nun yanına) ekledim._
+
+- **Görevler & Hedefler:**
+  - Compose volume kalıcılığı ve network isim çözümlemesi test edildi.
+  - PHP ile bir image build edilip çalıştırıldı.
+  - Windows containers'ın kernel paylaşımı nedeniyle Linux'ta çalıştırılamadığı, "Docker her yerde çalışır" ifadesinin gerçek anlamıyla birlikte incelendi.
+- **Kilometre Taşları & Çıktılar:**
+  - 🐳 Docker Temelleri: [readme.md](./23-Docker-Fundamentals/readme.md) / [readme-en.md](./23-Docker-Fundamentals/readme-en.md)
+  - 🔒 Docker İleri Seviye Güvenlik: [readme.md](./25-Docker-Advanced-Security/readme.md) / [readme-en.md](./25-Docker-Advanced-Security/readme-en.md)
 
 ---
 

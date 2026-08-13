@@ -14,7 +14,7 @@ Completed Nginx deep dive: reverse proxy, path-based routing, path rewrite, path
 
 Completed OpenResty (PostgreSQL, MySQL, Redis, token authentication) and rclone with S3 — performance parameters, `rclone serve http` cache and security (VFS cache, dir cache, auth, remote control), `rclone mount` and VFS cache.
 
-Docker Alternatives phase (Podman, containerd, CRI-O, Buildah) is complete — the rootless and daemonless claims were actually tested on the server. Up next: Kubernetes.
+Docker deep dive is fully complete — fundamentals, security, advanced security, IaC scanning, alternative runtimes, and finally Compose volume/network, the PHP example, and Windows containers. The SSL/TLS task given by Edib Bey is also complete. Up next: Kubernetes.
 
 Bilingual documentation (TR/EN) complete for all phases (01–24).
 
@@ -44,11 +44,13 @@ Bilingual documentation (TR/EN) complete for all phases (01–24).
 - [20-Rate-Limiting-Load-Balancing](./20-Rate-Limiting-Load-Balancing/): Nginx rate limiting (`limit_req_zone`, `burst`, `nodelay`) and load balancing (round-robin, failover, `least_conn`, `ip_hash`). ([TR](./20-Rate-Limiting-Load-Balancing/readme.md) / [EN](./20-Rate-Limiting-Load-Balancing/readme-en.md))
 - [21-OpenResty-API](./21-OpenResty-API/): Token authentication with OpenResty, PostgreSQL, MySQL, and Redis integration — deployed with Docker Compose. ([TR](./21-OpenResty-API/readme.md) / [EN](./21-OpenResty-API/readme-en.md))
 - [22-rclone-S3](./22-rclone-S3/): Connecting to Amazon S3 with rclone, testing performance parameters, and exposing a private bucket over HTTP with `rclone serve http`. ([TR](./22-rclone-S3/readme.md) / [EN](./22-rclone-S3/readme-en.md))
-- [23-Docker-Fundamentals](./23-Docker-Fundamentals/): Docker fundamentals — images, containers, Dockerfile optimization (multi-stage build, layer caching, combining RUN instructions), Docker Compose with volume/network management. ([TR](./23-Docker-Fundamentals/readme.md) / [EN](./23-Docker-Fundamentals/readme-en.md)) — Hands-on: ([TR](./23-Docker-Fundamentals/practice.md) / [EN](./23-Docker-Fundamentals/practice-en.md))
+- [23-Docker-Fundamentals](./23-Docker-Fundamentals/): Image, container, Dockerfile basics, multi-stage build, layer caching, Compose volume/network behavior, Windows containers (conceptual). ([TR](./23-Docker-Fundamentals/readme.md) / [EN](./23-Docker-Fundamentals/readme-en.md)) — Hands-on: ([TR](./23-Docker-Fundamentals/practice.md) / [EN](./23-Docker-Fundamentals/practice-en.md))
 - [24-Docker-Security](./24-Docker-Security/): Docker security — non-root containers, `.dockerignore`, image scanning with Trivy. ([TR](./24-Docker-Security/readme.md) / [EN](./24-Docker-Security/readme-en.md)) — Hands-on: ([TR](./24-Docker-Security/practice.md) / [EN](./24-Docker-Security/practice-en.md))
-- [25-Docker-Advanced-Security](./25-Docker-Advanced-Security/): Distroless image, read-only filesystem, resource limits, BuildKit, Hadolint, image tag immutability, docker-bench-security, image signing (Cosign), seccomp, AppArmor, Kaniko, Jib, Falco, SBOM (Syft+Grype). ([TR](./25-Docker-Advanced-Security/readme.md) / [EN](./25-Docker-Advanced-Security/readme-en.md)) — Hands-on: ([TR](./25-Docker-Advanced-Security/practice.md) / [EN](./25-Docker-Advanced-Security/practice-en.md))
+- [25-Docker-Advanced-Security](./25-Docker-Advanced-Security/): Distroless image, read-only filesystem, resource limits, BuildKit, Hadolint, image tag immutability, docker-bench-security, image signing (Cosign), seccomp, AppArmor, Kaniko, Jib, PHP build example, Falco, SBOM (Syft+Grype). ([TR](./25-Docker-Advanced-Security/readme.md) / [EN](./25-Docker-Advanced-Security/readme-en.md)) — Hands-on: ([TR](./25-Docker-Advanced-Security/practice.md) / [EN](./25-Docker-Advanced-Security/practice-en.md))
 - [26-IaC-Scanning](./26-IaC-Scanning/): Static scanning of Dockerfile/YAML with Trivy config, HEALTHCHECK. ([TR](./26-IaC-Scanning/readme.md) / [EN](./26-IaC-Scanning/readme-en.md)) — Hands-on: ([TR](./26-IaC-Scanning/practice.md) / [EN](./26-IaC-Scanning/practice-en.md))
 - [27-Docker-Alternatives](./27-Docker-Alternatives/): Podman, containerd, CRI-O, Buildah — rootless/daemonless proofs, build speed comparison. ([TR](./27-Docker-Alternatives/readme.md) / [EN](./27-Docker-Alternatives/readme-en.md)) — Hands-on: ([TR](./27-Docker-Alternatives/practice.md) / [EN](./27-Docker-Alternatives/practice-en.md))
+- [additionals/ssl](./additionals/ssl/): An explanation of how SSL/TLS works, with no technical terminology at all, entirely through a real-world analogy (a sealed letter between two companies, a notary chain, a corporate mail-control office). ([TR](./additionals/ssl/readme.md) / [EN](./additionals/ssl/readme-en.md))
+- [additionals/guvenlik-olayi](./additionals/guvenlik-olayi/): A real security incident — a server abused via DNS rebinding and an open forward proxy (SSRF), with root cause analysis and fix. ([TR](./additionals/guvenlik-olayi/readme.md) / [EN](./additionals/guvenlik-olayi/readme-en.md))
 
 ### 📝 Evaluation & Assessment Artifacts
 
@@ -67,6 +69,7 @@ Bilingual documentation (TR/EN) complete for all phases (01–24).
 - [Phase 15 Quiz Logs](./15-Linux-Cron-Automation/quiz-results.md): Quiz on cron scheduling, sudoers, and log rotation.
 - [Phase 16 Quiz Logs](./16-Git-Basics/quiz-results.md): Quiz on Git branching, merging, and resolving a push conflict.
 - [Phase 19 & 20 Quiz Results](./19-Nginx-Derinlestirme/quiz-results.md): Nginx reverse proxy, path management, forward proxy, rate limiting and load balancing — 15/15.
+- [Docker Deep Dive Quiz Results](./docker-derinlesmesi-quiz-en.md): Quiz on multi-stage build, Compose volume/network, image security, Jib/BuildKit/Kaniko, and Windows containers — 15/15.
 
 ### 🎓 Courses & Certifications
 
@@ -540,6 +543,29 @@ _Researched Docker's alternatives: Podman, containerd, CRI-O, Buildah. Podman: m
   - Compared build speed between Docker and Podman, discovered image store isolation.
 - **Milestones & Deliverables:**
   - 🔄 Docker Alternatives: [README (TR](./27-Docker-Alternatives/readme.md) / [EN)](./27-Docker-Alternatives/readme-en.md) — Hands-on: ([TR](./27-Docker-Alternatives/practice.md) / [EN](./27-Docker-Alternatives/practice-en.md))
+
+### 🔹 August 12, 2026 | SSL/TLS Task — A Simple Explanation for Edib Bey
+
+_Completed task of explaining "how SSL/TLS works" in a for-dummies style. My first draft used technical terms; after feedback, I rewrote it completely — with no SSL/TLS terminology at all, entirely through a real-world analogy (a sealed letter between two companies, a notary chain, a corporate mail-control office). I used the storytelling style of the Byzantine Generals Problem as a model. Along the way I worked through the flow with my own questions (how would I even send the unlocking key, couldn't the session key be stolen too), clarified the seal/signature distinction, and built an intermediate-stop scenario that stayed realistic (the real-world equivalent of a TLS Proxy)._
+
+- **Tasks & Objectives:**
+  - Explained how SSL/TLS works with no technical terminology, entirely through analogy.
+  - Built the chain of trust, shared-key agreement, and intermediate-stop behavior through a two-company letter scenario.
+  - Added TCP's fixed/one-directional structure as a real-world difference.
+- **Milestones & Deliverables:**
+  - 🔐 SSL/TLS Explainer: [readme.md](./additionals/ssl/readme.md) / [readme-en.md](./additionals/ssl/readme-en.md)
+
+### 🔹 August 13, 2026 | Docker Deep Dive — Completing the Remaining Items
+
+_Completed the three remaining items from Docker deep-dive list. Tested Docker Compose's volume behavior — confirmed that data persists even when a container is deleted and recreated (computer/hard drive analogy). On the network side, saw that services find each other by container name. Built an image with PHP, saw that the `php:8.2-apache` tag comes with a web server included. Looked into Windows containers conceptually — understood that kernel sharing means I couldn't run one on my Linux server, and that "Docker runs everywhere" actually means "runs consistently within the same kernel family." Added the volume/network and Windows containers material to Phase 23 (Docker Fundamentals), and the PHP example to Phase 25 (next to Jib/Kaniko)._
+
+- **Tasks & Objectives:**
+  - Tested Compose volume persistence and network name resolution.
+  - Built and ran an image with PHP.
+  - Examined why Windows containers can't run on Linux due to kernel sharing, along with the real meaning of "Docker runs everywhere."
+- **Milestones & Deliverables:**
+  - 🐳 Docker Fundamentals: [readme.md](./23-Docker-Fundamentals/readme.md) / [readme-en.md](./23-Docker-Fundamentals/readme-en.md)
+  - 🔒 Docker Advanced Security: [readme.md](./25-Docker-Advanced-Security/readme.md) / [readme-en.md](./25-Docker-Advanced-Security/readme-en.md)
 
 ---
 

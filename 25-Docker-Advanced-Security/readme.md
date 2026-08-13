@@ -419,7 +419,30 @@ mvn compile jib:build
 
 ---
 
-## 13. Falco (Runtime Security)
+## 13. PHP ile Image Build Örneği
+
+Python dışında başka bir dilde de image build sürecini görmek için basit bir PHP uygulaması oluşturduk:
+
+```dockerfile
+FROM php:8.2-apache
+COPY index.php /var/www/html/
+```
+
+```bash
+docker build -t php-example .
+docker run -d --name php-test -p 8082:80 php-example
+curl localhost:8082
+```
+
+```
+Merhaba Docker! PHP sürümü: 8.2.33
+```
+
+`php:8.2-apache` etiketinin, image'ın içinde hem PHP hem de Apache web sunucusunun hazır geldiği anlamına geldiğini gördük — Jib/Kaniko'da Java için gördüğümüz "build aracı image'a gömülü" mantığının farklı bir versiyonu: burada ayrıca bir web sunucusu kurmamıza gerek kalmadı, `curl` ile doğrudan PHP çıktısını aldık.
+
+---
+
+## 14. Falco (Runtime Security)
 
 Trivy image'ı build öncesi (statik) tarıyor. Falco bir nevi canlı kameraları izleyen güvenlik görevlisi gibi — container **çalışırken** içinde olanları izliyor, tehlikeli ya da değil olarak sınıflandırıyor (eBPF ile kernel system call'larını izleyerek).
 
@@ -435,7 +458,7 @@ Hangi container, hangi kullanıcı, hangi komut, tam timestamp — hepsi görün
 
 ---
 
-## 14. SBOM (Syft + Grype)
+## 15. SBOM (Syft + Grype)
 
 Trivy anlık tarama — image olması lazım. SBOM geriye dönük raporlama için kullanılabilir; güvenlik sürecinde bir açık tespit edildiğinde diğer hangi image'larda o açığın olduğuna bakılabilir.
 
@@ -467,6 +490,7 @@ grype sbom:./sbom.json
 | AppArmor               | Dosya/ağ/kaynak erişimini kısıtlar                                   |
 | Kaniko                 | Docker daemon ve root olmadan CI/CD pod'unda image build             |
 | Jib                    | Java için Dockerfile'sız build                                       |
+| PHP image build        | `php:8.2-apache` ile web sunucusu dahil geliyor                      |
 | Falco                  | Runtime'da anormal davranışları gerçek zamanlı tespit                |
 | SBOM (Syft+Grype)      | Kalıcı bileşen listesi — image silinse bile geriye dönük taranabilir |
 

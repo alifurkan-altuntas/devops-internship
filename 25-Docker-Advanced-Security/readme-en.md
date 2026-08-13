@@ -421,7 +421,30 @@ mvn compile jib:build
 
 ---
 
-## 13. Falco (Runtime Security)
+## 13. PHP Image Build Example
+
+To see the image build process in another language besides Python, we built a simple PHP application:
+
+```dockerfile
+FROM php:8.2-apache
+COPY index.php /var/www/html/
+```
+
+```bash
+docker build -t php-example .
+docker run -d --name php-test -p 8082:80 php-example
+curl localhost:8082
+```
+
+```
+Merhaba Docker! PHP sürümü: 8.2.33
+```
+
+We saw that the `php:8.2-apache` tag means the image comes with both PHP and the Apache web server pre-installed — a different version of the "build tool baked into the image" logic we saw for Java with Jib/Kaniko: here we didn't need to set up a separate web server, we got the PHP output directly with `curl`.
+
+---
+
+## 14. Falco (Runtime Security)
 
 Trivy scans images before build (static). Falco is more like a security guard watching live camera feeds — it watches what happens **inside a running container** and flags it as suspicious or not (via eBPF, tracking kernel syscalls in real time).
 
@@ -437,7 +460,7 @@ Which container, which user, which command, exact timestamp — all captured. In
 
 ---
 
-## 14. SBOM (Syft + Grype)
+## 15. SBOM (Syft + Grype)
 
 Trivy scans on demand — it needs the image to exist. SBOM works differently: it can be used for retrospective reporting, and when a vulnerability is found in one package, you can check which other images contain it too.
 
@@ -470,7 +493,8 @@ grype sbom:./sbom.json
 | Seccomp                | Restricts system calls                                         |
 | AppArmor               | Restricts file/network/resource access                         |
 | Kaniko                 | Daemon-less, rootless image builds in CI/CD                    |
-| Jib                    | Dockerfile-less builds for Java                                |
+| Jib                    | Dockerfile-less build for Java                                 |
+| PHP image build        | `php:8.2-apache` comes with a web server included              |
 | Falco                  | Real-time detection of anomalous runtime behavior              |
 | SBOM (Syft+Grype)      | Persistent, retrospectively scannable component inventory      |
 

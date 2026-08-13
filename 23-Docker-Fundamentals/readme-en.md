@@ -2,7 +2,7 @@
 
 I’d only used Docker for `hello-world` before. In this phase I learned the core concepts, how to write a Dockerfile, and image optimization techniques.
 
------
+---
 
 ## Core Concepts
 
@@ -48,9 +48,9 @@ Container = a copy cast from that mold (running)
 
 ```yaml
 openresty:
-    build: .            # use Dockerfile, build image
+  build: . # use Dockerfile, build image
 postgres:
-    image: postgres:15  # use ready-made image, no Dockerfile
+  image: postgres:15 # use ready-made image, no Dockerfile
 ```
 
 - `build: .` → build image from Dockerfile
@@ -58,7 +58,56 @@ postgres:
 
 In the OpenResty phase we only wrote a Dockerfile for OpenResty because we needed to add pgmoon. The ready-made images were enough for PostgreSQL, MySQL, and Redis.
 
------
+### Docker Compose — Volume and Network Behavior
+
+Tested whether data survives when a container is deleted and recreated:
+
+```bash
+docker compose down
+docker compose up -d
+sudo ls ~/compose-practice/pgdata
+```
+
+The container and networks were deleted and recreated — the data in the PostgreSQL data folder was completely untouched.
+
+Can be thought of like a computer and its hard drive — you can throw away the computer (container) and get a new one, but if you take out the hard drive (volume) and put it in the new computer, the data is still there.
+
+**Note:** `docker compose down` doesn't delete volumes by default — the `-v` flag is needed for that.
+
+On the network side, I saw that services in the same Compose file can reach each other by **container name** — no need to write an IP address, Docker's own internal DNS handles it. Like saving your home address in a navigation app as "Home" — afterward, instead of typing the full address every time, you just type "Home" and it takes you there.
+
+### Windows Containers
+
+Windows Server Core is Microsoft's minimal, GUI-less Windows image for containers — conceptually the Windows-side equivalent of `alpine`, but built on a different operating system kernel.
+
+Going back to the Virtual Machine vs Container distinction above, a container gets its kernel from the host, it doesn't have its own. That's why a Windows container couldn't run at all on my Ubuntu VPS (Linux kernel) — there's no Windows kernel there.
+
+```
+Nintendo cartridge → only fits a Nintendo console
+Windows container → only fits a Windows kernel
+
+A cartridge doesn't carry its own game engine, it needs the console's hardware.
+A container doesn't carry its own kernel, it needs the host's kernel.
+```
+
+An example Dockerfile structure (couldn't build it, just to see the shape):
+
+```dockerfile
+FROM mcr.microsoft.com/windows/servercore:ltsc2022
+COPY app/ C:\app\
+WORKDIR C:\app
+RUN powershell -Command "Install-WindowsFeature -Name Web-Server"
+EXPOSE 80
+CMD ["powershell"]
+```
+
+Things that stood out: the source registry belongs to Microsoft (`mcr.microsoft.com`, not Docker Hub), file paths are Windows-style (backslash), PowerShell commands inside `RUN`.
+
+**A correction about "Docker runs everywhere":** Learned that this doesn't mean "runs on any operating system" — it means "runs consistently within the same kernel family." This is also why Docker Desktop on Mac/Windows can run Linux containers — it quietly sets up a hidden Linux virtual machine in the background, and the containers actually run inside that VM's Linux kernel.
+
+---
+
+---
 
 ## Dockerfile Optimization
 
@@ -155,17 +204,19 @@ RUN apk add curl && \
 
 One `RUN` instruction = one layer = curl came and went, never made it into the image.
 
------
+---
 
 ## 📊 Summary
 
-|Technique                    |What It Achieves                    |
-|-----------------------------|------------------------------------|
-|Alpine/slim base image       |Small starting point                |
-|Multi-stage build            |Dev kit never enters the final image|
-|Layer caching (correct order)|Faster build times                  |
-|Combining RUN instructions   |No unnecessary layers               |
+| Technique                   | What It Achieves                           |
+| --------------------------- | ------------------------------------------ |
+| Alpine/slim base image      | Small starting point                       |
+| Multi-stage build           | Dev kit doesn't enter final image          |
+| Layer caching (right order) | Build time shortens                        |
+| RUN line consolidation      | No unnecessary layers created              |
+| Compose volume              | Data persists even if container is deleted |
+| Compose network             | Services find each other by name           |
 
------
+---
 
-ℹ️ *Conceptual learning — hands-on examples in the next phase.*
+ℹ️ _Conceptual learning — hands-on examples in the next phase._

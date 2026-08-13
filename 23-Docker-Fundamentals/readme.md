@@ -1,16 +1,16 @@
 # 🐳 Docker — Image, Container, Dockerfile ve Image Optimizasyonu
 
-Docker’ı daha önce sadece `hello-world` ile test etmiştim. Bu fazda temel kavramları, Dockerfile yazımını ve image optimizasyon tekniklerini öğrendim.
+Docker'ı daha önce sadece `hello-world` ile test etmiştim. Bu fazda temel kavramları, Dockerfile yazımını ve image optimizasyon tekniklerini öğrendim.
 
------
+---
 
 ## Temel Kavramlar
 
 ### Sanal Makine vs Container
 
-**Sanal Makine:** Gerçek bir bilgisayar gibi — masaüstü, ses sürücüsü, yazıcı desteği, kullanılmayan onlarca servis, ve en önemlisi kendi kernel’i. Ağır ve yavaş başlıyor.
+**Sanal Makine:** Gerçek bir bilgisayar gibi — masaüstü, ses sürücüsü, yazıcı desteği, kullanılmayan onlarca servis, ve en önemlisi kendi kernel'i. Ağır ve yavaş başlıyor.
 
-**Container:** Bir kullanıcı kullanmayacak, bir servis kullanacak. İçinde sadece o servisin çalışması için gerekenler var — fazlası yok. Kernel host’tan geliyor, container içinde yok.
+**Container:** Bir kullanıcı kullanmayacak, bir servis kullanacak. İçinde sadece o servisin çalışması için gerekenler var — fazlası yok. Kernel host'tan geliyor, container içinde yok.
 
 ```
 Sanal Makine:
@@ -29,11 +29,11 @@ Container:
 
 Şablon — içinde uygulamanın çalışması için gereken her şey var (kütüphaneler, araçlar, config dosyaları, minimal OS). Ama çalışmıyor, sadece bekliyor.
 
-Image’lar Docker Hub’dan çekilebilir — npm gibi düşün, hazır paketler var. Ya da Dockerfile ile kendin oluşturabilirsin.
+Image'lar Docker Hub'dan çekilebilir — npm gibi düşün, hazır paketler var. Ya da Dockerfile ile kendin oluşturabilirsin.
 
 ### Container Nedir
 
-Image’dan çalıştırılan kopya. `docker run` deyince image’dan bir container oluşuyor. Aynı image’dan istediğin kadar container açabilirsin — hepsi birbirinden bağımsız çalışır.
+Image'dan çalıştırılan kopya. `docker run` deyince image'dan bir container oluşuyor. Aynı image'dan istediğin kadar container açabilirsin — hepsi birbirinden bağımsız çalışır.
 
 ```
 Image = kalıp/şablon (çalışmıyor)
@@ -44,21 +44,68 @@ Container = o kalıptan çalıştırılan kopya (çalışıyor)
 
 **Dockerfile** → tek bir image nasıl oluşturulur, onu tarif eder. Bir Dockerfile = bir image.
 
-**docker-compose.yml** → birden fazla container’ı birlikte nasıl çalıştıracağını tarif eder.
+**docker-compose.yml** → birden fazla container'ı birlikte nasıl çalıştıracağını tarif eder.
 
 ```yaml
 openresty:
-    build: .          # Dockerfile kullan, image oluştur
+  build: . # Dockerfile kullan, image oluştur
 postgres:
-    image: postgres:15  # hazır image kullan, Dockerfile yok
+  image: postgres:15 # hazır image kullan, Dockerfile yok
 ```
 
-- `build: .` → Dockerfile’dan image oluştur
-- `image: postgres:15` → Docker Hub’dan hazır image çek
+- `build: .` → Dockerfile'dan image oluştur
+- `image: postgres:15` → Docker Hub'dan hazır image çek
 
 OpenResty fazında sadece OpenResty için Dockerfile yazdık çünkü pgmoon eklememiz gerekiyordu. PostgreSQL, MySQL, Redis için hazır image yeterliydi.
 
------
+### Docker Compose — Volume ve Network Davranışı
+
+Bir container silinip yeniden oluşturulduğunda verilerin kaybolup kaybolmadığını test ettim:
+
+```bash
+docker compose down
+docker compose up -d
+sudo ls ~/compose-practice/pgdata
+```
+
+Container ve network'ler silindi, yeniden oluşturuldu — PostgreSQL data klasöründeki veriler hiç etkilenmedi.
+
+Bilgisayar ile harddisk gibi düşünülebilir — bilgisayarı (container'ı) atıp yenisini alabilirsin, ama harddiski (volume'u) çıkarıp yeni bilgisayara taksan veriler hâlâ orada duruyor.
+
+**Not:** `docker compose down` varsayılan olarak volume'ları silmiyor — silmek için ayrıca `-v` bayrağı gerekiyor.
+
+Network tarafında, aynı Compose dosyasındaki servislerin birbirine **container ismiyle** ulaşabildiğini gördüm — IP adresi yazmama gerek kalmadı, Docker'ın kendi dahili DNS'i bunu hallediyor. Navigasyon uygulamasına evini "ev" diye kaydetmek gibi — sonra her seferinde uzun adresi yazmak yerine sadece "ev" yazınca oraya gidiyorsun.
+
+### Windows Containers
+
+Windows Server Core, Microsoft'un container'lar için hazırladığı GUI'siz minimal Windows imajı — kavramsal olarak `alpine`'ın Windows tarafındaki karşılığı gibi, ama farklı bir işletim sistemi kernel'ine dayanıyor.
+
+Yukarıdaki Sanal Makine vs Container ayrımını hatırlarsan, container kernel'i host'tan alıyordu, kendi kernel'i yoktu. Bu yüzden benim Ubuntu VPS'imde (Linux kernel'i) Windows container hiçbir şekilde çalışmadı — Windows kernel'i orada yok.
+
+```
+Nintendo kartuşu → sadece Nintendo konsoluna takılır
+Windows container → sadece Windows kernel'ine takılır
+
+Kartuş kendi oyun motorunu taşımıyor, konsolun donanımına ihtiyaç duyuyor.
+Container da kendi kernel'ini taşımıyor, host'un kernel'ine ihtiyaç duyuyor.
+```
+
+Örnek bir Dockerfile yapısı (build edemedim, sadece yapıyı görmek için):
+
+```dockerfile
+FROM mcr.microsoft.com/windows/servercore:ltsc2022
+COPY app/ C:\app\
+WORKDIR C:\app
+RUN powershell -Command "Install-WindowsFeature -Name Web-Server"
+EXPOSE 80
+CMD ["powershell"]
+```
+
+Kaynak registry Microsoft'a ait (`mcr.microsoft.com`, Docker Hub değil), dosya yolları Windows tarzı (ters slash), `RUN` içinde PowerShell komutları — hepsi dikkatimi çekti.
+
+**"Docker her yerde çalışır" ifadesi hakkında bir düzeltme:** Bunun "herhangi bir işletim sistemi üzerinde çalışır" değil, "aynı kernel ailesi içinde tutarlı çalışır" anlamına geldiğini öğrendim. Mac/Windows'ta Docker Desktop'ın Linux container'ları çalıştırabilmesinin sebebi de bu — arka planda gizli bir Linux sanal makinesi kuruluyor, container'lar aslında o VM'in Linux kernel'inde çalışıyor.
+
+---
 
 ## Dockerfile Optimizasyonu
 
@@ -71,7 +118,7 @@ FROM alpine    # 5MB   — sadece minimal Linux
 
 Alpine çok küçük çünkü gereksiz hiçbir şey yok — kullanıcı arayüzü yok, kullanılmayan servisler yok. Sadece servisin çalışması için gerekenler var.
 
-Güvenlik açısından da önemli: image içinde ne kadar az araç olursa, birisi container’a sızarsa o kadar az şey kullanabilir.
+Güvenlik açısından da önemli: image içinde ne kadar az araç olursa, birisi container'a sızarsa o kadar az şey kullanabilir.
 
 ### 2. Multi-Stage Build
 
@@ -82,7 +129,7 @@ Dev kit (JDK, pip, gcc):  yazmak + derlemek + çalıştırmak
 Runtime (JRE, python):    sadece çalıştırmak
 ```
 
-Eski yöntemde dev kit final image’a giriyordu — yüzlerce MB gereksiz yük. Multi-stage build bunu çözüyor:
+Eski yöntemde dev kit final image'a giriyordu — yüzlerce MB gereksiz yük. Multi-stage build bunu çözüyor:
 
 ```dockerfile
 # 1. aşama — geçici çalışma alanı (iskele)
@@ -101,15 +148,15 @@ CMD ["java", "-jar", "app.jar"]
 
 **`COPY --from=builder`** → sadece builder aşamasından bu dosyayı al.
 
-1. `FROM` gelince Docker otomatik olarak “1. aşama bitti” diyor — dev kit, kaynak kod, geçici dosyalar atılıyor. Final image’da sadece runtime + derlenmiş uygulama var.
+1. `FROM` gelince Docker otomatik olarak "1. aşama bitti" diyor — dev kit, kaynak kod, geçici dosyalar atılıyor. Final image'da sadece runtime + derlenmiş uygulama var.
 
 İnşaattaki iskele gibi: bina tamamlanınca iskele sökülüyor, bina kalıyor.
 
 ### 3. Layer Caching
 
-Her `RUN`, `COPY`, `ADD` satırı ayrı bir **layer** (katman) oluşturuyor. Docker her build’de “bu layer değişti mi?” diye bakıyor:
+Her `RUN`, `COPY`, `ADD` satırı ayrı bir **layer** (katman) oluşturuyor. Docker her build'de "bu layer değişti mi?" diye bakıyor:
 
-- Değişmemişse → cache’den alıyor ⚡
+- Değişmemişse → cache'den alıyor ⚡
 - Değiştiyse → o satırdan itibaren her şeyi yeniden yapıyor 🔄
 
 **Kural: En az değişen → en üste, en çok değişen → en alta**
@@ -153,19 +200,21 @@ RUN apk add curl && \
     apk del curl
 ```
 
-Tek `RUN` satırı = tek layer = curl geldi gitti, image’a girmedi.
+Tek `RUN` satırı = tek layer = curl geldi gitti, image'a girmedi.
 
------
+---
 
 ## 📊 Özet
 
-|Teknik                     |Ne Sağlıyor                   |
-|---------------------------|------------------------------|
-|Alpine/slim base image     |Küçük başlangıç noktası       |
-|Multi-stage build          |Dev kit final image’a girmiyor|
-|Layer caching (doğru sıra) |Build süresi kısalıyor        |
-|RUN satırlarını birleştirme|Gereksiz layer oluşmuyor      |
+| Teknik                      | Ne Sağlıyor                        |
+| --------------------------- | ---------------------------------- |
+| Alpine/slim base image      | Küçük başlangıç noktası            |
+| Multi-stage build           | Dev kit final image'a girmiyor     |
+| Layer caching (doğru sıra)  | Build süresi kısalıyor             |
+| RUN satırlarını birleştirme | Gereksiz layer oluşmuyor           |
+| Compose volume              | Container silinse de veri kalıcı   |
+| Compose network             | Servisler isimle birbirini buluyor |
 
------
+---
 
-ℹ️ *Kavramsal öğrenme — uygulamalı örnekler sonraki fazda.*
+ℹ️ _Base image, multi-stage build ve layer caching kavramsal öğrenme olarak kaldı — uygulamalı örnekler sonraki fazda. Compose volume/network ve Windows containers gerçek testlerle/araştırmayla desteklendi._
