@@ -14,7 +14,7 @@ Nginx derinleşmesi tamamlandı: reverse proxy, path bazlı yönlendirme, path r
 
 OpenResty (PostgreSQL, MySQL, Redis, token authentication) ve rclone ile S3 entegrasyonu tamamlandı — performans parametreleri, `rclone serve http` cache ve güvenlik (VFS cache, dir cache, auth, remote control), `rclone mount` ve VFS cache.
 
-Docker derinleşmesi tamamen bitti — temel kavramlar, güvenlik, ileri seviye güvenlik, IaC scanning, alternatif runtime'lar, ve son olarak Compose volume/network, PHP örneği, Windows containers dahil. Ayrıca Edib Bey'in verdiği SSL/TLS görevi tamamlandı. Sırada Kubernetes var.
+Docker derinleşmesi tamamen bitti — temel kavramlar, güvenlik, ileri seviye güvenlik, IaC scanning, alternatif runtime'lar, ve son olarak Compose volume/network, PHP örneği, Windows containers dahil. Ayrıca SSL/TLS görevi tamamlandı. Kubernetes'e geçildi — Temel Kavramlar (GitOps, konteyner tarihi, küme mimarisi, kubectl) tamamlandı. Sırada Kurulum (minikube/k3s) ve Temel Kaynaklar var.
 
 Tüm fazların (01–24) Türkçe/İngilizce belge dönüşümü tamamlandı.
 
@@ -49,6 +49,7 @@ Tüm fazların (01–24) Türkçe/İngilizce belge dönüşümü tamamlandı.
 - [25-Docker-Advanced-Security](./25-Docker-Advanced-Security/): Distroless image, read-only filesystem, resource limits, BuildKit, Hadolint, image tag immutability, docker-bench-security, image signing (Cosign), seccomp, AppArmor, Kaniko, Jib, PHP build örneği, Falco, SBOM (Syft+Grype). ([TR](./25-Docker-Advanced-Security/readme.md) / [EN](./25-Docker-Advanced-Security/readme-en.md)) — Uygulamalı: ([TR](./25-Docker-Advanced-Security/practice.md) / [EN](./25-Docker-Advanced-Security/practice-en.md))
 - [26-IaC-Scanning](./26-IaC-Scanning/): Trivy config ile Dockerfile/YAML statik taraması, HEALTHCHECK. ([TR](./26-IaC-Scanning/readme.md) / [EN](./26-IaC-Scanning/readme-en.md)) — Uygulamalı: ([TR](./26-IaC-Scanning/practice.md) / [EN](./26-IaC-Scanning/practice-en.md))
 - [27-Docker-Alternatives](./27-Docker-Alternatives/): Podman, containerd, CRI-O, Buildah — rootless/daemonless kanıtları, build hızı kıyaslaması. ([TR](./27-Docker-Alternatives/readme.md) / [EN](./27-Docker-Alternatives/readme-en.md)) — Uygulamalı: ([TR](./27-Docker-Alternatives/practice.md) / [EN](./27-Docker-Alternatives/practice-en.md))
+- [28-Kubernetes-Fundamentals](./28-Kubernetes-Fundamentals/): Kubernetes temel kavramları — GitOps, konteyner tarihi, self-healing, envsubst, küme mimarisi (kube-apiserver, etcd, kube-scheduler, kubelet, coredns, kube-proxy, CNI), kubectl. ([TR](./28-Kubernetes-Fundamentals/readme.md) / [EN](./28-Kubernetes-Fundamentals/readme-en.md))
   [additionals/ssl](./additionals/ssl/): SSL/TLS'in çalışma mantığının, hiç teknik terim kullanılmadan, tamamen gerçek dünya benzetmesiyle (iki firma arasında mühürlü mektup, noter zinciri, kurumsal evrak kontrol bürosu) anlatımı. ([TR](./additionals/ssl/readme.md) / [EN](./additionals/ssl/readme-en.md))
 - [additionals/security-situation](./additionals/security-situation/): Gerçek bir güvenlik olayı — DNS rebinding ve açık forward proxy (SSRF) ile sunucunun kötüye kullanılması, kök sebep analizi ve çözüm. ([TR](./additionals/security-situation/readme.md) / [EN](./additionals/security-situation/readme-en.md))
 
@@ -68,8 +69,9 @@ Tüm fazların (01–24) Türkçe/İngilizce belge dönüşümü tamamlandı.
 - [Faz 14 Quiz Sonuçları](./14-Linux-Bash-Scripting/quiz-results.md): Bash değişkenleri, koşullar, ve scripting temelleri üzerine quiz.
 - [Faz 15 Quiz Sonuçları](./15-Linux-Cron-Automation/quiz-results.md): Cron zamanlama, sudoers, ve log rotasyonu üzerine quiz.
 - [Faz 16 Quiz Sonuçları](./16-Git-Basics/quiz-results.md): Git branching, merging, ve bir push çakışması çözme üzerine quiz.
-- [Faz 19 & 20 Quiz Sonuçları](./19-Nginx-Derinleşme/quiz-results.md): Nginx reverse proxy, path yönetimi, forward proxy, rate limiting ve load balancing üzerine quiz — 15/15.
-- [Docker Derinleşmesi Quiz Sonuçları](./docker-derinlesmesi-quiz.md): Multi-stage build, Compose volume/network, image güvenliği, Jib/BuildKit/Kaniko, Windows containers üzerine quiz — 15/15.
+- [Faz 19 & 20 Quiz Sonuçları](./19-Nginx-Derinleşme/quiz-results.md): Nginx reverse proxy, path yönetimi, forward proxy, rate limiting ve load balancing üzerine quiz
+- [Docker Derinleşmesi Quiz Sonuçları](./25-Docker-Advanced-Security/quiz.md): Multi-stage build, Compose volume/network, image güvenliği, Jib/BuildKit/Kaniko, Windows containers üzerine quiz
+- [Kubernetes Fundamentals Quiz Sonuçları](./28-Kubernetes-Fundamentals/quiz.md): GitOps, konteyner tarihi, self-healing, etcd, küme mimarisi üzerine quiz
 
 ### 🎓 Kurslar & Sertifikalar
 
@@ -544,7 +546,7 @@ _Docker'ın alternatiflerini araştırdım: Podman, containerd, CRI-O, Buildah. 
 - **Kilometre Taşları & Çıktılar:**
   - 🔄 Docker Alternatifleri: [README (TR](./27-Docker-Alternatives/readme.md) / [EN)](./27-Docker-Alternatives/readme-en.md) — Uygulamalı: ([TR](./27-Docker-Alternatives/practice.md) / [EN](./27-Docker-Alternatives/practice-en.md))
 
-### 🔹 12 Ağustos 2026 | SSL/TLS Görevi — Edib Bey İçin Basit Anlatım
+### 🔹 12 Ağustos 2026 | SSL/TLS Görevi — Basit Anlatım
 
 _"SSL/TLS nasıl çalışır, for dummies tarzda anlat" görevini tamamladım. İlk taslakta teknik terim kullanmıştım, geri bildirim üzerine tamamen baştan yazdım — hiç SSL/TLS terimi kullanmadan, tamamen gerçek dünya benzetmesiyle (iki firma arasında mühürlü mektup, noter zinciri, kurumsal evrak kontrol bürosu) anlattım. Bizans Generalleri Problemi'nin anlatım tarzını örnek aldım. Süreçte kendi sorularımla (açma anahtarını nasıl göndereceğim, session key de çalınabilir mi gibi) akışı adım adım kurdum, mühür/imza ayrımını netleştirdim, ve gerçekliği bozmayan bir ara durak senaryosu (TLS Proxy'nin gerçek karşılığı) inşa ettik._
 
@@ -553,7 +555,7 @@ _"SSL/TLS nasıl çalışır, for dummies tarzda anlat" görevini tamamladım. �
   - İki firma arasındaki mektup senaryosu üzerinden güven zinciri, ortak şifre anlaşması, ve ara durakların işleyişi kuruldu.
   - TCP'nin sabit/tek yönlü yapısı, gerçek dünyadan fark olarak eklendi.
 - **Kilometre Taşları & Çıktılar:**
-  - 🔐 SSL/TLS Anlatımı: [readme.md](./additionals/ssl/readme.md) / [readme-en.md](./additionals/ssl/readme-en.md)
+  - 🔐 SSL/TLS Anlatımı: [README (TR](./additionals/ssl/readme.md) / [EN)](./additionals/ssl/readme-en.md)
 
 ### 🔹 13 Ağustos 2026 | Docker Derinleşmesi — Kalan Maddelerin Tamamlanması
 
@@ -564,8 +566,23 @@ _Docker derinleşmesi listesindeki kalan üç maddeyi tamamladım. Docker Compos
   - PHP ile bir image build edilip çalıştırıldı.
   - Windows containers'ın kernel paylaşımı nedeniyle Linux'ta çalıştırılamadığı, "Docker her yerde çalışır" ifadesinin gerçek anlamıyla birlikte incelendi.
 - **Kilometre Taşları & Çıktılar:**
-  - 🐳 Docker Temelleri: [readme.md](./23-Docker-Fundamentals/readme.md) / [readme-en.md](./23-Docker-Fundamentals/readme-en.md)
-  - 🔒 Docker İleri Seviye Güvenlik: [readme.md](./25-Docker-Advanced-Security/readme.md) / [readme-en.md](./25-Docker-Advanced-Security/readme-en.md)
+  - 🐳 Docker Temelleri: [README (TR](./23-Docker-Fundamentals/readme.md) / [EN)](./23-Docker-Fundamentals/readme-en.md)
+  - 🔒 Docker İleri Seviye Güvenlik: [README (TR](./25-Docker-Advanced-Security/readme.md) / [EN)](./25-Docker-Advanced-Security/readme-en.md)
+
+### 🔹 14 Ağustos 2026 | Kubernetes Temel Kavramlar — GitOps, Küme Mimarisi, kubectl
+
+_k8s-tr.github.io roadmap'ini takip ederek Kubernetes'in Temel Kavramlar bölümünü baştan sona işledim. GitOps'u, cluster'a elle dokunmak yerine Git'e yazılan hedefi bir aracın (ArgoCD gibi) otomatik uyguladığı bir yaklaşım olarak öğrendim — kendi reponuzdaki "belgeleyip push et" alışkanlığının altyapıya uygulanmış hali gibi. Konteyner fikrinin 1979'a (chroot) kadar gittiğini öğrenince şaşırdım. Self-healing'i, daha önce test ettiğimiz HEALTHCHECK'in healthy/unhealthy durumuyla bağlantılandırdım. Küme Mimarisi'ni tamamen bir otel benzetmesi üzerine kurdum — resepsiyon (kube-apiserver), müşteri kayıt defteri (etcd, immutability ve tek sayı üye mantığıyla), kat sorumlusu (kubelet), iç telefon rehberi (coredns), santral (kube-proxy), koridor sistemi (CNI). kubectl komutlarının çoğunun Docker komutlarıyla (exec, ps→get pods) birebir örtüştüğünü gördüm._
+
+- **Görevler & Hedefler:**
+  - GitOps'un çalışma mantığı ve gerçek dünyadan (blueprint/termostat) benzetmelerle pekiştirildi.
+  - Konteyner tarihi ve "neden konteyner/neden Kubernetes" konuları işlendi.
+  - Docker'ın `envsubst` tekniği öğrenildi.
+  - Küme Mimarisi, bir otel senaryosu üzerinden tüm bileşenleriyle (kube-apiserver, etcd, kube-controller-manager, kube-scheduler, kubelet, coredns, kube-proxy, container-runtime, CNI) işlendi.
+  - kubectl'in temel komutları (get, create, scale, set image, exec, delete) test edildi.
+  - 15 soruluk bir quiz çözüldü, 15/15 alındı.
+- **Kilometre Taşları & Çıktılar:**
+  - ☸️ Kubernetes Temel Kavramlar: [README (TR](./28-Kubernetes-Fundamentals/readme.md) / [EN)](./28-Kubernetes-Fundamentals/readme-en.md)
+  - 📊 Quiz Sonuçları: [Kubernetes Fundamentals Quiz](./28-Kubernetes-Fundamentals/quiz.md)
 
 ---
 

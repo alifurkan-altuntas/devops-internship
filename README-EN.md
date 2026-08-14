@@ -14,7 +14,7 @@ Completed Nginx deep dive: reverse proxy, path-based routing, path rewrite, path
 
 Completed OpenResty (PostgreSQL, MySQL, Redis, token authentication) and rclone with S3 — performance parameters, `rclone serve http` cache and security (VFS cache, dir cache, auth, remote control), `rclone mount` and VFS cache.
 
-Docker deep dive is fully complete — fundamentals, security, advanced security, IaC scanning, alternative runtimes, and finally Compose volume/network, the PHP example, and Windows containers. The SSL/TLS task given by Edib Bey is also complete. Up next: Kubernetes.
+Docker deep dive is fully complete — fundamentals, security, advanced security, IaC scanning, alternative runtimes, and finally Compose volume/network, the PHP example, and Windows containers. The SSL/TLS task is also complete. Moved on to Kubernetes — Fundamental Concepts (GitOps, container history, cluster architecture, kubectl) are complete. Up next: Installation (minikube/k3s) and Basic Resources.
 
 Bilingual documentation (TR/EN) complete for all phases (01–24).
 
@@ -49,8 +49,9 @@ Bilingual documentation (TR/EN) complete for all phases (01–24).
 - [25-Docker-Advanced-Security](./25-Docker-Advanced-Security/): Distroless image, read-only filesystem, resource limits, BuildKit, Hadolint, image tag immutability, docker-bench-security, image signing (Cosign), seccomp, AppArmor, Kaniko, Jib, PHP build example, Falco, SBOM (Syft+Grype). ([TR](./25-Docker-Advanced-Security/readme.md) / [EN](./25-Docker-Advanced-Security/readme-en.md)) — Hands-on: ([TR](./25-Docker-Advanced-Security/practice.md) / [EN](./25-Docker-Advanced-Security/practice-en.md))
 - [26-IaC-Scanning](./26-IaC-Scanning/): Static scanning of Dockerfile/YAML with Trivy config, HEALTHCHECK. ([TR](./26-IaC-Scanning/readme.md) / [EN](./26-IaC-Scanning/readme-en.md)) — Hands-on: ([TR](./26-IaC-Scanning/practice.md) / [EN](./26-IaC-Scanning/practice-en.md))
 - [27-Docker-Alternatives](./27-Docker-Alternatives/): Podman, containerd, CRI-O, Buildah — rootless/daemonless proofs, build speed comparison. ([TR](./27-Docker-Alternatives/readme.md) / [EN](./27-Docker-Alternatives/readme-en.md)) — Hands-on: ([TR](./27-Docker-Alternatives/practice.md) / [EN](./27-Docker-Alternatives/practice-en.md))
+- [28-Kubernetes-Fundamentals](./28-Kubernetes-Fundamentals/): Kubernetes fundamentals — GitOps, container history, self-healing, envsubst, cluster architecture (kube-apiserver, etcd, kube-scheduler, kubelet, coredns, kube-proxy, CNI), kubectl. ([TR](./28-Kubernetes-Fundamentals/readme.md) / [EN](./28-Kubernetes-Fundamentals/readme-en.md))
 - [additionals/ssl](./additionals/ssl/): An explanation of how SSL/TLS works, with no technical terminology at all, entirely through a real-world analogy (a sealed letter between two companies, a notary chain, a corporate mail-control office). ([TR](./additionals/ssl/readme.md) / [EN](./additionals/ssl/readme-en.md))
-- [additionals/guvenlik-olayi](./additionals/guvenlik-olayi/): A real security incident — a server abused via DNS rebinding and an open forward proxy (SSRF), with root cause analysis and fix. ([TR](./additionals/guvenlik-olayi/readme.md) / [EN](./additionals/guvenlik-olayi/readme-en.md))
+- [additionals/security-situation](./additionals/security-situation/): A real security incident — a server abused via DNS rebinding and an open forward proxy (SSRF), with root cause analysis and fix. ([TR](./additionals/security-situation/readme.md) / [EN](./additionals/security-situation/readme-en.md))
 
 ### 📝 Evaluation & Assessment Artifacts
 
@@ -68,8 +69,9 @@ Bilingual documentation (TR/EN) complete for all phases (01–24).
 - [Phase 14 Quiz Logs](./14-Linux-Bash-Scripting/quiz-results.md): Quiz on Bash variables, conditions, and scripting basics.
 - [Phase 15 Quiz Logs](./15-Linux-Cron-Automation/quiz-results.md): Quiz on cron scheduling, sudoers, and log rotation.
 - [Phase 16 Quiz Logs](./16-Git-Basics/quiz-results.md): Quiz on Git branching, merging, and resolving a push conflict.
-- [Phase 19 & 20 Quiz Results](./19-Nginx-Derinlestirme/quiz-results.md): Nginx reverse proxy, path management, forward proxy, rate limiting and load balancing — 15/15.
-- [Docker Deep Dive Quiz Results](./docker-derinlesmesi-quiz-en.md): Quiz on multi-stage build, Compose volume/network, image security, Jib/BuildKit/Kaniko, and Windows containers — 15/15.
+- [Phase 19 & 20 Quiz Results](./19-Nginx-Derinlestirme/quiz-results.md): Nginx reverse proxy, path management, forward proxy, rate limiting and load balancing
+- [Docker Deep Dive Quiz Results](./25-Docker-Advanced-Security/quiz.md): Quiz on multi-stage build, Compose volume/network, image security, Jib/BuildKit/Kaniko, and Windows containers
+- [Kubernetes Fundamentals Quiz Results](./28-Kubernetes-Fundamentals/quiz.md): Quiz on GitOps, container history, self-healing, etcd, and cluster architecture
 
 ### 🎓 Courses & Certifications
 
@@ -544,7 +546,7 @@ _Researched Docker's alternatives: Podman, containerd, CRI-O, Buildah. Podman: m
 - **Milestones & Deliverables:**
   - 🔄 Docker Alternatives: [README (TR](./27-Docker-Alternatives/readme.md) / [EN)](./27-Docker-Alternatives/readme-en.md) — Hands-on: ([TR](./27-Docker-Alternatives/practice.md) / [EN](./27-Docker-Alternatives/practice-en.md))
 
-### 🔹 August 12, 2026 | SSL/TLS Task — A Simple Explanation for Edib Bey
+### 🔹 August 12, 2026 | SSL/TLS Task — A Simple Explanation
 
 _Completed task of explaining "how SSL/TLS works" in a for-dummies style. My first draft used technical terms; after feedback, I rewrote it completely — with no SSL/TLS terminology at all, entirely through a real-world analogy (a sealed letter between two companies, a notary chain, a corporate mail-control office). I used the storytelling style of the Byzantine Generals Problem as a model. Along the way I worked through the flow with my own questions (how would I even send the unlocking key, couldn't the session key be stolen too), clarified the seal/signature distinction, and built an intermediate-stop scenario that stayed realistic (the real-world equivalent of a TLS Proxy)._
 
@@ -553,7 +555,7 @@ _Completed task of explaining "how SSL/TLS works" in a for-dummies style. My fir
   - Built the chain of trust, shared-key agreement, and intermediate-stop behavior through a two-company letter scenario.
   - Added TCP's fixed/one-directional structure as a real-world difference.
 - **Milestones & Deliverables:**
-  - 🔐 SSL/TLS Explainer: [readme.md](./additionals/ssl/readme.md) / [readme-en.md](./additionals/ssl/readme-en.md)
+  - 🔐 SSL/TLS Explainer: [README (TR](./additionals/ssl/readme.md) / [EN)](./additionals/ssl/readme-en.md)
 
 ### 🔹 August 13, 2026 | Docker Deep Dive — Completing the Remaining Items
 
@@ -564,8 +566,23 @@ _Completed the three remaining items from Docker deep-dive list. Tested Docker C
   - Built and ran an image with PHP.
   - Examined why Windows containers can't run on Linux due to kernel sharing, along with the real meaning of "Docker runs everywhere."
 - **Milestones & Deliverables:**
-  - 🐳 Docker Fundamentals: [readme.md](./23-Docker-Fundamentals/readme.md) / [readme-en.md](./23-Docker-Fundamentals/readme-en.md)
-  - 🔒 Docker Advanced Security: [readme.md](./25-Docker-Advanced-Security/readme.md) / [readme-en.md](./25-Docker-Advanced-Security/readme-en.md)
+  - 🐳 Docker Fundamentals: [README (TR](./23-Docker-Fundamentals/readme.md) / [EN)](./23-Docker-Fundamentals/readme-en.md)
+  - 🔒 Docker Advanced Security: [README (TR](./25-Docker-Advanced-Security/readme.md) / [EN)](./25-Docker-Advanced-Security/readme-en.md)
+
+### 🔹 August 14, 2026 | Kubernetes Fundamentals — GitOps, Cluster Architecture, kubectl
+
+_Worked through Kubernetes' Fundamental Concepts section start to finish, following the k8s-tr.github.io roadmap. Learned GitOps as an approach where, instead of touching the cluster by hand, a tool (like ArgoCD) automatically applies a target written to Git — like the "document and push" habit from my own repo, applied to infrastructure. Was surprised to learn the container idea goes back to 1979 (chroot). Connected self-healing to the healthy/unhealthy states we already tested with HEALTHCHECK. Built Cluster Architecture entirely around a hotel analogy — front desk (kube-apiserver), guest register (etcd, with immutability and odd-membership logic), floor supervisor (kubelet), internal phone directory (coredns), switchboard (kube-proxy), corridor system (CNI). Saw that most kubectl commands map directly onto Docker commands (exec, ps→get pods)._
+
+- **Tasks & Objectives:**
+  - Reinforced how GitOps works with real-world analogies (blueprint/thermostat).
+  - Covered container history and "why containers/why Kubernetes."
+  - Learned Docker's `envsubst` technique.
+  - Worked through Cluster Architecture and all its components (kube-apiserver, etcd, kube-controller-manager, kube-scheduler, kubelet, coredns, kube-proxy, container-runtime, CNI) via a hotel scenario.
+  - Tested kubectl's basic commands (get, create, scale, set image, exec, delete).
+  - Took a 15-question quiz, scored 15/15.
+- **Milestones & Deliverables:**
+  - ☸️ Kubernetes Fundamentals: [README (TR](./28-Kubernetes-Fundamentals/readme.md) / [EN)](./28-Kubernetes-Fundamentals/readme-en.md)
+  - 📊 Quiz Results: [Kubernetes Fundamentals Quiz](./28-Kubernetes-Fundamentals/quiz.md)
 
 ---
 
