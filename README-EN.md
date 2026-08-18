@@ -14,7 +14,7 @@ Completed Nginx deep dive: reverse proxy, path-based routing, path rewrite, path
 
 Completed OpenResty (PostgreSQL, MySQL, Redis, token authentication) and rclone with S3 — performance parameters, `rclone serve http` cache and security (VFS cache, dir cache, auth, remote control), `rclone mount` and VFS cache.
 
-Docker deep dive is fully complete — fundamentals, security, advanced security, IaC scanning, alternative runtimes, and finally Compose volume/network, the PHP example, and Windows containers. The SSL/TLS task is also complete. Moved on to Kubernetes — Fundamental Concepts (GitOps, container history, cluster architecture, kubectl) are complete. Up next: Installation (minikube/k3s) and Basic Resources.
+Docker deep dive is fully complete — fundamentals, security, advanced security, IaC scanning, alternative runtimes, and finally Compose volume/network, the PHP example, and Windows containers. The SSL/TLS task is also complete. Moved on to Kubernetes — Fundamental Concepts are complete. All five installation methods (Vagrant, kubeadm, MicroK8s, minikube, Kubespray) were actually installed, tested, and compared, with results documented. Up next: Basic Resources (Pod, ReplicaSet, Deployment).
 
 Bilingual documentation (TR/EN) complete for all phases (01–24).
 
@@ -51,6 +51,7 @@ Bilingual documentation (TR/EN) complete for all phases (01–24).
 - [27-Docker-Alternatives](./27-Docker-Alternatives/): Podman, containerd, CRI-O, Buildah — rootless/daemonless proofs, build speed comparison. ([TR](./27-Docker-Alternatives/readme.md) / [EN](./27-Docker-Alternatives/readme-en.md)) — Hands-on: ([TR](./27-Docker-Alternatives/practice.md) / [EN](./27-Docker-Alternatives/practice-en.md))
 - [28-Kubernetes-Fundamentals](./28-Kubernetes-Fundamentals/): Kubernetes fundamentals — GitOps, container history, self-healing, envsubst, cluster architecture (kube-apiserver, etcd, kube-scheduler, kubelet, coredns, kube-proxy, CNI), kubectl. ([TR](./28-Kubernetes-Fundamentals/readme.md) / [EN](./28-Kubernetes-Fundamentals/readme-en.md))
 - [additionals/ssl](./additionals/ssl/): An explanation of how SSL/TLS works, with no technical terminology at all, entirely through a real-world analogy (a sealed letter between two companies, a notary chain, a corporate mail-control office). ([TR](./additionals/ssl/readme.md) / [EN](./additionals/ssl/readme-en.md))
+- [29-Kubernetes-Kurulum](./29-Kubernetes-Kurulum/): A real, hands-on comparison of five installation methods (Vagrant, kubeadm, MicroK8s, minikube, Kubespray) — including outdated sources, port conflicts, and leftover cleanup. ([TR](./29-Kubernetes-Kurulum/readme.md) / [EN](./29-Kubernetes-Kurulum/readme-en.md))
 - [additionals/security-situation](./additionals/security-situation/): A real security incident — a server abused via DNS rebinding and an open forward proxy (SSRF), with root cause analysis and fix. ([TR](./additionals/security-situation/readme.md) / [EN](./additionals/security-situation/readme-en.md))
 
 ### 📝 Evaluation & Assessment Artifacts
@@ -483,7 +484,7 @@ _Took a deep dive into cache and security for `rclone serve http`. Without cache
   - Auth set up, password hidden with environment variable.
   - Cache management with remote control.
 - **Milestones & Deliverables:**
-  - 🗄️ rclone serve http Cache: [readme.md](./22-rclone-S3/readme.md) / [readme-en.md](./22-rclone-S3/readme-en.md)
+  - 🗄️ rclone serve http Cache: [README (TR](./22-rclone-S3/readme.md) / [EN)](./22-rclone-S3/readme-en.md)
 
 ### 🔹 July 17, 2026 | Docker Advanced Security — Distroless, Read-Only, BuildKit
 
@@ -583,6 +584,42 @@ _Worked through Kubernetes' Fundamental Concepts section start to finish, follow
 - **Milestones & Deliverables:**
   - ☸️ Kubernetes Fundamentals: [README (TR](./28-Kubernetes-Fundamentals/readme.md) / [EN)](./28-Kubernetes-Fundamentals/readme-en.md)
   - 📊 Quiz Results: [Kubernetes Fundamentals Quiz](./28-Kubernetes-Fundamentals/quiz.md)
+
+### 🔹 August 15, 2026 | Kubernetes Installation Methods — Starting with kubeadm
+
+_Started working through the k8s-tr roadmap's "Installation" section. Decided to compare all five methods (Vagrant, Kubespray, MicroK8s, kubeadm, minikube) by actually installing and testing each one. First tested Vagrant with `egrep -c '(vmx|svm)' /proc/cpuinfo` — got 0, proving nested virtualization is disabled on this VPS, making Vagrant technically impossible. Then moved to kubeadm: disabled swap, loaded kernel modules, set sysctl parameters. During CRI-O installation, found that the repo address k8s-tr recommends no longer works, researched and used the current one. Ran into the same issue installing kubeadm/kubelet/kubectl, used the current pkgs.k8s.io address instead. My first `kubeadm init` attempt failed because swap came back after reboot — fixed it permanently by editing /etc/fstab._
+
+- **Tasks & Objectives:**
+  - Concretely tested why Vagrant is impossible on this VPS.
+  - Identified outdated k8s-tr repo addresses for CRI-O and kubeadm/kubelet/kubectl and researched current ones.
+  - Permanently disabled swap (via `/etc/fstab` edit).
+- **Milestones & Deliverables:**
+  - ☸️ Kubernetes Installation Methods (in progress): [README (TR](./29-Kubernetes-Kurulum/readme.md) / [EN)](./29-Kubernetes-Kurulum/readme-en.md)
+
+### 🔹 August 17, 2026 | kubeadm Completed, MicroK8s and minikube Tested
+
+_Continued the kubeadm installation. `kubeadm init` completed successfully, though I caused a small mix-up myself afterward (forgot sudo while retrying init after a reset), fixed it. The node showed "Ready" even without Calico installed, which looked suspicious — tested it with a real pod. Ran into two obstacles: the control-plane taint (removed manually) and a completely missing CNI (installed Calico). Eventually discovered an old Podman network config left over from Phase 27 was taking priority over Calico, cleaned it up, and the pod got a real IP from the correct range. Then tested MicroK8s (`snap install`, one command, almost no manual steps) and minikube (`--driver=docker`) — in both cases realized an old `kubectl` alias I'd defined myself was causing confusion, fixed it._
+
+- **Tasks & Objectives:**
+  - Successfully set up the kubeadm cluster and verified it with a real pod.
+  - Resolved the control-plane taint and missing CNI issues, installed Calico.
+  - Found and fixed an old Podman network config overriding Calico.
+  - Installed MicroK8s and minikube, verified both with real pod tests.
+- **Milestones & Deliverables:**
+  - ☸️ Kubernetes Installation Methods (in progress): [README (TR](./29-Kubernetes-Kurulum/readme.md) / [EN)](./29-Kubernetes-Kurulum/readme-en.md)
+
+### 🔹 August 18, 2026 | Kubespray Completed — Comparison Document Finished
+
+_Moved on to the last method, Kubespray. Discovered the inventory-building script k8s-tr recommends had been removed, edited the inventory manually instead. Generated a new SSH key so the server could connect to itself, added `--ask-become-pass` for the sudo password. 17 minutes into the install, found that an old leftover etcd process from kubeadm was causing a port conflict, killed it — but this revealed a deeper issue: the old `/etc/kubernetes/` directory conflicted with the structure Kubespray expected, causing a certificate error. Did a full cleanup (`kubeadm reset`, removing the relevant directories) and ran the Ansible playbook from scratch — this time `failed=0`, fully successful. Compiled all four methods (Vagrant excluded) into a single comparison document, noting both the clean install times and the real total time (3 days, including troubleshooting) separately._
+
+- **Tasks & Objectives:**
+  - Manually built the Kubespray inventory (since the script was removed).
+  - Resolved SSH self-connection and sudo password issues.
+  - Found and cleaned up the old etcd port conflict and the `/etc/kubernetes/` directory conflict.
+  - Set up the Kubespray cluster from scratch, cleanly, and verified it.
+  - Completed the comparison document for all five methods (including Vagrant).
+- **Milestones & Deliverables:**
+  - ☸️ Kubernetes Installation Methods: [README (TR](./29-Kubernetes-Kurulum/readme.md) / [EN)](./29-Kubernetes-Kurulum/readme-en.md)
 
 ---
 

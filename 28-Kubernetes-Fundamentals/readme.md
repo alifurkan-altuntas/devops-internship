@@ -1,6 +1,6 @@
-# ☸️ Kubernetes Temel Kavramlar — GitOps, Neden Konteynerlar, Docker, Küme Mimarisi, kubectl
+# ☸️ Kubernetes Temel Kavramlar — GitOps, Neden Konteynerlar, Docker, Küme Mimarisi
 
-27. fazda Docker'ın alternatiflerini (Podman, containerd, CRI-O, Buildah) araştırdım. Bu fazda Kubernetes'e geçtim — k8s-tr.github.io roadmap'ini takip ederek Temel Kavramlar bölümünü (GitOps, Neden Konteynerlar, Docker, Küme Mimarisi, kubectl) baştan sona işledim.
+27. fazda Docker'ın alternatiflerini (Podman, containerd, CRI-O, Buildah) araştırdım. Bu fazda Kubernetes'e geçtim — k8s-tr.github.io roadmap'ini takip ederek Temel Kavramlar bölümünü (GitOps, Neden Konteynerlar, Docker, Küme Mimarisi) baştan sona işledim.
 
 ---
 
@@ -104,53 +104,6 @@ Defterdeki kayıtlar alfabetik/sıralı bir düzende (sözlük gibi) tutuluyor, 
 
 ---
 
-## 5. kubectl
-
-```bash
-echo $KUBECONFIG
-kubectl config view
-```
-
-`KUBECONFIG`, bir ev anahtarlığı gibi — hangi cluster'a hangi yetkiyle bağlanılacağını belirliyor.
-
-**Keşif komutları:**
-
-```bash
-kubectl get nodes
-kubectl get nodes --show-labels
-kubectl get namespaces
-kubectl get pods -A -o wide
-```
-
-**Namespace açmak** — otelde yeni bir bölüm/kanat açmak gibi, kendi kayıtları olan izole bir alan:
-
-```bash
-kubectl create namespace mystuff
-kubectl config set-context --current --namespace=mystuff
-kubectl create deployment myapp --image=quay.io/rhdevelopers/quarkus-demo:v1
-```
-
-**Ölçeklendirme ve rolling update** — roadmap'teki "Sürekli Güncellemeler" konusunun canlı örneği, çalışan bir uygulamanın kesinti olmadan versiyon değiştirebilmesi:
-
-```bash
-kubectl scale deployment myapp --replicas=3
-kubectl set image deployment/myapp quarkus-demo=quay.io/rhdevelopers/myboot:v2
-```
-
-**Pod'a bağlanmak** — `docker exec -it <container> sh` alışkanlığımızın birebir aynısı, sadece container yerine pod:
-
-```bash
-kubectl exec -it quarkus-demo-deployment-5979886fb7-c888m -- curl localhost:8080
-```
-
-**Temizlik** — namespace'ler klasör gibi, silinince içindeki her şey (deployment, pod, service) otomatik gidiyor, tek tek uğraşmaya gerek yok:
-
-```bash
-kubectl delete namespace mystuff
-```
-
----
-
 ## 📊 Özet
 
 | Konu              | Ne Öğrendim                                                                                     |
@@ -162,7 +115,6 @@ kubectl delete namespace mystuff
 | etcd immutability | Değer güncellenince eskisi silinmez, yeni sürüm eklenir                                         |
 | etcd tek sayı üye | Çift sayıda oylama berabere kalabilir, tek sayıda her zaman net çoğunluk çıkar                  |
 | self-healing      | Health check durumuna göre otomatik müdahale — HEALTHCHECK'in cluster seviyesindeki hali        |
-| kubectl           | Docker komutlarının çoğu birebir karşılığı var (exec, ps→get pods, vb.)                         |
 
 ---
 

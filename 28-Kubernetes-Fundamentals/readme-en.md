@@ -1,6 +1,6 @@
-# ☸️ Kubernetes Fundamentals — GitOps, Why Containers, Docker, Cluster Architecture, kubectl
+# ☸️ Kubernetes Fundamentals — GitOps, Why Containers, Docker, Cluster Architecture
 
-27th phase covered Docker's alternatives (Podman, containerd, CRI-O, Buildah). This phase I moved on to Kubernetes — following the k8s-tr.github.io roadmap, I worked through the Fundamental Concepts section (GitOps, Why Containers, Docker, Cluster Architecture, kubectl) start to finish.
+27th phase covered Docker's alternatives (Podman, containerd, CRI-O, Buildah). This phase I moved on to Kubernetes — following the k8s-tr.github.io roadmap, I worked through the Fundamental Concepts section (GitOps, Why Containers, Docker, Cluster Architecture) start to finish.
 
 ---
 
@@ -104,53 +104,6 @@ Entries in the register are kept in alphabetical/sorted order (like a dictionary
 
 ---
 
-## 5. kubectl
-
-```bash
-echo $KUBECONFIG
-kubectl config view
-```
-
-`KUBECONFIG` is like a keyring — it determines which cluster you connect to and with what permissions.
-
-**Discovery commands:**
-
-```bash
-kubectl get nodes
-kubectl get nodes --show-labels
-kubectl get namespaces
-kubectl get pods -A -o wide
-```
-
-**Creating a namespace** — like opening a new wing at the hotel, an isolated area with its own records:
-
-```bash
-kubectl create namespace mystuff
-kubectl config set-context --current --namespace=mystuff
-kubectl create deployment myapp --image=quay.io/rhdevelopers/quarkus-demo:v1
-```
-
-**Scaling and rolling updates** — a live example of the roadmap's "Continuous Updates" topic, being able to change a running app's version without downtime:
-
-```bash
-kubectl scale deployment myapp --replicas=3
-kubectl set image deployment/myapp quarkus-demo=quay.io/rhdevelopers/myboot:v2
-```
-
-**Connecting to a pod** — exactly the same habit as `docker exec -it <container> sh`, just pod instead of container:
-
-```bash
-kubectl exec -it quarkus-demo-deployment-5979886fb7-c888m -- curl localhost:8080
-```
-
-**Cleanup** — namespaces are like folders, deleting one automatically removes everything inside it (deployment, pod, service), no need to handle them one by one:
-
-```bash
-kubectl delete namespace mystuff
-```
-
----
-
 ## 📊 Summary
 
 | Topic                        | What I Learned                                                                                          |
@@ -162,7 +115,6 @@ kubectl delete namespace mystuff
 | etcd immutability            | When a value is updated, the old one isn't deleted, a new version is added                              |
 | etcd odd-numbered membership | Even-numbered voting can tie, odd-numbered always produces a clear majority                             |
 | self-healing                 | Automatic intervention based on health check status — the cluster-level version of HEALTHCHECK          |
-| kubectl                      | Most Docker commands have a direct equivalent (exec, ps→get pods, etc.)                                 |
 
 ---
 

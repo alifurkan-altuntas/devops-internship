@@ -14,7 +14,7 @@ Nginx derinleşmesi tamamlandı: reverse proxy, path bazlı yönlendirme, path r
 
 OpenResty (PostgreSQL, MySQL, Redis, token authentication) ve rclone ile S3 entegrasyonu tamamlandı — performans parametreleri, `rclone serve http` cache ve güvenlik (VFS cache, dir cache, auth, remote control), `rclone mount` ve VFS cache.
 
-Docker derinleşmesi tamamen bitti — temel kavramlar, güvenlik, ileri seviye güvenlik, IaC scanning, alternatif runtime'lar, ve son olarak Compose volume/network, PHP örneği, Windows containers dahil. Ayrıca SSL/TLS görevi tamamlandı. Kubernetes'e geçildi — Temel Kavramlar (GitOps, konteyner tarihi, küme mimarisi, kubectl) tamamlandı. Sırada Kurulum (minikube/k3s) ve Temel Kaynaklar var.
+Docker derinleşmesi tamamen bitti — temel kavramlar, güvenlik, ileri seviye güvenlik, IaC scanning, alternatif runtime'lar, ve son olarak Compose volume/network, PHP örneği, Windows containers dahil. Ayrıca SSL/TLS görevi tamamlandı. Kubernetes'e geçildi — Temel Kavramlar tamamlandı. Beş kurulum yöntemi (Vagrant, kubeadm, MicroK8s, minikube, Kubespray) gerçekten kurulup test edilerek karşılaştırıldı, sonuçlar belgelendi. Sırada Temel Kaynaklar (Pod, ReplicaSet, Deployment) var.
 
 Tüm fazların (01–24) Türkçe/İngilizce belge dönüşümü tamamlandı.
 
@@ -51,6 +51,7 @@ Tüm fazların (01–24) Türkçe/İngilizce belge dönüşümü tamamlandı.
 - [27-Docker-Alternatives](./27-Docker-Alternatives/): Podman, containerd, CRI-O, Buildah — rootless/daemonless kanıtları, build hızı kıyaslaması. ([TR](./27-Docker-Alternatives/readme.md) / [EN](./27-Docker-Alternatives/readme-en.md)) — Uygulamalı: ([TR](./27-Docker-Alternatives/practice.md) / [EN](./27-Docker-Alternatives/practice-en.md))
 - [28-Kubernetes-Fundamentals](./28-Kubernetes-Fundamentals/): Kubernetes temel kavramları — GitOps, konteyner tarihi, self-healing, envsubst, küme mimarisi (kube-apiserver, etcd, kube-scheduler, kubelet, coredns, kube-proxy, CNI), kubectl. ([TR](./28-Kubernetes-Fundamentals/readme.md) / [EN](./28-Kubernetes-Fundamentals/readme-en.md))
   [additionals/ssl](./additionals/ssl/): SSL/TLS'in çalışma mantığının, hiç teknik terim kullanılmadan, tamamen gerçek dünya benzetmesiyle (iki firma arasında mühürlü mektup, noter zinciri, kurumsal evrak kontrol bürosu) anlatımı. ([TR](./additionals/ssl/readme.md) / [EN](./additionals/ssl/readme-en.md))
+- [29-Kubernetes-Kurulum](./29-Kubernetes-Kurulum/): Beş kurulum yönteminin (Vagrant, kubeadm, MicroK8s, minikube, Kubespray) gerçek kurulup test edilerek karşılaştırılması — güncel olmayan kaynaklar, port çakışmaları, eski kalıntı temizliği dahil. ([TR](./29-Kubernetes-Kurulum/readme.md) / [EN](./29-Kubernetes-Kurulum/readme-en.md))
 - [additionals/security-situation](./additionals/security-situation/): Gerçek bir güvenlik olayı — DNS rebinding ve açık forward proxy (SSRF) ile sunucunun kötüye kullanılması, kök sebep analizi ve çözüm. ([TR](./additionals/security-situation/readme.md) / [EN](./additionals/security-situation/readme-en.md))
 
 ### 📝 Değerlendirme & Sınav Materyalleri
@@ -483,7 +484,7 @@ _`rclone serve http` için cache ve güvenlik konularını derinlemesine inceled
   - Auth kuruldu, şifre environment variable ile gizlendi.
   - Remote control ile cache yönetimi.
 - **Kilometre Taşları & Çıktılar:**
-  - 🗄️ rclone serve http Cache: [readme.md](./22-rclone-S3/readme.md) / [readme-en.md](./22-rclone-S3/readme-en.md)
+  - 🗄️ rclone serve http Cache: [README (TR](./22-rclone-S3/readme.md) / [EN)](./22-rclone-S3/readme-en.md)
 
 ### 🔹 17 Temmuz 2026 | Docker İleri Seviye Güvenlik — Distroless, Read-Only, BuildKit
 
@@ -583,6 +584,42 @@ _k8s-tr.github.io roadmap'ini takip ederek Kubernetes'in Temel Kavramlar bölüm
 - **Kilometre Taşları & Çıktılar:**
   - ☸️ Kubernetes Temel Kavramlar: [README (TR](./28-Kubernetes-Fundamentals/readme.md) / [EN)](./28-Kubernetes-Fundamentals/readme-en.md)
   - 📊 Quiz Sonuçları: [Kubernetes Fundamentals Quiz](./28-Kubernetes-Fundamentals/quiz.md)
+
+### 🔹 15 Ağustos 2026 | Kubernetes Kurulum Yöntemleri — kubeadm'e Başlangıç
+
+_k8s-tr roadmap'inin "Kurulum" bölümünü işlemeye başladım. Beş yöntemi (Vagrant, Kubespray, MicroK8s, kubeadm, minikube) sırayla, gerçekten kurup test ederek karşılaştırmaya karar verdim. Önce Vagrant'ı `egrep -c '(vmx|svm)' /proc/cpuinfo` ile test ettim — sonuç 0 çıktı, bu VPS'te nested virtualization kapalı olduğu için Vagrant'ın teknik olarak imkansız olduğunu kanıtladım. Sonra kubeadm'e geçtim: swap'ı kapattım, kernel modüllerini yükledim, sysctl ayarlarını yaptım. CRI-O kurulumunda k8s-tr sayfasının önerdiği repo adresinin artık çalışmadığını fark edip güncel olanı araştırıp kullandım. kubeadm/kubelet/kubectl kurulumunda da aynı sorunla karşılaştım, güncel pkgs.k8s.io adresini kullandım. İlk `kubeadm init` denemem, swap'ın reboot sonrası geri gelmesi yüzünden başarısız oldu — /etc/fstab'ı düzenleyerek kalıcı olarak kapattım._
+
+- **Görevler & Hedefler:**
+  - Vagrant'ın bu VPS'te neden imkansız olduğu somut olarak test edildi.
+  - CRI-O ve kubeadm/kubelet/kubectl için güncel olmayan k8s-tr repo adresleri tespit edilip güncelleri araştırıldı.
+  - Swap kalıcı olarak kapatıldı (`/etc/fstab` düzenlemesiyle).
+- **Kilometre Taşları & Çıktılar:**
+  - ☸️ Kubernetes Kurulum Yöntemleri (devam ediyor): [README (TR](./29-Kubernetes-Kurulum/readme.md) / [EN)](./29-Kubernetes-Kurulum/readme-en.md)
+
+## 🔹 17 Ağustos 2026 | kubeadm Tamamlandı, MicroK8s ve minikube Test Edildi
+
+_kubeadm kurulumuna devam ettim. `kubeadm init` başarıyla tamamlandı, ama sonra kendi hatamla (kubeadm reset sonrası sudo unutarak tekrar init denemesi) küçük bir karışıklık yaşadım, düzelttim. Node "Ready" göründü ama Calico kurulu değildi, bu şüpheliydi — gerçek bir pod ile test ettim. İki engelle karşılaştım: control-plane taint'i (elle kaldırdım) ve tamamen eksik bir CNI (Calico kurdum). Sonunda, Faz 27'den kalma eski bir Podman ağ config dosyasının Calico'nun önüne geçtiğini keşfedip temizledim, pod doğru IP aralığından gerçek bir IP aldı. Sonra MicroK8s'i (`snap install`, tek komut, neredeyse hiç manuel adım gerekmedi) ve minikube'i (`--driver=docker`) test ettim — ikisinde de kendi tanımladığım eski bir `kubectl` alias'ının kafamı karıştırdığını fark ettim, düzelttim._
+
+- **Görevler & Hedefler:**
+  - kubeadm cluster'ı başarıyla kuruldu ve gerçek bir pod ile doğrulandı.
+  - Control-plane taint'i ve eksik CNI sorunları çözüldü, Calico kuruldu.
+  - Eski Podman ağ config'inin Calico'nun önüne geçmesi tespit edilip giderildi.
+  - MicroK8s ve minikube kuruldu, ikisi de gerçek pod testiyle doğrulandı.
+- **Kilometre Taşları & Çıktılar:**
+  - ☸️ Kubernetes Kurulum Yöntemleri (devam ediyor): [README (TR](./29-Kubernetes-Kurulum/readme.md) / [EN)](./29-Kubernetes-Kurulum/readme-en.md)
+
+### 🔹 18 Ağustos 2026 | Kubespray Tamamlandı — Karşılaştırma Belgesi Bitti
+
+_Son yöntem olan Kubespray'e geçtim. k8s-tr sayfasının önerdiği envanter oluşturma script'inin kaldırılmış olduğunu keşfedip envanteri elle düzenledim. Sunucunun kendi kendine SSH ile bağlanabilmesi için yeni bir key oluşturdum, sudo parolası için `--ask-become-pass` ekledim. Kurulum 17 dakika ilerledikten sonra, kubeadm'den kalma eski bir etcd process'inin port çakışmasına sebep olduğunu buldum, öldürdüm — ama bu sefer daha köklü bir sorun çıktı: eski `/etc/kubernetes/` klasörü Kubespray'in beklediği yapıyla çakışıyordu, sertifika hatası aldım. Tam bir temizlik yapıp (`kubeadm reset`, ilgili klasörlerin silinmesi) Ansible playbook'unu sıfırdan çalıştırdım — bu sefer `failed=0`, tamamen başarılı. Dört yöntemi (Vagrant hariç) tek bir karşılaştırma belgesinde topladım, gerçek kurulum sürelerini ve gerçek toplam süreyi (3 gün, sorun giderme dahil) ayrı ayrı belirttim._
+
+- **Görevler & Hedefler:**
+  - Kubespray envanteri elle oluşturuldu (script kaldırıldığı için).
+  - SSH self-connection ve sudo parolası sorunları çözüldü.
+  - Eski etcd port çakışması ve `/etc/kubernetes/` klasör çakışması bulunup temizlendi.
+  - Kubespray cluster'ı sıfırdan, sorunsuz kuruldu ve doğrulandı.
+  - Beş yöntemin (Vagrant dahil) karşılaştırma belgesi tamamlandı.
+- **Kilometre Taşları & Çıktılar:**
+  - ☸️ Kubernetes Kurulum Yöntemleri: [README (TR](./29-Kubernetes-Kurulum/readme.md) / [EN)](./29-Kubernetes-Kurulum/readme-en.md)
 
 ---
 
