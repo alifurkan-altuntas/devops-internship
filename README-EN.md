@@ -14,7 +14,7 @@ Completed Nginx deep dive: reverse proxy, path-based routing, path rewrite, path
 
 Completed OpenResty (PostgreSQL, MySQL, Redis, token authentication) and rclone with S3 — performance parameters, `rclone serve http` cache and security (VFS cache, dir cache, auth, remote control), `rclone mount` and VFS cache.
 
-Docker deep dive is fully complete — fundamentals, security, advanced security, IaC scanning, alternative runtimes, and finally Compose volume/network, the PHP example, and Windows containers. The SSL/TLS task is also complete. Moved on to Kubernetes — Fundamental Concepts are complete. All five installation methods (Vagrant, kubeadm, MicroK8s, minikube, Kubespray) were actually installed, tested, and compared, with results documented. Up next: Basic Resources (Pod, ReplicaSet, Deployment).
+Docker deep dive is fully complete — fundamentals, security, advanced security, IaC scanning, alternative runtimes, and finally Compose volume/network, the PHP example, and Windows containers. The SSL/TLS task is also complete. Moved on to Kubernetes — Fundamental Concepts are complete. All five installation methods (Vagrant, kubeadm, MicroK8s, minikube, Kubespray) were actually installed, tested, and compared. Applied Edib Bey's feedback, and deepened understanding of etcd/Raft/CNI/kube-proxy through self-research (ongoing — kubernetes.io/microservices.io readings still remain). Up next: Basic Resources (Pod, ReplicaSet, Deployment).
 
 Bilingual documentation (TR/EN) complete for all phases (01–24).
 
@@ -50,9 +50,10 @@ Bilingual documentation (TR/EN) complete for all phases (01–24).
 - [26-IaC-Scanning](./26-IaC-Scanning/): Static scanning of Dockerfile/YAML with Trivy config, HEALTHCHECK. ([TR](./26-IaC-Scanning/readme.md) / [EN](./26-IaC-Scanning/readme-en.md)) — Hands-on: ([TR](./26-IaC-Scanning/practice.md) / [EN](./26-IaC-Scanning/practice-en.md))
 - [27-Docker-Alternatives](./27-Docker-Alternatives/): Podman, containerd, CRI-O, Buildah — rootless/daemonless proofs, build speed comparison. ([TR](./27-Docker-Alternatives/readme.md) / [EN](./27-Docker-Alternatives/readme-en.md)) — Hands-on: ([TR](./27-Docker-Alternatives/practice.md) / [EN](./27-Docker-Alternatives/practice-en.md))
 - [28-Kubernetes-Fundamentals](./28-Kubernetes-Fundamentals/): Kubernetes fundamentals — GitOps, container history, self-healing, envsubst, cluster architecture (kube-apiserver, etcd, kube-scheduler, kubelet, coredns, kube-proxy, CNI), kubectl. ([TR](./28-Kubernetes-Fundamentals/readme.md) / [EN](./28-Kubernetes-Fundamentals/readme-en.md))
-- [additionals/ssl](./additionals/ssl/): An explanation of how SSL/TLS works, with no technical terminology at all, entirely through a real-world analogy (a sealed letter between two companies, a notary chain, a corporate mail-control office). ([TR](./additionals/ssl/readme.md) / [EN](./additionals/ssl/readme-en.md))
 - [29-Kubernetes-Kurulum](./29-Kubernetes-Kurulum/): A real, hands-on comparison of five installation methods (Vagrant, kubeadm, MicroK8s, minikube, Kubespray) — including outdated sources, port conflicts, and leftover cleanup. ([TR](./29-Kubernetes-Kurulum/readme.md) / [EN](./29-Kubernetes-Kurulum/readme-en.md))
+- [additionals/ssl](./additionals/ssl/): An explanation of how SSL/TLS works, with no technical terminology at all, entirely through a real-world analogy (a sealed letter between two companies, a notary chain, a corporate mail-control office). ([TR](./additionals/ssl/readme.md) / [EN](./additionals/ssl/readme-en.md))
 - [additionals/security-situation](./additionals/security-situation/): A real security incident — a server abused via DNS rebinding and an open forward proxy (SSRF), with root cause analysis and fix. ([TR](./additionals/security-situation/readme.md) / [EN](./additionals/security-situation/readme-en.md))
+- [additionals/kubernetes-terim-derinlesmesi](./additionals/kubernetes-terim-derinlesmesi/): Topics I researched myself based on Edib Bey's feedback — etcd's general mechanics, the Raft protocol, CNI/kube-proxy (VXLAN, BGP, Service, iptables/IPVS). An ongoing document. ([TR](./additionals/kubernetes-terim-derinlesmesi/readme.md) / [EN](./additionals/kubernetes-terim-derinlesmesi/readme-en.md))
 
 ### 📝 Evaluation & Assessment Artifacts
 
@@ -608,9 +609,11 @@ _Continued the kubeadm installation. `kubeadm init` completed successfully, thou
 - **Milestones & Deliverables:**
   - ☸️ Kubernetes Installation Methods (in progress): [README (TR](./29-Kubernetes-Kurulum/readme.md) / [EN)](./29-Kubernetes-Kurulum/readme-en.md)
 
-### 🔹 August 18, 2026 | Kubespray Completed — Comparison Document Finished
+### 🔹 August 18, 2026 | Kubespray Completed, Applied Edib Bey's Feedback, etcd/Raft/CNI Deep Dive
 
-_Moved on to the last method, Kubespray. Discovered the inventory-building script k8s-tr recommends had been removed, edited the inventory manually instead. Generated a new SSH key so the server could connect to itself, added `--ask-become-pass` for the sudo password. 17 minutes into the install, found that an old leftover etcd process from kubeadm was causing a port conflict, killed it — but this revealed a deeper issue: the old `/etc/kubernetes/` directory conflicted with the structure Kubespray expected, causing a certificate error. Did a full cleanup (`kubeadm reset`, removing the relevant directories) and ran the Ansible playbook from scratch — this time `failed=0`, fully successful. Compiled all four methods (Vagrant excluded) into a single comparison document, noting both the clean install times and the real total time (3 days, including troubleshooting) separately._
+_Moved on to the last method, Kubespray. Discovered the inventory-building script k8s-tr recommends had been removed, edited the inventory manually instead. Generated a new SSH key so the server could connect to itself, added `--ask-become-pass` for the sudo password. 17 minutes into the install, found that an old leftover etcd process from kubeadm was causing a port conflict, killed it — but this revealed a deeper issue: the old `/etc/kubernetes/` directory conflicted with the structure Kubespray expected, causing a certificate error. Did a full cleanup and ran the Ansible playbook from scratch — this time `failed=0`, fully successful. Compiled all four methods (Vagrant excluded) into a single comparison document._
+
+_Then applied Edib Bey's feedback on the Kubernetes Fundamentals document: removed the kubectl section ("kubectl is just a tool"), fixed the gap in the etcd/hotel analogy (etcd failure means the system remembers nothing), corrected the "immutability" claim with the compact/defrag mechanism, and added the "Kubernetes can be thought of as a datacenter" framing at the top. Then moved on to Edib Bey's backlog — researched and deepened my understanding through back-and-forth questions with Claude: etcd's general working principle and its alternatives (Zookeeper, Consul), the Raft protocol (heartbeat, election timeout, term, split vote), and the CNI/kube-proxy topic Edib Bey called "more critical" (VXLAN/overlay vs BGP, the Service's fixed-IP logic, kube-proxy's distributed design, iptables/IPVS). Also looked for real proof on my server — found the `vxlan.calico` interface and confirmed Calico was using VXLAN._
 
 - **Tasks & Objectives:**
   - Manually built the Kubespray inventory (since the script was removed).
@@ -618,8 +621,12 @@ _Moved on to the last method, Kubespray. Discovered the inventory-building scrip
   - Found and cleaned up the old etcd port conflict and the `/etc/kubernetes/` directory conflict.
   - Set up the Kubespray cluster from scratch, cleanly, and verified it.
   - Completed the comparison document for all five methods (including Vagrant).
+  - Applied all of Edib Bey's corrections to Phase 28.
+  - Researched and deepened understanding of etcd's general mechanics, its alternatives, the Raft protocol, and CNI/kube-proxy (VXLAN, BGP, Service, iptables/IPVS), verified with real evidence (vxlan.calico).
 - **Milestones & Deliverables:**
   - ☸️ Kubernetes Installation Methods: [README (TR](./29-Kubernetes-Kurulum/readme.md) / [EN)](./29-Kubernetes-Kurulum/readme-en.md)
+  - ☸️ Kubernetes Fundamentals (updated): [README (TR](./28-Kubernetes-Fundamentals/readme.md) / [EN)](./28-Kubernetes-Fundamentals/readme-en.md)
+  - 🔍 Kubernetes Terminology Deep Dive: [README (TR](./additionals/kubernetes-terim-derinlesmesi/readme.md) / [EN)](./additionals/kubernetes-terim-derinlesmesi/readme-en.md)
 
 ---
 

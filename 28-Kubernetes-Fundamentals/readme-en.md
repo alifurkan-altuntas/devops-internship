@@ -2,6 +2,8 @@
 
 27th phase covered Docker's alternatives (Podman, containerd, CRI-O, Buildah). This phase I moved on to Kubernetes — following the k8s-tr.github.io roadmap, I worked through the Fundamental Concepts section (GitOps, Why Containers, Docker, Cluster Architecture) start to finish.
 
+**A framework worth keeping in mind from the start:** Kubernetes can be thought of as an all-in-one datacenter running on top of servers — network, storage, CPU, RAM, all managed logically.
+
 ---
 
 ## 1. GitOps
@@ -72,13 +74,15 @@ I built this section around a **hotel** — starting from the three-plane split 
 
 **kube-apiserver = Front Desk.** Everyone arriving at the hotel goes through the front desk first — reservation/registration gets checked. No one can skip the front desk and walk straight into a room. This is the component that accepts and validates every REST request coming into the cluster, and is the single connection point to etcd. Runs as a static pod: `/etc/kubernetes/manifests/kube-apiserver.yaml`.
 
-**etcd = The Hotel's Guest Register.** Who's currently staying in which room, who stayed there in the past — it's all in this register. When a guest checks out and a new one checks in, the old entry isn't crossed out — a new line gets added to the register instead. **The old value is never deleted — there's a law of immutability.** Cleaning up old entries requires a separate "compact" operation.
+**etcd = The Hotel's Guest Register — But There Are Multiple Redundant Copies.** Not a single register — an **odd number** (3, 5, etc.) of identical copies, all synchronized with each other. Who's staying in which room right now is in these registers. When a guest checks out and a new one checks in, the old entry isn't crossed out — a new line gets added instead. But **that doesn't mean entries are kept forever** — old versions stick around briefly as history, then get cleaned up regularly via **compact**, with **defrag** reclaiming the freed disk space.
 
-The register is kept as an **odd number** of copies (3, 5, etc.) — because the weakness of even numbers, splitting evenly into a tie, disappears with odd numbers; there's always a clear majority (leader election via the Raft algorithm).
+The register is kept as an odd number of copies because the weakness of even numbers, splitting evenly into a tie, disappears with odd numbers; there's always a clear majority (leader election via the Raft algorithm). This actually works like a **board of directors** — every board member has the same information, no one can unilaterally say "I decided this," majority approval is required. This is what prevents two different tables both claiming "I'm the leader" at once (the dangerous situation called **split-brain**).
+
+**The register's real value isn't just "keeping history."** Every entry gets a **sequence number** (revision) — just like commit order on GitHub. If someone tries to update a room based on stale information (someone else already changed it in between), the operation gets **rejected** — this is what prevents two conflicting operations happening at once (like two simultaneous withdrawal requests hitting the same ATM account). The register also **automatically notifies** anyone interested when an entry changes (like subscribing to a YouTube channel and getting notified) — no one has to keep asking "did it change yet?" If the connection drops, it can pick up from its last known revision number and ask "what changed since then" (like a `git pull`) to catch up.
 
 Entries in the register are kept in alphabetical/sorted order (like a dictionary), stored in a flat layout (a binary key space). Unlike the hotel's other staff (static pods), this register service runs as a **separate, independent system** (a standalone Docker container). Its own settings can be checked from a special outside window (`/config`, over HTTP). Resource-wise it doesn't need much CPU, but on live systems 8GB of memory and an average disk are enough.
 
-**A critical warning I also learned:** if this register system becomes unstable (insufficient resources, network issues), the tables can never reach a clear majority/leader. In that case, the hotel **cannot make any changes** to its current state — no new guest can be accepted, not even a new room can be opened. This is why etcd is recommended to run in an isolated, stable environment — the stability of the entire cluster depends on this one register.
+**A critical warning I also learned:** if this register system becomes unstable (insufficient resources, network issues), the tables can never reach a clear majority/leader. In that case, the hotel **cannot make any changes** to its current state — no new guest can be accepted, not even a new room can be opened. And here's a real difference from the physical world: even if a paper register were destroyed, people could still remember things from memory — but if this register (etcd) goes down, **nothing** in the system remembers that state, because the entire hotel's "memory" depends entirely on this one register. This is why etcd is recommended to run in an isolated, stable environment.
 
 **kube-controller-manager = The "Is Everything Okay" Controller.** Continuously checks the gap between the desired state and the actual state and tries to fix it — the same thermostat logic we talked about in GitOps.
 
@@ -106,15 +110,16 @@ Entries in the register are kept in alphabetical/sorted order (like a dictionary
 
 ## 📊 Summary
 
-| Topic                        | What I Learned                                                                                          |
-| ---------------------------- | ------------------------------------------------------------------------------------------------------- |
-| GitOps                       | Instead of touching the cluster by hand, a tool automatically applies the target written to Git         |
-| Container history            | Goes back to 1979 (chroot), 34 years before Docker                                                      |
-| envsubst                     | The technique that fills config variables with the Dockerfile's ENV values                              |
-| Cluster architecture         | Via the hotel analogy — front desk (apiserver), guest register (etcd), floor supervisor (kubelet), etc. |
-| etcd immutability            | When a value is updated, the old one isn't deleted, a new version is added                              |
-| etcd odd-numbered membership | Even-numbered voting can tie, odd-numbered always produces a clear majority                             |
-| self-healing                 | Automatic intervention based on health check status — the cluster-level version of HEALTHCHECK          |
+| Topic                        | What I Learned                                                                                                       |
+| ---------------------------- | -------------------------------------------------------------------------------------------------------------------- |
+| GitOps                       | Instead of touching the cluster by hand, a tool automatically applies the target written to Git                      |
+| Container history            | Goes back to 1979 (chroot), 34 years before Docker                                                                   |
+| envsubst                     | The technique that fills config variables with the Dockerfile's ENV values                                           |
+| Cluster architecture         | Via the hotel analogy — front desk (apiserver), guest register (etcd), floor supervisor (kubelet), etc.              |
+| etcd odd-numbered membership | Even-numbered voting can tie, odd-numbered always produces a clear majority — prevents split-brain                   |
+| etcd revision/watch          | Every change is numbered (prevents conflicts), interested parties get notified automatically on change (not polling) |
+| self-healing                 | Automatic intervention based on health check status — the cluster-level version of HEALTHCHECK                       |
+| kubectl                      | Most Docker commands have a direct equivalent (exec, ps→get pods, etc.)                                              |
 
 ---
 

@@ -14,7 +14,7 @@ Nginx derinleşmesi tamamlandı: reverse proxy, path bazlı yönlendirme, path r
 
 OpenResty (PostgreSQL, MySQL, Redis, token authentication) ve rclone ile S3 entegrasyonu tamamlandı — performans parametreleri, `rclone serve http` cache ve güvenlik (VFS cache, dir cache, auth, remote control), `rclone mount` ve VFS cache.
 
-Docker derinleşmesi tamamen bitti — temel kavramlar, güvenlik, ileri seviye güvenlik, IaC scanning, alternatif runtime'lar, ve son olarak Compose volume/network, PHP örneği, Windows containers dahil. Ayrıca SSL/TLS görevi tamamlandı. Kubernetes'e geçildi — Temel Kavramlar tamamlandı. Beş kurulum yöntemi (Vagrant, kubeadm, MicroK8s, minikube, Kubespray) gerçekten kurulup test edilerek karşılaştırıldı, sonuçlar belgelendi. Sırada Temel Kaynaklar (Pod, ReplicaSet, Deployment) var.
+Docker derinleşmesi tamamen bitti — temel kavramlar, güvenlik, ileri seviye güvenlik, IaC scanning, alternatif runtime'lar, ve son olarak Compose volume/network, PHP örneği, Windows containers dahil. Ayrıca SSL/TLS görevi tamamlandı. Kubernetes'e geçildi — Temel Kavramlar tamamlandı. Beş kurulum yöntemi (Vagrant, kubeadm, MicroK8s, minikube, Kubespray) gerçekten kurulup test edilerek karşılaştırıldı. Edib Bey'in geri bildirimleri işlendi, etcd/Raft/CNI/kube-proxy konuları kendi araştırmamla derinleştirildi (devam ediyor — kubernetes.io/microservices.io okumaları kaldı). Sırada Temel Kaynaklar (Pod, ReplicaSet, Deployment) var.
 
 Tüm fazların (01–24) Türkçe/İngilizce belge dönüşümü tamamlandı.
 
@@ -50,9 +50,10 @@ Tüm fazların (01–24) Türkçe/İngilizce belge dönüşümü tamamlandı.
 - [26-IaC-Scanning](./26-IaC-Scanning/): Trivy config ile Dockerfile/YAML statik taraması, HEALTHCHECK. ([TR](./26-IaC-Scanning/readme.md) / [EN](./26-IaC-Scanning/readme-en.md)) — Uygulamalı: ([TR](./26-IaC-Scanning/practice.md) / [EN](./26-IaC-Scanning/practice-en.md))
 - [27-Docker-Alternatives](./27-Docker-Alternatives/): Podman, containerd, CRI-O, Buildah — rootless/daemonless kanıtları, build hızı kıyaslaması. ([TR](./27-Docker-Alternatives/readme.md) / [EN](./27-Docker-Alternatives/readme-en.md)) — Uygulamalı: ([TR](./27-Docker-Alternatives/practice.md) / [EN](./27-Docker-Alternatives/practice-en.md))
 - [28-Kubernetes-Fundamentals](./28-Kubernetes-Fundamentals/): Kubernetes temel kavramları — GitOps, konteyner tarihi, self-healing, envsubst, küme mimarisi (kube-apiserver, etcd, kube-scheduler, kubelet, coredns, kube-proxy, CNI), kubectl. ([TR](./28-Kubernetes-Fundamentals/readme.md) / [EN](./28-Kubernetes-Fundamentals/readme-en.md))
-  [additionals/ssl](./additionals/ssl/): SSL/TLS'in çalışma mantığının, hiç teknik terim kullanılmadan, tamamen gerçek dünya benzetmesiyle (iki firma arasında mühürlü mektup, noter zinciri, kurumsal evrak kontrol bürosu) anlatımı. ([TR](./additionals/ssl/readme.md) / [EN](./additionals/ssl/readme-en.md))
 - [29-Kubernetes-Kurulum](./29-Kubernetes-Kurulum/): Beş kurulum yönteminin (Vagrant, kubeadm, MicroK8s, minikube, Kubespray) gerçek kurulup test edilerek karşılaştırılması — güncel olmayan kaynaklar, port çakışmaları, eski kalıntı temizliği dahil. ([TR](./29-Kubernetes-Kurulum/readme.md) / [EN](./29-Kubernetes-Kurulum/readme-en.md))
+- [additionals/ssl](./additionals/ssl/): SSL/TLS'in çalışma mantığının, hiç teknik terim kullanılmadan, tamamen gerçek dünya benzetmesiyle (iki firma arasında mühürlü mektup, noter zinciri, kurumsal evrak kontrol bürosu) anlatımı. ([TR](./additionals/ssl/readme.md) / [EN](./additionals/ssl/readme-en.md))
 - [additionals/security-situation](./additionals/security-situation/): Gerçek bir güvenlik olayı — DNS rebinding ve açık forward proxy (SSRF) ile sunucunun kötüye kullanılması, kök sebep analizi ve çözüm. ([TR](./additionals/security-situation/readme.md) / [EN](./additionals/security-situation/readme-en.md))
+- [additionals/kubernetes-terim-derinlesmesi](./additionals/kubernetes-terim-derinlesmesi/): Edib Bey'in geri bildirimi üzerine kendi araştırdığım konular — etcd'nin genel mantığı, Raft protokolü, CNI/kube-proxy (VXLAN, BGP, Service, iptables/IPVS). Devam eden bir belge. ([TR](./additionals/kubernetes-terim-derinlesmesi/readme.md) / [EN](./additionals/kubernetes-terim-derinlesmesi/readme-en.md))
 
 ### 📝 Değerlendirme & Sınav Materyalleri
 
@@ -608,9 +609,11 @@ _kubeadm kurulumuna devam ettim. `kubeadm init` başarıyla tamamlandı, ama son
 - **Kilometre Taşları & Çıktılar:**
   - ☸️ Kubernetes Kurulum Yöntemleri (devam ediyor): [README (TR](./29-Kubernetes-Kurulum/readme.md) / [EN)](./29-Kubernetes-Kurulum/readme-en.md)
 
-### 🔹 18 Ağustos 2026 | Kubespray Tamamlandı — Karşılaştırma Belgesi Bitti
+### 🔹 18 Ağustos 2026 | Kubespray Tamamlandı, Edib Bey'in Geri Bildirimleri İşlendi, etcd/Raft/CNI Derinleşmesi
 
-_Son yöntem olan Kubespray'e geçtim. k8s-tr sayfasının önerdiği envanter oluşturma script'inin kaldırılmış olduğunu keşfedip envanteri elle düzenledim. Sunucunun kendi kendine SSH ile bağlanabilmesi için yeni bir key oluşturdum, sudo parolası için `--ask-become-pass` ekledim. Kurulum 17 dakika ilerledikten sonra, kubeadm'den kalma eski bir etcd process'inin port çakışmasına sebep olduğunu buldum, öldürdüm — ama bu sefer daha köklü bir sorun çıktı: eski `/etc/kubernetes/` klasörü Kubespray'in beklediği yapıyla çakışıyordu, sertifika hatası aldım. Tam bir temizlik yapıp (`kubeadm reset`, ilgili klasörlerin silinmesi) Ansible playbook'unu sıfırdan çalıştırdım — bu sefer `failed=0`, tamamen başarılı. Dört yöntemi (Vagrant hariç) tek bir karşılaştırma belgesinde topladım, gerçek kurulum sürelerini ve gerçek toplam süreyi (3 gün, sorun giderme dahil) ayrı ayrı belirttim._
+_Son kurulum yöntemi olan Kubespray'e geçtim. k8s-tr sayfasının önerdiği envanter oluşturma script'inin kaldırılmış olduğunu keşfedip envanteri elle düzenledim. Sunucunun kendi kendine SSH ile bağlanabilmesi için yeni bir key oluşturdum, sudo parolası için `--ask-become-pass` ekledim. Kurulum 17 dakika ilerledikten sonra, kubeadm'den kalma eski bir etcd process'inin port çakışmasına sebep olduğunu buldum, öldürdüm — ama bu sefer daha köklü bir sorun çıktı: eski `/etc/kubernetes/` klasörü Kubespray'in beklediği yapıyla çakışıyordu, sertifika hatası aldım. Tam bir temizlik yapıp Ansible playbook'unu sıfırdan çalıştırdım — bu sefer `failed=0`, tamamen başarılı. Dört yöntemi (Vagrant hariç) tek bir karşılaştırma belgesinde topladım._
+
+_Ardından Edib Bey'in Kubernetes Temel Kavramlar belgesine verdiği geri bildirimleri işledim: kubectl bölümünü çıkardım ("kubectl bir tool sadece"), etcd/otel benzetmesindeki eksiği (etcd çökerse sistemin hiçbir şeyi hatırlamaması) ekledim, "silinmezlik" ifadesini compact/defrag mekanizmasıyla düzelttim, ve "Kubernetes bir datacenter gibi düşünülebilir" çerçevesini başa ekledim. Sonra Edib Bey'in backlog'una geçtim — kendi araştırıp, Claude ile soru-cevap yoluyla derinleştirdim: etcd'nin genel çalışma mantığını ve alternatiflerini (Zookeeper, Consul), Raft protokolünü (heartbeat, election timeout, term, split vote), ve "burası daha kritik" dediği CNI/kube-proxy konusunu (VXLAN/overlay vs BGP, Service'in sabit IP mantığı, kube-proxy'nin dağıtık yapısı, iptables/IPVS). Sunucumda gerçek kanıt da aradım — `vxlan.calico` arayüzünü bulup Calico'nun VXLAN kullandığını doğruladım._
 
 - **Görevler & Hedefler:**
   - Kubespray envanteri elle oluşturuldu (script kaldırıldığı için).
@@ -618,8 +621,12 @@ _Son yöntem olan Kubespray'e geçtim. k8s-tr sayfasının önerdiği envanter o
   - Eski etcd port çakışması ve `/etc/kubernetes/` klasör çakışması bulunup temizlendi.
   - Kubespray cluster'ı sıfırdan, sorunsuz kuruldu ve doğrulandı.
   - Beş yöntemin (Vagrant dahil) karşılaştırma belgesi tamamlandı.
+  - Edib Bey'in Faz 28 için verdiği tüm düzeltmeler uygulandı.
+  - etcd'nin genel mantığı, alternatifleri, Raft protokolü, ve CNI/kube-proxy (VXLAN, BGP, Service, iptables/IPVS) araştırılıp derinleştirildi, gerçek kanıtla (vxlan.calico) doğrulandı.
 - **Kilometre Taşları & Çıktılar:**
   - ☸️ Kubernetes Kurulum Yöntemleri: [README (TR](./29-Kubernetes-Kurulum/readme.md) / [EN)](./29-Kubernetes-Kurulum/readme-en.md)
+  - ☸️ Kubernetes Temel Kavramlar (güncellendi): [README (TR](./28-Kubernetes-Fundamentals/readme.md) / [EN)](./28-Kubernetes-Fundamentals/readme-en.md)
+  - 🔍 Kubernetes Terim Derinleşmesi: [README (TR](./additionals/kubernetes-terim-derinlesmesi/readme.md) / [EN)](./additionals/kubernetes-terim-derinlesmesi/readme-en.md)
 
 ---
 

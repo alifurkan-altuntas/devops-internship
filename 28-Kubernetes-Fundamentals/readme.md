@@ -2,6 +2,8 @@
 
 27. fazda Docker'ın alternatiflerini (Podman, containerd, CRI-O, Buildah) araştırdım. Bu fazda Kubernetes'e geçtim — k8s-tr.github.io roadmap'ini takip ederek Temel Kavramlar bölümünü (GitOps, Neden Konteynerlar, Docker, Küme Mimarisi) baştan sona işledim.
 
+**Baştan akılda tutulması gereken bir çerçeve:** Kubernetes, sunucular üzerinde çalışan all-in-one bir datacenter gibi düşünülebilir — network, storage, CPU, RAM hepsi mantıksal olarak yönetiliyor.
+
 ---
 
 ## 1. GitOps
@@ -72,13 +74,15 @@ Bu bölümü bir **otel** üzerinden kurdum — üç düzlem ayrımından başla
 
 **kube-apiserver = Resepsiyon.** Otele gelen herkes önce resepsiyona uğruyor, kayıt/rezervasyon kontrol ediliyor. Hiç kimse resepsiyonu atlayıp direkt bir odaya dalamıyor. Cluster'a gelen tüm REST isteklerinin kabul edilip doğrulandığı, etcd'ye tek bağlantı noktası olan bileşen. Static pod olarak kurulur: `/etc/kubernetes/manifests/kube-apiserver.yaml`.
 
-**etcd = Otelin Müşteri Kayıt Defteri.** Şu an hangi odada kim kaldığı, geçmişte kimlerin kaldığı hepsi bu defterde. Bir misafir çıkıp yenisi girdiğinde eski kaydın üzeri çizilmiyor, deftere yeni bir satır ekleniyor — **eski değer silinmez, silinmezlik yasası var** (immutability). Eski kayıtları temizlemek ayrı bir "compact" işlemiyle yapılıyor.
+**etcd = Otelin Müşteri Kayıt Defteri — Ama Birden Fazla Yedekli Nüshası Var.** Tek bir defter değil, birbirinin **aynısı, tek sayıda** (3, 5 gibi) kopyası bulunuyor. Şu an hangi odada kim kaldığı hepsi bu defterlerde, hepsi birbiriyle senkronize. Bir misafir çıkıp yenisi girdiğinde eski kaydın üzeri çizilmiyor, deftere yeni bir satır ekleniyor. Ama **bu, kayıtların sonsuza kadar tutulduğu anlamına gelmiyor** — eski sürümler kısa süreliğine geçmiş olarak kalıyor, düzenli aralıklarla **compact** işlemiyle temizleniyor, **defrag** ile de disk üzerindeki boşluk toparlanıyor.
 
-Defter **tek sayıda** kopya (3, 5 gibi) halinde tutuluyor — çünkü çift sayıların zaafiyeti olan 2'ye bölünme ve eşitlik (2-2 gibi berabere kalma) durumu tek sayılarda ortadan kalkıyor; her zaman net bir çoğunluk çıkıyor (Raft algoritmasıyla lider seçimi).
+Defter tek sayıda kopya halinde tutuluyor çünkü çift sayıların zaafiyeti olan 2'ye bölünme ve eşitlik (2-2 gibi berabere kalma) durumu tek sayılarda ortadan kalkıyor; her zaman net bir çoğunluk çıkıyor (Raft algoritmasıyla lider seçimi). Bu, aslında bir **yönetim kurulu** gibi çalışıyor — kurul üyelerinin hepsinde aynı bilgi var, kimse tek başına "ben kararı verdim" diyemiyor, çoğunluk onayı şart. Bu sayede iki farklı masanın aynı anda "lider benim" deyip birbirini yalanlaması (**split-brain** denen tehlikeli durum) engelleniyor.
+
+**Defterin asıl değeri sadece "geçmişi saklaması" değil.** Her kayda bir **sıra numarası** (revision) veriliyor — tıpkı GitHub'daki commit sırası gibi. Biri bir odayı güncellemeye çalışırken, elindeki bilgi güncel değilse (arada biri değiştirmişse), işlem **reddediliyor** — böylece iki kişinin aynı anda çakışan işlem yapması (bir ATM'den aynı anda iki para çekme isteği gibi) engelleniyor. Ayrıca defter, kayıtlar güncellendiğinde **ilgilenen herkese otomatik haber veriyor** (bir YouTube kanalına abone olup bildirim almak gibi) — kimse sürekli "değişti mi, değişti mi?" diye sormak zorunda kalmıyor. Bağlantı koparsa, kaldığı revision numarasından itibaren "benden sonra ne değişti" diye sorup (bir `git pull` gibi) kaldığı yerden devam edebiliyor.
 
 Defterdeki kayıtlar alfabetik/sıralı bir düzende (sözlük gibi) tutuluyor, düz bir sayfa düzeninde (ikili anahtar düzlemi) saklanıyor. Bu defter hizmeti, otelin diğer personelinden (static pod) farklı olarak **ayrı, bağımsız bir dış sistem** gibi çalışıyor (bağımsız Docker container). Kendi ayarlarına dışarıdan özel bir pencereden (`/config`, HTTP üzerinden) bakılabiliyor. Kaynak ihtiyacı olarak çok fazla CPU gerektirmiyor ama canlı sistemlerde 8GB bellek ve ortalama bir disk yeterli oluyor.
 
-**Kritik bir uyarı da öğrendim:** Bu kayıt defteri sistemi kararsız hale gelirse (yetersiz kaynak, ağ sorunu gibi nedenlerle), masalar arasında **hiçbir zaman net bir çoğunluk/lider seçilemiyor**. Böyle bir durumda otel, mevcut durumunda **hiçbir değişiklik yapamıyor** — yeni bir misafir kabul edilemiyor, yeni bir oda bile açılamıyor. Bu yüzden etcd'nin özenle, izole/kararlı bir ortamda çalıştırılması öneriliyor — tüm cluster'ın kararlılığı, bu tek deftere bağlı.
+**Kritik bir uyarı da öğrendim:** Bu kayıt defteri sistemi kararsız hale gelirse (yetersiz kaynak, ağ sorunu gibi nedenlerle), masalar arasında **hiçbir zaman net bir çoğunluk/lider seçilemiyor**. Böyle bir durumda otel, mevcut durumunda **hiçbir değişiklik yapamıyor** — yeni bir misafir kabul edilemiyor, yeni bir oda bile açılamıyor. Ve burada gerçek dünyadan bir fark var: fiziksel bir kayıt defteri yok olsa bile insanlar bir şeyleri hafızalarından hatırlayabilir — ama bu defter (etcd) çökerse, sistemde **hiçbir şey** o durumu hatırlamıyor, çünkü tüm otelin "hafızası" tamamen bu deftere bağlı. Bu yüzden etcd'nin özenle, izole/kararlı bir ortamda çalıştırılması öneriliyor.
 
 **kube-controller-manager = "Her Şey Yolunda mı" Kontrolcüsü.** İstenen durum ile gerçek durum arasındaki farkı sürekli kontrol edip düzeltmeye çalışıyor — GitOps'ta konuştuğumuz termostat mantığının aynısı.
 
@@ -106,15 +110,15 @@ Defterdeki kayıtlar alfabetik/sıralı bir düzende (sözlük gibi) tutuluyor, 
 
 ## 📊 Özet
 
-| Konu              | Ne Öğrendim                                                                                     |
-| ----------------- | ----------------------------------------------------------------------------------------------- |
-| GitOps            | Cluster'a elle dokunmak yerine Git'e yazılan hedefi bir aracın otomatik uygulaması              |
-| Konteyner tarihi  | 1979'a (chroot) kadar gidiyor, Docker'dan 34 yıl önce                                           |
-| envsubst          | Config'teki değişkenleri Dockerfile'daki ENV değerleriyle dolduran teknik                       |
-| Küme mimarisi     | Otel benzetmesiyle — resepsiyon (apiserver), kayıt defteri (etcd), kat sorumlusu (kubelet), vb. |
-| etcd immutability | Değer güncellenince eskisi silinmez, yeni sürüm eklenir                                         |
-| etcd tek sayı üye | Çift sayıda oylama berabere kalabilir, tek sayıda her zaman net çoğunluk çıkar                  |
-| self-healing      | Health check durumuna göre otomatik müdahale — HEALTHCHECK'in cluster seviyesindeki hali        |
+| Konu                | Ne Öğrendim                                                                                                  |
+| ------------------- | ------------------------------------------------------------------------------------------------------------ |
+| GitOps              | Cluster'a elle dokunmak yerine Git'e yazılan hedefi bir aracın otomatik uygulaması                           |
+| Konteyner tarihi    | 1979'a (chroot) kadar gidiyor, Docker'dan 34 yıl önce                                                        |
+| envsubst            | Config'teki değişkenleri Dockerfile'daki ENV değerleriyle dolduran teknik                                    |
+| Küme mimarisi       | Otel benzetmesiyle — resepsiyon (apiserver), kayıt defteri (etcd), kat sorumlusu (kubelet), vb.              |
+| etcd tek sayı üye   | Çift sayıda oylama berabere kalabilir, tek sayıda her zaman net çoğunluk çıkar — split-brain önleniyor       |
+| etcd revision/watch | Her değişiklik numaralanıyor (çakışma önleme), değişince ilgilenene otomatik haber veriliyor (polling değil) |
+| self-healing        | Health check durumuna göre otomatik müdahale — HEALTHCHECK'in cluster seviyesindeki hali                     |
 
 ---
 
