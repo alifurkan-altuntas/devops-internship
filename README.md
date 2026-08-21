@@ -14,7 +14,7 @@ Nginx derinleşmesi tamamlandı: reverse proxy, path bazlı yönlendirme, path r
 
 OpenResty (PostgreSQL, MySQL, Redis, token authentication) ve rclone ile S3 entegrasyonu tamamlandı — performans parametreleri, `rclone serve http` cache ve güvenlik (VFS cache, dir cache, auth, remote control), `rclone mount` ve VFS cache.
 
-Docker derinleşmesi tamamen bitti — temel kavramlar, güvenlik, ileri seviye güvenlik, IaC scanning, alternatif runtime'lar, ve son olarak Compose volume/network, PHP örneği, Windows containers dahil. Ayrıca SSL/TLS görevi tamamlandı. Kubernetes'e geçildi — Temel Kavramlar tamamlandı. Beş kurulum yöntemi (Vagrant, kubeadm, MicroK8s, minikube, Kubespray) gerçekten kurulup test edilerek karşılaştırıldı. Edib Bey'in geri bildirimleri işlendi, etcd/Raft/CNI/kube-proxy konuları kendi araştırmamla derinleştirildi (devam ediyor — kubernetes.io/microservices.io okumaları kaldı). Sırada Temel Kaynaklar (Pod, ReplicaSet, Deployment) var.
+Docker derinleşmesi tamamen bitti — temel kavramlar, güvenlik, ileri seviye güvenlik, IaC scanning, alternatif runtime'lar, ve son olarak Compose volume/network, PHP örneği, Windows containers dahil. Ayrıca SSL/TLS görevi tamamlandı. Kubernetes'e geçildi — Temel Kavramlar tamamlandı. Beş kurulum yöntemi (Vagrant, kubeadm, MicroK8s, minikube, Kubespray) gerçekten kurulup test edilerek karşılaştırıldı. etcd/Raft/CNI/kube-proxy konuları kendi araştırmamla derinleştirildi (devam ediyor — kubernetes.io/microservices.io okumaları kaldı). Sırada Temel Kaynaklar (Pod, ReplicaSet, Deployment) var.
 
 Tüm fazların (01–24) Türkçe/İngilizce belge dönüşümü tamamlandı.
 
@@ -53,7 +53,7 @@ Tüm fazların (01–24) Türkçe/İngilizce belge dönüşümü tamamlandı.
 - [29-Kubernetes-Kurulum](./29-Kubernetes-Kurulum/): Beş kurulum yönteminin (Vagrant, kubeadm, MicroK8s, minikube, Kubespray) gerçek kurulup test edilerek karşılaştırılması — güncel olmayan kaynaklar, port çakışmaları, eski kalıntı temizliği dahil. ([TR](./29-Kubernetes-Kurulum/readme.md) / [EN](./29-Kubernetes-Kurulum/readme-en.md))
 - [additionals/ssl](./additionals/ssl/): SSL/TLS'in çalışma mantığının, hiç teknik terim kullanılmadan, tamamen gerçek dünya benzetmesiyle (iki firma arasında mühürlü mektup, noter zinciri, kurumsal evrak kontrol bürosu) anlatımı. ([TR](./additionals/ssl/readme.md) / [EN](./additionals/ssl/readme-en.md))
 - [additionals/security-situation](./additionals/security-situation/): Gerçek bir güvenlik olayı — DNS rebinding ve açık forward proxy (SSRF) ile sunucunun kötüye kullanılması, kök sebep analizi ve çözüm. ([TR](./additionals/security-situation/readme.md) / [EN](./additionals/security-situation/readme-en.md))
-- [additionals/kubernetes-terim-derinlesmesi](./additionals/kubernetes-terim-derinlesmesi/): Edib Bey'in geri bildirimi üzerine kendi araştırdığım konular — etcd'nin genel mantığı, Raft protokolü, CNI/kube-proxy (VXLAN, BGP, Service, iptables/IPVS). Devam eden bir belge. ([TR](./additionals/kubernetes-terim-derinlesmesi/readme.md) / [EN](./additionals/kubernetes-terim-derinlesmesi/readme-en.md))
+- [additionals/kubernetes-terim-derinlesmesi](./additionals/kubernetes-terim-derinlesmesi/): Araştırdığım konular — etcd'nin genel mantığı, Raft protokolü, CNI/kube-proxy (VXLAN, BGP, Service, iptables/IPVS). Devam eden bir belge. ([TR](./additionals/kubernetes-terim-derinlesmesi/readme.md) / [EN](./additionals/kubernetes-terim-derinlesmesi/readme-en.md))
 
 ### 📝 Değerlendirme & Sınav Materyalleri
 
@@ -609,11 +609,11 @@ _kubeadm kurulumuna devam ettim. `kubeadm init` başarıyla tamamlandı, ama son
 - **Kilometre Taşları & Çıktılar:**
   - ☸️ Kubernetes Kurulum Yöntemleri (devam ediyor): [README (TR](./29-Kubernetes-Kurulum/readme.md) / [EN)](./29-Kubernetes-Kurulum/readme-en.md)
 
-### 🔹 18 Ağustos 2026 | Kubespray Tamamlandı, Edib Bey'in Geri Bildirimleri İşlendi, etcd/Raft/CNI Derinleşmesi
+### 🔹 18 Ağustos 2026 | Kubespray Tamamlandı, etcd/Raft/CNI Derinleşmesi
 
 _Son kurulum yöntemi olan Kubespray'e geçtim. k8s-tr sayfasının önerdiği envanter oluşturma script'inin kaldırılmış olduğunu keşfedip envanteri elle düzenledim. Sunucunun kendi kendine SSH ile bağlanabilmesi için yeni bir key oluşturdum, sudo parolası için `--ask-become-pass` ekledim. Kurulum 17 dakika ilerledikten sonra, kubeadm'den kalma eski bir etcd process'inin port çakışmasına sebep olduğunu buldum, öldürdüm — ama bu sefer daha köklü bir sorun çıktı: eski `/etc/kubernetes/` klasörü Kubespray'in beklediği yapıyla çakışıyordu, sertifika hatası aldım. Tam bir temizlik yapıp Ansible playbook'unu sıfırdan çalıştırdım — bu sefer `failed=0`, tamamen başarılı. Dört yöntemi (Vagrant hariç) tek bir karşılaştırma belgesinde topladım._
 
-_Ardından Edib Bey'in Kubernetes Temel Kavramlar belgesine verdiği geri bildirimleri işledim: kubectl bölümünü çıkardım ("kubectl bir tool sadece"), etcd/otel benzetmesindeki eksiği (etcd çökerse sistemin hiçbir şeyi hatırlamaması) ekledim, "silinmezlik" ifadesini compact/defrag mekanizmasıyla düzelttim, ve "Kubernetes bir datacenter gibi düşünülebilir" çerçevesini başa ekledim. Sonra Edib Bey'in backlog'una geçtim — kendi araştırıp, Claude ile soru-cevap yoluyla derinleştirdim: etcd'nin genel çalışma mantığını ve alternatiflerini (Zookeeper, Consul), Raft protokolünü (heartbeat, election timeout, term, split vote), ve "burası daha kritik" dediği CNI/kube-proxy konusunu (VXLAN/overlay vs BGP, Service'in sabit IP mantığı, kube-proxy'nin dağıtık yapısı, iptables/IPVS). Sunucumda gerçek kanıt da aradım — `vxlan.calico` arayüzünü bulup Calico'nun VXLAN kullandığını doğruladım._
+_Ardından Kubernetes Temel Kavramlar belgesine verilen geri bildirimleri işledim: kubectl bölümünü çıkardım ("kubectl bir tool sadece"), etcd/otel benzetmesindeki eksiği (etcd çökerse sistemin hiçbir şeyi hatırlamaması) ekledim, "silinmezlik" ifadesini compact/defrag mekanizmasıyla düzelttim, ve "Kubernetes bir datacenter gibi düşünülebilir" çerçevesini başa ekledim. etcd'nin genel çalışma mantığını ve alternatiflerini (Zookeeper, Consul), Raft protokolünü (heartbeat, election timeout, term, split vote), ve "burası daha kritik" dediği CNI/kube-proxy konusunu (VXLAN/overlay vs BGP, Service'in sabit IP mantığı, kube-proxy'nin dağıtık yapısı, iptables/IPVS). Sunucumda gerçek kanıt da aradım — `vxlan.calico` arayüzünü bulup Calico'nun VXLAN kullandığını doğruladım._
 
 - **Görevler & Hedefler:**
   - Kubespray envanteri elle oluşturuldu (script kaldırıldığı için).
@@ -621,12 +621,42 @@ _Ardından Edib Bey'in Kubernetes Temel Kavramlar belgesine verdiği geri bildir
   - Eski etcd port çakışması ve `/etc/kubernetes/` klasör çakışması bulunup temizlendi.
   - Kubespray cluster'ı sıfırdan, sorunsuz kuruldu ve doğrulandı.
   - Beş yöntemin (Vagrant dahil) karşılaştırma belgesi tamamlandı.
-  - Edib Bey'in Faz 28 için verdiği tüm düzeltmeler uygulandı.
   - etcd'nin genel mantığı, alternatifleri, Raft protokolü, ve CNI/kube-proxy (VXLAN, BGP, Service, iptables/IPVS) araştırılıp derinleştirildi, gerçek kanıtla (vxlan.calico) doğrulandı.
 - **Kilometre Taşları & Çıktılar:**
   - ☸️ Kubernetes Kurulum Yöntemleri: [README (TR](./29-Kubernetes-Kurulum/readme.md) / [EN)](./29-Kubernetes-Kurulum/readme-en.md)
   - ☸️ Kubernetes Temel Kavramlar (güncellendi): [README (TR](./28-Kubernetes-Fundamentals/readme.md) / [EN)](./28-Kubernetes-Fundamentals/readme-en.md)
   - 🔍 Kubernetes Terim Derinleşmesi: [README (TR](./additionals/kubernetes-terim-derinlesmesi/readme.md) / [EN)](./additionals/kubernetes-terim-derinlesmesi/readme-en.md)
+
+## 🔹 19 Ağustos 2026 | Temel Kaynaklar — Pod/ReplicaSet/Deployment, Service
+
+_Roadmap'in Temel Kaynaklar bölümüne başladım. Pod, ReplicaSet, Deployment sayfasını işledim — düz bir Pod'un neden kendi kendini iyileştirmediğini, ReplicaSet controller'ın kube-controller-manager'ın içindeki bir döngü olduğunu, ve ReplicaSet'in template değişikliğini var olan pod'lara hiç uygulamadığını (sadece yeni pod'larda kullandığını) kendi mantık yürütmemle buldum. Deployment ile gerçek bir rolling update testi yaptım — `kubectl set image` ile v1'den v2'ye geçtim, `-w` ile canlı izledim: önce yeni pod `Running` oldu, ancak ondan sonra eski pod `Terminating`'e geçti, hiçbir an sıfır pod olmadı. Geçici bir `Error` durumu gördüm, bunun gerçek bir hata değil container kapanma anının normal bir görüntüsü olduğunu `describe`/`get pods` ile doğruladım. 15 soruluk bir quiz çözdüm, 15/15 aldım._
+
+_Sonra Service sayfasına geçtim. Selector→endpoints→DNS zincirini işledim, "sabit kargo kabul numarası" benzetmesini bu sefer DNS'i atlamadan kurdum. NodePort ile LoadBalancer'ı gerçek testle karşılaştırdım — LoadBalancer'ın `EXTERNAL-IP`'sinin bulut sağlayıcı entegrasyonu olmadığı için sonsuza kadar `<pending>` kaldığını, ama otomatik atanan NodePort'un (`31720`) gerçek IP üzerinden çalıştığını kanıtladım. `curl localhost:31720` başarısız oldu ama `curl 91.151.88.38:31720` çalıştı — bu ayrımın sebebini (`127.0.0.1`'in pod içinden bakınca "kendisi" anlamına gelmesi, buna hairpin NAT deniyor) araştırıp anladım, `ss -tlnp | grep 31720`'nin boş dönmesiyle iptables/DNAT tabanlı NodePort mekanizmasını da kanıtladım._
+
+- **Görevler & Hedefler:**
+  - Pod, ReplicaSet, Deployment roadmap sayfası işlendi.
+  - Gerçek bir rolling update testi yapıldı, `-w` ile canlı izlendi, `Error` durumunun geçici olduğu doğrulandı.
+  - Pod/ReplicaSet/Deployment quiz'i çözüldü — 15/15.
+  - Service sayfası işlendi, DNS/selector/endpoints zinciri düzeltilerek anlatıldı.
+  - NodePort/LoadBalancer gerçek testle karşılaştırıldı, hairpin NAT bilmecesi çözüldü.
+- **Kilometre Taşları & Çıktılar:**
+  - Belge henüz yazılmadı — Temel Kaynaklar bölümü tamamlanınca (ConfigMaps, Secrets, Kanarya Deployment dahil) tek seferde yazılacak.
+
+## 🔹 20 Ağustos 2026 | Temel Kaynaklar — Service (Label Yetenekleri, ExternalName)
+
+_19 Ağustos'ta kaldığım yerden, Service sayfasının geri kalanını işledim. "Label Yetenekleri" bölümünü gerçek bir testle kanıtladım — hiçbir pod'un başta sahip olmadığı bir etiketi (`inservice: mypods`) arayan bir Service kurdum, `endpoints` boş çıktı. Sonra pod'lara elle bu etiketi ekleyip çıkarıp, `endpoints`'in Service'i hiç yeniden başlatmadan, anında güncellendiğini gördüm — hatta iki tamamen farklı Deployment'tan (`web1`, `web2`) gelen pod'ları aynı Service'in havuzunda birleştirebildiğimi kanıtladım._
+
+_Bir önceki günden kalan "hairpin NAT" (localhost üzerinden NodePort'un çalışmaması) sorununu gerçekten anladım — `127.0.0.1`'in, isteği gönderen için "sunucunun kendisi" ama pod'un bakış açısından "pod'un kendisi" anlamına geldiğini, bu göreceli anlamın NAT sırasında doğru düzeltilmezse (masquerade eksikse) cevabın yanlış yere gittiğini kavradım._
+
+_Son olarak ExternalName türünü işledim — bunun `selector`/`endpoints` içermeyen, sadece bir DNS CNAME kaydı oluşturan özel bir Service türü olduğunu, hiçbir trafiği kendisinin taşımadığını gerçek bir testle kanıtladım: bir ExternalName Service'i `google.com`'a yönlendirdim, bir test pod'u içinden DNS sorgusu attım, gerçek Google IP'lerinin döndüğünü gördüm — kube-proxy/iptables'ın bu sürece hiç dahil olmadığını doğruladım. Service sayfası (ClusterIP, NodePort, LoadBalancer, ExternalName, Label Yetenekleri) tamamen bitti._
+
+- **Görevler & Hedefler:**
+  - Label Yetenekleri (Service'in etiket bazlı, canlı/dinamik eşleştirmesi) gerçek testle kanıtlandı.
+  - Farklı Deployment'lardan pod'ların aynı Service'te birleşebildiği doğrulandı.
+  - Hairpin NAT'ın gerçek sebebi (127.0.0.1'in göreceli anlamı) kavrandı.
+  - ExternalName türü işlendi, CNAME mekanizması gerçek DNS sorgusuyla kanıtlandı.
+- **Kilometre Taşları & Çıktılar:**
+  - Belge henüz yazılmadı — Temel Kaynaklar bölümü tamamlanınca (ConfigMaps, Secrets, Kanarya Deployment dahil) tek seferde yazılacak.
 
 ---
 

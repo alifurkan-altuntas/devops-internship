@@ -14,7 +14,7 @@ Completed Nginx deep dive: reverse proxy, path-based routing, path rewrite, path
 
 Completed OpenResty (PostgreSQL, MySQL, Redis, token authentication) and rclone with S3 — performance parameters, `rclone serve http` cache and security (VFS cache, dir cache, auth, remote control), `rclone mount` and VFS cache.
 
-Docker deep dive is fully complete — fundamentals, security, advanced security, IaC scanning, alternative runtimes, and finally Compose volume/network, the PHP example, and Windows containers. The SSL/TLS task is also complete. Moved on to Kubernetes — Fundamental Concepts are complete. All five installation methods (Vagrant, kubeadm, MicroK8s, minikube, Kubespray) were actually installed, tested, and compared. Applied Edib Bey's feedback, and deepened understanding of etcd/Raft/CNI/kube-proxy through self-research (ongoing — kubernetes.io/microservices.io readings still remain). Up next: Basic Resources (Pod, ReplicaSet, Deployment).
+Docker deep dive is fully complete — fundamentals, security, advanced security, IaC scanning, alternative runtimes, and finally Compose volume/network, the PHP example, and Windows containers. The SSL/TLS task is also complete. Moved on to Kubernetes — Fundamental Concepts are complete. All five installation methods (Vagrant, kubeadm, MicroK8s, minikube, Kubespray) were actually installed, tested, and compared. Deepened understanding of etcd/Raft/CNI/kube-proxy through self-research (ongoing — kubernetes.io/microservices.io readings still remain). Up next: Basic Resources (Pod, ReplicaSet, Deployment).
 
 Bilingual documentation (TR/EN) complete for all phases (01–24).
 
@@ -53,7 +53,7 @@ Bilingual documentation (TR/EN) complete for all phases (01–24).
 - [29-Kubernetes-Kurulum](./29-Kubernetes-Kurulum/): A real, hands-on comparison of five installation methods (Vagrant, kubeadm, MicroK8s, minikube, Kubespray) — including outdated sources, port conflicts, and leftover cleanup. ([TR](./29-Kubernetes-Kurulum/readme.md) / [EN](./29-Kubernetes-Kurulum/readme-en.md))
 - [additionals/ssl](./additionals/ssl/): An explanation of how SSL/TLS works, with no technical terminology at all, entirely through a real-world analogy (a sealed letter between two companies, a notary chain, a corporate mail-control office). ([TR](./additionals/ssl/readme.md) / [EN](./additionals/ssl/readme-en.md))
 - [additionals/security-situation](./additionals/security-situation/): A real security incident — a server abused via DNS rebinding and an open forward proxy (SSRF), with root cause analysis and fix. ([TR](./additionals/security-situation/readme.md) / [EN](./additionals/security-situation/readme-en.md))
-- [additionals/kubernetes-terim-derinlesmesi](./additionals/kubernetes-terim-derinlesmesi/): Topics I researched myself based on Edib Bey's feedback — etcd's general mechanics, the Raft protocol, CNI/kube-proxy (VXLAN, BGP, Service, iptables/IPVS). An ongoing document. ([TR](./additionals/kubernetes-terim-derinlesmesi/readme.md) / [EN](./additionals/kubernetes-terim-derinlesmesi/readme-en.md))
+- [additionals/kubernetes-terim-derinlesmesi](./additionals/kubernetes-terim-derinlesmesi/): Topics I researched myself — etcd's general mechanics, the Raft protocol, CNI/kube-proxy (VXLAN, BGP, Service, iptables/IPVS). An ongoing document. ([TR](./additionals/kubernetes-terim-derinlesmesi/readme.md) / [EN](./additionals/kubernetes-terim-derinlesmesi/readme-en.md))
 
 ### 📝 Evaluation & Assessment Artifacts
 
@@ -609,11 +609,11 @@ _Continued the kubeadm installation. `kubeadm init` completed successfully, thou
 - **Milestones & Deliverables:**
   - ☸️ Kubernetes Installation Methods (in progress): [README (TR](./29-Kubernetes-Kurulum/readme.md) / [EN)](./29-Kubernetes-Kurulum/readme-en.md)
 
-### 🔹 August 18, 2026 | Kubespray Completed, Applied Edib Bey's Feedback, etcd/Raft/CNI Deep Dive
+### 🔹 August 18, 2026 | Kubespray Completed, etcd/Raft/CNI Deep Dive
 
 _Moved on to the last method, Kubespray. Discovered the inventory-building script k8s-tr recommends had been removed, edited the inventory manually instead. Generated a new SSH key so the server could connect to itself, added `--ask-become-pass` for the sudo password. 17 minutes into the install, found that an old leftover etcd process from kubeadm was causing a port conflict, killed it — but this revealed a deeper issue: the old `/etc/kubernetes/` directory conflicted with the structure Kubespray expected, causing a certificate error. Did a full cleanup and ran the Ansible playbook from scratch — this time `failed=0`, fully successful. Compiled all four methods (Vagrant excluded) into a single comparison document._
 
-_Then applied Edib Bey's feedback on the Kubernetes Fundamentals document: removed the kubectl section ("kubectl is just a tool"), fixed the gap in the etcd/hotel analogy (etcd failure means the system remembers nothing), corrected the "immutability" claim with the compact/defrag mechanism, and added the "Kubernetes can be thought of as a datacenter" framing at the top. Then moved on to Edib Bey's backlog — researched and deepened my understanding through back-and-forth questions with Claude: etcd's general working principle and its alternatives (Zookeeper, Consul), the Raft protocol (heartbeat, election timeout, term, split vote), and the CNI/kube-proxy topic Edib Bey called "more critical" (VXLAN/overlay vs BGP, the Service's fixed-IP logic, kube-proxy's distributed design, iptables/IPVS). Also looked for real proof on my server — found the `vxlan.calico` interface and confirmed Calico was using VXLAN._
+_Removed the kubectl section ("kubectl is just a tool"), fixed the gap in the etcd/hotel analogy (etcd failure means the system remembers nothing), corrected the "immutability" claim with the compact/defrag mechanism, and added the "Kubernetes can be thought of as a datacenter" framing at the top. researched and deepened my understanding through back-and-forth questions with Claude: etcd's general working principle and its alternatives (Zookeeper, Consul), the Raft protocol (heartbeat, election timeout, term, split vote), and the CNI/kube-proxy topic "more critical" (VXLAN/overlay vs BGP, the Service's fixed-IP logic, kube-proxy's distributed design, iptables/IPVS). Also looked for real proof on my server — found the `vxlan.calico` interface and confirmed Calico was using VXLAN._
 
 - **Tasks & Objectives:**
   - Manually built the Kubespray inventory (since the script was removed).
@@ -621,12 +621,42 @@ _Then applied Edib Bey's feedback on the Kubernetes Fundamentals document: remov
   - Found and cleaned up the old etcd port conflict and the `/etc/kubernetes/` directory conflict.
   - Set up the Kubespray cluster from scratch, cleanly, and verified it.
   - Completed the comparison document for all five methods (including Vagrant).
-  - Applied all of Edib Bey's corrections to Phase 28.
   - Researched and deepened understanding of etcd's general mechanics, its alternatives, the Raft protocol, and CNI/kube-proxy (VXLAN, BGP, Service, iptables/IPVS), verified with real evidence (vxlan.calico).
 - **Milestones & Deliverables:**
   - ☸️ Kubernetes Installation Methods: [README (TR](./29-Kubernetes-Kurulum/readme.md) / [EN)](./29-Kubernetes-Kurulum/readme-en.md)
   - ☸️ Kubernetes Fundamentals (updated): [README (TR](./28-Kubernetes-Fundamentals/readme.md) / [EN)](./28-Kubernetes-Fundamentals/readme-en.md)
   - 🔍 Kubernetes Terminology Deep Dive: [README (TR](./additionals/kubernetes-terim-derinlesmesi/readme.md) / [EN)](./additionals/kubernetes-terim-derinlesmesi/readme-en.md)
+
+### 🔹 August 19, 2026 | Basic Resources — Pod/ReplicaSet/Deployment, Service
+
+_Started the roadmap's Basic Resources section. Worked through the Pod, ReplicaSet, Deployment page — worked out through my own reasoning why a standalone Pod doesn't self-heal, that the ReplicaSet controller is a loop inside kube-controller-manager, and that ReplicaSet never applies a template change to existing pods (only uses it for new ones). Ran a real rolling update test with a Deployment — used `kubectl set image` to go from v1 to v2, watched it live with `-w`: the new pod became `Running` first, only then did the old pod move to `Terminating`, never a moment with zero pods. Saw a transient `Error` state, confirmed via `describe`/`get pods` that it wasn't a real error, just the normal appearance of a container shutting down. Took a 15-question quiz, scored 15/15._
+
+_Then moved to the Service page. Worked through the selector→endpoints→DNS chain, rebuilding the "fixed package reception number" analogy this time without skipping DNS. Compared NodePort and LoadBalancer with a real test — proved LoadBalancer's `EXTERNAL-IP` stays `<pending>` forever without cloud provider integration, but the automatically assigned NodePort (`31720`) worked fine over the real IP. `curl localhost:31720` failed but `curl 91.151.88.38:31720` worked — researched and understood the cause (`127.0.0.1` means "itself" from the pod's own perspective, called hairpin NAT), and confirmed the iptables/DNAT-based NodePort mechanism via an empty `ss -tlnp | grep 31720` result._
+
+- **Tasks & Objectives:**
+  - Worked through the Pod, ReplicaSet, Deployment roadmap page.
+  - Ran a real rolling update test, watched live with `-w`, confirmed the `Error` state was transient.
+  - Took the Pod/ReplicaSet/Deployment quiz — 15/15.
+  - Worked through the Service page, corrected the explanation to include the DNS/selector/endpoints chain.
+  - Compared NodePort/LoadBalancer with a real test, solved the hairpin NAT puzzle.
+- **Milestones & Deliverables:**
+  - Document not written yet — will be written once the whole Basic Resources section (including ConfigMaps, Secrets, Canary Deployment) is complete.
+
+### 🔹 August 20, 2026 | Basic Resources — Service (Label Magic, ExternalName)
+
+_Continued from where I left off on August 19, working through the rest of the Service page. Proved the "Label Magic" section with a real test — set up a Service looking for a label (`inservice: mypods`) that no pod had initially, `endpoints` came back empty. Then manually added and removed this label on pods, and saw `endpoints` update instantly without ever restarting the Service — even proved that pods from two completely different Deployments (`web1`, `web2`) could be merged into the same Service's pool._
+
+_Really understood the "hairpin NAT" issue left over from the previous day (NodePort not working via localhost) — grasped that `127.0.0.1` means "the server itself" from the sender's perspective but "the pod itself" from the pod's perspective, and that if this relative meaning isn't corrected during NAT (missing masquerade), the reply goes to the wrong place._
+
+_Finally, worked through the ExternalName type — proved with a real test that it's a special Service type with no `selector`/`endpoints`, that only creates a DNS CNAME record and never carries any traffic itself: pointed an ExternalName Service at `google.com`, ran a DNS query from inside a test pod, and got real Google IPs back — confirming kube-proxy/iptables never gets involved in this process at all. The Service page (ClusterIP, NodePort, LoadBalancer, ExternalName, Label Magic) is now fully complete._
+
+- **Tasks & Objectives:**
+  - Proved Label Magic (Service's live/dynamic label-based matching) with a real test.
+  - Confirmed pods from different Deployments can join the same Service.
+  - Understood the real cause of hairpin NAT (the relative meaning of 127.0.0.1).
+  - Worked through the ExternalName type, proved the CNAME mechanism with a real DNS query.
+- **Milestones & Deliverables:**
+  - Document not written yet — will be written once the whole Basic Resources section (including ConfigMaps, Secrets, Canary Deployment) is complete.
 
 ---
 
