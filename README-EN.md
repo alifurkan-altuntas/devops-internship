@@ -14,7 +14,7 @@ Completed Nginx deep dive: reverse proxy, path-based routing, path rewrite, path
 
 Completed OpenResty (PostgreSQL, MySQL, Redis, token authentication) and rclone with S3 — performance parameters, `rclone serve http` cache and security (VFS cache, dir cache, auth, remote control), `rclone mount` and VFS cache.
 
-Docker deep dive is fully complete — fundamentals, security, advanced security, IaC scanning, alternative runtimes, and finally Compose volume/network, the PHP example, and Windows containers. The SSL/TLS task is also complete. Moved on to Kubernetes — Fundamental Concepts are complete. All five installation methods (Vagrant, kubeadm, MicroK8s, minikube, Kubespray) were actually installed, tested, and compared. Deepened understanding of etcd/Raft/CNI/kube-proxy through self-research (ongoing — kubernetes.io/microservices.io readings still remain). Up next: Basic Resources (Pod, ReplicaSet, Deployment).
+Docker deep dive is fully complete — fundamentals, security, advanced security, IaC scanning, alternative runtimes, and finally Compose volume/network, the PHP example, and Windows containers. The SSL/TLS task is also complete. Moved on to Kubernetes — Fundamental Concepts and all five installation methods are complete. The Basic Resources section (Pod/ReplicaSet/Deployment, Service, ConfigMaps, Secrets, Canary Deployment) is also complete, proven with real tests. Also deepened understanding of etcd/Raft/CNI-kube-proxy through self-research based on Edib Bey's feedback (ongoing — kubernetes.io/microservices.io readings, deeper BGP/VXLAN research, and trying Cilium remain). Up next: Other Resources (StatefulSets, Volumes, Ingress, Jobs & Cronjobs).
 
 Bilingual documentation (TR/EN) complete for all phases (01–24).
 
@@ -50,7 +50,8 @@ Bilingual documentation (TR/EN) complete for all phases (01–24).
 - [26-IaC-Scanning](./26-IaC-Scanning/): Static scanning of Dockerfile/YAML with Trivy config, HEALTHCHECK. ([TR](./26-IaC-Scanning/readme.md) / [EN](./26-IaC-Scanning/readme-en.md)) — Hands-on: ([TR](./26-IaC-Scanning/practice.md) / [EN](./26-IaC-Scanning/practice-en.md))
 - [27-Docker-Alternatives](./27-Docker-Alternatives/): Podman, containerd, CRI-O, Buildah — rootless/daemonless proofs, build speed comparison. ([TR](./27-Docker-Alternatives/readme.md) / [EN](./27-Docker-Alternatives/readme-en.md)) — Hands-on: ([TR](./27-Docker-Alternatives/practice.md) / [EN](./27-Docker-Alternatives/practice-en.md))
 - [28-Kubernetes-Fundamentals](./28-Kubernetes-Fundamentals/): Kubernetes fundamentals — GitOps, container history, self-healing, envsubst, cluster architecture (kube-apiserver, etcd, kube-scheduler, kubelet, coredns, kube-proxy, CNI), kubectl. ([TR](./28-Kubernetes-Fundamentals/readme.md) / [EN](./28-Kubernetes-Fundamentals/readme-en.md))
-- [29-Kubernetes-Kurulum](./29-Kubernetes-Kurulum/): A real, hands-on comparison of five installation methods (Vagrant, kubeadm, MicroK8s, minikube, Kubespray) — including outdated sources, port conflicts, and leftover cleanup. ([TR](./29-Kubernetes-Kurulum/readme.md) / [EN](./29-Kubernetes-Kurulum/readme-en.md))
+- [29-Kubernetes-Installation](./29-Kubernetes-Installation/): A real, hands-on comparison of five installation methods (Vagrant, kubeadm, MicroK8s, minikube, Kubespray) — including outdated sources, port conflicts, and leftover cleanup. ([TR](./29-Kubernetes-Installation/readme.md) / [EN](./29-Kubernetes-Installation/readme-en.md))
+- [30-Kubernetes-Basic-Resources](./30-Kubernetes-Basic-Resources/): Pod, ReplicaSet, Deployment, Service (all types), ConfigMaps, Secrets (base64 vs real encryption, EncryptionConfiguration), Canary Deployment — all proven with real tests. ([TR](./30-Kubernetes-Basic-Resources/readme.md) / [EN](./30-Kubernetes-Basic-Resources/readme-en.md))
 - [additionals/ssl](./additionals/ssl/): An explanation of how SSL/TLS works, with no technical terminology at all, entirely through a real-world analogy (a sealed letter between two companies, a notary chain, a corporate mail-control office). ([TR](./additionals/ssl/readme.md) / [EN](./additionals/ssl/readme-en.md))
 - [additionals/security-situation](./additionals/security-situation/): A real security incident — a server abused via DNS rebinding and an open forward proxy (SSRF), with root cause analysis and fix. ([TR](./additionals/security-situation/readme.md) / [EN](./additionals/security-situation/readme-en.md))
 - [additionals/kubernetes-terim-derinlesmesi](./additionals/kubernetes-terim-derinlesmesi/): Topics I researched myself — etcd's general mechanics, the Raft protocol, CNI/kube-proxy (VXLAN, BGP, Service, iptables/IPVS). An ongoing document. ([TR](./additionals/kubernetes-terim-derinlesmesi/readme.md) / [EN](./additionals/kubernetes-terim-derinlesmesi/readme-en.md))
@@ -595,7 +596,7 @@ _Started working through the k8s-tr roadmap's "Installation" section. Decided to
   - Identified outdated k8s-tr repo addresses for CRI-O and kubeadm/kubelet/kubectl and researched current ones.
   - Permanently disabled swap (via `/etc/fstab` edit).
 - **Milestones & Deliverables:**
-  - ☸️ Kubernetes Installation Methods (in progress): [README (TR](./29-Kubernetes-Kurulum/readme.md) / [EN)](./29-Kubernetes-Kurulum/readme-en.md)
+  - ☸️ Kubernetes Installation Methods (in progress): [README (TR](./29-Kubernetes-Installation/readme.md) / [EN)](./29-Kubernetes-Installation/readme-en.md)
 
 ### 🔹 August 17, 2026 | kubeadm Completed, MicroK8s and minikube Tested
 
@@ -607,7 +608,7 @@ _Continued the kubeadm installation. `kubeadm init` completed successfully, thou
   - Found and fixed an old Podman network config overriding Calico.
   - Installed MicroK8s and minikube, verified both with real pod tests.
 - **Milestones & Deliverables:**
-  - ☸️ Kubernetes Installation Methods (in progress): [README (TR](./29-Kubernetes-Kurulum/readme.md) / [EN)](./29-Kubernetes-Kurulum/readme-en.md)
+  - ☸️ Kubernetes Installation Methods (in progress): [README (TR](./29-Kubernetes-Installation/readme.md) / [EN)](./29-Kubernetes-Installation/readme-en.md)
 
 ### 🔹 August 18, 2026 | Kubespray Completed, etcd/Raft/CNI Deep Dive
 
@@ -623,7 +624,7 @@ _Removed the kubectl section ("kubectl is just a tool"), fixed the gap in the et
   - Completed the comparison document for all five methods (including Vagrant).
   - Researched and deepened understanding of etcd's general mechanics, its alternatives, the Raft protocol, and CNI/kube-proxy (VXLAN, BGP, Service, iptables/IPVS), verified with real evidence (vxlan.calico).
 - **Milestones & Deliverables:**
-  - ☸️ Kubernetes Installation Methods: [README (TR](./29-Kubernetes-Kurulum/readme.md) / [EN)](./29-Kubernetes-Kurulum/readme-en.md)
+  - ☸️ Kubernetes Installation Methods: [README (TR](./29-Kubernetes-Installation/readme.md) / [EN)](./29-Kubernetes-Installation/readme-en.md)
   - ☸️ Kubernetes Fundamentals (updated): [README (TR](./28-Kubernetes-Fundamentals/readme.md) / [EN)](./28-Kubernetes-Fundamentals/readme-en.md)
   - 🔍 Kubernetes Terminology Deep Dive: [README (TR](./additionals/kubernetes-terim-derinlesmesi/readme.md) / [EN)](./additionals/kubernetes-terim-derinlesmesi/readme-en.md)
 
@@ -657,6 +658,24 @@ _Finally, worked through the ExternalName type — proved with a real test that 
   - Worked through the ExternalName type, proved the CNAME mechanism with a real DNS query.
 - **Milestones & Deliverables:**
   - Document not written yet — will be written once the whole Basic Resources section (including ConfigMaps, Secrets, Canary Deployment) is complete.
+
+### 🔹 August 21, 2026 | Basic Resources Completed — ConfigMaps, Secrets, Canary Deployment
+
+_Worked through the ConfigMaps page. Worked out through my own reasoning why even adding an environment variable (with no image change at all) triggers a rolling update — learned that Deployment treats any change to the template field as a "new version." Proved the asymmetry between environment-variable and volume-mounted ConfigMaps (one static, one live-updating) with a real test — watched a file's content change without the pod ever restarting. Researched the 12 Factor App methodology and found that ConfigMap is Kubernetes' implementation of that general principle._
+
+_Then moved to Secrets. Resolved a contradiction on the page (one part said "encrypted," another said "not encrypted") with a real test — proved base64 isn't encryption, that anyone can decode it with no key at all, even looked directly at etcd and saw the raw data was plaintext. Set up real encryption (EncryptionConfiguration) from scratch and updated kube-apiserver, tested before and after side by side — proved the old Secret stayed plaintext while the new Secret appeared genuinely encrypted. Also tested that volume-mounted Secrets update live, just like ConfigMaps._
+
+_Finally worked through Canary Deployment — connected two Deployments with the same label (3 replicas of v1, 1 replica of v3) to the same Service, and watched real traffic split between them roughly in proportion to replica count (about 3:1) with my own eyes. Went back and completed a few remaining gaps (Secret volume-mount, ConfigMap --from-env-file and script execution). The Basic Resources section is now fully complete — Pod/ReplicaSet/Deployment, Service (all types), ConfigMaps, Secrets, Canary Deployment._
+
+- **Tasks & Objectives:**
+  - Proved the ConfigMap environment-variable/volume-mount asymmetry with a real test.
+  - Researched 12 Factor App and connected it to ConfigMap.
+  - Proved Secrets are base64 (not encryption), both via kubectl and directly via etcd.
+  - Set up real encryption (EncryptionConfiguration) from scratch, tested before and after side by side.
+  - Proved Canary Deployment with real traffic distribution.
+  - Closed out all remaining gaps in the Basic Resources section.
+- **Milestones & Deliverables:**
+  - ☸️ Kubernetes Basic Resources: [README (TR](./30-Kubernetes-Basic-Resources/readme.md) / [EN)](./30-Kubernetes-Basic-Resources/readme-en.md)
 
 ---
 

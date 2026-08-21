@@ -14,7 +14,7 @@ Nginx derinleşmesi tamamlandı: reverse proxy, path bazlı yönlendirme, path r
 
 OpenResty (PostgreSQL, MySQL, Redis, token authentication) ve rclone ile S3 entegrasyonu tamamlandı — performans parametreleri, `rclone serve http` cache ve güvenlik (VFS cache, dir cache, auth, remote control), `rclone mount` ve VFS cache.
 
-Docker derinleşmesi tamamen bitti — temel kavramlar, güvenlik, ileri seviye güvenlik, IaC scanning, alternatif runtime'lar, ve son olarak Compose volume/network, PHP örneği, Windows containers dahil. Ayrıca SSL/TLS görevi tamamlandı. Kubernetes'e geçildi — Temel Kavramlar tamamlandı. Beş kurulum yöntemi (Vagrant, kubeadm, MicroK8s, minikube, Kubespray) gerçekten kurulup test edilerek karşılaştırıldı. etcd/Raft/CNI/kube-proxy konuları kendi araştırmamla derinleştirildi (devam ediyor — kubernetes.io/microservices.io okumaları kaldı). Sırada Temel Kaynaklar (Pod, ReplicaSet, Deployment) var.
+Docker derinleşmesi tamamen bitti — temel kavramlar, güvenlik, ileri seviye güvenlik, IaC scanning, alternatif runtime'lar, ve son olarak Compose volume/network, PHP örneği, Windows containers dahil. Ayrıca SSL/TLS görevi tamamlandı. Kubernetes'e geçildi — Temel Kavramlar ve beş kurulum yöntemi tamamlandı. Temel Kaynaklar bölümü de (Pod/ReplicaSet/Deployment, Service, ConfigMaps, Secrets, Kanarya Deployment) gerçek testlerle tamamlandı. Ayrıca Edib Bey'in geri bildirimleriyle etcd/Raft/CNI-kube-proxy konuları kendi araştırmamla derinleştirildi (devam ediyor — kubernetes.io/microservices.io okumaları, BGP/VXLAN teknik derinliği, Cilium denemesi kaldı). Sırada Diğer Kaynaklar (StatefulSets, Volumes, Ingress, Jobs & Cronjobs) var.
 
 Tüm fazların (01–24) Türkçe/İngilizce belge dönüşümü tamamlandı.
 
@@ -50,7 +50,8 @@ Tüm fazların (01–24) Türkçe/İngilizce belge dönüşümü tamamlandı.
 - [26-IaC-Scanning](./26-IaC-Scanning/): Trivy config ile Dockerfile/YAML statik taraması, HEALTHCHECK. ([TR](./26-IaC-Scanning/readme.md) / [EN](./26-IaC-Scanning/readme-en.md)) — Uygulamalı: ([TR](./26-IaC-Scanning/practice.md) / [EN](./26-IaC-Scanning/practice-en.md))
 - [27-Docker-Alternatives](./27-Docker-Alternatives/): Podman, containerd, CRI-O, Buildah — rootless/daemonless kanıtları, build hızı kıyaslaması. ([TR](./27-Docker-Alternatives/readme.md) / [EN](./27-Docker-Alternatives/readme-en.md)) — Uygulamalı: ([TR](./27-Docker-Alternatives/practice.md) / [EN](./27-Docker-Alternatives/practice-en.md))
 - [28-Kubernetes-Fundamentals](./28-Kubernetes-Fundamentals/): Kubernetes temel kavramları — GitOps, konteyner tarihi, self-healing, envsubst, küme mimarisi (kube-apiserver, etcd, kube-scheduler, kubelet, coredns, kube-proxy, CNI), kubectl. ([TR](./28-Kubernetes-Fundamentals/readme.md) / [EN](./28-Kubernetes-Fundamentals/readme-en.md))
-- [29-Kubernetes-Kurulum](./29-Kubernetes-Kurulum/): Beş kurulum yönteminin (Vagrant, kubeadm, MicroK8s, minikube, Kubespray) gerçek kurulup test edilerek karşılaştırılması — güncel olmayan kaynaklar, port çakışmaları, eski kalıntı temizliği dahil. ([TR](./29-Kubernetes-Kurulum/readme.md) / [EN](./29-Kubernetes-Kurulum/readme-en.md))
+- [29-Kubernetes-Installation](./29-Kubernetes-Installation/): Beş kurulum yönteminin (Vagrant, kubeadm, MicroK8s, minikube, Kubespray) gerçek kurulup test edilerek karşılaştırılması — güncel olmayan kaynaklar, port çakışmaları, eski kalıntı temizliği dahil. ([TR](./29-Kubernetes-Installation/readme.md) / [EN](./29-Kubernetes-Installation/readme-en.md))
+- [30-Kubernetes-Basic-Resources](./30-Kubernetes-Basic-Resources/): Pod, ReplicaSet, Deployment, Service (tüm türleri), ConfigMaps, Secrets (base64 vs gerçek şifreleme, EncryptionConfiguration), Kanarya Deployment — hepsi gerçek testlerle kanıtlandı. ([TR](./30-Kubernetes-Basic-Resources/readme.md) / [EN](./30-Kubernetes-Basic-Resources/readme-en.md))
 - [additionals/ssl](./additionals/ssl/): SSL/TLS'in çalışma mantığının, hiç teknik terim kullanılmadan, tamamen gerçek dünya benzetmesiyle (iki firma arasında mühürlü mektup, noter zinciri, kurumsal evrak kontrol bürosu) anlatımı. ([TR](./additionals/ssl/readme.md) / [EN](./additionals/ssl/readme-en.md))
 - [additionals/security-situation](./additionals/security-situation/): Gerçek bir güvenlik olayı — DNS rebinding ve açık forward proxy (SSRF) ile sunucunun kötüye kullanılması, kök sebep analizi ve çözüm. ([TR](./additionals/security-situation/readme.md) / [EN](./additionals/security-situation/readme-en.md))
 - [additionals/kubernetes-terim-derinlesmesi](./additionals/kubernetes-terim-derinlesmesi/): Araştırdığım konular — etcd'nin genel mantığı, Raft protokolü, CNI/kube-proxy (VXLAN, BGP, Service, iptables/IPVS). Devam eden bir belge. ([TR](./additionals/kubernetes-terim-derinlesmesi/readme.md) / [EN](./additionals/kubernetes-terim-derinlesmesi/readme-en.md))
@@ -595,7 +596,7 @@ _k8s-tr roadmap'inin "Kurulum" bölümünü işlemeye başladım. Beş yöntemi 
   - CRI-O ve kubeadm/kubelet/kubectl için güncel olmayan k8s-tr repo adresleri tespit edilip güncelleri araştırıldı.
   - Swap kalıcı olarak kapatıldı (`/etc/fstab` düzenlemesiyle).
 - **Kilometre Taşları & Çıktılar:**
-  - ☸️ Kubernetes Kurulum Yöntemleri (devam ediyor): [README (TR](./29-Kubernetes-Kurulum/readme.md) / [EN)](./29-Kubernetes-Kurulum/readme-en.md)
+  - ☸️ Kubernetes Kurulum Yöntemleri (devam ediyor): [README (TR](./29-Kubernetes-Installation/readme.md) / [EN)](./29-Kubernetes-Installation/readme-en.md)
 
 ## 🔹 17 Ağustos 2026 | kubeadm Tamamlandı, MicroK8s ve minikube Test Edildi
 
@@ -607,7 +608,7 @@ _kubeadm kurulumuna devam ettim. `kubeadm init` başarıyla tamamlandı, ama son
   - Eski Podman ağ config'inin Calico'nun önüne geçmesi tespit edilip giderildi.
   - MicroK8s ve minikube kuruldu, ikisi de gerçek pod testiyle doğrulandı.
 - **Kilometre Taşları & Çıktılar:**
-  - ☸️ Kubernetes Kurulum Yöntemleri (devam ediyor): [README (TR](./29-Kubernetes-Kurulum/readme.md) / [EN)](./29-Kubernetes-Kurulum/readme-en.md)
+  - ☸️ Kubernetes Kurulum Yöntemleri (devam ediyor): [README (TR](./29-Kubernetes-Installation/readme.md) / [EN)](./29-Kubernetes-Installation/readme-en.md)
 
 ### 🔹 18 Ağustos 2026 | Kubespray Tamamlandı, etcd/Raft/CNI Derinleşmesi
 
@@ -623,7 +624,7 @@ _Ardından Kubernetes Temel Kavramlar belgesine verilen geri bildirimleri işled
   - Beş yöntemin (Vagrant dahil) karşılaştırma belgesi tamamlandı.
   - etcd'nin genel mantığı, alternatifleri, Raft protokolü, ve CNI/kube-proxy (VXLAN, BGP, Service, iptables/IPVS) araştırılıp derinleştirildi, gerçek kanıtla (vxlan.calico) doğrulandı.
 - **Kilometre Taşları & Çıktılar:**
-  - ☸️ Kubernetes Kurulum Yöntemleri: [README (TR](./29-Kubernetes-Kurulum/readme.md) / [EN)](./29-Kubernetes-Kurulum/readme-en.md)
+  - ☸️ Kubernetes Kurulum Yöntemleri: [README (TR](./29-Kubernetes-Installation/readme.md) / [EN)](./29-Kubernetes-Installation/readme-en.md)
   - ☸️ Kubernetes Temel Kavramlar (güncellendi): [README (TR](./28-Kubernetes-Fundamentals/readme.md) / [EN)](./28-Kubernetes-Fundamentals/readme-en.md)
   - 🔍 Kubernetes Terim Derinleşmesi: [README (TR](./additionals/kubernetes-terim-derinlesmesi/readme.md) / [EN)](./additionals/kubernetes-terim-derinlesmesi/readme-en.md)
 
@@ -657,6 +658,24 @@ _Son olarak ExternalName türünü işledim — bunun `selector`/`endpoints` iç
   - ExternalName türü işlendi, CNAME mekanizması gerçek DNS sorgusuyla kanıtlandı.
 - **Kilometre Taşları & Çıktılar:**
   - Belge henüz yazılmadı — Temel Kaynaklar bölümü tamamlanınca (ConfigMaps, Secrets, Kanarya Deployment dahil) tek seferde yazılacak.
+
+### 🔹 21 Ağustos 2026 | Temel Kaynaklar Tamamlandı — ConfigMaps, Secrets, Kanarya Deployment
+
+_ConfigMaps sayfasını işledim. Ortam değişkeni eklemenin bile (image değişmese bile) neden rolling update tetiklediğini kendi mantık yürütmemle buldum — Deployment'ın template alanının herhangi bir değişikliğini "yeni versiyon" saydığını öğrendim. Ortam değişkeni ile volume-mount ConfigMap arasındaki asimetriyi (biri statik, biri canlı güncelleniyor) gerçek testle kanıtladım — bir pod hiç yeniden başlamadan, dosyanın içeriğinin değiştiğini gördüm. 12 Factor App metodolojisini araştırıp ConfigMap'in bu genel prensibin Kubernetes'teki uygulaması olduğunu buldum._
+
+_Sonra Secrets'a geçtim. Sayfadaki bir çelişkiyi (bir yerde "şifreleniyor", başka yerde "şifrelenmiyor" diyordu) gerçek testle çözdüm — base64'ün şifreleme olmadığını, hiçbir anahtar gerektirmeden herkesin çözebileceğini kanıtladım, hatta etcd'ye doğrudan bakıp ham verinin düz metin olduğunu gördüm. Gerçek şifrelemeyi (EncryptionConfiguration) sıfırdan kurup kube-apiserver'ı güncelledim, öncesi/sonrası karşılaştırmalı test ettim — eski Secret'ın hâlâ düz metin kaldığını, yeni Secret'ın gerçekten şifreli göründüğünü kanıtladım. Volume-mount Secret'ların da ConfigMap gibi canlı güncellendiğini test ettim._
+
+_Son olarak Kanarya Deployment'ı işledim — aynı etiketli iki Deployment'ı (3 kopya v1, 1 kopya v3) aynı Service'e bağlayıp, gerçek trafiğin aralarında kopya oranında (yaklaşık 3:1) dağıldığını kendi gözümle gördüm. Eksik kalan birkaç şeyi (Secret volume-mount, ConfigMap --from-env-file ve script çalıştırma) da geriye dönüp tamamladım. Temel Kaynaklar bölümü artık tamamen bitti — Pod/ReplicaSet/Deployment, Service (tüm türleri), ConfigMaps, Secrets, Kanarya Deployment._
+
+- **Görevler & Hedefler:**
+  - ConfigMap'in ortam değişkeni/volume-mount asimetrisi gerçek testle kanıtlandı.
+  - 12 Factor App araştırılıp ConfigMap'in bu prensiple ilişkisi kuruldu.
+  - Secret'ların base64 (şifreleme değil) olduğu, hem kubectl hem doğrudan etcd üzerinden kanıtlandı.
+  - Gerçek şifreleme (EncryptionConfiguration) sıfırdan kurulup öncesi/sonrası karşılaştırmalı test edildi.
+  - Kanarya Deployment gerçek trafik dağılımıyla kanıtlandı.
+  - Temel Kaynaklar bölümündeki tüm eksikler tamamlanıp bölüm kapatıldı.
+- **Kilometre Taşları & Çıktılar:**
+  - ☸️ Kubernetes Temel Kaynaklar: [README (TR](./30-Kubernetes-Basic-Resources/readme.md) / [EN)](./30-Kubernetes-Basic-Resources/readme-en.md)
 
 ---
 
