@@ -6,7 +6,9 @@
 
 ## 1. Pod, ReplicaSet, Deployment
 
-Tek başına bir Pod silindiğinde geri gelmiyor — kendi kendini iyileştirme özelliği yok. Bu özellik **ReplicaSet**'te ortaya çıkıyor: ReplicaSet, "kaç pod var" diye sürekli sayıyor (etiket bazlı `selector` ile), eksikse **yeni bir pod** yaratıyor — silinen pod'un aynısı değil, tamamen yeni bir isim/IP ile. Bunu, kube-controller-manager'ın (Faz 28'deki "her şey yolunda mı kontrolcüsü") içindeki bir döngü olarak öğrendim.
+Bir müdürün çalışana "şu işi yap" diye görev vermesi gibi düşünülebilir — müdür (kube-controller-manager) direkt işi kendisi yapmıyor, çalışana (ReplicaSet'e) "kaç kişi olması gerektiğini" söylüyor, çalışan da bunu takip edip eksik varsa tamamlıyor.
+
+**Teknik olarak:** Tek başına bir Pod silindiğinde geri gelmiyor — kendi kendini iyileştirme özelliği yok. Bu özellik **ReplicaSet**'te ortaya çıkıyor: ReplicaSet, "kaç pod var" diye sürekli sayıyor (etiket bazlı `selector` ile), eksikse **yeni bir pod** yaratıyor — silinen pod'un aynısı değil, tamamen yeni bir isim/IP ile. Bunu, kube-controller-manager'ın (Faz 28'deki "her şey yolunda mı kontrolcüsü") içindeki bir döngü olarak öğrendim.
 
 ReplicaSet'in `template` alanı değişince (image dahil olmak üzere **herhangi bir şey**, ortam değişkeni bile), Deployment bunu "yeni versiyon" sayıp otomatik bir **rolling update** tetikliyor. Bunu gerçek bir testle kanıtladım: `kubectl set image` ile v1'den v2'ye geçtim, `-w` ile canlı izledim — önce yeni pod `Running` oldu, **ancak ondan sonra** eski pod `Terminating`'e geçti, hiç sıfır pod anı olmadı. Geçici bir `Error` durumu gördüm, bunun container kapanma anının normal görüntüsü olduğunu (`describe`/`get pods` ile) doğruladım.
 
@@ -22,13 +24,17 @@ Bir apartmanda sürekli değişen kiracılar var (pod'lar gelip gidiyor, her bir
 
 ### NodePort ve LoadBalancer
 
-LoadBalancer aslında NodePort'un üstüne kurulu — kendi VDS'imde (bulut sağlayıcı entegrasyonu olmadan) `EXTERNAL-IP`'nin sonsuza kadar `<pending>` kaldığını, ama otomatik atanan NodePort'un gerçek IP üzerinden çalıştığını kanıtladım.
+Her apartmanın (node'un) kendi girişinde, dışarıdan bilinen özel bir yan kapı numarası var (30000-32767 aralığından bir sayı) — hangi apartmana gidersen git, bu yan kapıdan girip doğru daireye yönlendirilebiliyorsun. LoadBalancer ise şehrin girişine kurulan **tek bir resepsiyon masası** gibi — dışarıdan gelen herkes sadece bu tek masanın adresini biliyor, masa hangi apartmanın hangi yan kapısına yönlendireceğine karar veriyor. Ama bu masayı kuracak biri (bulut sağlayıcı) yoksa, masa hiç açılmıyor.
+
+**Teknik olarak:** LoadBalancer aslında NodePort'un üstüne kurulu — kendi VDS'imde (bulut sağlayıcı entegrasyonu olmadan) `EXTERNAL-IP`'nin sonsuza kadar `<pending>` kaldığını, ama otomatik atanan NodePort'un (yan kapı) gerçek IP üzerinden çalıştığını kanıtladım.
 
 Bir bilmece de çözdüm: `curl localhost:31720` başarısız oldu ama `curl 91.151.88.38:31720` çalıştı. Sebebi, `127.0.0.1`'in **göreceli bir anlamı** olması — isteği gönderen için "sunucunun kendisi", ama pod'un bakış açısından "pod'un kendisi" demek. NAT sırasında bu göreceli anlam düzeltilmezse (masquerade eksikse), pod'un cevabı yanlış yere gidiyor — buna **hairpin NAT** deniyor. `ss -tlnp | grep 31720`'nin boş dönmesiyle, NodePort'un gerçek bir "dinleme" değil, iptables/DNAT tabanlı bir yönlendirme olduğunu da kanıtladım.
 
 ### ExternalName
 
-Diğer Service türlerinin (`selector`/`endpoints`) hiçbirini içermeyen özel bir tür — sadece bir DNS **CNAME** kaydı oluşturuyor, hiçbir trafiği kendisi taşımıyor. `google.com`'a yönlendiren bir ExternalName Service kurup, bir test pod'u içinden DNS sorgusu attım — gerçek Google IP'leri döndü, `kube-proxy`/`iptables` bu sürece hiç dahil olmadı. `CLUSTER-IP: <none>` ve `endpoints` objesinin hiç oluşmaması, bunun tamamen "içerde değil dışarda" çalıştığının kanıtı.
+Kargo kabul numarasını aradığında, aslında o numaranın sana "asıl aramak istediğin numara başka bir şehirde, şu numarayı ara" diye yönlendirme yapması gibi düşünülebilir — kargo şirketinin kendisi hiç o şehre gitmiyor, sadece doğru numarayı söylüyor.
+
+**Teknik olarak:** Diğer Service türlerinin (`selector`/`endpoints`) hiçbirini içermeyen özel bir tür — sadece bir DNS **CNAME** kaydı oluşturuyor, hiçbir trafiği kendisi taşımıyor. `google.com`'a yönlendiren bir ExternalName Service kurup, bir test pod'u içinden DNS sorgusu attım — gerçek Google IP'leri döndü, `kube-proxy`/`iptables` bu sürece hiç dahil olmadı. `CLUSTER-IP: <none>` ve `endpoints` objesinin hiç oluşmaması, bunun tamamen "içerde değil dışarda" çalıştığının kanıtı.
 
 ---
 
@@ -51,15 +57,15 @@ Ayrıca `--from-env-file` ile bir `.properties` dosyasından **toplu** ConfigMap
 
 ### Base64 Şifreleme Değil
 
-Sayfada bir çelişki fark ettim — bir yerde "otomatik şifreleniyor" diyordu, başka bir yerde "şifrelenmiyor, sadece base64 kodlanıyor" diyordu. Bunu gerçek testle çözdüm: `kubectl get secret -o yaml` çıktısındaki değeri `base64 --decode` ile **hiçbir anahtar/şifre girmeden** çözdüm, gerçek şifre çıktı.
+Kapının anahtarına (kubectl/etcd erişimine) sahip olan biri, içeridekilerin konuştuğu dili (base64'ü) zaten biliyor — çünkü bu **herkesin bildiği, evrensel bir standart** (RFC 4648), Kubernetes'e özel bir "gizli dil" değil. Vizesi olan biri, ülkedeki herkesin dilini zaten anladığı için söylenen her şeyi anlıyor.
 
-Bunu bir dil benzetmesiyle özetledim: kapının anahtarına (kubectl/etcd erişimine) sahip olanlar, içeridekilerin dilini (base64'ü) zaten biliyor — çünkü bu **herkesin bildiği, evrensel bir standart** (RFC 4648), Kubernetes'e özel bir "gizli dil" değil.
-
-**etcd'ye doğrudan bakarak da kanıtladım:** `etcdctl get /registry/secrets/...` ile Secret'ın etcd'deki ham halinin **düz metin** olduğunu gördüm — kubectl'e bile gerek kalmadan.
+**Teknik olarak:** Sayfada bir çelişki fark ettim — bir yerde "otomatik şifreleniyor" diyordu, başka bir yerde "şifrelenmiyor, sadece base64 kodlanıyor" diyordu. Bunu gerçek testle çözdüm: `kubectl get secret -o yaml` çıktısındaki değeri `base64 --decode` ile **hiçbir anahtar/şifre girmeden** çözdüm, gerçek şifre çıktı. **etcd'ye doğrudan bakarak da kanıtladım:** `etcdctl get /registry/secrets/...` ile Secret'ın etcd'deki ham halinin **düz metin** olduğunu gördüm — kubectl'e bile gerek kalmadan.
 
 ### Gerçek Şifreleme — EncryptionConfiguration
 
-Bunu kurup, öncesi/sonrası karşılaştırmalı test ettim:
+Eğer herkesin bildiği dil (base64) yeterli koruma sağlamıyorsa, konuşmayı sadece **elinde özel bir kod defteri (anahtar)** olanların çözebileceği gizli bir koda çevirmek gerekiyor — artık dili bilmek yetmez, o özel defteri de elinde tutman lazım.
+
+**Teknik olarak:** Bunu kurup, öncesi/sonrası karşılaştırmalı test ettim:
 
 1. `EncryptionConfiguration` dosyası oluşturup rastgele bir AES anahtarı tanımladım
 2. `kube-apiserver`'ın static pod manifest'ine `--encryption-provider-config` parametresini ve gerekli volume mount'u ekledim

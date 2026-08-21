@@ -6,7 +6,9 @@
 
 ## 1. Pod, ReplicaSet, Deployment
 
-A standalone Pod doesn't come back when deleted — it has no self-healing ability. That ability shows up with **ReplicaSet**: ReplicaSet continuously counts "how many pods are there" (via label-based `selector`), and if short, creates a **new** pod — not a revival of the deleted one, a completely new name/IP. Learned this is a loop inside kube-controller-manager (Phase 28's "is everything okay controller").
+Can be thought of like a manager giving a task to an employee — the manager (kube-controller-manager) doesn't do the work itself, it tells the employee (ReplicaSet) "how many there should be," and the employee tracks that and fills the gap if anything's missing.
+
+**Technically:** A standalone Pod doesn't come back when deleted — it has no self-healing ability. That ability shows up with **ReplicaSet**: ReplicaSet continuously counts "how many pods are there" (via label-based `selector`), and if short, creates a **new** pod — not a revival of the deleted one, a completely new name/IP. Learned this is a loop inside kube-controller-manager (Phase 28's "is everything okay controller").
 
 When ReplicaSet's `template` field changes (anything, even an environment variable, not just the image), Deployment treats it as a "new version" and automatically triggers a **rolling update**. Proved this with a real test: used `kubectl set image` to go from v1 to v2, watched live with `-w` — the new pod became `Running` first, only then did the old pod move to `Terminating`, never a moment with zero pods. Saw a transient `Error` state, confirmed via `describe`/`get pods` it was just the normal appearance of a container shutting down.
 
@@ -22,13 +24,17 @@ An apartment building has tenants that keep changing (pods come and go, each wit
 
 ### NodePort and LoadBalancer
 
-LoadBalancer is actually built on top of NodePort — on my own VDS (no cloud provider integration), proved that `EXTERNAL-IP` stays `<pending>` forever, but the automatically assigned NodePort worked fine over the real IP.
+Every apartment building (node) has its own known side door (a number in the 30000-32767 range) at its entrance — whichever building you go to, you can enter through this side door and get routed to the right unit. LoadBalancer is like a **single front desk** set up at the entrance to the whole city — everyone coming from outside only knows this one desk's address, and the desk decides which building's side door to route them to. But if there's no one to set up this desk (a cloud provider), the desk never opens.
+
+**Technically:** LoadBalancer is actually built on top of NodePort — on my own VDS (no cloud provider integration), proved that `EXTERNAL-IP` stays `<pending>` forever, but the automatically assigned NodePort (the side door) worked fine over the real IP.
 
 Also solved a puzzle: `curl localhost:31720` failed but `curl 91.151.88.38:31720` worked. The cause is that `127.0.0.1` has a **relative meaning** — "the server itself" from the sender's perspective, but "the pod itself" from the pod's perspective. If this relative meaning isn't corrected during NAT (missing masquerade), the pod's reply goes to the wrong place — this is called **hairpin NAT**. Also proved via an empty `ss -tlnp | grep 31720` result that NodePort isn't a real "listener," it's iptables/DNAT-based redirection.
 
 ### ExternalName
 
-A special Service type with none of the others' `selector`/`endpoints` — it only creates a DNS **CNAME** record and never carries any traffic itself. Pointed an ExternalName Service at `google.com`, ran a DNS query from inside a test pod — got real Google IPs back, `kube-proxy`/`iptables` never got involved. `CLUSTER-IP: <none>` and no `endpoints` object being created at all confirmed this runs entirely "outside, not inside."
+Like calling a package reception number and having it tell you "the number you actually want is in another city, call this instead" — the courier company itself never goes to that city, it just points you to the right number.
+
+**Technically:** A special Service type with none of the others' `selector`/`endpoints` — it only creates a DNS **CNAME** record and never carries any traffic itself. Pointed an ExternalName Service at `google.com`, ran a DNS query from inside a test pod — got real Google IPs back, `kube-proxy`/`iptables` never got involved. `CLUSTER-IP: <none>` and no `endpoints` object being created at all confirmed this runs entirely "outside, not inside."
 
 ---
 
@@ -51,15 +57,15 @@ Also tested creating a ConfigMap **in bulk** from a `.properties` file with `--f
 
 ### Base64 Is Not Encryption
 
-Noticed a contradiction on the page — one part said "automatically encrypted," another said "not encrypted, just base64 encoded." Resolved this with a real test: decoded the value from `kubectl get secret -o yaml` with `base64 --decode`, **with no key or password at all**, and got the real password back.
+Whoever holds the key to the door (kubectl/etcd access) already speaks the language spoken inside (base64) — because it's a **universal standard** (RFC 4648) everyone already knows, not a "secret language" specific to Kubernetes. Someone with a visa already understands everyone in the country because they already speak the local language.
 
-Summed this up with a language analogy: those holding the key to the door (kubectl/etcd access) already speak the language inside (base64) — because it's a **universal standard** (RFC 4648) that everyone knows, not a "secret language" specific to Kubernetes.
-
-**Also proved this by looking directly at etcd:** used `etcdctl get /registry/secrets/...` and saw the Secret's raw data in etcd was **plaintext** — didn't even need kubectl.
+**Technically:** Noticed a contradiction on the page — one part said "automatically encrypted," another said "not encrypted, just base64 encoded." Resolved this with a real test: decoded the value from `kubectl get secret -o yaml` with `base64 --decode`, **with no key or password at all**, and got the real password back. **Also proved this by looking directly at etcd:** used `etcdctl get /registry/secrets/...` and saw the Secret's raw data in etcd was **plaintext** — didn't even need kubectl.
 
 ### Real Encryption — EncryptionConfiguration
 
-Set this up and tested before/after side by side:
+If a language everyone knows (base64) doesn't offer enough protection, the conversation needs to be turned into a secret code that only someone holding a **special codebook (key)** can decipher — knowing the language is no longer enough, you need that special codebook too.
+
+**Technically:** Set this up and tested before/after side by side:
 
 1. Created an `EncryptionConfiguration` file with a randomly generated AES key
 2. Added `--encryption-provider-config` and the necessary volume mount to kube-apiserver's static pod manifest
