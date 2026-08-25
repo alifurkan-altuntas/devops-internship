@@ -709,18 +709,29 @@ _Started the roadmap's Other Resources section with the StatefulSets page. Worke
 - **Milestones & Deliverables:**
   - Document not written yet — will be written once the Other Resources section is complete.
 
-### 🔹 August 25, 2026 | StatefulSets Completed — Persistent Identity Proven
+### 🔹 August 25, 2026 | Other Resources — StatefulSets, Volumes, Ingress, Jobs & Cronjobs, Resources and Limits, DaemonSets
 
-_Resolved the StatefulSets issue I started yesterday — found the "unbound immediate PersistentVolumeClaims" error via `kubectl describe pod`, proved the cause was the cluster having no StorageClass (dynamic disk provisioner) at all via an empty `kubectl get storageclass` result. Researched and installed `local-path-provisioner`, made it the default StorageClass, deleted the stale PVC and let the StatefulSet recreate it — this time all three pods (`web-0`, `web-1`, `web-2`) bound to their own separate PersistentVolumeClaim and came up `Running`._
+_Resolved the StatefulSets issue I started yesterday — proved the cause of the "unbound immediate PersistentVolumeClaims" error was the cluster having no StorageClass at all, installed `local-path-provisioner` and made it default. Proved StatefulSet's persistent identity and data guarantee with a delete/recreate test — the pod came back with the same name, and the message I'd deleted was still there._
 
-_Proved the core point with a real test: wrote a message unique to `web-0`, deleted the pod entirely, confirmed the new pod came back with the **same name** (`web-0`) and the **same message was still there** — proving the exact opposite of ReplicaSet's random-name/data-loss behavior. StatefulSets is now fully complete._
+_Moved to Volumes. Grasped the Static/Dynamic provisioning difference by connecting it to my `local-path-provisioner` experience. Proved with a real test that explicitly specifying `storageClassName` allows instant binding without needing a default StorageClass. Verified the reclaim policy (`Delete`) with a real test — saw the PV get automatically deleted when the PVC was deleted. Connected the `accessModes` (ReadWriteOnce/ReadWriteMany) difference to StatefulSets' "each pod gets its own isolated disk" philosophy._
+
+_Moved to Ingress. Researched that the page's installation link was outdated and used the official ingress-nginx manifest instead. Set up and proved with a real test an Ingress rule routing two different apps by path through a single IP/port — saw `/app1` and `/app2` go to different Services. Also set up Ingress with TLS over HTTPS — generated a self-signed certificate, converted it to a Secret, and proved an HTTPS request with a host header reached the correct backend._
+
+_Moved to Jobs & Cronjobs. Researched that the page's `batch/v1beta1` API version has been completely removed since Kubernetes v1.25, switched to `batch/v1` — tested that the old version was genuinely rejected. Researched that the example image (`docker/whalesay`) has been unmaintained for years and no longer runs (an old Schema 1 format issue), replaced it with busybox. Proved the CronJob's `*/1 * * * *` schedule genuinely worked — two separate Jobs created a minute apart. Clarified the difference in `restartPolicy` (Never/OnFailure vs Deployment's Always)._
+
+_Moved to Resources and Limits. Proved with a real test that insufficient `requests` leaves a pod stuck in `Pending` without ever starting (with an `Insufficient cpu` error), then saw it go `Running` instantly with a reasonable value. Proved that exceeding `limits` is a different behavior — the pod starts first, then gets killed — with a real test that produced the exact same result (exit code 137, OOMKilled) as the Docker OOM kill test from Phase 25._
+
+_Finally started DaemonSets. Proved with a real test that, unlike ReplicaSet's manually specified replica count, DaemonSet's replica count automatically equals the number of nodes in the cluster — exactly 1 pod was created on my single-node cluster._
 
 - **Tasks & Objectives:**
-  - Investigated the "unbound PersistentVolumeClaims" error and found the root cause (missing StorageClass).
-  - Installed local-path-provisioner and made it the default StorageClass.
-  - Proved StatefulSet's persistent identity + persistent data guarantee with a delete/recreate test.
+  - Completed StatefulSets — proved persistent identity/data guarantee.
+  - Completed Volumes — proved Static/Dynamic, reclaim policy, accessModes with real tests.
+  - Completed Ingress — proved path-based routing and TLS with real tests.
+  - Completed Jobs & Cronjobs — resolved outdated API version and unmaintained image issues, proved scheduling.
+  - Completed Resources and Limits — proved the requests/Pending vs limits/OOMKilled distinction with real tests.
+  - Started DaemonSets — proved node-count-dependent replication with a real test.
 - **Milestones & Deliverables:**
-  - Document not written yet — will be written once the Other Resources section is complete.
+  - Document not written yet — will be written once the Other Resources section (including HPA, VPA, Permissions) is complete.
 
 ---
 

@@ -709,18 +709,29 @@ _Roadmap'in Diğer Kaynaklar bölümüne, StatefulSets sayfasıyla başladım. R
 - **Kilometre Taşları & Çıktılar:**
   - Belge henüz yazılmadı — Diğer Kaynaklar bölümü tamamlanınca tek seferde yazılacak.
 
-### 🔹 25 Ağustos 2026 | StatefulSets Tamamlandı — Kalıcı Kimlik Kanıtlandı
+### 🔹 25 Ağustos 2026 | Diğer Kaynaklar — StatefulSets, Volumes, Ingress, Jobs & Cronjobs, Kaynaklar ve Limitler, DaemonSets
 
-_Dün başladığım StatefulSets sorununu çözdüm — `kubectl describe pod` ile "unbound immediate PersistentVolumeClaims" hatasını buldum, sebebinin cluster'da hiç StorageClass (dinamik disk sağlayıcı) olmadığını `kubectl get storageclass`'ın boş dönmesiyle kanıtladım. `local-path-provisioner`'ı araştırıp kurdum, varsayılan StorageClass yaptım, eski PVC'yi silip StatefulSet'in yeniden oluşturmasını sağladım — bu sefer üç pod da (`web-0`, `web-1`, `web-2`) kendi ayrı PersistentVolumeClaim'ine bağlanıp `Running` oldu._
+_Dün başladığım StatefulSets sorununu çözdüm — "unbound immediate PersistentVolumeClaims" hatasının sebebinin cluster'da hiç StorageClass olmadığını kanıtladım, `local-path-provisioner` kurup varsayılan yaptım. Pod silme/yeniden oluşma testiyle StatefulSet'in kalıcı kimlik ve kalıcı veri garantisini kanıtladım — aynı isimle geri gelen pod'da, sildiğim mesajın hâlâ orada olduğunu gördüm._
 
-_Asıl kanıtı gerçek bir testle sağladım: `web-0`'a kendine özel bir mesaj yazdım, pod'u tamamen sildim, yeni gelen pod'un **aynı isimle** (`web-0`) geri geldiğini ve **aynı mesajın hâlâ orada olduğunu** doğruladım — ReplicaSet'teki rastgele isim/veri kaybı davranışının tam tersini kanıtlamış oldum. StatefulSets konusu tamamen bitti._
+_Volumes'a geçtim. Static/Dynamic provisioning farkını, `local-path-provisioner` deneyimimle bağlantı kurarak kavradım. Gerçek testle `storageClassName`'i açıkça belirtmenin, varsayılan StorageClass'a gerek kalmadan anında bağlanma sağladığını kanıtladım. Reclaim policy'yi (`Delete`) gerçek testle doğruladım — PVC silinince PV'nin de otomatik silindiğini gördüm. `accessModes` (ReadWriteOnce/ReadWriteMany) farkını, StatefulSets'in "her pod'un kendi izole diski" felsefesiyle bağlantılandırdım._
+
+_Ingress'e geçtim. Sayfadaki kurulum linkinin güncel olmadığını araştırıp resmi ingress-nginx manifestini kullandım. İki farklı uygulamayı, tek bir IP/port üzerinden path'e göre yönlendiren bir Ingress kuralı kurup gerçek testle kanıtladım — `/app1` ve `/app2`'nin farklı Service'lere gittiğini gördüm. TLS ile HTTPS üzerinden Ingress'i de kurdum — kendinden imzalı bir sertifika üretip Secret'a çevirdim, host header ile HTTPS isteğinin doğru backend'e ulaştığını kanıtladım._
+
+_Jobs & Cronjobs'a geçtim. Sayfadaki `batch/v1beta1` API sürümünün Kubernetes v1.25'ten beri tamamen kaldırıldığını araştırıp `batch/v1`'e geçtim — eski sürümün gerçekten reddedildiğini test ettim. Örnek image'ın (`docker/whalesay`) yıllardır bakımsız ve artık çalışmadığını (eski Schema 1 format sorunu) araştırıp busybox ile değiştirdim. CronJob'un `*/1 * * * *` zamanlamasının gerçekten çalıştığını, bir dakika arayla iki ayrı Job oluştuğunu kanıtladım. `restartPolicy`'nin (Never/OnFailure vs Deployment'ın Always'i) farkını netleştirdim._
+
+_Kaynaklar ve Limitler'e geçtim. `requests` yetersizliğinin pod'u hiç başlatmadan `Pending`'de bıraktığını (`Insufficient cpu` hatasıyla) gerçek testle kanıtladım, sonra makul bir değerle anında `Running` olduğunu gördüm. `limits` aşımının farklı bir davranış olduğunu — pod'un önce başlayıp sonra öldürüldüğünü — gerçek testle kanıtladım, Faz 25'teki Docker OOM kill testiyle birebir aynı sonucu (exit code 137, OOMKilled) buldum._
+
+_Son olarak DaemonSets'e başladım. ReplicaSet'in elle belirlenen kopya sayısından farklı olarak, DaemonSet'in kopya sayısının cluster'daki node sayısına otomatik eşit olduğunu gerçek testle kanıtladım — tek node'lu cluster'ımda tam 1 pod oluştu._
 
 - **Görevler & Hedefler:**
-  - "unbound PersistentVolumeClaims" hatası araştırılıp kök sebebi (StorageClass eksikliği) bulundu.
-  - local-path-provisioner kurulup varsayılan StorageClass yapıldı.
-  - Pod silme/yeniden oluşma testiyle StatefulSet'in kalıcı kimlik + kalıcı veri garantisi kanıtlandı.
+  - StatefulSets tamamlandı — kalıcı kimlik/veri garantisi kanıtlandı.
+  - Volumes tamamlandı — Static/Dynamic, reclaim policy, accessModes gerçek testlerle kanıtlandı.
+  - Ingress tamamlandı — path-bazlı yönlendirme ve TLS gerçek testlerle kanıtlandı.
+  - Jobs & Cronjobs tamamlandı — güncel olmayan API sürümü ve bakımsız image sorunları çözüldü, zamanlama kanıtlandı.
+  - Kaynaklar ve Limitler tamamlandı — requests/Pending ve limits/OOMKilled ayrımı gerçek testlerle kanıtlandı.
+  - DaemonSets'e başlandı — node-sayısı-bağımlı kopyalanma gerçek testle kanıtlandı.
 - **Kilometre Taşları & Çıktılar:**
-  - Belge henüz yazılmadı — Diğer Kaynaklar bölümü tamamlanınca tek seferde yazılacak.
+  - Belge henüz yazılmadı — Diğer Kaynaklar bölümü (HPA, VPA, Yetkiler dahil) tamamlanınca tek seferde yazılacak.
 
 ---
 
