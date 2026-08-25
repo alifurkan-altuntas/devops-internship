@@ -14,7 +14,7 @@ Nginx derinleşmesi tamamlandı: reverse proxy, path bazlı yönlendirme, path r
 
 OpenResty (PostgreSQL, MySQL, Redis, token authentication) ve rclone ile S3 entegrasyonu tamamlandı — performans parametreleri, `rclone serve http` cache ve güvenlik (VFS cache, dir cache, auth, remote control), `rclone mount` ve VFS cache.
 
-Docker derinleşmesi tamamen bitti — temel kavramlar, güvenlik, ileri seviye güvenlik, IaC scanning, alternatif runtime'lar, ve son olarak Compose volume/network, PHP örneği, Windows containers dahil. Ayrıca SSL/TLS görevi tamamlandı. Kubernetes'e geçildi — Temel Kavramlar ve beş kurulum yöntemi tamamlandı. Temel Kaynaklar bölümü de (Pod/ReplicaSet/Deployment, Service, ConfigMaps, Secrets, Kanarya Deployment) gerçek testlerle tamamlandı. Ayrıca Edib Bey'in geri bildirimleriyle etcd/Raft/CNI-kube-proxy konuları kendi araştırmamla derinleştirildi (devam ediyor — kubernetes.io/microservices.io okumaları, BGP/VXLAN teknik derinliği, Cilium denemesi kaldı). Sırada Diğer Kaynaklar (StatefulSets, Volumes, Ingress, Jobs & Cronjobs) var.
+Docker derinleşmesi tamamen bitti — temel kavramlar, güvenlik, ileri seviye güvenlik, IaC scanning, alternatif runtime'lar, ve son olarak Compose volume/network, PHP örneği, Windows containers dahil. Ayrıca SSL/TLS görevi tamamlandı. Kubernetes'e geçildi — Temel Kavramlar ve beş kurulum yöntemi tamamlandı. Temel Kaynaklar bölümü (Pod/ReplicaSet/Deployment, Service, ConfigMaps, Secrets, Kanarya Deployment) gerçek testlerle tamamlandı, ardından Faz 28 ve Faz 30 belgeleri yazılım ekosisteminden örnekler, gerçek işlev açıklamaları, çapraz referanslar ve Mermaid diyagramlarıyla yeniden gözden geçirildi. Diğer Kaynaklar bölümüne StatefulSets ile başlandı ve tamamlandı — kalıcı kimlik ve kalıcı veri garantisi gerçek bir testle (pod silme/yeniden oluşma) kanıtlandı. Ayrıca etcd/Raft/CNI-kube-proxy konuları kendi araştırmamla derinleştirildi (devam ediyor — kubernetes.io/microservices.io okumaları, BGP/VXLAN teknik derinliği, Cilium denemesi kaldı). Sırada Diğer Kaynaklar'ın geri kalanı (Volumes, Ingress, Jobs & Cronjobs, Kaynaklar ve Limitler, DaemonSets, HPA/VPA, Yetkiler) var.
 
 Tüm fazların (01–24) Türkçe/İngilizce belge dönüşümü tamamlandı.
 
@@ -676,6 +676,51 @@ _Son olarak Kanarya Deployment'ı işledim — aynı etiketli iki Deployment'ı 
   - Temel Kaynaklar bölümündeki tüm eksikler tamamlanıp bölüm kapatıldı.
 - **Kilometre Taşları & Çıktılar:**
   - ☸️ Kubernetes Temel Kaynaklar: [README (TR](./30-Kubernetes-Basic-Resources/readme.md) / [EN)](./30-Kubernetes-Basic-Resources/readme-en.md)
+
+### 🔹 22 Ağustos 2026 | Kubernetes Temel Kavramlar Belgesi Revize Edildi
+
+_Faz 28 (Kubernetes Temel Kavramlar) belgesini baştan gözden geçirdim. İnsansı benzetmeleri (otel, resepsiyon gibi) yazılım ekosisteminden örneklere çevirdim — kube-apiserver'ı bir API Gateway'e, etcd'yi dağıtık bir key-value veritabanına (Consul/Zookeeper), kube-scheduler'ı bulut sağlayıcının VM yerleştirmesine, kubelet'i bir process supervisor'a (systemd), coreDNS'i bir service discovery aracına, kube-proxy'yi dağıtık bir reverse proxy'e, CNI'yi VPN yazılımına benzettim. Her kavrama benzetmenin ardından gerçek işlevini ve ilgili diğer fazlara (Faz 18 DNS, Faz 26 HEALTHCHECK, Faz 30 Service) çapraz referanslar ekledim. Küme mimarisinin tüm bileşenlerini gösteren bir Mermaid diyagramı, GitOps akışını gösteren ayrı bir diyagram ekledim._
+
+- **Görevler & Hedefler:**
+  - Faz 28'deki tüm benzetmeler yazılım ekosisteminden örneklere çevrildi.
+  - Her kavrama gerçek işlev ve çapraz referans eklendi.
+  - Küme mimarisi ve GitOps için Mermaid diyagramları eklendi.
+- **Kilometre Taşları & Çıktılar:**
+  - ☸️ Kubernetes Temel Kavramlar (güncellendi): [README (TR](./28-Kubernetes-Fundamentals/readme.md) / [EN)](./28-Kubernetes-Fundamentals/readme-en.md)
+
+### 🔹 23 Ağustos 2026 | Kubernetes Temel Kaynaklar Belgesi Revize Edildi
+
+_Faz 30 (Kubernetes Temel Kaynaklar) belgesini aynı standartla yeniden yazdım. ReplicaSet'i systemd'nin servis izlemesine, Service'i nginx'in upstream havuzuna, ConfigMap'i bir uygulamanın `.env` dosyasına, Secret'ı bir şifre yöneticisine, Kanarya Deployment'ı A/B testing'e benzettim — her birinde gerçek işlev ve diğer fazlara çapraz referans var. Test ederken kullandığım gerçek YAML örneklerini (ReplicaSet, Service türleri, ConfigMap, Secret, Kanarya kurgusu) belgeye ekledim. Pod/ReplicaSet/Deployment hiyerarşisi, Service/DNS akışı, ConfigMap'in statik/dinamik davranışı, ve Kanarya kurgusu için ayrı Mermaid diyagramları ekledim._
+
+- **Görevler & Hedefler:**
+  - Faz 30'daki tüm benzetmeler yazılım ekosisteminden örneklere çevrildi.
+  - Gerçek YAML örnekleri belgeye eklendi.
+  - Dört ayrı Mermaid diyagramı (hiyerarşi/akış) eklendi.
+- **Kilometre Taşları & Çıktılar:**
+  - ☸️ Kubernetes Temel Kaynaklar (güncellendi): [README (TR](./30-Kubernetes-Basic-Resources/readme.md) / [EN)](./30-Kubernetes-Basic-Resources/readme-en.md)
+
+### 🔹 24 Ağustos 2026 | Diğer Kaynaklar — StatefulSets'e Başlandı
+
+_Roadmap'in Diğer Kaynaklar bölümüne, StatefulSets sayfasıyla başladım. ReplicaSet'te öğrendiğim "silinen pod yeni isim/IP ile geri gelir" davranışının, veritabanı gibi durumlu (stateful) uygulamalar için neden sorun yarattığını kendi mantık yürütmemle buldum. Sayfadaki YAML'ı (headless Service + StatefulSet + volumeClaimTemplates) kurup gerçek testle ilerlemeye başladım — pod'un beklenenden farklı olarak `Pending` durumda kaldığını fark edip, sebebini araştırmaya koyuldum._
+
+- **Görevler & Hedefler:**
+  - StatefulSets kavramı, ReplicaSet ile karşılaştırmalı olarak işlenmeye başlandı.
+  - Gerçek YAML kurulumuna başlandı, pod'un zamanlanamama sorunu tespit edildi.
+- **Kilometre Taşları & Çıktılar:**
+  - Belge henüz yazılmadı — Diğer Kaynaklar bölümü tamamlanınca tek seferde yazılacak.
+
+### 🔹 25 Ağustos 2026 | StatefulSets Tamamlandı — Kalıcı Kimlik Kanıtlandı
+
+_Dün başladığım StatefulSets sorununu çözdüm — `kubectl describe pod` ile "unbound immediate PersistentVolumeClaims" hatasını buldum, sebebinin cluster'da hiç StorageClass (dinamik disk sağlayıcı) olmadığını `kubectl get storageclass`'ın boş dönmesiyle kanıtladım. `local-path-provisioner`'ı araştırıp kurdum, varsayılan StorageClass yaptım, eski PVC'yi silip StatefulSet'in yeniden oluşturmasını sağladım — bu sefer üç pod da (`web-0`, `web-1`, `web-2`) kendi ayrı PersistentVolumeClaim'ine bağlanıp `Running` oldu._
+
+_Asıl kanıtı gerçek bir testle sağladım: `web-0`'a kendine özel bir mesaj yazdım, pod'u tamamen sildim, yeni gelen pod'un **aynı isimle** (`web-0`) geri geldiğini ve **aynı mesajın hâlâ orada olduğunu** doğruladım — ReplicaSet'teki rastgele isim/veri kaybı davranışının tam tersini kanıtlamış oldum. StatefulSets konusu tamamen bitti._
+
+- **Görevler & Hedefler:**
+  - "unbound PersistentVolumeClaims" hatası araştırılıp kök sebebi (StorageClass eksikliği) bulundu.
+  - local-path-provisioner kurulup varsayılan StorageClass yapıldı.
+  - Pod silme/yeniden oluşma testiyle StatefulSet'in kalıcı kimlik + kalıcı veri garantisi kanıtlandı.
+- **Kilometre Taşları & Çıktılar:**
+  - Belge henüz yazılmadı — Diğer Kaynaklar bölümü tamamlanınca tek seferde yazılacak.
 
 ---
 

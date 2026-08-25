@@ -1,90 +1,295 @@
 # ☸️ Kubernetes Basic Resources — Pod, ReplicaSet, Deployment, Service, ConfigMaps, Secrets, Canary Deployment
 
-29th phase compared five installation methods. This phase I worked through the roadmap's Basic Resources section — for each topic, first with a real-world analogy, immediately followed by a technical explanation, and proving as much as possible with real tests.
+29th phase compared five installation methods. This phase I worked through the roadmap's Basic Resources section — each concept with a software-ecosystem example, its real function, cross-references to related topics, and real YAML/tests.
 
 ---
 
 ## 1. Pod, ReplicaSet, Deployment
 
-Can be thought of like a manager giving a task to an employee — the manager (kube-controller-manager) doesn't do the work itself, it tells the employee (ReplicaSet) "how many there should be," and the employee tracks that and fills the gap if anything's missing.
+```mermaid
+graph TD
+    D[Deployment] -->|manages| RS[ReplicaSet]
+    RS -->|manages, replicas: 3| P1[Pod 1]
+    RS --> P2[Pod 2]
+    RS --> P3[Pod 3]
+    P1:::pod
+    P2:::pod
+    P3:::pod
+    classDef pod fill:#e1f5ff
+```
 
-**Technically:** A standalone Pod doesn't come back when deleted — it has no self-healing ability. That ability shows up with **ReplicaSet**: ReplicaSet continuously counts "how many pods are there" (via label-based `selector`), and if short, creates a **new** pod — not a revival of the deleted one, a completely new name/IP. Learned this is a loop inside kube-controller-manager (Phase 28's "is everything okay controller").
+**Software example:** Like `systemd` monitoring a service — if a process crashes (with `Restart=always`), `systemd` restarts it automatically. ReplicaSet works the same way, except it watches **multiple pod replicas** instead of one process.
 
-When ReplicaSet's `template` field changes (anything, even an environment variable, not just the image), Deployment treats it as a "new version" and automatically triggers a **rolling update**. Proved this with a real test: used `kubectl set image` to go from v1 to v2, watched live with `-w` — the new pod became `Running` first, only then did the old pod move to `Terminating`, never a moment with zero pods. Saw a transient `Error` state, confirmed via `describe`/`get pods` it was just the normal appearance of a container shutting down.
+**Real function:** ReplicaSet continuously counts "how many pods match this label" via a label-based `selector`, and if short, creates a new pod (not a revival of the deleted one, a new name/IP). This is a loop inside kube-controller-manager (which I covered in Phase 28) — closing the gap between desired and actual state.
+
+**Cross-reference:** This is a concrete application of the concept I described as a "thermostat" for kube-controller-manager in Phase 28 — there it was abstract, here I'm seeing it through a real resource (ReplicaSet).
+
+**YAML — ReplicaSet:**
+
+```yaml
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: myapp-rs
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: myapp
+  template:
+    metadata:
+      labels:
+        app: myapp
+    spec:
+      containers:
+        - name: myapp
+          image: quay.io/rhdevelopers/quarkus-demo:v1
+```
+
+**Rolling Update — Deployment:**
+
+When ReplicaSet's `template` field changes (anything, even an environment variable, not just the image), Deployment treats it as a "new version" and automatically triggers a rolling update — like a CI/CD pipeline automatically triggering a build/deploy on every push to the repo.
+
+Proved this with a real test: used `kubectl set image` to go from v1 to v2, watched live with `-w` — the new pod became `Running` first, only then did the old pod move to `Terminating`, never a moment with zero pods.
+
+```bash
+kubectl set image deployment/myapp quarkus-demo=quay.io/rhdevelopers/myboot:v2
+kubectl get pods -w
+```
 
 ---
 
 ## 2. Service
 
-### The Core Mechanism — Selector, Endpoints, DNS
+```mermaid
+graph LR
+    C[Client] -->|DNS query: myapp| SVC[Service - myapp]
+    SVC -->|selector: app=myapp| EP[Endpoints]
+    EP --> P1[Pod 1 - 10.244.0.5]
+    EP --> P2[Pod 2 - 10.244.0.6]
+```
 
-An apartment building has tenants that keep changing (pods come and go, each with a different IP), but the entrance has a fixed "package reception number" — the courier always calls the same number, no matter who's currently living there.
+### Core Mechanism — Selector, Endpoints, DNS
 
-**Technically:** This fixed number is the **Service**. A pod comes up, gets an IP, has a label. The Service has a `selector` looking for that same label. The actual work is done by **DNS** (coreDNS) — once the Service exists, a name record is created automatically, resolving to whichever pods currently match the label. Proved this with the **Label Magic** test: set up a Service looking for a label (`inservice: mypods`) that no pod had initially, `endpoints` came back empty; manually adding and removing this label on pods updated `endpoints` **instantly** without ever restarting the Service — even merged pods from two completely different Deployments into the same Service.
+**Software example:** Like an `nginx` reverse proxy (which I covered in Phase 19) managing backend servers as an **upstream pool** rather than individual IPs — routing to whichever server is up, the client never needs to know the real IPs.
+
+**Real function:** Service provides a fixed name/IP; the actual work is done by **coreDNS** — once the Service exists, a name record is created automatically, resolving to whichever pods currently match the label.
+
+**Cross-reference:** This is the real-world use case for the service I described in Phase 28 as "provides in-cluster DNS resolution" — this mandatory DNS system in Kubernetes helps keep services consistently discoverable. I had already covered general DNS mechanics (resolver chain, TTL, record types) in depth back in Phase 18 (Linux Networking Fundamentals) — coreDNS is Kubernetes' automatically-managed application of that general DNS architecture.
+
+Proved this with the **Label Magic** test: set up a Service looking for a label no pod had initially, `endpoints` came back empty; manually adding and removing the label updated `endpoints` instantly.
+
+**YAML — Service (ClusterIP):**
+
+```yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: myapp
+spec:
+  selector:
+    app: myapp
+  ports:
+    - port: 8080
+      targetPort: 8080
+```
 
 ### NodePort and LoadBalancer
 
-Every apartment building (node) has its own known side door (a number in the 30000-32767 range) at its entrance — whichever building you go to, you can enter through this side door and get routed to the right unit. LoadBalancer is like a **single front desk** set up at the entrance to the whole city — everyone coming from outside only knows this one desk's address, and the desk decides which building's side door to route them to. But if there's no one to set up this desk (a cloud provider), the desk never opens.
+**Software example:** Like an application listening on a specific port and having it exposed externally (`nginx` listening on 80/443) — NodePort is every node opening and listening on a specific port (30000-32767). LoadBalancer is like round-robin DNS pointing a single domain at multiple servers — except here real hardware/service (the cloud provider's load balancer) actually distributes traffic.
 
-**Technically:** LoadBalancer is actually built on top of NodePort — on my own VDS (no cloud provider integration), proved that `EXTERNAL-IP` stays `<pending>` forever, but the automatically assigned NodePort (the side door) worked fine over the real IP.
+**Real function:** LoadBalancer is built on top of NodePort — on my own VDS (no cloud provider integration), `EXTERNAL-IP` stays `<pending>` forever, but NodePort works fine over the real IP.
 
-Also solved a puzzle: `curl localhost:31720` failed but `curl 91.151.88.38:31720` worked. The cause is that `127.0.0.1` has a **relative meaning** — "the server itself" from the sender's perspective, but "the pod itself" from the pod's perspective. If this relative meaning isn't corrected during NAT (missing masquerade), the pod's reply goes to the wrong place — this is called **hairpin NAT**. Also proved via an empty `ss -tlnp | grep 31720` result that NodePort isn't a real "listener," it's iptables/DNAT-based redirection.
+**Cross-reference:** MetalLB (which I'll see in the roadmap's "Additional Tools" section) exists specifically to fill this gap — LoadBalancer support without a cloud provider, on VDS/bare-metal environments.
+
+Also solved a puzzle: `curl localhost:31720` failed but `curl 91.151.88.38:31720` worked. The cause is `127.0.0.1`'s relative meaning — "the server itself" to the sender, "the pod itself" to the pod. If this isn't corrected during NAT (missing masquerade), the pod's reply goes to the wrong place — **hairpin NAT**. Confirmed via an empty `ss -tlnp | grep 31720` result that NodePort is iptables/DNAT-based routing, not a real "listener."
+
+**YAML — LoadBalancer:**
+
+```yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: myapp-lb
+spec:
+  selector:
+    app: myapp
+  ports:
+    - port: 80
+      targetPort: 8080
+  type: LoadBalancer
+```
 
 ### ExternalName
 
-Like calling a package reception number and having it tell you "the number you actually want is in another city, call this instead" — the courier company itself never goes to that city, it just points you to the right number.
+**Software example:** Like an application defining an environment variable such as `DATABASE_HOST=external-db.example.com` in its config — the app doesn't know where the real database is, it just looks at a name, DNS handles the rest.
 
-**Technically:** A special Service type with none of the others' `selector`/`endpoints` — it only creates a DNS **CNAME** record and never carries any traffic itself. Pointed an ExternalName Service at `google.com`, ran a DNS query from inside a test pod — got real Google IPs back, `kube-proxy`/`iptables` never got involved. `CLUSTER-IP: <none>` and no `endpoints` object being created at all confirmed this runs entirely "outside, not inside."
+**Real function:** Has none of the other Service types' `selector`/`endpoints` — it only creates a DNS CNAME record and never carries any traffic itself.
+
+**Cross-reference:** This is a DNS-level application of the "separate config from code" principle (12 Factor App) I'll cover under ConfigMaps (next section) — managing an external service's address through Kubernetes' own object instead of hardcoding it into the app.
+
+Pointed an ExternalName Service at `google.com`, ran a DNS query from inside a test pod — got real Google IPs back, `kube-proxy`/`iptables` never got involved.
+
+**YAML — ExternalName:**
+
+```yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: external-db
+spec:
+  type: ExternalName
+  externalName: postgres.example.com
+```
 
 ---
 
 ## 3. ConfigMaps
 
-A centralized, publicly readable resource that multiple Deployments can reference, taking effect once updated — can be thought of like an **official gazette**: a single publication that can affect multiple "institutions" (Deployments), nothing secret about it.
+```mermaid
+graph LR
+    CM[ConfigMap] -->|env var: static| P1[Pod - read at startup]
+    CM -->|volume mount: dynamic| P2[Pod - updates live]
+```
 
-**Found and proved a critical asymmetry:**
+**Software example:** Like keeping an application's `.env` file separate from the code — able to change behavior by editing just the config file, without touching the code.
 
-- ConfigMap used **as an environment variable** → static, only read once when the container starts, doesn't update even if changed unless the pod restarts
-- ConfigMap **mounted as a file (volume)** → dynamic, kubelet periodically checks (~every 60 seconds) in the background and updates it **live**, no pod restart needed
+**Real function:** A centralized resource multiple Deployments can reference. Researched the **12 Factor App** methodology (Heroku, 2011) — its 3rd principle says exactly this: "don't embed config in code, take it from the environment." ConfigMap is Kubernetes' implementation of that general principle.
 
-Proved this with a real test: opened a pod with a volume-mounted ConfigMap, changed the ConfigMap, saw the file's content change without the pod ever restarting (`RESTARTS: 0`, `AGE` kept climbing uninterrupted).
+**Cross-reference:** This same principle also applies to Secrets (next section) — both are applications of "separating config from code," just at different sensitivity levels.
 
-Also tested creating a ConfigMap **in bulk** from a `.properties` file with `--from-env-file`, and mounting a shell script inside a ConfigMap as an **executable file** in the container — both confirmed with real output.
+**Proved a critical asymmetry:** ConfigMap used as an environment variable is static (needs pod restart), mounted as a volume is dynamic (kubelet checks every ~60 seconds and updates it live). Proved this with a real test — a pod's file content changed without it ever restarting.
+
+**YAML — ConfigMap and Volume Mount:**
+
+```yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: app-config
+data:
+  greeting: "Hello"
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: demo-pod
+spec:
+  containers:
+    - name: demo
+      image: busybox
+      volumeMounts:
+        - name: config
+          mountPath: "/config"
+  volumes:
+    - name: config
+      configMap:
+        name: app-config
+```
+
+Also tested bulk-creating a ConfigMap with `--from-env-file`, and mounting a shell script inside a ConfigMap as an executable file.
 
 ---
 
 ## 4. Secrets
 
-### Base64 Is Not Encryption
+**Software example:** Like a password manager keeping passwords encrypted rather than plaintext — but the key difference is a Secret's **default state** isn't as secure as an actual password manager.
 
-Whoever holds the key to the door (kubectl/etcd access) already speaks the language spoken inside (base64) — because it's a **universal standard** (RFC 4648) everyone already knows, not a "secret language" specific to Kubernetes. Someone with a visa already understands everyone in the country because they already speak the local language.
+**Real function:** Noticed a contradiction on the page (one part said "encrypted," another said "not encrypted"). Resolved it with a real test — `base64` is the RFC 4648 standard, not a "secret code" specific to Kubernetes, a universal encoding everyone knows. Decoded the output of `kubectl get secret -o yaml` with `base64 --decode`, with no key at all, and got the real password back. Also looked directly at etcd's raw data via `etcdctl` and got the same result (plaintext).
 
-**Technically:** Noticed a contradiction on the page — one part said "automatically encrypted," another said "not encrypted, just base64 encoded." Resolved this with a real test: decoded the value from `kubectl get secret -o yaml` with `base64 --decode`, **with no key or password at all**, and got the real password back. **Also proved this by looking directly at etcd:** used `etcdctl get /registry/secrets/...` and saw the Secret's raw data in etcd was **plaintext** — didn't even need kubectl.
+**Cross-reference:** This connects to the section where I described etcd as a "board of directors" in Phase 28 — anyone with access to etcd (or `kubectl get secrets` permission) can read a Secret with no additional work at all.
 
-### Real Encryption — EncryptionConfiguration
+**YAML — Secret:**
 
-If a language everyone knows (base64) doesn't offer enough protection, the conversation needs to be turned into a secret code that only someone holding a **special codebook (key)** can decipher — knowing the language is no longer enough, you need that special codebook too.
+```yaml
+apiVersion: v1
+kind: Secret
+metadata:
+  name: db-credentials
+type: Opaque
+data:
+  password: U3VwZXJHaXpsaVNpZnJlMTIz
+```
 
-**Technically:** Set this up and tested before/after side by side:
+**Real Encryption — EncryptionConfiguration:**
 
-1. Created an `EncryptionConfiguration` file with a randomly generated AES key
-2. Added `--encryption-provider-config` and the necessary volume mount to kube-apiserver's static pod manifest
-3. **Old Secret** (written before encryption) stayed plaintext in etcd — encryption **doesn't apply retroactively**
-4. **New Secret** (written after encryption) appeared in etcd with a `k8s:enc:aescbc:v1:key1:` prefix, followed by completely meaningless cryptographic data — can no longer even be decoded with `base64 --decode`
+Can be thought of like an application doing a TLS handshake before connecting to a database — the default connection (base64) is close to plaintext, there's no real protection without an additional layer (encryption at rest).
 
-This concretely showed why companies in the real world layer on additional protection like `EncryptionConfiguration`, HashiCorp Vault, or the External Secrets Operator — the default Secret protection isn't as strong as the name suggests.
+Set up `EncryptionConfiguration` and compared before/after — the old Secret (written before encryption) stayed plaintext in etcd (doesn't apply retroactively), the new Secret appeared with a `k8s:enc:aescbc:v1:key1:` prefix, completely meaningless cryptographic data.
 
-Also tested and proved that volume-mounted Secrets update **live**, just like ConfigMaps.
+```bash
+kubectl create secret generic mysecret --from-literal=password='ShouldBeEncrypted'
+sudo ETCDCTL_API=3 etcdctl --endpoints=https://127.0.0.1:2379 \
+  --cacert=/etc/ssl/etcd/ssl/ca.pem --cert=/etc/ssl/etcd/ssl/node-node1.pem \
+  --key=/etc/ssl/etcd/ssl/node-node1-key.pem \
+  get /registry/secrets/default/mysecret
+```
+
+Also tested that volume-mounted Secrets update live, just like ConfigMaps.
 
 ---
 
 ## 5. Canary Deployment
 
-Comes from miners using canary birds for gas detection — the canary detects danger early through a **small group**, before everyone is affected.
+```mermaid
+graph TD
+    SVC[Service - myboot] --> D1[Deployment v1 - 3 replicas]
+    SVC --> D2[Deployment v3 - 1 replica]
+    D1 --> P1[Pod v1]
+    D1 --> P2[Pod v1]
+    D1 --> P3[Pod v1]
+    D2 --> P4[Pod v3]
+```
 
-**Technically:** Two Deployments with the same label (one with many replicas, the stable old version; one with few replicas, the new test version) sit **permanently side by side** in the same Service's pool. The difference from rolling update — rolling update fully replaces old with new, canary keeps both **running together**, with traffic split between them proportional to replica count.
+**Software example:** Very close to A/B testing (a common method in software/product development) — a portion of users see the new feature while the rest stay on the old version, and results get compared.
 
-Proved this with a real test: 3 replicas of `v1` + 1 replica of `v3`, both connected to the same Service. Of 10 requests, 8 went to `v1` ("Aloha" response), 2 went to `v3` ("Jambo" response) — roughly a 3:1 ratio, matching the replica count. If there's a problem, `v3` can be pulled back **instantly** by scaling its replicas to zero, with no impact on the remaining users.
+**Real function:** Two Deployments with the same label (many replicas of the stable version + few replicas of the test version) sit permanently side by side in the same Service's pool. The difference from rolling update — rolling update fully replaces old with new, canary keeps both running together.
+
+**Cross-reference:** This is a sub-branch of the "Continuous Updates" topic I'll see in the roadmap's "Important Resources" section — rolling update and canary are both Deployment update strategies, for different risk tolerances.
+
+Proved this with a real test: 3 replicas of v1 + 1 replica of v3, both connected to the same Service. Of 10 requests, 8 went to v1, 2 went to v3 — roughly a 3:1 ratio, matching replica count.
+
+**YAML — Canary Setup:**
+
+```yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: myboot-v1
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: myboot
+  template:
+    metadata:
+      labels:
+        app: myboot
+        version: v1
+    spec:
+      containers:
+        - name: myboot
+          image: quay.io/rhdevelopers/myboot:v1
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: myboot-v3
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: myboot
+  template:
+    metadata:
+      labels:
+        app: myboot
+        version: v3
+    spec:
+      containers:
+        - name: myboot
+          image: quay.io/rhdevelopers/myboot:v3
+```
 
 ---
 
@@ -104,4 +309,4 @@ Proved this with a real test: 3 replicas of `v1` + 1 replica of `v3`, both conne
 
 ---
 
-ℹ️ _All tests were performed on a real Ubuntu VPS (on the Kubespray cluster) — each topic was first understood conceptually through an analogy, then proven with technical terminology and real `kubectl`/`etcdctl` tests._
+ℹ️ _All tests were performed on a real Ubuntu VPS (on the Kubespray cluster) — each topic proven with a software-ecosystem example, its real function, cross-references to related phases, and real YAML/kubectl/etcdctl tests._

@@ -14,7 +14,7 @@ Completed Nginx deep dive: reverse proxy, path-based routing, path rewrite, path
 
 Completed OpenResty (PostgreSQL, MySQL, Redis, token authentication) and rclone with S3 — performance parameters, `rclone serve http` cache and security (VFS cache, dir cache, auth, remote control), `rclone mount` and VFS cache.
 
-Docker deep dive is fully complete — fundamentals, security, advanced security, IaC scanning, alternative runtimes, and finally Compose volume/network, the PHP example, and Windows containers. The SSL/TLS task is also complete. Moved on to Kubernetes — Fundamental Concepts and all five installation methods are complete. The Basic Resources section (Pod/ReplicaSet/Deployment, Service, ConfigMaps, Secrets, Canary Deployment) is also complete, proven with real tests. Also deepened understanding of etcd/Raft/CNI-kube-proxy through self-research based on Edib Bey's feedback (ongoing — kubernetes.io/microservices.io readings, deeper BGP/VXLAN research, and trying Cilium remain). Up next: Other Resources (StatefulSets, Volumes, Ingress, Jobs & Cronjobs).
+Docker deep dive is fully complete — fundamentals, security, advanced security, IaC scanning, alternative runtimes, and finally Compose volume/network, the PHP example, and Windows containers. The SSL/TLS task is also complete. Moved on to Kubernetes — Fundamental Concepts and all five installation methods are complete. The Basic Resources section (Pod/ReplicaSet/Deployment, Service, ConfigMaps, Secrets, Canary Deployment) is complete, proven with real tests, and Phases 28 and 30 were subsequently revised with software-ecosystem examples, real function explanations, cross-references, and Mermaid diagrams. Started and completed StatefulSets in the Other Resources section — proved persistent identity and persistent data guarantees with a real delete/recreate test. Also deepened understanding of etcd/Raft/CNI-kube-proxy through self-research (ongoing — kubernetes.io/microservices.io readings, deeper BGP/VXLAN research, and trying Cilium remain). Up next: the rest of Other Resources (Volumes, Ingress, Jobs & Cronjobs, Resources and Limits, DaemonSets, HPA/VPA, Permissions).
 
 Bilingual documentation (TR/EN) complete for all phases (01–24).
 
@@ -676,6 +676,51 @@ _Finally worked through Canary Deployment — connected two Deployments with the
   - Closed out all remaining gaps in the Basic Resources section.
 - **Milestones & Deliverables:**
   - ☸️ Kubernetes Basic Resources: [README (TR](./30-Kubernetes-Basic-Resources/readme.md) / [EN)](./30-Kubernetes-Basic-Resources/readme-en.md)
+
+### 🔹 August 22, 2026 | Kubernetes Fundamentals Document Revised
+
+_Went back through the Phase 28 (Kubernetes Fundamentals) document from scratch. Converted human-based analogies (hotel, front desk, etc.) into software-ecosystem examples — compared kube-apiserver to an API Gateway, etcd to a distributed key-value database (Consul/Zookeeper), kube-scheduler to a cloud provider placing VMs, kubelet to a process supervisor (systemd), coreDNS to a service discovery tool, kube-proxy to a distributed reverse proxy, and CNI to VPN software. Added the real function and cross-references to related phases (Phase 18 DNS, Phase 26 HEALTHCHECK, Phase 30 Service) after each analogy. Added a Mermaid diagram showing all cluster architecture components, and a separate one for the GitOps flow._
+
+- **Tasks & Objectives:**
+  - Converted all analogies in Phase 28 to software-ecosystem examples.
+  - Added real function and cross-references to every concept.
+  - Added Mermaid diagrams for cluster architecture and GitOps.
+- **Milestones & Deliverables:**
+  - ☸️ Kubernetes Fundamentals (updated): [README (TR](./28-Kubernetes-Fundamentals/readme.md) / [EN)](./28-Kubernetes-Fundamentals/readme-en.md)
+
+### 🔹 August 23, 2026 | Kubernetes Basic Resources Document Revised
+
+_Rewrote the Phase 30 (Kubernetes Basic Resources) document to the same standard. Compared ReplicaSet to systemd monitoring a service, Service to nginx's upstream pool, ConfigMap to an application's `.env` file, Secret to a password manager, Canary Deployment to A/B testing — each with a real function and cross-references to other phases. Added the real YAML examples used during testing (ReplicaSet, Service types, ConfigMap, Secret, canary setup) to the document. Added separate Mermaid diagrams for the Pod/ReplicaSet/Deployment hierarchy, the Service/DNS flow, ConfigMap's static/dynamic behavior, and the canary setup._
+
+- **Tasks & Objectives:**
+  - Converted all analogies in Phase 30 to software-ecosystem examples.
+  - Added real YAML examples to the document.
+  - Added four separate Mermaid diagrams (hierarchy/flow).
+- **Milestones & Deliverables:**
+  - ☸️ Kubernetes Basic Resources (updated): [README (TR](./30-Kubernetes-Basic-Resources/readme.md) / [EN)](./30-Kubernetes-Basic-Resources/readme-en.md)
+
+### 🔹 August 24, 2026 | Other Resources — Started StatefulSets
+
+_Started the roadmap's Other Resources section with the StatefulSets page. Worked out through my own reasoning why the "deleted pod comes back with a new name/IP" behavior I learned with ReplicaSet causes problems for stateful applications like databases. Set up the page's YAML (headless Service + StatefulSet + volumeClaimTemplates) and started testing with real commands — noticed the pod stayed stuck in `Pending` unexpectedly and began investigating the cause._
+
+- **Tasks & Objectives:**
+  - Started working through StatefulSets, comparing it against ReplicaSet.
+  - Began real YAML setup, identified a pod scheduling issue.
+- **Milestones & Deliverables:**
+  - Document not written yet — will be written once the Other Resources section is complete.
+
+### 🔹 August 25, 2026 | StatefulSets Completed — Persistent Identity Proven
+
+_Resolved the StatefulSets issue I started yesterday — found the "unbound immediate PersistentVolumeClaims" error via `kubectl describe pod`, proved the cause was the cluster having no StorageClass (dynamic disk provisioner) at all via an empty `kubectl get storageclass` result. Researched and installed `local-path-provisioner`, made it the default StorageClass, deleted the stale PVC and let the StatefulSet recreate it — this time all three pods (`web-0`, `web-1`, `web-2`) bound to their own separate PersistentVolumeClaim and came up `Running`._
+
+_Proved the core point with a real test: wrote a message unique to `web-0`, deleted the pod entirely, confirmed the new pod came back with the **same name** (`web-0`) and the **same message was still there** — proving the exact opposite of ReplicaSet's random-name/data-loss behavior. StatefulSets is now fully complete._
+
+- **Tasks & Objectives:**
+  - Investigated the "unbound PersistentVolumeClaims" error and found the root cause (missing StorageClass).
+  - Installed local-path-provisioner and made it the default StorageClass.
+  - Proved StatefulSet's persistent identity + persistent data guarantee with a delete/recreate test.
+- **Milestones & Deliverables:**
+  - Document not written yet — will be written once the Other Resources section is complete.
 
 ---
 

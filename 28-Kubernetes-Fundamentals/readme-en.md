@@ -8,13 +8,19 @@
 
 ## 1. GitOps
 
-Learned that this is an approach to managing and automating infrastructure and application deployments based on documents and config files in a Git repository.
+**Software example:** Like a CI/CD pipeline automatically triggering a build/deploy on every push to the repo — except here what's being "deployed" isn't an application, it's the cluster's own **desired state**.
 
-In the traditional approach, changes are made directly to the cluster (things like `kubectl apply`) — this change only lives in terminal history, no one can trace who did what and when. GitOps flips this: the cluster is never touched directly. Instead, the "desired state" is written as YAML into a Git repo. A tool (like ArgoCD) continuously watches this repo and automatically closes the gap between the repo and the cluster's actual state.
+**Real function:** Instead of running commands directly against the cluster (like `kubectl apply`), the "desired state" is written as YAML into a Git repo. A tool (like ArgoCD) continuously watches this repo and automatically closes the gap between the repo and the cluster's actual state — just like a Terraform `apply` loop continuously syncing defined infrastructure state with actual state.
 
-I understood this as the same "document everything and push it" habit I already have with my own GitHub repo, applied to real running infrastructure — Git history becomes the change record, `git revert` makes rollback easy, and no one needs direct access to the cluster, they just push to Git.
+**Cross-reference:** I understood this as the same "document everything and push it" habit I already have with my own GitHub repo, applied to real running infrastructure — Git history becomes the change record, `git revert` makes rollback easy.
 
-Can be thought of like updating a blueprint instead of giving a construction worker verbal instructions — the worker keeps checking the blueprint and adjusting the building to match it.
+```mermaid
+graph LR
+    Dev[Developer] -->|git push| Repo[Git Repo - YAML]
+    Repo -->|watches| ArgoCD[ArgoCD/GitOps Tool]
+    ArgoCD -->|syncs| Cluster[Kubernetes Cluster]
+    Cluster -.->|corrects drift| ArgoCD
+```
 
 ---
 
@@ -22,7 +28,7 @@ Can be thought of like updating a blueprint instead of giving a construction wor
 
 ### Container History
 
-Learned that the container idea goes back to **1979 (chroot)** — wasn't expecting it to be that old. Everyone assumes Docker (2013) is where containers started, but the idea predates it by 34 years:
+Learned that the container idea goes back to **1979 (chroot)** — 34 years before Docker (2013):
 
 ```
 chroot (Unix)     → 1979
@@ -33,6 +39,8 @@ Kubernetes        → 2014
 Openshift         → 2011, 2015
 ```
 
+**Software example:** Like a JVM (Java Virtual Machine) being able to run code compiled for a specific bytecode version — each new version was built layer by layer on top of the previous one, never starting from scratch.
+
 ### Why We Need Containers
 
 Covered eight points — agile app deployment, CI/CD, immutability (eliminates the "worked on my machine" problem), observability, application-centric management, microservices, resource isolation, resource utilization efficiency.
@@ -41,13 +49,15 @@ Covered eight points — agile app deployment, CI/CD, immutability (eliminates t
 
 Saw seven main headings: service discovery and load balancing, storage management, automated rollouts/rollbacks (the foundation of GitOps), automated bin packing (scheduling), self-healing, secret and configuration management, extensibility.
 
-**Self-healing** stood out to me specifically — learned that Kubernetes restarts failed containers, kills ones that don't respond to health checks, and never sends traffic to a container until it's ready. Connected this to the `healthy`/`unhealthy` states we tested with HEALTHCHECK back in Phase 26 (IaC Scanning) — a health check detects the container's status and can trigger intervention based on it; we only ever _saw_ the status in `docker ps`, Kubernetes actually _acts_ on it automatically.
+**Self-healing** stood out to me specifically — learned that Kubernetes restarts failed containers, kills ones that don't respond to health checks, and never sends traffic to a container until it's ready.
+
+**Cross-reference:** Connected this to the `healthy`/`unhealthy` states I tested with HEALTHCHECK back in Phase 26 (IaC Scanning) — a health check detects a container's status and intervention can be taken based on that status; I had only ever _seen_ the status in `docker ps`, Kubernetes actually _acts_ on it automatically.
 
 ---
 
 ## 3. Docker (k8s-tr's Angle)
 
-This page mostly covered commands I already knew (`docker run`, `docker ps`, `docker build`, `docker tag`, `docker push`). The one genuinely new technique was **`envsubst`**:
+This page mostly covered commands I already knew. The one genuinely new technique was **`envsubst`**:
 
 ```dockerfile
 FROM nginx
@@ -58,69 +68,119 @@ RUN envsubst < /etc/nginx/conf.d/orig.conf > /etc/nginx/conf.d/default.conf
 RUN rm /etc/nginx/conf.d/orig.conf
 ```
 
-The config file uses variables like `${NGINX_PORT}`, and `envsubst` fills these placeholders with the real values defined via `ENV`. I compared this to defining a variable in code — the actual values (google, 8080) that go in place of the variables are written afterward, in the Dockerfile. The same Dockerfile can be built with different `ENV` values to get the same image structure configured differently for different environments (dev/test/prod) — I think of this as a simplified precursor to Kubernetes ConfigMaps (which I'll see later, in Basic Resources).
+**Software example:** Similar to defining a variable in code — the config file uses variables like `${NGINX_PORT}`, and `envsubst` fills these placeholders with the real values defined via `ENV`.
+
+**Real function:** The same Dockerfile can be built with different `ENV` values to get the same image structure configured differently for different environments (dev/test/prod).
+
+**Cross-reference:** I think of this as a simplified precursor to Kubernetes ConfigMaps (which I covered in depth in Phase 30) — both are applications of "separating config from code" at different levels.
 
 ---
 
 ## 4. Cluster Architecture
 
-I built this section around a **hotel** — starting from the three-plane split and mapping every component into the same scenario:
+```mermaid
+graph TD
+    subgraph "Control Plane"
+        API[kube-apiserver]
+        ETCD[etcd]
+        SCHED[kube-scheduler]
+        CM[kube-controller-manager]
+    end
+    subgraph "Node"
+        KUBELET[kubelet]
+        PROXY[kube-proxy]
+        CRI[container-runtime]
+        DNS[coreDNS]
+        CNI[CNI - Calico]
+    end
+    API <--> ETCD
+    API --> SCHED
+    API --> CM
+    KUBELET --> API
+    PROXY --> API
+    KUBELET --> CRI
+```
 
-- **Data plane** = the hotel's guests and the actual service they receive
-- **Control plane** = the front desk and hotel management
-- **Management plane** = accounting/payments — a subset of the control plane
+### The Three-Plane Split
+
+**Software example:** Like a web application split into **frontend/backend/database** layers — the control plane (backend, business logic) and management plane (admin panel) both serve the data plane (the actual service the frontend delivers to the user).
+
+**Real function:** The data plane carries the actual service traffic, the control and management planes serve/manage that plane.
 
 ### Control Plane Components
 
-**kube-apiserver = Front Desk.** Everyone arriving at the hotel goes through the front desk first — reservation/registration gets checked. No one can skip the front desk and walk straight into a room. This is the component that accepts and validates every REST request coming into the cluster, and is the single connection point to etcd. Runs as a static pod: `/etc/kubernetes/manifests/kube-apiserver.yaml`.
+**kube-apiserver — Software example:** Like an **API Gateway** (Kong, nginx) that every incoming request passes through, handling authentication/authorization — no request can reach backend services directly.
 
-**etcd = The Hotel's Guest Register — But There Are Multiple Redundant Copies.** Not a single register — an **odd number** (3, 5, etc.) of identical copies, all synchronized with each other. Who's staying in which room right now is in these registers. When a guest checks out and a new one checks in, the old entry isn't crossed out — a new line gets added instead. But **that doesn't mean entries are kept forever** — old versions stick around briefly as history, then get cleaned up regularly via **compact**, with **defrag** reclaiming the freed disk space.
+**Real function:** Accepts and validates every REST request coming into the cluster, is the single connection point to etcd. Runs as a static pod: `/etc/kubernetes/manifests/kube-apiserver.yaml`.
 
-The register is kept as an odd number of copies because the weakness of even numbers, splitting evenly into a tie, disappears with odd numbers; there's always a clear majority (leader election via the Raft algorithm). This actually works like a **board of directors** — every board member has the same information, no one can unilaterally say "I decided this," majority approval is required. This is what prevents two different tables both claiming "I'm the leader" at once (the dangerous situation called **split-brain**).
+**etcd — Software example:** Like a distributed key-value database (Consul, Zookeeper — which I researched in depth in Phase 30) doing multi-node replication + leader election (Raft).
 
-**The register's real value isn't just "keeping history."** Every entry gets a **sequence number** (revision) — just like commit order on GitHub. If someone tries to update a room based on stale information (someone else already changed it in between), the operation gets **rejected** — this is what prevents two conflicting operations happening at once (like two simultaneous withdrawal requests hitting the same ATM account). The register also **automatically notifies** anyone interested when an entry changes (like subscribing to a YouTube channel and getting notified) — no one has to keep asking "did it change yet?" If the connection drops, it can pick up from its last known revision number and ask "what changed since then" (like a `git pull`) to catch up.
+**Real function:** Multiple copies (odd-numbered membership), all holding the same information, no one can unilaterally decide — majority approval is required, preventing split-brain. Every change gets a revision number (like Git commit order), changes are notified via the watch mechanism (not polling).
 
-Entries in the register are kept in alphabetical/sorted order (like a dictionary), stored in a flat layout (a binary key space). Unlike the hotel's other staff (static pods), this register service runs as a **separate, independent system** (a standalone Docker container). Its own settings can be checked from a special outside window (`/config`, over HTTP). Resource-wise it doesn't need much CPU, but on live systems 8GB of memory and an average disk are enough.
+**Cross-reference:** In `additionals/kubernetes-terim-derinlesmesi` I researched etcd's general (not Kubernetes-specific) mechanics, the Raft protocol, and its alternatives (Zookeeper, Consul) in further depth.
 
-**A critical warning I also learned:** if this register system becomes unstable (insufficient resources, network issues), the tables can never reach a clear majority/leader. In that case, the hotel **cannot make any changes** to its current state — no new guest can be accepted, not even a new room can be opened. And here's a real difference from the physical world: even if a paper register were destroyed, people could still remember things from memory — but if this register (etcd) goes down, **nothing** in the system remembers that state, because the entire hotel's "memory" depends entirely on this one register. This is why etcd is recommended to run in an isolated, stable environment.
+**A critical warning:** if etcd becomes unstable (insufficient resources, network issues), no clear majority/leader can be elected — no changes at all can be made to the cluster, not even a new pod can be created. In a version control system (Git), even a corrupted commit still leaves earlier commits recoverable — but etcd has no such "previous version" backup at all; if it goes down, nothing in the system remembers that state, because the entire cluster's "memory" depends entirely on it.
 
-**kube-controller-manager = The "Is Everything Okay" Controller.** Continuously checks the gap between the desired state and the actual state and tries to fix it — the same thermostat logic we talked about in GitOps.
+**kube-controller-manager — Software example:** Like a **cron job** or a **reconciliation loop** (seen in tools like Terraform, Ansible) periodically checking the gap between desired and actual state and fixing it.
 
-**kube-scheduler = Room Assignment Staff.** Once the front desk accepts a guest, this is who decides which physical room (node) they go to — looking at criteria like resource needs, affinity/antiaffinity, taints/tolerations, data locality. **It doesn't matter what language the app inside the pod is written in** — it just checks whether the resources needed to run exist.
+**Real function:** Continuously closes the gap between desired and actual state — saw in Phase 30 that the ReplicaSet controller is an example of this.
+
+**kube-scheduler — Software example:** Like a **cloud provider** (AWS, GCP) deciding which physical server to place a new VM request on, based on that server's available resources.
+
+**Real function:** Decides which node a pod runs on, based on criteria like resource needs/affinity/taints. The language of the app inside the pod doesn't matter — it just checks whether resource requirements can be met.
 
 ### Node Components
 
-**kubelet = Floor Supervisor.** Every floor has a supervisor. Their first job is to report to the central office "I'm here" (registering the node with the API Server as a Node resource). Their duties:
+**kubelet — Software example:** Like a **process supervisor** (systemd, supervisord) watching services running on a local machine, reporting their status centrally, and restarting them if needed.
 
-1. Gets special access codes from the front desk (downloading pod secrets)
-2. Attaches extra storage to a room (mounting volumes)
-3. Instructs the room service team (running the container)
-4. Reports status regularly to central (reporting node/pod status)
-5. Checks doors/lights (running liveness probes)
+**Real function:** Registers the node with the API Server, runs pods assigned to its node, runs liveness probes (the cluster-level version of Phase 26's HEALTHCHECK).
 
-**coredns = The Hotel's Internal Phone Directory.** Say "room 302" and it automatically connects you to the right place — like a hosts file on a computer, it handles in-cluster DNS resolution. Runs as a deployment in the `kube-system` namespace.
+**coreDNS — Software example:** Like a **service discovery** tool (Consul's DNS interface) automatically resolving service names to real IPs — can also be thought of like an `/etc/hosts` file that keeps itself updated automatically.
 
-**kube-proxy = Internal Switchboard Routing.** Handles reachability of Services/Endpoints, node network rules, and assigns virtual IPs to Services/Pods. Runs as a DaemonSet (one copy per node).
+**Real function:** This mandatory DNS system inside Kubernetes helps keep services consistently discoverable/reachable — runs as a deployment in the `kube-system` namespace.
 
-**container-runtime = Room Service/Maintenance Crew.** The layer that actually carries out the floor supervisor's instructions — runs as a system service.
+**Cross-reference:** I had already covered general DNS mechanics (resolver chain, TTL, record types) in depth back in Phase 18 (Linux Networking Fundamentals) — coreDNS is Kubernetes' automatically-managed application of that general DNS architecture. Later, when working through Service in Phase 30, I proved with a real test how coreDNS resolves Service names to pod IPs.
 
-**CNI (Calico) = The Hotel's Corridor/Access System.** Provides the cluster's network infrastructure, connectivity between pods. `calico-kube-controllers` runs as a deployment, `calico-node` as a daemonset. Alternatives: Cilium, Weave.
+**kube-proxy — Software example:** Like a **reverse proxy** (nginx's upstream/load balancing config) distributing incoming traffic to real backend servers, except here it's not centralized — it runs **on each node itself** (like each edge node of a CDN managing its own traffic).
+
+**Real function:** Ensures Service/Endpoint reachability, sets node network rules (via iptables/IPVS). Runs as a DaemonSet (one copy per node).
+
+**Cross-reference:** In Phase 30 I dug deep into kube-proxy's `iptables`/`IPVS` mechanism and the hairpin NAT issue (the relative meaning of 127.0.0.1) with a real test.
+
+**container-runtime — Software example:** Like a runtime that provides process isolation directly on the OS kernel, without a hypervisor (the CRI-O/containerd I compared in Phase 27).
+
+**CNI (Calico) — Software example:** Like **VPN software** (WireGuard) setting up a virtual network layer between different physical machines.
+
+**Real function:** Provides the cluster's network infrastructure, connectivity between pods. Alternatives: Cilium, Weave.
+
+**Cross-reference:** In `additionals/kubernetes-terim-derinlesmesi` I dug deep into CNI's VXLAN (overlay) vs BGP (direct routing) approaches, with real proof by finding the `vxlan.calico` interface on my own VDS.
+
+### 🔍 A Real Trap: The "Runs Everywhere" Claim
+
+Realized that "Docker runs everywhere" doesn't mean "runs on any operating system" — it means "runs consistently within the same kernel family." This is also why Docker Desktop on Mac/Windows can run Linux containers — it quietly sets up a hidden Linux virtual machine in the background, and the containers actually run inside that VM's Linux kernel.
+
+Learned that Docker Desktop on Windows also has a "Windows containers" mode — in this mode Windows containers can run directly on the host's Windows kernel without a VM.
+
+**Also researched the real use case:** used for containerizing legacy enterprise applications tied to old .NET Framework that can't be ported to Linux.
 
 ---
 
 ## 📊 Summary
 
-| Topic                        | What I Learned                                                                                                       |
-| ---------------------------- | -------------------------------------------------------------------------------------------------------------------- |
-| GitOps                       | Instead of touching the cluster by hand, a tool automatically applies the target written to Git                      |
-| Container history            | Goes back to 1979 (chroot), 34 years before Docker                                                                   |
-| envsubst                     | The technique that fills config variables with the Dockerfile's ENV values                                           |
-| Cluster architecture         | Via the hotel analogy — front desk (apiserver), guest register (etcd), floor supervisor (kubelet), etc.              |
-| etcd odd-numbered membership | Even-numbered voting can tie, odd-numbered always produces a clear majority — prevents split-brain                   |
-| etcd revision/watch          | Every change is numbered (prevents conflicts), interested parties get notified automatically on change (not polling) |
-| self-healing                 | Automatic intervention based on health check status — the cluster-level version of HEALTHCHECK                       |
-| kubectl                      | Most Docker commands have a direct equivalent (exec, ps→get pods, etc.)                                              |
+| Topic             | What I Learned                                                                                      |
+| ----------------- | --------------------------------------------------------------------------------------------------- |
+| GitOps            | Like a Terraform apply loop — a tool automatically applies the target written to Git                |
+| Container history | Goes back to 1979 (chroot), 34 years before Docker                                                  |
+| envsubst          | The technique that fills config variables with ENV values — a precursor to ConfigMap                |
+| kube-apiserver    | Like an API Gateway — every request passes through it first                                         |
+| etcd              | Distributed key-value DB (Consul/Zookeeper-like) — split-brain prevention, revision/watch mechanism |
+| kube-scheduler    | Like a cloud provider placing VMs — resource-based, language-independent                            |
+| kubelet           | Like a process supervisor (systemd) — watches pods on the node                                      |
+| coreDNS           | Like a service discovery tool — keeps services consistently discoverable via DNS                    |
+| kube-proxy        | Like a distributed reverse proxy — each node manages its own traffic                                |
+| CNI               | Like VPN software — sets up a virtual network layer between pods                                    |
+| self-healing      | Automatic intervention based on health check status — the cluster-level version of HEALTHCHECK      |
 
 ---
 
-ℹ️ _This phase was entirely conceptual — terminology and architecture were reinforced by following the k8s-tr.github.io roadmap before setting up an actual cluster. Hands-on setup comes in the next phase._
+ℹ️ _This phase was entirely conceptual — terminology and architecture were reinforced with software-ecosystem examples by following the k8s-tr.github.io roadmap before setting up an actual cluster. Hands-on setup and tests were done in Phases 29/30._
