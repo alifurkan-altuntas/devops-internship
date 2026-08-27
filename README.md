@@ -14,7 +14,7 @@ Nginx derinleşmesi tamamlandı: reverse proxy, path bazlı yönlendirme, path r
 
 OpenResty (PostgreSQL, MySQL, Redis, token authentication) ve rclone ile S3 entegrasyonu tamamlandı — performans parametreleri, `rclone serve http` cache ve güvenlik (VFS cache, dir cache, auth, remote control), `rclone mount` ve VFS cache.
 
-Docker derinleşmesi tamamen bitti — temel kavramlar, güvenlik, ileri seviye güvenlik, IaC scanning, alternatif runtime'lar, ve son olarak Compose volume/network, PHP örneği, Windows containers dahil. Ayrıca SSL/TLS görevi tamamlandı. Kubernetes'e geçildi — Temel Kavramlar ve beş kurulum yöntemi tamamlandı. Temel Kaynaklar bölümü (Pod/ReplicaSet/Deployment, Service, ConfigMaps, Secrets, Kanarya Deployment) gerçek testlerle tamamlandı, ardından Faz 28 ve Faz 30 belgeleri yazılım ekosisteminden örnekler, gerçek işlev açıklamaları, çapraz referanslar ve Mermaid diyagramlarıyla yeniden gözden geçirildi. Diğer Kaynaklar bölümüne StatefulSets ile başlandı ve tamamlandı — kalıcı kimlik ve kalıcı veri garantisi gerçek bir testle (pod silme/yeniden oluşma) kanıtlandı. Ayrıca etcd/Raft/CNI-kube-proxy konuları kendi araştırmamla derinleştirildi (devam ediyor — kubernetes.io/microservices.io okumaları, BGP/VXLAN teknik derinliği, Cilium denemesi kaldı). Sırada Diğer Kaynaklar'ın geri kalanı (Volumes, Ingress, Jobs & Cronjobs, Kaynaklar ve Limitler, DaemonSets, HPA/VPA, Yetkiler) var.
+Docker derinleşmesi tamamen bitti — temel kavramlar, güvenlik, ileri seviye güvenlik, IaC scanning, alternatif runtime'lar, ve son olarak Compose volume/network, PHP örneği, Windows containers dahil. Ayrıca SSL/TLS görevi tamamlandı. Kubernetes'e geçildi — Temel Kavramlar, beş kurulum yöntemi, Temel Kaynaklar, ve şimdi Diğer Kaynaklar (StatefulSets, Volumes, Ingress, Jobs & Cronjobs, Kaynaklar ve Limitler, DaemonSets, HPA, VPA, Yetkiler) tamamlandı — hepsi gerçek testlerle kanıtlandı. Faz 28 ve 30 belgeleri yazılım ekosisteminden örnekler, gerçek işlev açıklamaları, çapraz referanslar ve Mermaid diyagramlarıyla gözden geçirildi. etcd/Raft/CNI-kube-proxy konuları kendi araştırmamla derinleştirildi (devam ediyor — kubernetes.io/microservices.io okumaları, BGP/VXLAN teknik derinliği, Cilium denemesi kaldı). Sırada roadmap'in Önemli Kaynaklar bölümü (Etiketler, Sürekli Güncellemeler, Canlılık ve Hazırlık, İtme ve Çekme) var.
 
 Tüm fazların (01–24) Türkçe/İngilizce belge dönüşümü tamamlandı.
 
@@ -52,6 +52,7 @@ Tüm fazların (01–24) Türkçe/İngilizce belge dönüşümü tamamlandı.
 - [28-Kubernetes-Fundamentals](./28-Kubernetes-Fundamentals/): Kubernetes temel kavramları — GitOps, konteyner tarihi, self-healing, envsubst, küme mimarisi (kube-apiserver, etcd, kube-scheduler, kubelet, coredns, kube-proxy, CNI), kubectl. ([TR](./28-Kubernetes-Fundamentals/readme.md) / [EN](./28-Kubernetes-Fundamentals/readme-en.md))
 - [29-Kubernetes-Installation](./29-Kubernetes-Installation/): Beş kurulum yönteminin (Vagrant, kubeadm, MicroK8s, minikube, Kubespray) gerçek kurulup test edilerek karşılaştırılması — güncel olmayan kaynaklar, port çakışmaları, eski kalıntı temizliği dahil. ([TR](./29-Kubernetes-Installation/readme.md) / [EN](./29-Kubernetes-Installation/readme-en.md))
 - [30-Kubernetes-Basic-Resources](./30-Kubernetes-Basic-Resources/): Pod, ReplicaSet, Deployment, Service (tüm türleri), ConfigMaps, Secrets (base64 vs gerçek şifreleme, EncryptionConfiguration), Kanarya Deployment — hepsi gerçek testlerle kanıtlandı. ([TR](./30-Kubernetes-Basic-Resources/readme.md) / [EN](./30-Kubernetes-Basic-Resources/readme-en.md))
+- [31-Kubernetes-Other-Resources](./31-Kubernetes-Other-Resources/): StatefulSets, Volumes, Ingress, Jobs & Cronjobs, Kaynaklar ve Limitler, DaemonSets, HPA, VPA, Yetkiler (RBAC) — dokuz konu, hepsi gerçek testlerle kanıtlandı. ([TR](./31-Kubernetes-Other-Resources/readme.md) / [EN](./31-Kubernetes-Other-Resources/readme-en.md))
 - [additionals/ssl](./additionals/ssl/): SSL/TLS'in çalışma mantığının, hiç teknik terim kullanılmadan, tamamen gerçek dünya benzetmesiyle (iki firma arasında mühürlü mektup, noter zinciri, kurumsal evrak kontrol bürosu) anlatımı. ([TR](./additionals/ssl/readme.md) / [EN](./additionals/ssl/readme-en.md))
 - [additionals/security-situation](./additionals/security-situation/): Gerçek bir güvenlik olayı — DNS rebinding ve açık forward proxy (SSRF) ile sunucunun kötüye kullanılması, kök sebep analizi ve çözüm. ([TR](./additionals/security-situation/readme.md) / [EN](./additionals/security-situation/readme-en.md))
 - [additionals/kubernetes-terim-derinlesmesi](./additionals/kubernetes-terim-derinlesmesi/): Araştırdığım konular — etcd'nin genel mantığı, Raft protokolü, CNI/kube-proxy (VXLAN, BGP, Service, iptables/IPVS). Devam eden bir belge. ([TR](./additionals/kubernetes-terim-derinlesmesi/readme.md) / [EN](./additionals/kubernetes-terim-derinlesmesi/readme-en.md))
@@ -732,6 +733,27 @@ _Son olarak DaemonSets'e başladım. ReplicaSet'in elle belirlenen kopya sayıs�
   - DaemonSets'e başlandı — node-sayısı-bağımlı kopyalanma gerçek testle kanıtlandı.
 - **Kilometre Taşları & Çıktılar:**
   - Belge henüz yazılmadı — Diğer Kaynaklar bölümü (HPA, VPA, Yetkiler dahil) tamamlanınca tek seferde yazılacak.
+
+### 🔹 26 Ağustos 2026 | Diğer Kaynaklar Tamamlandı — DaemonSets, HPA, VPA, Yetkiler
+
+_DaemonSets'i, kopya sayısının node sayısına otomatik eşit olduğunu (trafiğe değil) kendi mantık yürütmemle kavrayıp gerçek testle (`DESIRED: 1`, tek node'lu cluster'da) kanıtladım. Bir web uygulaması için DaemonSet kullanmanın israf olacağını, log/izleme/ağ ajanları gibi "her sistemde olması gereken" altyapı parçaları için doğru araç olduğunu netleştirdim._
+
+_HPA'ya geçtim. `metrics-server` kurulumunda kendinden imzalı sertifika sorunuyla karşılaşıp `--kubelet-insecure-tls` ile çözdüm. Gerçek yük vererek pod sayısının orantı formülüyle (`1 → 4 → 8 → 10`) arttığını, `behavior` bloğuyla kademeli artışı (`2 → 3 → 4...`), ve yük kesilince kararlılaştırma süresinden sonra azaldığını kanıtladım. Dört metrik türünü (Resource, Pods, Object, External) araştırıp, External metriğin (mesaj kuyruğu gibi) CPU düşükken bile gerçek darboğazı yakalayabildiğini kavradım._
+
+_VPA'yı kurup (ayrı bir proje olarak, `vpa-up.sh` ile) gerçek bir öneri (`10m` → `350m`) elde ettim. VPA'nın tek kopyalı bir Deployment'ı güncellemeyi güvenlik gerekçesiyle reddettiğini (`globalMinReplicas=2`), kopya sayısını artırınca gerçekten pod'ların silinip yeni değerlerle oluştuğunu kanıtladım._
+
+_Son olarak Yetkiler (RBAC) konusuna geçtim. Sayfadaki eski API sürümünü (`v1beta1`) test edip reddedildiğini, güncel `v1`'e geçtiğimi kanıtladım. `ServiceAccount`/`Role`/`RoleBinding` üçlüsünün namespace'e özel, `ClusterRole`/`ClusterRoleBinding`'in cluster geneli çalıştığını `kubectl auth can-i` ile kanıtladım. Sayfanın asıl önerdiği gerçek login akışını da test ettim — güncel `kubectl create token` ile bir token üretip, izole bir kubeconfig dosyasına yerleştirip, kısıtlı kullanıcı olarak gerçekten `kubectl` ile giriş yaptım._
+
+_Belgeyi (Faz 31: Diğer Kaynaklar) yazarken, StatefulSets'te pod'ların sıralı oluştuğunu (bir öncekinin hazır olmasını bekleyerek), Kaynaklar ve Limitler'de QoS sınıflarını (BestEffort/Burstable/Guaranteed, gerçek testle) ekledim. Ayrıca beş konunun (RBAC, cron sözdizimi, cgroups/OOM, TLS/x509, NFS) aslında Kubernetes'in icadı olmayıp çok daha eski, genel teknolojiler olduğunu araştırıp belgeye işledim._
+
+- **Görevler & Hedefler:**
+  - DaemonSets, HPA, VPA, Yetkiler (RBAC) tamamlandı — hepsi gerçek testlerle kanıtlandı.
+  - QoS sınıfları gerçek testle kanıtlandı.
+  - RBAC'ın gerçek login akışı (izole kubeconfig ile) test edildi.
+  - Beş konunun Kubernetes-dışı, genel teknoloji kökenleri araştırılıp belgeye işlendi.
+  - Diğer Kaynaklar bölümü (StatefulSets, Volumes, Ingress, Jobs & Cronjobs, Kaynaklar ve Limitler, DaemonSets, HPA, VPA, Yetkiler) tamamen tamamlandı.
+- **Kilometre Taşları & Çıktılar:**
+  - ☸️ Kubernetes Diğer Kaynaklar: [README (TR](./31-Kubernetes-Other-Resources/readme.md) / [EN)](./31-Kubernetes-Other-Resources/readme-en.md)
 
 ---
 

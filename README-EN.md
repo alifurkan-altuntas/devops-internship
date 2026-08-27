@@ -14,7 +14,7 @@ Completed Nginx deep dive: reverse proxy, path-based routing, path rewrite, path
 
 Completed OpenResty (PostgreSQL, MySQL, Redis, token authentication) and rclone with S3 — performance parameters, `rclone serve http` cache and security (VFS cache, dir cache, auth, remote control), `rclone mount` and VFS cache.
 
-Docker deep dive is fully complete — fundamentals, security, advanced security, IaC scanning, alternative runtimes, and finally Compose volume/network, the PHP example, and Windows containers. The SSL/TLS task is also complete. Moved on to Kubernetes — Fundamental Concepts and all five installation methods are complete. The Basic Resources section (Pod/ReplicaSet/Deployment, Service, ConfigMaps, Secrets, Canary Deployment) is complete, proven with real tests, and Phases 28 and 30 were subsequently revised with software-ecosystem examples, real function explanations, cross-references, and Mermaid diagrams. Started and completed StatefulSets in the Other Resources section — proved persistent identity and persistent data guarantees with a real delete/recreate test. Also deepened understanding of etcd/Raft/CNI-kube-proxy through self-research (ongoing — kubernetes.io/microservices.io readings, deeper BGP/VXLAN research, and trying Cilium remain). Up next: the rest of Other Resources (Volumes, Ingress, Jobs & Cronjobs, Resources and Limits, DaemonSets, HPA/VPA, Permissions).
+Docker deep dive is fully complete — fundamentals, security, advanced security, IaC scanning, alternative runtimes, and finally Compose volume/network, the PHP example, and Windows containers. The SSL/TLS task is also complete. Moved on to Kubernetes — Fundamental Concepts, all five installation methods, Basic Resources, and now Other Resources (StatefulSets, Volumes, Ingress, Jobs & Cronjobs, Resources and Limits, DaemonSets, HPA, VPA, Permissions) are complete — all proven with real tests. Phases 28 and 30 were revised with software-ecosystem examples, real function explanations, cross-references, and Mermaid diagrams. Also deepened understanding of etcd/Raft/CNI-kube-proxy through self-research (ongoing — kubernetes.io/microservices.io readings, deeper BGP/VXLAN research, and trying Cilium remain). Up next: the roadmap's Important Resources section (Labels, Continuous Updates, Liveness and Readiness, Taints and Affinity).
 
 Bilingual documentation (TR/EN) complete for all phases (01–24).
 
@@ -52,6 +52,7 @@ Bilingual documentation (TR/EN) complete for all phases (01–24).
 - [28-Kubernetes-Fundamentals](./28-Kubernetes-Fundamentals/): Kubernetes fundamentals — GitOps, container history, self-healing, envsubst, cluster architecture (kube-apiserver, etcd, kube-scheduler, kubelet, coredns, kube-proxy, CNI), kubectl. ([TR](./28-Kubernetes-Fundamentals/readme.md) / [EN](./28-Kubernetes-Fundamentals/readme-en.md))
 - [29-Kubernetes-Installation](./29-Kubernetes-Installation/): A real, hands-on comparison of five installation methods (Vagrant, kubeadm, MicroK8s, minikube, Kubespray) — including outdated sources, port conflicts, and leftover cleanup. ([TR](./29-Kubernetes-Installation/readme.md) / [EN](./29-Kubernetes-Installation/readme-en.md))
 - [30-Kubernetes-Basic-Resources](./30-Kubernetes-Basic-Resources/): Pod, ReplicaSet, Deployment, Service (all types), ConfigMaps, Secrets (base64 vs real encryption, EncryptionConfiguration), Canary Deployment — all proven with real tests. ([TR](./30-Kubernetes-Basic-Resources/readme.md) / [EN](./30-Kubernetes-Basic-Resources/readme-en.md))
+- [31-Kubernetes-Other-Resources](./31-Kubernetes-Other-Resources/): StatefulSets, Volumes, Ingress, Jobs & Cronjobs, Resources and Limits, DaemonSets, HPA, VPA, Permissions (RBAC) — nine topics, all proven with real tests. ([TR](./31-Kubernetes-Other-Resources/readme.md) / [EN](./31-Kubernetes-Other-Resources/readme-en.md))
 - [additionals/ssl](./additionals/ssl/): An explanation of how SSL/TLS works, with no technical terminology at all, entirely through a real-world analogy (a sealed letter between two companies, a notary chain, a corporate mail-control office). ([TR](./additionals/ssl/readme.md) / [EN](./additionals/ssl/readme-en.md))
 - [additionals/security-situation](./additionals/security-situation/): A real security incident — a server abused via DNS rebinding and an open forward proxy (SSRF), with root cause analysis and fix. ([TR](./additionals/security-situation/readme.md) / [EN](./additionals/security-situation/readme-en.md))
 - [additionals/kubernetes-terim-derinlesmesi](./additionals/kubernetes-terim-derinlesmesi/): Topics I researched myself — etcd's general mechanics, the Raft protocol, CNI/kube-proxy (VXLAN, BGP, Service, iptables/IPVS). An ongoing document. ([TR](./additionals/kubernetes-terim-derinlesmesi/readme.md) / [EN](./additionals/kubernetes-terim-derinlesmesi/readme-en.md))
@@ -732,6 +733,27 @@ _Finally started DaemonSets. Proved with a real test that, unlike ReplicaSet's m
   - Started DaemonSets — proved node-count-dependent replication with a real test.
 - **Milestones & Deliverables:**
   - Document not written yet — will be written once the Other Resources section (including HPA, VPA, Permissions) is complete.
+
+### 🔹 August 26, 2026 | Other Resources Completed — DaemonSets, HPA, VPA, Permissions
+
+_Grasped through my own reasoning that DaemonSet's replica count automatically equals the node count (not traffic), proved it with a real test (`DESIRED: 1` on my single-node cluster). Clarified that using a DaemonSet for a web application would be wasteful, and that it's the right tool for infrastructure pieces that need to exist "on every system" like log/monitoring/network agents._
+
+_Moved to HPA. Ran into a self-signed certificate issue installing `metrics-server`, resolved it with `--kubelet-insecure-tls`. Proved with real load that pod count increased following the proportion formula (`1 → 4 → 8 → 10`), proved gradual increase (`2 → 3 → 4...`) with a `behavior` block, and that pod count decreased only after a stabilization period once load stopped. Researched the four metric types (Resource, Pods, Object, External), grasped that an External metric (like message queue length) can catch a real bottleneck even when CPU is low._
+
+_Installed VPA (a separate project, via `vpa-up.sh`) and got a real recommendation (`10m` → `350m`). Proved VPA refuses to update a single-replica Deployment for safety reasons (`globalMinReplicas=2`), and that scaling up the replica count genuinely caused pods to be deleted and recreated with the new values._
+
+_Finally moved to Permissions (RBAC). Tested the page's outdated API version (`v1beta1`), proved it was rejected, switched to current `v1`. Proved with `kubectl auth can-i` that the `ServiceAccount`/`Role`/`RoleBinding` trio works per-namespace, while `ClusterRole`/`ClusterRoleBinding` works cluster-wide. Also tested the real login flow the page was actually pointing at — generated a token with the current `kubectl create token` method, placed it into an isolated kubeconfig file, and genuinely logged in with `kubectl` as the restricted user._
+
+_While writing the document (Phase 31: Other Resources), added that StatefulSets' pods are created in order (waiting for the previous one to be ready), and added QoS classes (BestEffort/Burstable/Guaranteed, with a real test) under Resources and Limits. Also researched and added to the document that five topics (RBAC, cron syntax, cgroups/OOM, TLS/x509, NFS) aren't actually Kubernetes inventions but much older, general technologies._
+
+- **Tasks & Objectives:**
+  - Completed DaemonSets, HPA, VPA, Permissions (RBAC) — all proven with real tests.
+  - Proved QoS classes with a real test.
+  - Tested RBAC's real login flow (with an isolated kubeconfig).
+  - Researched and documented five topics' non-Kubernetes, general-technology origins.
+  - Fully completed the Other Resources section (StatefulSets, Volumes, Ingress, Jobs & Cronjobs, Resources and Limits, DaemonSets, HPA, VPA, Permissions).
+- **Milestones & Deliverables:**
+  - ☸️ Kubernetes Other Resources: [README (TR](./31-Kubernetes-Other-Resources/readme.md) / [EN)](./31-Kubernetes-Other-Resources/readme-en.md)
 
 ---
 
