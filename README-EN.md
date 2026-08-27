@@ -14,7 +14,7 @@ Completed Nginx deep dive: reverse proxy, path-based routing, path rewrite, path
 
 Completed OpenResty (PostgreSQL, MySQL, Redis, token authentication) and rclone with S3 — performance parameters, `rclone serve http` cache and security (VFS cache, dir cache, auth, remote control), `rclone mount` and VFS cache.
 
-Docker deep dive is fully complete — fundamentals, security, advanced security, IaC scanning, alternative runtimes, and finally Compose volume/network, the PHP example, and Windows containers. The SSL/TLS task is also complete. Moved on to Kubernetes — Fundamental Concepts, all five installation methods, Basic Resources, and now Other Resources (StatefulSets, Volumes, Ingress, Jobs & Cronjobs, Resources and Limits, DaemonSets, HPA, VPA, Permissions) are complete — all proven with real tests. Phases 28 and 30 were revised with software-ecosystem examples, real function explanations, cross-references, and Mermaid diagrams. Also deepened understanding of etcd/Raft/CNI-kube-proxy through self-research (ongoing — kubernetes.io/microservices.io readings, deeper BGP/VXLAN research, and trying Cilium remain). Up next: the roadmap's Important Resources section (Labels, Continuous Updates, Liveness and Readiness, Taints and Affinity).
+Docker deep dive is fully complete — fundamentals, security, advanced security, IaC scanning, alternative runtimes, and finally Compose volume/network, the PHP example, and Windows containers. The SSL/TLS task is also complete. Moved on to Kubernetes — Fundamental Concepts, all five installation methods, Basic Resources, Other Resources, and now Important Resources (Labels, Rolling Updates, Liveness and Readiness, Taints and Affinity) are complete — all proven with real tests. Phases 28 and 30 were revised with software-ecosystem examples, real function explanations, cross-references, and Mermaid diagrams. Also deepened understanding of etcd/Raft/CNI-kube-proxy through self-research (ongoing — kubernetes.io/microservices.io readings, deeper BGP/VXLAN research, and trying Cilium remain). Up next: the roadmap's Additional Tools section (ARGO-CD, Dashboard, Helm, MetalLB, Service Mesh, kustomize).
 
 Bilingual documentation (TR/EN) complete for all phases (01–24).
 
@@ -53,6 +53,7 @@ Bilingual documentation (TR/EN) complete for all phases (01–24).
 - [29-Kubernetes-Installation](./29-Kubernetes-Installation/): A real, hands-on comparison of five installation methods (Vagrant, kubeadm, MicroK8s, minikube, Kubespray) — including outdated sources, port conflicts, and leftover cleanup. ([TR](./29-Kubernetes-Installation/readme.md) / [EN](./29-Kubernetes-Installation/readme-en.md))
 - [30-Kubernetes-Basic-Resources](./30-Kubernetes-Basic-Resources/): Pod, ReplicaSet, Deployment, Service (all types), ConfigMaps, Secrets (base64 vs real encryption, EncryptionConfiguration), Canary Deployment — all proven with real tests. ([TR](./30-Kubernetes-Basic-Resources/readme.md) / [EN](./30-Kubernetes-Basic-Resources/readme-en.md))
 - [31-Kubernetes-Other-Resources](./31-Kubernetes-Other-Resources/): StatefulSets, Volumes, Ingress, Jobs & Cronjobs, Resources and Limits, DaemonSets, HPA, VPA, Permissions (RBAC) — nine topics, all proven with real tests. ([TR](./31-Kubernetes-Other-Resources/readme.md) / [EN](./31-Kubernetes-Other-Resources/readme-en.md))
+- [32-Kubernetes-Important-Resources](./32-Kubernetes-Important-Resources/): Labels, Rolling Updates, Liveness and Readiness, Taints and Affinity — four topics, all proven with real tests. ([TR](./32-Kubernetes-Important-Resources/readme.md) / [EN](./32-Kubernetes-Important-Resources/readme-en.md))
 - [additionals/ssl](./additionals/ssl/): An explanation of how SSL/TLS works, with no technical terminology at all, entirely through a real-world analogy (a sealed letter between two companies, a notary chain, a corporate mail-control office). ([TR](./additionals/ssl/readme.md) / [EN](./additionals/ssl/readme-en.md))
 - [additionals/security-situation](./additionals/security-situation/): A real security incident — a server abused via DNS rebinding and an open forward proxy (SSRF), with root cause analysis and fix. ([TR](./additionals/security-situation/readme.md) / [EN](./additionals/security-situation/readme-en.md))
 - [additionals/kubernetes-terim-derinlesmesi](./additionals/kubernetes-terim-derinlesmesi/): Topics I researched myself — etcd's general mechanics, the Raft protocol, CNI/kube-proxy (VXLAN, BGP, Service, iptables/IPVS). An ongoing document. ([TR](./additionals/kubernetes-terim-derinlesmesi/readme.md) / [EN](./additionals/kubernetes-terim-derinlesmesi/readme-en.md))
@@ -754,6 +755,27 @@ _While writing the document (Phase 31: Other Resources), added that StatefulSets
   - Fully completed the Other Resources section (StatefulSets, Volumes, Ingress, Jobs & Cronjobs, Resources and Limits, DaemonSets, HPA, VPA, Permissions).
 - **Milestones & Deliverables:**
   - ☸️ Kubernetes Other Resources: [README (TR](./31-Kubernetes-Other-Resources/readme.md) / [EN)](./31-Kubernetes-Other-Resources/readme-en.md)
+
+### 🔹 August 27, 2026 | Important Resources Completed — Labels, Rolling Updates, Liveness and Readiness, Taints and Affinity
+
+_Moved to Labels. Proved with a real test that pods written in different programming languages are handled identically by a Service, and confirmed at the schema level with `kubectl explain` why this happens (Service only operates at the IP:port level/L4, while Ingress can read path/host/L7). Also proved set-based selectors (`in`, `notin`, `exists`) and a Deployment's `matchExpressions` field with real tests._
+
+_In Rolling Updates, proved with a real test that rolling update's `maxSurge`/`maxUnavailable` ratios are configurable, and tested "zero loss" updates with `maxUnavailable: 0`. Measured with real timestamps the extra wait time `minReadySeconds` adds to a rolling update._
+
+_In Liveness and Readiness, proved with a real test that Readiness and Liveness have different outcomes (one cuts traffic but keeps the pod alive, the other kills the pod) — deliberately "broke" an application and observed it stayed persistently at `0/1` for 5+ minutes, never restarting. Verified the `failureThreshold × periodSeconds` timing with real second-by-second measurement. Proved with a real test that a Startup Probe protects an artificially slow-starting container from being killed too early by Liveness._
+
+_In Taints and Affinity, tested five separate scenarios: a Taint+Toleration match, a missing Toleration, the difference between `NoSchedule` (only blocks new pods) and `NoExecute` (evicts running ones too), and the different behaviors of `required`/`preferred` node affinity. Connected this back to Phase 29's "remove control-plane taint" step._
+
+_Took a 15-question quiz covering all four topics. Then wrote the Phase 32 (Important Resources) document — documented each topic with a software-ecosystem example, real function, cross-references, Mermaid diagrams, and real YAML._
+
+- **Tasks & Objectives:**
+  - Completed Labels, Rolling Updates, Liveness and Readiness, Taints and Affinity — all proven with real tests.
+  - Proved at the schema level that Service is L4 and Ingress is L7.
+  - Distinguished Readiness/Liveness/Startup probe behaviors with real tests.
+  - Proved Taint/Toleration and Node Affinity's required/preferred difference with real tests.
+  - Fully completed the Important Resources section (Labels, Rolling Updates, Liveness and Readiness, Taints and Affinity).
+- **Milestones & Deliverables:**
+  - ☸️ Kubernetes Important Resources: [README (TR](./32-Kubernetes-Important-Resources/readme.md) / [EN)](./32-Kubernetes-Important-Resources/readme-en.md)
 
 ---
 

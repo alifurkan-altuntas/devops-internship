@@ -14,7 +14,7 @@ Nginx derinleşmesi tamamlandı: reverse proxy, path bazlı yönlendirme, path r
 
 OpenResty (PostgreSQL, MySQL, Redis, token authentication) ve rclone ile S3 entegrasyonu tamamlandı — performans parametreleri, `rclone serve http` cache ve güvenlik (VFS cache, dir cache, auth, remote control), `rclone mount` ve VFS cache.
 
-Docker derinleşmesi tamamen bitti — temel kavramlar, güvenlik, ileri seviye güvenlik, IaC scanning, alternatif runtime'lar, ve son olarak Compose volume/network, PHP örneği, Windows containers dahil. Ayrıca SSL/TLS görevi tamamlandı. Kubernetes'e geçildi — Temel Kavramlar, beş kurulum yöntemi, Temel Kaynaklar, ve şimdi Diğer Kaynaklar (StatefulSets, Volumes, Ingress, Jobs & Cronjobs, Kaynaklar ve Limitler, DaemonSets, HPA, VPA, Yetkiler) tamamlandı — hepsi gerçek testlerle kanıtlandı. Faz 28 ve 30 belgeleri yazılım ekosisteminden örnekler, gerçek işlev açıklamaları, çapraz referanslar ve Mermaid diyagramlarıyla gözden geçirildi. etcd/Raft/CNI-kube-proxy konuları kendi araştırmamla derinleştirildi (devam ediyor — kubernetes.io/microservices.io okumaları, BGP/VXLAN teknik derinliği, Cilium denemesi kaldı). Sırada roadmap'in Önemli Kaynaklar bölümü (Etiketler, Sürekli Güncellemeler, Canlılık ve Hazırlık, İtme ve Çekme) var.
+Docker derinleşmesi tamamen bitti — temel kavramlar, güvenlik, ileri seviye güvenlik, IaC scanning, alternatif runtime'lar, ve son olarak Compose volume/network, PHP örneği, Windows containers dahil. Ayrıca SSL/TLS görevi tamamlandı. Kubernetes'e geçildi — Temel Kavramlar, beş kurulum yöntemi, Temel Kaynaklar, Diğer Kaynaklar, ve şimdi Önemli Kaynaklar (Etiketler, Sürekli Güncellemeler, Canlılık ve Hazırlık, İtme ve Çekme) tamamlandı — hepsi gerçek testlerle kanıtlandı. Faz 28 ve 30 belgeleri yazılım ekosisteminden örnekler, gerçek işlev açıklamaları, çapraz referanslar ve Mermaid diyagramlarıyla gözden geçirildi. etcd/Raft/CNI-kube-proxy konuları kendi araştırmamla derinleştirildi (devam ediyor — kubernetes.io/microservices.io okumaları, BGP/VXLAN teknik derinliği, Cilium denemesi kaldı). Sırada roadmap'in Ek Araçlar bölümü (ARGO-CD, Dashboard, Helm, MetalLB, Service Mesh, kustomize) var.
 
 Tüm fazların (01–24) Türkçe/İngilizce belge dönüşümü tamamlandı.
 
@@ -53,6 +53,7 @@ Tüm fazların (01–24) Türkçe/İngilizce belge dönüşümü tamamlandı.
 - [29-Kubernetes-Installation](./29-Kubernetes-Installation/): Beş kurulum yönteminin (Vagrant, kubeadm, MicroK8s, minikube, Kubespray) gerçek kurulup test edilerek karşılaştırılması — güncel olmayan kaynaklar, port çakışmaları, eski kalıntı temizliği dahil. ([TR](./29-Kubernetes-Installation/readme.md) / [EN](./29-Kubernetes-Installation/readme-en.md))
 - [30-Kubernetes-Basic-Resources](./30-Kubernetes-Basic-Resources/): Pod, ReplicaSet, Deployment, Service (tüm türleri), ConfigMaps, Secrets (base64 vs gerçek şifreleme, EncryptionConfiguration), Kanarya Deployment — hepsi gerçek testlerle kanıtlandı. ([TR](./30-Kubernetes-Basic-Resources/readme.md) / [EN](./30-Kubernetes-Basic-Resources/readme-en.md))
 - [31-Kubernetes-Other-Resources](./31-Kubernetes-Other-Resources/): StatefulSets, Volumes, Ingress, Jobs & Cronjobs, Kaynaklar ve Limitler, DaemonSets, HPA, VPA, Yetkiler (RBAC) — dokuz konu, hepsi gerçek testlerle kanıtlandı. ([TR](./31-Kubernetes-Other-Resources/readme.md) / [EN](./31-Kubernetes-Other-Resources/readme-en.md))
+- [32-Kubernetes-Important-Resources](./32-Kubernetes-Important-Resources/): Etiketler, Sürekli Güncellemeler, Canlılık ve Hazırlık, İtme ve Çekme — dört konu, hepsi gerçek testlerle kanıtlandı. ([TR](./32-Kubernetes-Important-Resources/readme.md) / [EN](./32-Kubernetes-Important-Resources/readme-en.md))
 - [additionals/ssl](./additionals/ssl/): SSL/TLS'in çalışma mantığının, hiç teknik terim kullanılmadan, tamamen gerçek dünya benzetmesiyle (iki firma arasında mühürlü mektup, noter zinciri, kurumsal evrak kontrol bürosu) anlatımı. ([TR](./additionals/ssl/readme.md) / [EN](./additionals/ssl/readme-en.md))
 - [additionals/security-situation](./additionals/security-situation/): Gerçek bir güvenlik olayı — DNS rebinding ve açık forward proxy (SSRF) ile sunucunun kötüye kullanılması, kök sebep analizi ve çözüm. ([TR](./additionals/security-situation/readme.md) / [EN](./additionals/security-situation/readme-en.md))
 - [additionals/kubernetes-terim-derinlesmesi](./additionals/kubernetes-terim-derinlesmesi/): Araştırdığım konular — etcd'nin genel mantığı, Raft protokolü, CNI/kube-proxy (VXLAN, BGP, Service, iptables/IPVS). Devam eden bir belge. ([TR](./additionals/kubernetes-terim-derinlesmesi/readme.md) / [EN](./additionals/kubernetes-terim-derinlesmesi/readme-en.md))
@@ -754,6 +755,27 @@ _Belgeyi (Faz 31: Diğer Kaynaklar) yazarken, StatefulSets'te pod'ların sıral�
   - Diğer Kaynaklar bölümü (StatefulSets, Volumes, Ingress, Jobs & Cronjobs, Kaynaklar ve Limitler, DaemonSets, HPA, VPA, Yetkiler) tamamen tamamlandı.
 - **Kilometre Taşları & Çıktılar:**
   - ☸️ Kubernetes Diğer Kaynaklar: [README (TR](./31-Kubernetes-Other-Resources/readme.md) / [EN)](./31-Kubernetes-Other-Resources/readme-en.md)
+
+### 🔹 27 Ağustos 2026 | Önemli Kaynaklar Tamamlandı — Etiketler, Sürekli Güncellemeler, Canlılık ve Hazırlık, İtme ve Çekme
+
+_Etiketler'e geçtim. Farklı programlama dillerinde yazılmış pod'ların Service tarafından aynı şekilde ele alındığını gerçek testle kanıtlayıp, bunun sebebini (Service'in sadece IP:port seviyesinde/L4 çalışması, Ingress'in ise path/host okuyabilmesi/L7) `kubectl explain` ile şema seviyesinde doğruladım. Set-based selector'ları (`in`, `notin`, `exists`) ve bir Deployment'ın `matchExpressions` alanını da gerçek testle kanıtladım._
+
+_Sürekli Güncellemeler'de, rolling update'in `maxSurge`/`maxUnavailable` oranlarının değiştirilebilir olduğunu, `maxUnavailable: 0` ile "hiç kayıp olmadan" güncellemeyi gerçek testle kanıtladım. `minReadySeconds`'ın rolling update'e eklediği ekstra bekleme süresini gerçek zaman damgalarıyla ölçtüm._
+
+_Canlılık ve Hazırlık'ta, Readiness ve Liveness'ın farklı sonuçları olduğunu (biri trafiği keser ama pod'u yaşatır, diğeri pod'u öldürür) gerçek testle kanıtladım — bir uygulamayı kasıtlı "bozup" 5+ dakika boyunca kalıcı olarak `0/1` kaldığını, hiç yeniden başlamadığını gözlemledim. `failureThreshold × periodSeconds` zamanlamasını gerçek saniye ölçümüyle doğruladım. Startup Probe'un, yapay olarak yavaş başlayan bir container'ı Liveness'ın erken öldürmesinden koruduğunu gerçek testle kanıtladım._
+
+_İtme ve Çekme'de beş ayrı senaryo test ettim: Taint+Toleration uyumu, Toleration eksikliği, `NoSchedule` (sadece yeni pod'ları engelliyor) ile `NoExecute` (zaten çalışanı da kovuyor) arasındaki fark, ve `required`/`preferred` node affinity'nin farklı davranışları. Bunu Faz 29'daki "control-plane taint kaldırma" adımıyla geriye dönük bağlantılandırdım._
+
+_Dört konuyu kapsayan 15 soruluk bir quiz çözdüm. Ardından Faz 32 (Önemli Kaynaklar) belgesini yazdım — her konuyu yazılım ekosisteminden örnekle, gerçek işlevle, çapraz referansla, Mermaid diyagramlarıyla ve gerçek YAML'larla belgeledim._
+
+- **Görevler & Hedefler:**
+  - Etiketler, Sürekli Güncellemeler, Canlılık ve Hazırlık, İtme ve Çekme tamamlandı — hepsi gerçek testlerle kanıtlandı.
+  - Service'in L4, Ingress'in L7 olduğu şema seviyesinde kanıtlandı.
+  - Readiness/Liveness/Startup probe'ların farklı davranışları gerçek testle ayrıştırıldı.
+  - Taint/Toleration ve Node Affinity'nin required/preferred farkı gerçek testle kanıtlandı.
+  - Önemli Kaynaklar bölümü (Etiketler, Sürekli Güncellemeler, Canlılık ve Hazırlık, İtme ve Çekme) tamamen tamamlandı.
+- **Kilometre Taşları & Çıktılar:**
+  - ☸️ Kubernetes Önemli Kaynaklar: [README (TR](./32-Kubernetes-Important-Resources/readme.md) / [EN)](./32-Kubernetes-Important-Resources/readme-en.md)
 
 ---
 
