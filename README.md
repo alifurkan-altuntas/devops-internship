@@ -14,7 +14,7 @@ Nginx derinleşmesi tamamlandı: reverse proxy, path bazlı yönlendirme, path r
 
 OpenResty (PostgreSQL, MySQL, Redis, token authentication) ve rclone ile S3 entegrasyonu tamamlandı — performans parametreleri, `rclone serve http` cache ve güvenlik (VFS cache, dir cache, auth, remote control), `rclone mount` ve VFS cache.
 
-Docker derinleşmesi tamamen bitti — temel kavramlar, güvenlik, ileri seviye güvenlik, IaC scanning, alternatif runtime'lar, ve son olarak Compose volume/network, PHP örneği, Windows containers dahil. Ayrıca SSL/TLS görevi tamamlandı. Kubernetes'e geçildi — Temel Kavramlar, beş kurulum yöntemi, Temel Kaynaklar, Diğer Kaynaklar, ve şimdi Önemli Kaynaklar (Etiketler, Sürekli Güncellemeler, Canlılık ve Hazırlık, İtme ve Çekme) tamamlandı — hepsi gerçek testlerle kanıtlandı. Faz 28 ve 30 belgeleri yazılım ekosisteminden örnekler, gerçek işlev açıklamaları, çapraz referanslar ve Mermaid diyagramlarıyla gözden geçirildi. etcd/Raft/CNI-kube-proxy konuları kendi araştırmamla derinleştirildi (devam ediyor — kubernetes.io/microservices.io okumaları, BGP/VXLAN teknik derinliği, Cilium denemesi kaldı). Sırada roadmap'in Ek Araçlar bölümü (ARGO-CD, Dashboard, Helm, MetalLB, Service Mesh, kustomize) var.
+Docker derinleşmesi tamamen bitti — temel kavramlar, güvenlik, ileri seviye güvenlik, IaC scanning, alternatif runtime'lar, ve son olarak Compose volume/network, PHP örneği, Windows containers dahil. Ayrıca SSL/TLS görevi tamamlandı. Kubernetes'e geçildi — Temel Kavramlar, beş kurulum yöntemi, Temel Kaynaklar, Diğer Kaynaklar, Önemli Kaynaklar, Ek Araçlar, ve şimdi Görevler bölümü tamamlandı — hepsi gerçek testlerle kanıtlandı. Faz 28 ve 30 belgeleri yazılım ekosisteminden örnekler, gerçek işlev açıklamaları, çapraz referanslar ve Mermaid diyagramlarıyla gözden geçirildi. etcd/Raft/CNI-kube-proxy konuları kendi araştırmamla derinleştirildi (devam ediyor — kubernetes.io/microservices.io okumaları, BGP/VXLAN teknik derinliği, Cilium denemesi kaldı). Roadmap'in son iki bölümü (İleri Düzey Konular, Güvenlik) kaldı.
 
 Tüm fazların (01–24) Türkçe/İngilizce belge dönüşümü tamamlandı.
 
@@ -54,6 +54,8 @@ Tüm fazların (01–24) Türkçe/İngilizce belge dönüşümü tamamlandı.
 - [30-Kubernetes-Basic-Resources](./30-Kubernetes-Basic-Resources/): Pod, ReplicaSet, Deployment, Service (tüm türleri), ConfigMaps, Secrets (base64 vs gerçek şifreleme, EncryptionConfiguration), Kanarya Deployment — hepsi gerçek testlerle kanıtlandı. ([TR](./30-Kubernetes-Basic-Resources/readme.md) / [EN](./30-Kubernetes-Basic-Resources/readme-en.md))
 - [31-Kubernetes-Other-Resources](./31-Kubernetes-Other-Resources/): StatefulSets, Volumes, Ingress, Jobs & Cronjobs, Kaynaklar ve Limitler, DaemonSets, HPA, VPA, Yetkiler (RBAC) — dokuz konu, hepsi gerçek testlerle kanıtlandı. ([TR](./31-Kubernetes-Other-Resources/readme.md) / [EN](./31-Kubernetes-Other-Resources/readme-en.md))
 - [32-Kubernetes-Important-Resources](./32-Kubernetes-Important-Resources/): Etiketler, Sürekli Güncellemeler, Canlılık ve Hazırlık, İtme ve Çekme — dört konu, hepsi gerçek testlerle kanıtlandı. ([TR](./32-Kubernetes-Important-Resources/readme.md) / [EN](./32-Kubernetes-Important-Resources/readme-en.md))
+- [33-Kubernetes-Additional-Tools](./33-Kubernetes-Additional-Tools/): ARGO-CD, Dashboard, Helm, MetalLB, Service Mesh, kubeadm, kustomize — yedi araç, hepsi gerçek testlerle kanıtlandı. ([TR](./33-Kubernetes-Additional-Tools/readme.md) / [EN](./33-Kubernetes-Additional-Tools/readme-en.md))
+- [34-Kubernetes-Tasks](./34-Kubernetes-Tasks/): Güvenlik (JVM), İç Yük Dengeleme, Günlük Kayıtları, İyi Pratikler, CKA Konuları — beş konu, hepsi gerçek testlerle kanıtlandı. ([TR](./34-Kubernetes-Tasks/readme.md) / [EN](./34-Kubernetes-Tasks/readme-en.md))
 - [additionals/ssl](./additionals/ssl/): SSL/TLS'in çalışma mantığının, hiç teknik terim kullanılmadan, tamamen gerçek dünya benzetmesiyle (iki firma arasında mühürlü mektup, noter zinciri, kurumsal evrak kontrol bürosu) anlatımı. ([TR](./additionals/ssl/readme.md) / [EN](./additionals/ssl/readme-en.md))
 - [additionals/security-situation](./additionals/security-situation/): Gerçek bir güvenlik olayı — DNS rebinding ve açık forward proxy (SSRF) ile sunucunun kötüye kullanılması, kök sebep analizi ve çözüm. ([TR](./additionals/security-situation/readme.md) / [EN](./additionals/security-situation/readme-en.md))
 - [additionals/kubernetes-terim-derinlesmesi](./additionals/kubernetes-terim-derinlesmesi/): Araştırdığım konular — etcd'nin genel mantığı, Raft protokolü, CNI/kube-proxy (VXLAN, BGP, Service, iptables/IPVS). Devam eden bir belge. ([TR](./additionals/kubernetes-terim-derinlesmesi/readme.md) / [EN](./additionals/kubernetes-terim-derinlesmesi/readme-en.md))
@@ -776,6 +778,67 @@ _Dört konuyu kapsayan 15 soruluk bir quiz çözdüm. Ardından Faz 32 (Önemli 
   - Önemli Kaynaklar bölümü (Etiketler, Sürekli Güncellemeler, Canlılık ve Hazırlık, İtme ve Çekme) tamamen tamamlandı.
 - **Kilometre Taşları & Çıktılar:**
   - ☸️ Kubernetes Önemli Kaynaklar: [README (TR](./32-Kubernetes-Important-Resources/readme.md) / [EN)](./32-Kubernetes-Important-Resources/readme-en.md)
+
+### 🔹 28 Ağustos 2026 | Ek Araçlar — ARGO-CD, Dashboard
+
+_Ek Araçlar bölümüne ARGO-CD ile başladım. Faz 28'de kavramsal olarak işlediğim GitOps'un tam çalışan halini kurup test ettim — elle `kubectl scale` ile yaptığım bir değişikliği ARGO-CD'nin `OutOfSync` olarak tespit edip, senkronizasyon tetikleyince repo'daki gerçek değere geri döndürdüğünü kanıtladım. Kısıtlı bir kullanıcının (`readonly-user`), ARGO-CD'nin kendi (Kubernetes RBAC'ından ayrı) yetkilendirme sisteminde `sync` yetkisi olmadan `PermissionDenied` hatası aldığını kanıtladım._
+
+_Dashboard'a geçtim. Sayfanın kurulum linkinin eski olduğunu, Dashboard'ın `v7.0.0`'dan itibaren artık sadece Helm ile kurulduğunu araştırdım, sürüm etiketli bir manifest kullandım. Admin token'ı alıp, korumalı bir API endpoint'ine erişip gerçek pod listesini canlı metriklerle aldığımı kanıtladım._
+
+- **Görevler & Hedefler:**
+  - ARGO-CD tamamlandı — GitOps'un elle müdahaleyi geri alma gücü ve kendi RBAC sistemi kanıtlandı.
+  - Dashboard tamamlandı — eski kurulum yöntemi tespit edildi, gerçek login akışı kanıtlandı.
+- **Kilometre Taşları & Çıktılar:**
+  - Belge henüz yazılmadı — Ek Araçlar bölümü tamamlanınca tek seferde yazılacak.
+
+### 🔹 29 Ağustos 2026 | Ek Araçlar — Helm, MetalLB
+
+_Helm'e geçtim. Sayfadaki `stable` reposunun 2020'de kaldırıldığını, Helm'in kendisinin bile bu adresi reddettiğini kanıtladım, güncel Bitnami reposunu kullandım. Tek komutla StatefulSet'ler dahil çoklu kaynak oluşturup kaldırdığımı, `--set` ile şablonun gerçekten güncellendiğini, birden fazla `values` dosyasında sonra verilenin öncelikli olduğunu kanıtladım._
+
+_MetalLB'ye geçtim. Sayfadaki eski ConfigMap yönteminin `v0.13`'ten itibaren CRD tabanlı yönteme geçtiğini, sürümsüz kurulumun resmi olarak kararsız işaretlendiğini araştırdım. Faz 30'daki LoadBalancer `<pending>` sorununun MetalLB ile tam çözüldüğünü — gerçek bir IP alıp, o IP'den dışarıdan erişilebildiğini — kanıtladım._
+
+- **Görevler & Hedefler:**
+  - Helm tamamlandı — eski repo tespit edildi, paket yönetimi ve şablonlama gerçek testle kanıtlandı.
+  - MetalLB tamamlandı — Faz 30'daki LoadBalancer sorunu tam çözüldü.
+- **Kilometre Taşları & Çıktılar:**
+  - Belge henüz yazılmadı — Ek Araçlar bölümü tamamlanınca tek seferde yazılacak.
+
+### 🔹 30 Ağustos 2026 | Ek Araçlar Tamamlandı — Service Mesh, kubeadm HA, kustomize, Belge Yazımı
+
+_Service Mesh'e (Istio) geçtim. Otomatik sidecar enjeksiyonunu, Faz 30'daki kanaryanın pod-sayısı-bağımlı kısıtından bağımsız gerçek yüzde bazlı trafik yönlendirmeyi (%92/%8, hedef %90/%10) kanıtladım. Gateway ile MetalLB'nin verdiği gerçek IP üzerinden uçtan uca erişim sağladım. `PeerAuthentication: STRICT` ile sidecar'sız bir isteğin reddedildiğini, sidecar'lı bir isteğin başarılı olduğunu karşılaştırmalı olarak kanıtladım._
+
+_kubeadm'in HA topolojisini (stacked/external etcd) araştırdım — bunu gerçek bir altyapı kısıtı (tek VPS) nedeniyle test edemedim, sadece kavramsal olarak işledim._
+
+_kustomize'a geçtim. Aynı temel YAML'dan, hiç şablon syntax'ı kullanmadan, `dev`/`prod` overlay'leriyle farklı çıktılar (isim öneki, replica sayısı) ürettiğimi, `kubectl apply -k` ile gerçek cluster'a uygulanabildiğini kanıtladım._
+
+_Ek Araçlar bölümü tamamen bitince, Faz 33 belgesini yazdım — yedi aracı yazılım ekosisteminden örnekle, gerçek işlevle, çapraz referansla, Mermaid diyagramlarıyla ve gerçek YAML'larla belgeledim._
+
+- **Görevler & Hedefler:**
+  - Service Mesh (Istio), kubeadm (HA, kavramsal), kustomize tamamlandı — hepsi gerçek testlerle (kubeadm hariç) kanıtlandı.
+  - Ek Araçlar bölümü (ARGO-CD, Dashboard, Helm, MetalLB, Service Mesh, kubeadm, kustomize) tamamen tamamlandı.
+- **Kilometre Taşları & Çıktılar:**
+  - ☸️ Kubernetes Ek Araçlar: [README (TR](./33-Kubernetes-Additional-Tools/readme.md) / [EN)](./33-Kubernetes-Additional-Tools/readme-en.md)
+
+### 🔹 31 Ağustos 2026 | Görevler Bölümü İncelendi, Eksikler Görüldü, Konular Tekrar Ele Alındı
+
+_Görevler bölümüne başladım. Güvenlik sayfasının sadece referans link listesi olduğunu görünce, JVM'in Kubernetes bellek limitlerini varsayılan olarak nasıl (yetersiz) yorumladığını araştırıp gerçek testle kanıtladım — küçük konteynerde %50, büyük konteynerde %25 heap ayırdığını, `MaxRAMPercentage` ile bunun düzeltilebildiğini gördüm._
+
+_İç Yük Dengeleme sayfasında, nginx'in `stream` bloğuyla Kubernetes'in kendi seçici mekanizmasını hiç kullanmadan TCP yük dengelemesi yapabildiğini, `subPath` ile bir ConfigMap'in tek dosyasının monte edilebildiğini gerçek testle kanıtladım._
+
+_Günlük Kayıtları sayfasında, sayfadaki `stern` reposunun terk edildiğini bulup güncel forku kurdum, `stern`'ün `kubectl logs`'un yapamadığı çoklu pod takibini gerçekten yapabildiğini kanıtladım._
+
+_İyi Pratikler kontrol listesini incelerken, listedeki `PodSecurityPolicy` maddesinin artık var olmadığını (v1.25'te kaldırıldığını) buldum — bunun yerine geçen Pod Security Admission'ı ve namespace seviyesi ResourceQuota'yı gerçek testlerle kanıtladım._
+
+_CKA Konuları sayfasını incelerken, staj boyunca öğrendiklerimin CKA'nın neredeyse tüm kategorilerini zaten kapsadığını fark ettim, "Tahliye" kategorisini Faz 33'teki gerçek disk-pressure taint deneyimimle bağlantılandırdım._
+
+_Görevler bölümü tamamen bitince Faz 34 belgesini yazdım, ardından tüm staj boyunca öğrenilenleri kapsayan 20 soruluk bir quiz hazırladım._
+
+- **Görevler & Hedefler:**
+  - Güvenlik (JVM), İç Yük Dengeleme, Günlük Kayıtları, İyi Pratikler, CKA Konuları tamamlandı — hepsi gerçek testlerle kanıtlandı.
+  - `PodSecurityPolicy`'nin kaldırıldığı, `stern`'ün eski reposunun terk edildiği tespit edilip güncel karşılıklarıyla değiştirildi.
+  - Görevler bölümü (Güvenlik, İç Yük Dengeleme, Günlük Kayıtları, İyi Pratikler, CKA Konuları) tamamen tamamlandı.
+- **Kilometre Taşları & Çıktılar:**
+  - ☸️ Kubernetes Görevler: [README (TR](./34-Kubernetes-Tasks/readme.md) / [EN)](./34-Kubernetes-Tasks/readme-en.md)
 
 ---
 

@@ -14,7 +14,7 @@ Completed Nginx deep dive: reverse proxy, path-based routing, path rewrite, path
 
 Completed OpenResty (PostgreSQL, MySQL, Redis, token authentication) and rclone with S3 — performance parameters, `rclone serve http` cache and security (VFS cache, dir cache, auth, remote control), `rclone mount` and VFS cache.
 
-Docker deep dive is fully complete — fundamentals, security, advanced security, IaC scanning, alternative runtimes, and finally Compose volume/network, the PHP example, and Windows containers. The SSL/TLS task is also complete. Moved on to Kubernetes — Fundamental Concepts, all five installation methods, Basic Resources, Other Resources, and now Important Resources (Labels, Rolling Updates, Liveness and Readiness, Taints and Affinity) are complete — all proven with real tests. Phases 28 and 30 were revised with software-ecosystem examples, real function explanations, cross-references, and Mermaid diagrams. Also deepened understanding of etcd/Raft/CNI-kube-proxy through self-research (ongoing — kubernetes.io/microservices.io readings, deeper BGP/VXLAN research, and trying Cilium remain). Up next: the roadmap's Additional Tools section (ARGO-CD, Dashboard, Helm, MetalLB, Service Mesh, kustomize).
+Docker deep dive is fully complete — fundamentals, security, advanced security, IaC scanning, alternative runtimes, and finally Compose volume/network, the PHP example, and Windows containers. The SSL/TLS task is also complete. Moved on to Kubernetes — Fundamental Concepts, all five installation methods, Basic Resources, Other Resources, Important Resources, Additional Tools, and now the Tasks section are complete — all proven with real tests. Phases 28 and 30 were revised with software-ecosystem examples, real function explanations, cross-references, and Mermaid diagrams. Also deepened understanding of etcd/Raft/CNI-kube-proxy through self-research (ongoing — kubernetes.io/microservices.io readings, deeper BGP/VXLAN research, and trying Cilium remain). The roadmap's last two sections (Advanced Topics, Security) remain.
 
 Bilingual documentation (TR/EN) complete for all phases (01–24).
 
@@ -54,6 +54,8 @@ Bilingual documentation (TR/EN) complete for all phases (01–24).
 - [30-Kubernetes-Basic-Resources](./30-Kubernetes-Basic-Resources/): Pod, ReplicaSet, Deployment, Service (all types), ConfigMaps, Secrets (base64 vs real encryption, EncryptionConfiguration), Canary Deployment — all proven with real tests. ([TR](./30-Kubernetes-Basic-Resources/readme.md) / [EN](./30-Kubernetes-Basic-Resources/readme-en.md))
 - [31-Kubernetes-Other-Resources](./31-Kubernetes-Other-Resources/): StatefulSets, Volumes, Ingress, Jobs & Cronjobs, Resources and Limits, DaemonSets, HPA, VPA, Permissions (RBAC) — nine topics, all proven with real tests. ([TR](./31-Kubernetes-Other-Resources/readme.md) / [EN](./31-Kubernetes-Other-Resources/readme-en.md))
 - [32-Kubernetes-Important-Resources](./32-Kubernetes-Important-Resources/): Labels, Rolling Updates, Liveness and Readiness, Taints and Affinity — four topics, all proven with real tests. ([TR](./32-Kubernetes-Important-Resources/readme.md) / [EN](./32-Kubernetes-Important-Resources/readme-en.md))
+- [33-Kubernetes-Additional-Tools](./33-Kubernetes-Additional-Tools/): ARGO-CD, Dashboard, Helm, MetalLB, Service Mesh, kubeadm, kustomize — seven tools, all proven with real tests. ([TR](./33-Kubernetes-Additional-Tools/readme.md) / [EN](./33-Kubernetes-Additional-Tools/readme-en.md))
+- [34-Kubernetes-Tasks](./34-Kubernetes-Tasks/): Security (JVM), Internal Load Balancing, Log Collection, Best Practices, CKA Topics — five topics, all proven with real tests. ([TR](./34-Kubernetes-Tasks/readme.md) / [EN](./34-Kubernetes-Tasks/readme-en.md))
 - [additionals/ssl](./additionals/ssl/): An explanation of how SSL/TLS works, with no technical terminology at all, entirely through a real-world analogy (a sealed letter between two companies, a notary chain, a corporate mail-control office). ([TR](./additionals/ssl/readme.md) / [EN](./additionals/ssl/readme-en.md))
 - [additionals/security-situation](./additionals/security-situation/): A real security incident — a server abused via DNS rebinding and an open forward proxy (SSRF), with root cause analysis and fix. ([TR](./additionals/security-situation/readme.md) / [EN](./additionals/security-situation/readme-en.md))
 - [additionals/kubernetes-terim-derinlesmesi](./additionals/kubernetes-terim-derinlesmesi/): Topics I researched myself — etcd's general mechanics, the Raft protocol, CNI/kube-proxy (VXLAN, BGP, Service, iptables/IPVS). An ongoing document. ([TR](./additionals/kubernetes-terim-derinlesmesi/readme.md) / [EN](./additionals/kubernetes-terim-derinlesmesi/readme-en.md))
@@ -776,6 +778,67 @@ _Took a 15-question quiz covering all four topics. Then wrote the Phase 32 (Impo
   - Fully completed the Important Resources section (Labels, Rolling Updates, Liveness and Readiness, Taints and Affinity).
 - **Milestones & Deliverables:**
   - ☸️ Kubernetes Important Resources: [README (TR](./32-Kubernetes-Important-Resources/readme.md) / [EN)](./32-Kubernetes-Important-Resources/readme-en.md)
+
+### 🔹 August 28, 2026 | Additional Tools — ARGO-CD, Dashboard
+
+_Started the Additional Tools section with ARGO-CD. Installed and tested the fully working version of the GitOps concept covered conceptually in Phase 28 — proved that ARGO-CD detects a manual `kubectl scale` change as `OutOfSync`, and reverts it to the real value in the repo once sync is triggered. Proved a restricted user (`readonly-user`) got a `PermissionDenied` error without `sync` permission in ARGO-CD's own authorization system (separate from Kubernetes RBAC)._
+
+_Moved to Dashboard. Researched that the page's installation link is outdated, that Dashboard only installs via Helm since `v7.0.0`, used a version-pinned manifest instead. Proved by getting the admin token and accessing a protected API endpoint that a real pod list with live metrics could be retrieved._
+
+- **Tasks & Objectives:**
+  - Completed ARGO-CD — proved GitOps' power to undo manual intervention and its own RBAC system.
+  - Completed Dashboard — identified the outdated install method, proved the real login flow.
+- **Milestones & Deliverables:**
+  - Document not written yet — will be written once the Additional Tools section is complete.
+
+### 🔹 August 29, 2026 | Additional Tools — Helm, MetalLB
+
+_Moved to Helm. Proved the page's `stable` repo was removed in 2020 and even Helm itself rejects that address, used the current Bitnami repo instead. Proved creating and removing multiple resources (including StatefulSets) with a single command, that `--set` genuinely updates the template, and that with multiple `values` files the later one takes priority._
+
+_Moved to MetalLB. Researched that the page's old ConfigMap method moved to a CRD-based method since `v0.13`, and that the unversioned install is officially flagged unstable. Proved that Phase 30's LoadBalancer `<pending>` issue is fully resolved with MetalLB — got a real IP and accessed it from the outside world._
+
+- **Tasks & Objectives:**
+  - Completed Helm — identified the outdated repo, proved package management and templating with real tests.
+  - Completed MetalLB — fully resolved Phase 30's LoadBalancer issue.
+- **Milestones & Deliverables:**
+  - Document not written yet — will be written once the Additional Tools section is complete.
+
+### 🔹 August 30, 2026 | Additional Tools Completed — Service Mesh, kubeadm HA, kustomize, Document Written
+
+_Moved to Service Mesh (Istio). Proved automatic sidecar injection, and real percentage-based traffic routing (92%/8%, target 90%/10%) independent of Phase 30's canary's pod-count-dependent constraint. Achieved true end-to-end access through the Gateway using MetalLB's real IP. Proved with a comparative test that with `PeerAuthentication: STRICT`, a sidecar-less request was rejected while a sidecar-equipped one succeeded._
+
+_Researched kubeadm's HA topology (stacked/external etcd) — couldn't test this due to a genuine infrastructure constraint (single VPS), covered it conceptually only._
+
+_Moved to kustomize. Proved that from the same base YAML, using no templating syntax at all, `dev`/`prod` overlays produced different outputs (name prefix, replica count), applicable to a real cluster with `kubectl apply -k`._
+
+_Once the Additional Tools section was fully complete, wrote the Phase 33 document — documented all seven tools with a software-ecosystem example, real function, cross-references, Mermaid diagrams, and real YAML._
+
+- **Tasks & Objectives:**
+  - Completed Service Mesh (Istio), kubeadm (HA, conceptual), kustomize — all proven with real tests (except kubeadm).
+  - Fully completed the Additional Tools section (ARGO-CD, Dashboard, Helm, MetalLB, Service Mesh, kubeadm, kustomize).
+- **Milestones & Deliverables:**
+  - ☸️ Kubernetes Additional Tools: [README (TR](./33-Kubernetes-Additional-Tools/readme.md) / [EN)](./33-Kubernetes-Additional-Tools/readme-en.md)
+
+### 🔹 August 31, 2026 | Tasks Section Reviewed, Gaps Found, Topics Revisited
+
+_Started the Tasks section. Seeing the Security page was just a list of reference links, researched and proved with a real test how JVMs (poorly) interpret Kubernetes memory limits by default — saw it allocate 50% heap in a small container, 25% in a large one, and that this could be corrected with `MaxRAMPercentage`._
+
+_On the Internal Load Balancing page, proved with a real test that nginx's `stream` block can TCP-load-balance without ever using Kubernetes' own selector mechanism, and that a single file of a ConfigMap can be mounted with `subPath`._
+
+_On the Log Collection page, found the page's `stern` repo was abandoned, installed the current fork, proved `stern` can genuinely do the multi-pod tailing that `kubectl logs` cannot._
+
+_While reviewing the Best Practices checklist, found the `PodSecurityPolicy` item on the list no longer exists (removed in v1.25) — proved its replacement, Pod Security Admission, and namespace-level ResourceQuota with real tests._
+
+_While reviewing the CKA Topics page, realized what was learned during the internship already covers nearly all of CKA's categories, connected the "Eviction" category to the real disk-pressure taint experience from Phase 33._
+
+_Once the Tasks section was fully complete, wrote the Phase 34 document, then prepared a 20-question quiz covering everything learned throughout the internship._
+
+- **Tasks & Objectives:**
+  - Completed Security (JVM), Internal Load Balancing, Log Collection, Best Practices, CKA Topics — all proven with real tests.
+  - Identified that `PodSecurityPolicy` was removed and `stern`'s old repo was abandoned, replaced with current equivalents.
+  - Fully completed the Tasks section (Security, Internal Load Balancing, Log Collection, Best Practices, CKA Topics).
+- **Milestones & Deliverables:**
+  - ☸️ Kubernetes Tasks: [README (TR](./34-Kubernetes-Tasks/readme.md) / [EN)](./34-Kubernetes-Tasks/readme-en.md)
 
 ---
 
