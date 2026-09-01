@@ -1,8 +1,10 @@
 # ☸️ Kubernetes Diğer Kaynaklar — StatefulSets, Volumes, Ingress, Jobs & Cronjobs, Kaynaklar ve Limitler, DaemonSets, HPA, VPA, Yetkiler
 
-30. fazda Pod, ReplicaSet, Deployment, Service, ConfigMaps, Secrets ve Kanarya Deployment'ı işlemiştim. Bu fazda roadmap'in Diğer Kaynaklar bölümünü işledim — dokuz konu, hepsi yazılım ekosisteminden örnekle, gerçek işleviyle, ilgili fazlara çapraz referansla, ve gerçek YAML/kubectl testleriyle.
+30. fazda Pod, ReplicaSet, Deployment, Service, ConfigMaps, Secrets ve Kanarya Deployment'ı işlemiştim. Bu fazda roadmap'in Diğer Kaynaklar bölümünü işledim — dokuz konu, **işlevine göre beş grupta**, hepsi yazılım ekosisteminden örnekle, gerçek işleviyle, ilgili fazlara çapraz referansla, ve gerçek YAML/kubectl testleriyle.
 
 ---
+
+# Grup 1 — Depolama
 
 ## 1. StatefulSets
 
@@ -99,6 +101,8 @@ spec:
 
 ---
 
+# Grup 2 — Ağ ve Trafik Yönetimi
+
 ## 3. Ingress
 
 ```mermaid
@@ -145,6 +149,8 @@ spec:
 
 ---
 
+# Grup 3 — İş Yükü Kontrolcüleri
+
 ## 4. Jobs & Cronjobs
 
 **Yazılım örneği:** Bir veritabanı migration scripti gibi — bir kere çalışıp **bitmesi** gerekiyor, Deployment gibi sonsuza kadar yeniden başlamamalı.
@@ -177,7 +183,42 @@ spec:
 
 ---
 
-## 5. Kaynaklar ve Limitler
+## 5. DaemonSets
+
+**Yazılım örneği:** Bir log toplama ajanının (Faz 8'de log analizini işlediğim), **her sunucuda** çalışması gerekmesi gibi — sunucu sayısı kaç olursa olsun, birini bile atlamak veri kaybı demek. Elle her yeni sunucuya ajan kurmak, sürekli ve riskli bir iş yükü.
+
+**Gerçek işlevi:** DaemonSet'in kopya sayısı, ReplicaSet'teki gibi **elle belirlenmiyor** — cluster'daki **node sayısına otomatik eşit** oluyor. Trafiğe göre değil, "node var olduğu sürece 1 tane" mantığıyla çalışıyor.
+
+**Çapraz referans:** 28. fazda kube-proxy ve CNI'nin (Calico) DaemonSet olarak çalıştığını görmüştüm — bu fazda **neden** öyle çalıştığını (trafikten bağımsız, altyapısal zorunluluk) kavradım.
+
+Gerçek testle kanıtladım: tek node'lu cluster'ımda DaemonSet'in tam **1** pod oluşturduğunu (`DESIRED: 1`).
+
+**YAML:**
+
+```yaml
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: example-daemonset
+spec:
+  selector:
+    matchLabels:
+      name: example-daemonset-pod
+  template:
+    metadata:
+      labels:
+        name: example-daemonset-pod
+    spec:
+      containers:
+        - name: example-container
+          image: nginx:latest
+```
+
+---
+
+# Grup 4 — Kaynak Yönetimi ve Ölçekleme
+
+## 6. Kaynaklar ve Limitler
 
 **Yazılım örneği:** Bir bulut sağlayıcının, yeni bir VM isteğini fiziksel sunuculardan hangisine yerleştireceğine, o sunucunun boş kaynaklarına göre karar vermesi gibi (28. fazdaki kube-scheduler örneği) — `requests` yetersizse, "hiçbir sunucuda yer yok" denilip istek reddediliyor.
 
@@ -207,39 +248,6 @@ spec:
         limits:
           cpu: "500m"
           memory: "128Mi"
-```
-
----
-
-## 6. DaemonSets
-
-**Yazılım örneği:** Bir log toplama ajanının (Faz 8'de log analizini işlediğim), **her sunucuda** çalışması gerekmesi gibi — sunucu sayısı kaç olursa olsun, birini bile atlamak veri kaybı demek. Elle her yeni sunucuya ajan kurmak, sürekli ve riskli bir iş yükü.
-
-**Gerçek işlevi:** DaemonSet'in kopya sayısı, ReplicaSet'teki gibi **elle belirlenmiyor** — cluster'daki **node sayısına otomatik eşit** oluyor. Trafiğe göre değil, "node var olduğu sürece 1 tane" mantığıyla çalışıyor.
-
-**Çapraz referans:** 28. fazda kube-proxy ve CNI'nin (Calico) DaemonSet olarak çalıştığını görmüştüm — bu fazda **neden** öyle çalıştığını (trafikten bağımsız, altyapısal zorunluluk) kavradım.
-
-Gerçek testle kanıtladım: tek node'lu cluster'ımda DaemonSet'in tam **1** pod oluşturduğunu (`DESIRED: 1`).
-
-**YAML:**
-
-```yaml
-apiVersion: apps/v1
-kind: DaemonSet
-metadata:
-  name: example-daemonset
-spec:
-  selector:
-    matchLabels:
-      name: example-daemonset-pod
-  template:
-    metadata:
-      labels:
-        name: example-daemonset-pod
-    spec:
-      containers:
-        - name: example-container
-          image: nginx:latest
 ```
 
 ---
@@ -316,6 +324,8 @@ spec:
 
 ---
 
+# Grup 5 — Güvenlik ve Erişim Kontrolü
+
 ## 9. Yetkiler (RBAC)
 
 ```mermaid
@@ -370,19 +380,19 @@ roleRef:
 
 ---
 
-## 📊 Özet
+## 📊 Özet (Gruplara Göre)
 
-| Konu                  | Ne Öğrendim                                                                                                                                                     |
-| --------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| StatefulSets          | Kalıcı kimlik + kalıcı veri — pod silinse bile aynı isim/disk geri gelir                                                                                        |
-| Volumes               | Static (elle, dışarıdaki kaynağa bağlanma) vs Dynamic (otomatik oluşturma)                                                                                      |
-| Ingress               | Tek IP/port üzerinden path/host bazlı yönlendirme, TLS destekli                                                                                                 |
-| Jobs & Cronjobs       | Bitmesi gereken iş (Never/OnFailure) vs sürekli çalışan iş (Always)                                                                                             |
-| Kaynaklar ve Limitler | requests yetersizliği → Pending; limits aşımı → OOMKilled (cgroups, Linux çekirdeği); QoS sınıfları (BestEffort/Burstable/Guaranteed) tahliye sırasını belirler |
-| DaemonSets            | Kopya sayısı = node sayısı, trafikten bağımsız, altyapısal zorunluluk                                                                                           |
-| HPA                   | Pod sayısını CPU/harici metriklere göre otomatik, orantılı ayarlar                                                                                              |
-| VPA                   | Tek pod'un kaynak talebini otomatik ayarlar, ama sil-yeniden-oluştur gerektirir                                                                                 |
-| Yetkiler (RBAC)       | Role/RoleBinding namespace'e özel, ClusterRole/ClusterRoleBinding cluster geneli                                                                                |
+| Grup                      | Konu                  | Ne Öğrendim                                                                                        |
+| ------------------------- | --------------------- | -------------------------------------------------------------------------------------------------- |
+| **Depolama**              | StatefulSets          | Kalıcı kimlik + kalıcı veri — pod silinse bile aynı isim/disk geri gelir                           |
+| **Depolama**              | Volumes               | Static (elle, dışarıdaki kaynağa bağlanma) vs Dynamic (otomatik oluşturma)                         |
+| **Ağ ve Trafik**          | Ingress               | Tek IP/port üzerinden path/host bazlı yönlendirme, TLS destekli                                    |
+| **İş Yükü Kontrolcüleri** | Jobs & Cronjobs       | Bitmesi gereken iş (Never/OnFailure) vs sürekli çalışan iş (Always)                                |
+| **İş Yükü Kontrolcüleri** | DaemonSets            | Kopya sayısı = node sayısı, trafikten bağımsız, altyapısal zorunluluk                              |
+| **Kaynak Yönetimi**       | Kaynaklar ve Limitler | requests yetersizliği → Pending; limits aşımı → OOMKilled; QoS sınıfları tahliye sırasını belirler |
+| **Kaynak Yönetimi**       | HPA                   | Pod sayısını CPU/harici metriklere göre otomatik, orantılı ayarlar                                 |
+| **Kaynak Yönetimi**       | VPA                   | Tek pod'un kaynak talebini otomatik ayarlar, ama sil-yeniden-oluştur gerektirir                    |
+| **Güvenlik**              | Yetkiler (RBAC)       | Role/RoleBinding namespace'e özel, ClusterRole/ClusterRoleBinding cluster geneli                   |
 
 ---
 

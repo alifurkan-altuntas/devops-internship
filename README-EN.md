@@ -14,7 +14,7 @@ Completed Nginx deep dive: reverse proxy, path-based routing, path rewrite, path
 
 Completed OpenResty (PostgreSQL, MySQL, Redis, token authentication) and rclone with S3 — performance parameters, `rclone serve http` cache and security (VFS cache, dir cache, auth, remote control), `rclone mount` and VFS cache.
 
-Docker deep dive is fully complete — fundamentals, security, advanced security, IaC scanning, alternative runtimes, and finally Compose volume/network, the PHP example, and Windows containers. The SSL/TLS task is also complete. Moved on to Kubernetes — Fundamental Concepts, all five installation methods, Basic Resources, Other Resources, Important Resources, Additional Tools, and now the Tasks section are complete — all proven with real tests. Phases 28 and 30 were revised with software-ecosystem examples, real function explanations, cross-references, and Mermaid diagrams. Also deepened understanding of etcd/Raft/CNI-kube-proxy through self-research (ongoing — kubernetes.io/microservices.io readings, deeper BGP/VXLAN research, and trying Cilium remain). The roadmap's last two sections (Advanced Topics, Security) remain.
+Docker deep dive is fully complete — fundamentals, security, advanced security, IaC scanning, alternative runtimes, and finally Compose volume/network, the PHP example, and Windows containers. The SSL/TLS task is also complete. The Kubernetes roadmap's Fundamental Concepts, Installation, all Resources sections, Additional Tools, and Tasks sections are fully complete. Additionally, two security tools outside the roadmap (Kyverno, NeuVector) were covered, and the "trying Vagrant on own computer" backlog item pending since Phase 29 was completed. The Phase 31 document was regrouped by function. The roadmap's last two sections (Advanced Topics, Security) remain.
 
 Bilingual documentation (TR/EN) complete for all phases (01–24).
 
@@ -56,6 +56,7 @@ Bilingual documentation (TR/EN) complete for all phases (01–24).
 - [32-Kubernetes-Important-Resources](./32-Kubernetes-Important-Resources/): Labels, Rolling Updates, Liveness and Readiness, Taints and Affinity — four topics, all proven with real tests. ([TR](./32-Kubernetes-Important-Resources/readme.md) / [EN](./32-Kubernetes-Important-Resources/readme-en.md))
 - [33-Kubernetes-Additional-Tools](./33-Kubernetes-Additional-Tools/): ARGO-CD, Dashboard, Helm, MetalLB, Service Mesh, kubeadm, kustomize — seven tools, all proven with real tests. ([TR](./33-Kubernetes-Additional-Tools/readme.md) / [EN](./33-Kubernetes-Additional-Tools/readme-en.md))
 - [34-Kubernetes-Tasks](./34-Kubernetes-Tasks/): Security (JVM), Internal Load Balancing, Log Collection, Best Practices, CKA Topics — five topics, all proven with real tests. ([TR](./34-Kubernetes-Tasks/readme.md) / [EN](./34-Kubernetes-Tasks/readme-en.md))
+- [35-Kubernetes-Security-Tools](./35-Kubernetes-Security-Tools/): Kyverno (validate/mutate/generate), NeuVector (CVE scanning) — outside the roadmap, with real tests. ([TR](./35-Kubernetes-Security-Tools/readme.md) / [EN](./35-Kubernetes-Security-Tools/readme-en.md))
 - [additionals/ssl](./additionals/ssl/): An explanation of how SSL/TLS works, with no technical terminology at all, entirely through a real-world analogy (a sealed letter between two companies, a notary chain, a corporate mail-control office). ([TR](./additionals/ssl/readme.md) / [EN](./additionals/ssl/readme-en.md))
 - [additionals/security-situation](./additionals/security-situation/): A real security incident — a server abused via DNS rebinding and an open forward proxy (SSRF), with root cause analysis and fix. ([TR](./additionals/security-situation/readme.md) / [EN](./additionals/security-situation/readme-en.md))
 - [additionals/kubernetes-terim-derinlesmesi](./additionals/kubernetes-terim-derinlesmesi/): Topics I researched myself — etcd's general mechanics, the Raft protocol, CNI/kube-proxy (VXLAN, BGP, Service, iptables/IPVS). An ongoing document. ([TR](./additionals/kubernetes-terim-derinlesmesi/readme.md) / [EN](./additionals/kubernetes-terim-derinlesmesi/readme-en.md))
@@ -839,6 +840,27 @@ _Once the Tasks section was fully complete, wrote the Phase 34 document, then pr
   - Fully completed the Tasks section (Security, Internal Load Balancing, Log Collection, Best Practices, CKA Topics).
 - **Milestones & Deliverables:**
   - ☸️ Kubernetes Tasks: [README (TR](./34-Kubernetes-Tasks/readme.md) / [EN)](./34-Kubernetes-Tasks/readme-en.md)
+
+### 🔹 September 1, 2026 | Kyverno, NeuVector, Vagrant — Security Tools Outside the Roadmap
+
+_Covered Kyverno. Installed via Helm, proved `validate` (unlabeled pod rejected), `mutate` (missing label auto-added), and `generate` (ResourceQuota auto-created for new namespace) capabilities with real tests._
+
+_Tried installing NeuVector on the same VPS — its `scanner`/`enforcer` components kept getting `Evicted` due to disk pressure. This was a persistent version of Phase 33's temporary disk-pressure experience, a genuine infrastructure constraint._
+
+_To solve this, completed the "trying Vagrant on own computer" backlog item pending since Phase 29 — found a previously set-up and forgotten Rocky Linux VM on own computer, increased its resources (to 7.7GB RAM, 4 CPUs), set up a fresh Kubernetes cluster with kubeadm from scratch (with Rocky Linux's dnf/SELinux differences). Installed NeuVector on this new environment, proved a real CVE scan (374 vulnerabilities, with fix suggestions) worked via the web UI._
+
+_Found resource (k8s-tr.github.io/k8s-docs) and tested a more realistic Kyverno example (auto-generating a Role/RoleBinding for every new namespace) — hit two real obstacles in the process (the now-mandatory `apiVersion` field in current Kyverno, and Kyverno's own RBAC privilege-escalation protection), researched and resolved both._
+
+_Also, per feedback, reorganized the Phase 31 document into 5 functional groups (Storage, Networking, Workload Controllers, Resource Management, Security)._
+
+- **Tasks & Objectives:**
+  - Completed Kyverno — proved validate/mutate/generate with three separate real tests.
+  - Completed NeuVector after a genuine infrastructure constraint (VPS disk shortage) by moving to Vagrant.
+  - Completed the Vagrant backlog item pending since Phase 29.
+  - Regrouped the Phase 31 document by function.
+- **Milestones & Deliverables:**
+  - ☸️ Kubernetes Security Tools: [README (TR](./35-Kubernetes-Security-Tools/readme.md) / [EN)](./35-Kubernetes-Security-Tools/readme-en.md)
+  - 🔄 Phase 31 (regrouped): [README (TR](./31-Kubernetes-Other-Resources/readme.md) / [EN)](./31-Kubernetes-Other-Resources/readme-en.md)
 
 ---
 

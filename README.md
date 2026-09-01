@@ -14,7 +14,7 @@ Nginx derinleşmesi tamamlandı: reverse proxy, path bazlı yönlendirme, path r
 
 OpenResty (PostgreSQL, MySQL, Redis, token authentication) ve rclone ile S3 entegrasyonu tamamlandı — performans parametreleri, `rclone serve http` cache ve güvenlik (VFS cache, dir cache, auth, remote control), `rclone mount` ve VFS cache.
 
-Docker derinleşmesi tamamen bitti — temel kavramlar, güvenlik, ileri seviye güvenlik, IaC scanning, alternatif runtime'lar, ve son olarak Compose volume/network, PHP örneği, Windows containers dahil. Ayrıca SSL/TLS görevi tamamlandı. Kubernetes'e geçildi — Temel Kavramlar, beş kurulum yöntemi, Temel Kaynaklar, Diğer Kaynaklar, Önemli Kaynaklar, Ek Araçlar, ve şimdi Görevler bölümü tamamlandı — hepsi gerçek testlerle kanıtlandı. Faz 28 ve 30 belgeleri yazılım ekosisteminden örnekler, gerçek işlev açıklamaları, çapraz referanslar ve Mermaid diyagramlarıyla gözden geçirildi. etcd/Raft/CNI-kube-proxy konuları kendi araştırmamla derinleştirildi (devam ediyor — kubernetes.io/microservices.io okumaları, BGP/VXLAN teknik derinliği, Cilium denemesi kaldı). Roadmap'in son iki bölümü (İleri Düzey Konular, Güvenlik) kaldı.
+Docker derinleşmesi tamamen bitti — temel kavramlar, güvenlik, ileri seviye güvenlik, IaC scanning, alternatif runtime'lar, ve son olarak Compose volume/network, PHP örneği, Windows containers dahil. Ayrıca SSL/TLS görevi tamamlandı. Kubernetes roadmap'inin Temel Kavramlar, Kurulum, tüm Kaynak bölümleri, Ek Araçlar ve Görevler bölümleri tamamen bitti. roadmap dışı iki güvenlik aracı (Kyverno, NeuVector) işlendi ve Faz 29'dan beri bekleyen "Vagrant'ı kendi bilgisayarında deneme" backlog maddesi tamamlandı. Faz 31 belgesi işlevine göre yeniden gruplandırıldı. Roadmap'in son iki bölümü (İleri Düzey Konular, Güvenlik) kaldı.
 
 Tüm fazların (01–24) Türkçe/İngilizce belge dönüşümü tamamlandı.
 
@@ -56,6 +56,7 @@ Tüm fazların (01–24) Türkçe/İngilizce belge dönüşümü tamamlandı.
 - [32-Kubernetes-Important-Resources](./32-Kubernetes-Important-Resources/): Etiketler, Sürekli Güncellemeler, Canlılık ve Hazırlık, İtme ve Çekme — dört konu, hepsi gerçek testlerle kanıtlandı. ([TR](./32-Kubernetes-Important-Resources/readme.md) / [EN](./32-Kubernetes-Important-Resources/readme-en.md))
 - [33-Kubernetes-Additional-Tools](./33-Kubernetes-Additional-Tools/): ARGO-CD, Dashboard, Helm, MetalLB, Service Mesh, kubeadm, kustomize — yedi araç, hepsi gerçek testlerle kanıtlandı. ([TR](./33-Kubernetes-Additional-Tools/readme.md) / [EN](./33-Kubernetes-Additional-Tools/readme-en.md))
 - [34-Kubernetes-Tasks](./34-Kubernetes-Tasks/): Güvenlik (JVM), İç Yük Dengeleme, Günlük Kayıtları, İyi Pratikler, CKA Konuları — beş konu, hepsi gerçek testlerle kanıtlandı. ([TR](./34-Kubernetes-Tasks/readme.md) / [EN](./34-Kubernetes-Tasks/readme-en.md))
+- [35-Kubernetes-Security-Tools](./35-Kubernetes-Security-Tools/): Kyverno (validate/mutate/generate), NeuVector (CVE taraması) — roadmap dışı, gerçek testlerle. ([TR](./35-Kubernetes-Security-Tools/readme.md) / [EN](./35-Kubernetes-Security-Tools/readme-en.md))
 - [additionals/ssl](./additionals/ssl/): SSL/TLS'in çalışma mantığının, hiç teknik terim kullanılmadan, tamamen gerçek dünya benzetmesiyle (iki firma arasında mühürlü mektup, noter zinciri, kurumsal evrak kontrol bürosu) anlatımı. ([TR](./additionals/ssl/readme.md) / [EN](./additionals/ssl/readme-en.md))
 - [additionals/security-situation](./additionals/security-situation/): Gerçek bir güvenlik olayı — DNS rebinding ve açık forward proxy (SSRF) ile sunucunun kötüye kullanılması, kök sebep analizi ve çözüm. ([TR](./additionals/security-situation/readme.md) / [EN](./additionals/security-situation/readme-en.md))
 - [additionals/kubernetes-terim-derinlesmesi](./additionals/kubernetes-terim-derinlesmesi/): Araştırdığım konular — etcd'nin genel mantığı, Raft protokolü, CNI/kube-proxy (VXLAN, BGP, Service, iptables/IPVS). Devam eden bir belge. ([TR](./additionals/kubernetes-terim-derinlesmesi/readme.md) / [EN](./additionals/kubernetes-terim-derinlesmesi/readme-en.md))
@@ -839,6 +840,27 @@ _Görevler bölümü tamamen bitince Faz 34 belgesini yazdım, ardından tüm st
   - Görevler bölümü (Güvenlik, İç Yük Dengeleme, Günlük Kayıtları, İyi Pratikler, CKA Konuları) tamamen tamamlandı.
 - **Kilometre Taşları & Çıktılar:**
   - ☸️ Kubernetes Görevler: [README (TR](./34-Kubernetes-Tasks/readme.md) / [EN)](./34-Kubernetes-Tasks/readme-en.md)
+
+### 🔹 1 Eylül 2026 | Kyverno, NeuVector, Vagrant — Roadmap Dışı Güvenlik Araçları
+
+_Kyverno'yu inceledim. Helm ile kurup, `validate` (etiketsiz pod reddedildi), `mutate` (eksik etiket otomatik eklendi), `generate` (yeni namespace'e otomatik ResourceQuota üretildi) yeteneklerini gerçek testlerle kanıtladım._
+
+_NeuVector'ı aynı VPS'e kurmaya çalıştım — `scanner`/`enforcer` bileşenleri disk yetersizliğinden sürekli `Evicted` oldu. Bu, Faz 33'teki geçici disk-pressure deneyiminin kalıcı bir versiyonuydu, gerçek bir altyapı kısıtıydı._
+
+_Bu sorunu çözmek için, Faz 29'dan beri bekleyen "Vagrant'ı kendi bilgisayarında deneme" backlog maddesini tamamladım — kendi bilgisayarımda daha önce kurup unuttuğum bir Rocky Linux VM'i buldum, kaynaklarını (7.7GB RAM, 4 CPU'ya) artırdım, sıfırdan kubeadm ile bir Kubernetes cluster'ı kurdum (Rocky Linux'un dnf/SELinux farklarıyla). NeuVector'ı bu yeni ortama kurup, gerçek bir CVE taramasının (374 güvenlik açığı, çözüm önerileriyle) çalıştığını web arayüzünden kanıtladım._
+
+_Kyverno'nun daha gerçekçi bir örneğini (her yeni namespace'e otomatik Role/RoleBinding üretme) test ettim — bu süreçte iki gerçek engelle karşılaştım (güncel Kyverno'da zorunlu hale gelen `apiVersion` alanı, ve Kyverno'nun kendi RBAC yetki yükseltme koruması), ikisini de araştırıp çözdüm._
+
+_Ayrıca, Faz 31 belgesini işlevine göre 5 gruba (Depolama, Ağ, İş Yükü Kontrolcüleri, Kaynak Yönetimi, Güvenlik) yeniden düzenledim._
+
+- **Görevler & Hedefler:**
+  - Kyverno tamamlandı — validate/mutate/generate üç ayrı gerçek testle kanıtlandı.
+  - NeuVector, gerçek bir altyapı kısıtı (VPS disk yetersizliği) sonrası Vagrant'a taşınarak tamamlandı.
+  - Faz 29'dan beri bekleyen Vagrant backlog maddesi tamamlandı.
+  - Faz 31 belgesi işlevine göre yeniden gruplandırıldı.
+- **Kilometre Taşları & Çıktılar:**
+  - ☸️ Kubernetes Güvenlik Araçları: [README (TR](./35-Kubernetes-Security-Tools/readme.md) / [EN)](./35-Kubernetes-Security-Tools/readme-en.md)
+  - 🔄 Faz 31 (yeniden gruplandı): [README (TR](./31-Kubernetes-Other-Resources/readme.md) / [EN)](./31-Kubernetes-Other-Resources/readme-en.md)
 
 ---
 
