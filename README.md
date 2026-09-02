@@ -14,7 +14,7 @@ Nginx derinleşmesi tamamlandı: reverse proxy, path bazlı yönlendirme, path r
 
 OpenResty (PostgreSQL, MySQL, Redis, token authentication) ve rclone ile S3 entegrasyonu tamamlandı — performans parametreleri, `rclone serve http` cache ve güvenlik (VFS cache, dir cache, auth, remote control), `rclone mount` ve VFS cache.
 
-Docker derinleşmesi tamamen bitti — temel kavramlar, güvenlik, ileri seviye güvenlik, IaC scanning, alternatif runtime'lar, ve son olarak Compose volume/network, PHP örneği, Windows containers dahil. Ayrıca SSL/TLS görevi tamamlandı. Kubernetes roadmap'inin Temel Kavramlar, Kurulum, tüm Kaynak bölümleri, Ek Araçlar ve Görevler bölümleri tamamen bitti. roadmap dışı iki güvenlik aracı (Kyverno, NeuVector) işlendi ve Faz 29'dan beri bekleyen "Vagrant'ı kendi bilgisayarında deneme" backlog maddesi tamamlandı. Faz 31 belgesi işlevine göre yeniden gruplandırıldı. Roadmap'in son iki bölümü (İleri Düzey Konular, Güvenlik) kaldı.
+Docker derinleşmesi tamamen bitti — temel kavramlar, güvenlik, ileri seviye güvenlik, IaC scanning, alternatif runtime'lar, ve son olarak Compose volume/network, PHP örneği, Windows containers dahil. Ayrıca SSL/TLS görevi tamamlandı. Kubernetes roadmap'inin Temel Kavramlar, Kurulum, tüm Kaynak bölümleri, Ek Araçlar, Görevler ve İleri Düzey Konular bölümleri tamamen bitti. Roadmap dışı iki güvenlik aracı (Kyverno, NeuVector) işlendi ve Faz 29'dan beri bekleyen "Vagrant'ı kendi bilgisayarında deneme" backlog maddesi tamamlandı. Faz 31 belgesi işlevine göre yeniden gruplandırıldı. Roadmap'in son bölümü (Güvenlik — Admission Controllers, Network Policy, RBAC, Admission Policy, İmaj Güvenliği, Manifest Güvenliği, CIS Benchmark, System Hardening, Kubespray Hardening) kaldı.
 
 Tüm fazların (01–24) Türkçe/İngilizce belge dönüşümü tamamlandı.
 
@@ -57,6 +57,7 @@ Tüm fazların (01–24) Türkçe/İngilizce belge dönüşümü tamamlandı.
 - [33-Kubernetes-Additional-Tools](./33-Kubernetes-Additional-Tools/): ARGO-CD, Dashboard, Helm, MetalLB, Service Mesh, kubeadm, kustomize — yedi araç, hepsi gerçek testlerle kanıtlandı. ([TR](./33-Kubernetes-Additional-Tools/readme.md) / [EN](./33-Kubernetes-Additional-Tools/readme-en.md))
 - [34-Kubernetes-Tasks](./34-Kubernetes-Tasks/): Güvenlik (JVM), İç Yük Dengeleme, Günlük Kayıtları, İyi Pratikler, CKA Konuları — beş konu, hepsi gerçek testlerle kanıtlandı. ([TR](./34-Kubernetes-Tasks/readme.md) / [EN](./34-Kubernetes-Tasks/readme-en.md))
 - [35-Kubernetes-Security-Tools](./35-Kubernetes-Security-Tools/): Kyverno (validate/mutate/generate), NeuVector (CVE taraması) — roadmap dışı, gerçek testlerle. ([TR](./35-Kubernetes-Security-Tools/readme.md) / [EN](./35-Kubernetes-Security-Tools/readme-en.md))
+- [36-Kubernetes-Advanced-Topics](./36-Kubernetes-Advanced-Topics/): Ağ Yapılandırması, Gateway API, Kubectl Shortcuts — üç konu, hepsi gerçek testlerle kanıtlandı. ([TR](./36-Kubernetes-Advanced-Topics/readme.md) / [EN](./36-Kubernetes-Advanced-Topics/readme-en.md))
 - [additionals/ssl](./additionals/ssl/): SSL/TLS'in çalışma mantığının, hiç teknik terim kullanılmadan, tamamen gerçek dünya benzetmesiyle (iki firma arasında mühürlü mektup, noter zinciri, kurumsal evrak kontrol bürosu) anlatımı. ([TR](./additionals/ssl/readme.md) / [EN](./additionals/ssl/readme-en.md))
 - [additionals/security-situation](./additionals/security-situation/): Gerçek bir güvenlik olayı — DNS rebinding ve açık forward proxy (SSRF) ile sunucunun kötüye kullanılması, kök sebep analizi ve çözüm. ([TR](./additionals/security-situation/readme.md) / [EN](./additionals/security-situation/readme-en.md))
 - [additionals/kubernetes-terim-derinlesmesi](./additionals/kubernetes-terim-derinlesmesi/): Araştırdığım konular — etcd'nin genel mantığı, Raft protokolü, CNI/kube-proxy (VXLAN, BGP, Service, iptables/IPVS). Devam eden bir belge. ([TR](./additionals/kubernetes-terim-derinlesmesi/readme.md) / [EN](./additionals/kubernetes-terim-derinlesmesi/readme-en.md))
@@ -861,6 +862,21 @@ _Ayrıca, Faz 31 belgesini işlevine göre 5 gruba (Depolama, Ağ, İş Yükü K
 - **Kilometre Taşları & Çıktılar:**
   - ☸️ Kubernetes Güvenlik Araçları: [README (TR](./35-Kubernetes-Security-Tools/readme.md) / [EN)](./35-Kubernetes-Security-Tools/readme-en.md)
   - 🔄 Faz 31 (yeniden gruplandı): [README (TR](./31-Kubernetes-Other-Resources/readme.md) / [EN)](./31-Kubernetes-Other-Resources/readme-en.md)
+
+### 🔹 2 Eylül 2026 | İleri Düzey Konular — Ağ Yapılandırması, Gateway API, Kubectl Shortcuts
+
+_Ağ Yapılandırması'na geçtim. Sayfa sadece CNI'nin resmi kaynaklarına işaret ediyordu, VPS'teki gerçek CNI dosyalarını (`/etc/cni/net.d/`, `/opt/cni/bin/`) inceleyerek Calico'nun üç plugin'i (calico, portmap, bandwidth) nasıl zincirlediğini somut olarak gördüm. Araştırırken bulduğum eski bir GitHub bandwidth birim hatasının (`1M` yerine `1K` uygulanması) güncel sürümde artık geçerli olmadığını, `tc qdisc` ve gerçek `iperf3` testiyle kanıtladım._
+
+_Gateway API'ye geçtim. Sayfadaki kurulum komutunun eksik olduğunu (helm upgrade var ama ilk kurulum adımı yok) fark edip doğrusunu araştırdım. Gateway API CRD'lerini ve NGINX Gateway Fabric'i kurup, gerçek bir Gateway+HTTPRoute zinciriyle Faz 30'daki myboot uygulamasına başarıyla trafik yönlendirdiğimi kanıtladım._
+
+_Kubectl Shortcuts'a geçtim. Çok satırlı bir heredoc bloğunun terminalde sessizce bozulduğunu (hiçbir şey eklenmediğini) fark edip, tek satırlık komutlarla düzelttim. `kns` (namespace değiştirme) ve `kx` (pod içine girme) fonksiyonlarının gerçekten çalıştığını kanıtladım._
+
+- **Görevler & Hedefler:**
+  - Ağ Yapılandırması, Gateway API, Kubectl Shortcuts tamamlandı — hepsi gerçek testlerle kanıtlandı.
+  - Eski bir bandwidth birim hatasının artık geçerli olmadığı, bir kurulum komutunun eksik olduğu, ve heredoc'un terminalde sessizce başarısız olabildiği tespit edilip düzeltildi.
+  - İleri Düzey Konular bölümü tamamen tamamlandı.
+- **Kilometre Taşları & Çıktılar:**
+  - ☸️ Kubernetes İleri Düzey Konular: [README (TR](./36-Kubernetes-Advanced-Topics/readme.md) / [EN)](./36-Kubernetes-Advanced-Topics/readme-en.md)
 
 ---
 

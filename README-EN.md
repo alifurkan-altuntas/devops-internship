@@ -14,7 +14,7 @@ Completed Nginx deep dive: reverse proxy, path-based routing, path rewrite, path
 
 Completed OpenResty (PostgreSQL, MySQL, Redis, token authentication) and rclone with S3 — performance parameters, `rclone serve http` cache and security (VFS cache, dir cache, auth, remote control), `rclone mount` and VFS cache.
 
-Docker deep dive is fully complete — fundamentals, security, advanced security, IaC scanning, alternative runtimes, and finally Compose volume/network, the PHP example, and Windows containers. The SSL/TLS task is also complete. The Kubernetes roadmap's Fundamental Concepts, Installation, all Resources sections, Additional Tools, and Tasks sections are fully complete. Additionally, two security tools outside the roadmap (Kyverno, NeuVector) were covered, and the "trying Vagrant on own computer" backlog item pending since Phase 29 was completed. The Phase 31 document was regrouped by function. The roadmap's last two sections (Advanced Topics, Security) remain.
+Docker deep dive is fully complete — fundamentals, security, advanced security, IaC scanning, alternative runtimes, and finally Compose volume/network, the PHP example, and Windows containers. The SSL/TLS task is also complete. The Kubernetes roadmap's Fundamental Concepts, Installation, all Resources sections, Additional Tools, Tasks, and Advanced Topics sections are fully complete. Additionally, two security tools outside the roadmap (Kyverno, NeuVector) were covered, and the "trying Vagrant on own computer" backlog item pending since Phase 29 was completed. The Phase 31 document was regrouped by function. The roadmap's last section (Security — Admission Controllers, Network Policy, RBAC, Admission Policy, Image Security, Manifest Security, CIS Benchmark, System Hardening, Kubespray Hardening) remains.
 
 Bilingual documentation (TR/EN) complete for all phases (01–24).
 
@@ -57,6 +57,7 @@ Bilingual documentation (TR/EN) complete for all phases (01–24).
 - [33-Kubernetes-Additional-Tools](./33-Kubernetes-Additional-Tools/): ARGO-CD, Dashboard, Helm, MetalLB, Service Mesh, kubeadm, kustomize — seven tools, all proven with real tests. ([TR](./33-Kubernetes-Additional-Tools/readme.md) / [EN](./33-Kubernetes-Additional-Tools/readme-en.md))
 - [34-Kubernetes-Tasks](./34-Kubernetes-Tasks/): Security (JVM), Internal Load Balancing, Log Collection, Best Practices, CKA Topics — five topics, all proven with real tests. ([TR](./34-Kubernetes-Tasks/readme.md) / [EN](./34-Kubernetes-Tasks/readme-en.md))
 - [35-Kubernetes-Security-Tools](./35-Kubernetes-Security-Tools/): Kyverno (validate/mutate/generate), NeuVector (CVE scanning) — outside the roadmap, with real tests. ([TR](./35-Kubernetes-Security-Tools/readme.md) / [EN](./35-Kubernetes-Security-Tools/readme-en.md))
+- [36-Kubernetes-Advanced-Topics](./36-Kubernetes-Advanced-Topics/): Network Configuration, Gateway API, Kubectl Shortcuts — three topics, all proven with real tests. ([TR](./36-Kubernetes-Advanced-Topics/readme.md) / [EN](./36-Kubernetes-Advanced-Topics/readme-en.md))
 - [additionals/ssl](./additionals/ssl/): An explanation of how SSL/TLS works, with no technical terminology at all, entirely through a real-world analogy (a sealed letter between two companies, a notary chain, a corporate mail-control office). ([TR](./additionals/ssl/readme.md) / [EN](./additionals/ssl/readme-en.md))
 - [additionals/security-situation](./additionals/security-situation/): A real security incident — a server abused via DNS rebinding and an open forward proxy (SSRF), with root cause analysis and fix. ([TR](./additionals/security-situation/readme.md) / [EN](./additionals/security-situation/readme-en.md))
 - [additionals/kubernetes-terim-derinlesmesi](./additionals/kubernetes-terim-derinlesmesi/): Topics I researched myself — etcd's general mechanics, the Raft protocol, CNI/kube-proxy (VXLAN, BGP, Service, iptables/IPVS). An ongoing document. ([TR](./additionals/kubernetes-terim-derinlesmesi/readme.md) / [EN](./additionals/kubernetes-terim-derinlesmesi/readme-en.md))
@@ -861,6 +862,21 @@ _Also, per feedback, reorganized the Phase 31 document into 5 functional groups 
 - **Milestones & Deliverables:**
   - ☸️ Kubernetes Security Tools: [README (TR](./35-Kubernetes-Security-Tools/readme.md) / [EN)](./35-Kubernetes-Security-Tools/readme-en.md)
   - 🔄 Phase 31 (regrouped): [README (TR](./31-Kubernetes-Other-Resources/readme.md) / [EN)](./31-Kubernetes-Other-Resources/readme-en.md)
+
+### 🔹 September 2, 2026 | Advanced Topics — Network Configuration, Gateway API, Kubectl Shortcuts
+
+_Moved to Network Configuration. The page only pointed to CNI's official resources; inspected the real CNI files on the VPS (`/etc/cni/net.d/`, `/opt/cni/bin/`) to concretely see how Calico chains three plugins (calico, portmap, bandwidth). Proved with `tc qdisc` and a real `iperf3` test that an old GitHub bandwidth unit bug found while researching (`1M` applying as `1K`) no longer applies in the current version._
+
+_Moved to Gateway API. Noticed the page's install command was incomplete (had a helm upgrade but no first-install step) and researched the correct one. Installed the Gateway API CRDs and NGINX Gateway Fabric, proved a real Gateway+HTTPRoute chain successfully routed traffic to Phase 30's myboot application._
+
+_Moved to Kubectl Shortcuts. Noticed a multi-line heredoc block silently broke in the terminal (nothing was actually added), fixed it with single-line commands. Proved the `kns` (namespace switch) and `kx` (exec into pod) functions genuinely worked._
+
+- **Tasks & Objectives:**
+  - Completed Network Configuration, Gateway API, Kubectl Shortcuts — all proven with real tests.
+  - Identified and fixed: an old bandwidth unit bug no longer applying, an incomplete install command, and a heredoc silently failing in the terminal.
+  - Fully completed the Advanced Topics section.
+- **Milestones & Deliverables:**
+  - ☸️ Kubernetes Advanced Topics: [README (TR](./36-Kubernetes-Advanced-Topics/readme.md) / [EN)](./36-Kubernetes-Advanced-Topics/readme-en.md)
 
 ---
 
