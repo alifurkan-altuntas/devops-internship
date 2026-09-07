@@ -14,7 +14,7 @@ Completed Nginx deep dive: reverse proxy, path-based routing, path rewrite, path
 
 Completed OpenResty (PostgreSQL, MySQL, Redis, token authentication) and rclone with S3 — performance parameters, `rclone serve http` cache and security (VFS cache, dir cache, auth, remote control), `rclone mount` and VFS cache.
 
-Docker deep dive is fully complete — fundamentals, security, advanced security, IaC scanning, alternative runtimes, and finally Compose volume/network, the PHP example, and Windows containers. The SSL/TLS task is also complete. The Kubernetes roadmap's Fundamental Concepts, Installation, all Resources sections, Additional Tools, Tasks, and Advanced Topics sections are fully complete. Additionally, two security tools outside the roadmap (Kyverno, NeuVector) were covered, and the "trying Vagrant on own computer" backlog item pending since Phase 29 was completed. The Phase 31 document was regrouped by function. The roadmap's last section (Security — Admission Controllers, Network Policy, RBAC, Admission Policy, Image Security, Manifest Security, CIS Benchmark, System Hardening, Kubespray Hardening) remains.
+Docker deep dive is fully complete — fundamentals, security, advanced security, IaC scanning, alternative runtimes, and finally Compose volume/network, the PHP example, and Windows containers. The SSL/TLS task is also complete. **The Kubernetes roadmap (nine main sections) is fully complete**, and additionally the roadmap's supplementary OpenShift section has been covered. OpenShift was covered conceptually due to a genuine external obstacle (a problem during Red Hat account creation, the CRC/pull-secret requirement) — connected via cross-references to tools set up separately throughout the internship (ARGO-CD, Kyverno/NeuVector, Dashboard). Additionally, at Edib Bey's request, two security tools outside the roadmap (Kyverno, NeuVector) were covered, and the Vagrant backlog item pending since Phase 29 was completed. Remaining backlog items: deeper BGP/VXLAN technical dive, trying Cilium, kubernetes.io/microservices.io readings, Phase 29 Vagrant categorical correction, additionals/kubernetes-terim-derinlesmesi rewrite, trying OpenShift Developer Sandbox for a real test.
 
 Bilingual documentation (TR/EN) complete for all phases (01–24).
 
@@ -58,6 +58,8 @@ Bilingual documentation (TR/EN) complete for all phases (01–24).
 - [34-Kubernetes-Tasks](./34-Kubernetes-Tasks/): Security (JVM), Internal Load Balancing, Log Collection, Best Practices, CKA Topics — five topics, all proven with real tests. ([TR](./34-Kubernetes-Tasks/readme.md) / [EN](./34-Kubernetes-Tasks/readme-en.md))
 - [35-Kubernetes-Security-Tools](./35-Kubernetes-Security-Tools/): Kyverno (validate/mutate/generate), NeuVector (CVE scanning) — outside the roadmap, with real tests. ([TR](./35-Kubernetes-Security-Tools/readme.md) / [EN](./35-Kubernetes-Security-Tools/readme-en.md))
 - [36-Kubernetes-Advanced-Topics](./36-Kubernetes-Advanced-Topics/): Network Configuration, Gateway API, Kubectl Shortcuts — three topics, all proven with real tests. ([TR](./36-Kubernetes-Advanced-Topics/readme.md) / [EN](./36-Kubernetes-Advanced-Topics/readme-en.md))
+- [37-Kubernetes-Security](./37-Kubernetes-Security/): Overview, Admission Controllers, Network Policy, RBAC, Admission Policy, Image Security, Manifest Security, CIS Benchmark, System Hardening, Kubespray Hardening — nine topics, the roadmap's final section. ([TR](./37-Kubernetes-Security/readme.md) / [EN](./37-Kubernetes-Security/readme-en.md))
+- [38-OpenShift](./38-OpenShift/): What It Is, Comparison, Management, Build & Push, OC Client — the roadmap's supplementary section, covered conceptually. ([TR](./38-OpenShift/readme.md) / [EN](./38-OpenShift/readme-en.md))
 - [additionals/ssl](./additionals/ssl/): An explanation of how SSL/TLS works, with no technical terminology at all, entirely through a real-world analogy (a sealed letter between two companies, a notary chain, a corporate mail-control office). ([TR](./additionals/ssl/readme.md) / [EN](./additionals/ssl/readme-en.md))
 - [additionals/security-situation](./additionals/security-situation/): A real security incident — a server abused via DNS rebinding and an open forward proxy (SSRF), with root cause analysis and fix. ([TR](./additionals/security-situation/readme.md) / [EN](./additionals/security-situation/readme-en.md))
 - [additionals/kubernetes-terim-derinlesmesi](./additionals/kubernetes-terim-derinlesmesi/): Topics I researched myself — etcd's general mechanics, the Raft protocol, CNI/kube-proxy (VXLAN, BGP, Service, iptables/IPVS). An ongoing document. ([TR](./additionals/kubernetes-terim-derinlesmesi/readme.md) / [EN](./additionals/kubernetes-terim-derinlesmesi/readme-en.md))
@@ -877,6 +879,67 @@ _Moved to Kubectl Shortcuts. Noticed a multi-line heredoc block silently broke i
   - Fully completed the Advanced Topics section.
 - **Milestones & Deliverables:**
   - ☸️ Kubernetes Advanced Topics: [README (TR](./36-Kubernetes-Advanced-Topics/readme.md) / [EN)](./36-Kubernetes-Advanced-Topics/readme-en.md)
+
+### 🔹 September 3, 2026 | Security — Overview, Admission Controllers, Network Policy, RBAC
+
+_Started the Security section. Connected the overview page's three principles (Defense in Depth, Least Privilege, Attack Surface reduction) to things covered throughout the internship, drew up a tracking list (untested items like NodeRestriction, Audit Logging, Container Sandboxing)._
+
+_Moved to Admission Controllers. Confirmed `NodeRestriction` is genuinely enabled in kube-apiserver. Proved with a real test that with a `LimitRange`, a pod opened with no `resources` specified automatically got default values assigned — clarified this is a pod-level mechanism, different from Phase 31's `ResourceQuota` (a total limit)._
+
+_Moved to Network Policy. Proved with real tests that everything is open by default, that after `default-deny-all` both pod-to-pod and DNS traffic were entirely cut (proved DNS was affected too by isolating with a direct IP), and that specific allow rules restored access exactly._
+
+_Moved to RBAC, deepening Phase 31. Proved with real tests: that `automountServiceAccountToken: false` means the token directory never gets created; created a real Kubernetes User named `jane` by generating and approving a real CSR; that `get`/`list` permissions don't substitute for each other; impersonated identity with `--as` without switching context; "promoted" `jane` to cluster-admin via a ClusterRoleBinding._
+
+- **Tasks & Objectives:**
+  - Completed Overview, Admission Controllers, Network Policy — all proven with real tests.
+  - Deepened RBAC — added real CSR-based User, --as impersonation, cluster-admin promotion scenario.
+- **Milestones & Deliverables:**
+  - Document not written yet — will be written once the Security section is complete.
+
+### 🔹 September 4, 2026 | Security — Admission Policy, Image Security, Manifest Security, CIS Benchmark, System Hardening (Audit Logging Attempt)
+
+_Reviewed Admission Policy — already deeply covered in Phase 35 (Kyverno), clarified the difference between RBAC's "who" question and Admission Policy's "in what way" question._
+
+_Moved to Image Security. Proved with a real test that the standard `nginx` image runs as root, and that adding `runAsNonRoot: true` made Kubernetes reject the container without ever starting it._
+
+_Moved to Manifest Security. Proved with a real test that a container with `readOnlyRootFilesystem: true` cannot create a file._
+
+_Moved to CIS Benchmark. Found the page's kube-bench install link was broken (pointed to GitHub's HTML page), used the correct address. Ran a real scan, got `63 PASS, 16 FAIL, 52 WARN` — `NodeRestriction` passed, confirming today's earlier test, `--audit-log-path` failed, foreshadowing the next topic._
+
+_Moved to System Hardening, attempted to enable Audit Logging. Created the audit policy file, carefully edited the kube-apiserver static pod manifest (after backing it up first), added the needed mounts and volumes. But the audit settings never made it into the running process — tried various interventions (kubelet restart, deleting the container/sandbox), none worked._
+
+- **Tasks & Objectives:**
+  - Completed Admission Policy, Image Security, Manifest Security, CIS Benchmark — all proven with real tests.
+  - Started System Hardening — began the Audit Logging attempt, not yet resolved.
+- **Milestones & Deliverables:**
+  - Document not written yet — will be written once the Security section is complete.
+
+### 🔹 September 7, 2026 | Security Completed — System Hardening (Resolution), Kubespray Hardening, Roadmap Complete
+
+_Continued the Audit Logging attempt in System Hardening — tried additional methods like temporarily removing and restoring the manifest file, at one point temporarily lost access to the API server. The cluster recovered on its own every time (a real, repeated demonstration of self-healing), but the audit settings never became permanent — accepted this as an honest, unresolved finding and moved on. Proved with a real test using `ss -tlpn` that the server had non-Kubernetes ports open (an Attack Surface violation)._
+
+_Moved to Kubespray Hardening. Researched that the page's `pod-security.kubernetes.io/exempt: "true"` label is not an official Kubernetes feature, and proved with a real test that this label has no effect whatsoever (baseline policy still rejected a privileged pod). Connected the `kubelet_rotate_server_certificates` setting to September 3rd's CSR/certificate approval experience._
+
+_Once the Security section was fully complete, wrote the Phase 37 document — the document marking **the completion of the entire Kubernetes roadmap**._
+
+- **Tasks & Objectives:**
+  - Completed System Hardening (recorded the Audit Logging attempt as an honest finding, proved the Attack Surface test with a real test).
+  - Completed Kubespray Hardening — disproved a fake label claim with a real test.
+  - **The Security section, and with it the entire Kubernetes roadmap, is now fully complete.**
+- **Milestones & Deliverables:**
+  - ☸️ Kubernetes Security: [README (TR](./37-Kubernetes-Security/readme.md) / [EN)](./37-Kubernetes-Security/readme-en.md)
+
+### 🔹 September 7, 2026 (continued) | OpenShift — Conceptual Review
+
+_After finishing the Security section and the entire roadmap, moved to the roadmap's supplementary OpenShift section. Planned to try CodeReady Containers (CRC) to set up a real OpenShift cluster — attempted to obtain the required Red Hat account and pull secret, but encountered a genuine problem during account creation._
+
+_As a result, covered OpenShift conceptually — clarified with cross-references how `BuildConfig` resembles Phase 33's ARGO-CD webhook automation, how `Route` compares favorably (no extra controller needed) to Phase 31's Ingress setup, and how OpenShift's internal container registry differs from using Docker Hub in Phase 33. Noted the page's "Developer Sandbox" option as an alternative way to bypass the CRC obstacle, added to the backlog._
+
+- **Tasks & Objectives:**
+  - Completed the OpenShift section (What It Is/Comparison, Management, Build & Push, OC Client) conceptually — honestly documented a genuine external obstacle (Red Hat account issue).
+  - The roadmap's final supplementary section is now also covered.
+- **Milestones & Deliverables:**
+  - ☸️ OpenShift: [README (TR](./38-OpenShift/readme.md) / [EN)](./38-OpenShift/readme-en.md)
 
 ---
 

@@ -14,7 +14,7 @@ Nginx derinleşmesi tamamlandı: reverse proxy, path bazlı yönlendirme, path r
 
 OpenResty (PostgreSQL, MySQL, Redis, token authentication) ve rclone ile S3 entegrasyonu tamamlandı — performans parametreleri, `rclone serve http` cache ve güvenlik (VFS cache, dir cache, auth, remote control), `rclone mount` ve VFS cache.
 
-Docker derinleşmesi tamamen bitti — temel kavramlar, güvenlik, ileri seviye güvenlik, IaC scanning, alternatif runtime'lar, ve son olarak Compose volume/network, PHP örneği, Windows containers dahil. Ayrıca SSL/TLS görevi tamamlandı. Kubernetes roadmap'inin Temel Kavramlar, Kurulum, tüm Kaynak bölümleri, Ek Araçlar, Görevler ve İleri Düzey Konular bölümleri tamamen bitti. Roadmap dışı iki güvenlik aracı (Kyverno, NeuVector) işlendi ve Faz 29'dan beri bekleyen "Vagrant'ı kendi bilgisayarında deneme" backlog maddesi tamamlandı. Faz 31 belgesi işlevine göre yeniden gruplandırıldı. Roadmap'in son bölümü (Güvenlik — Admission Controllers, Network Policy, RBAC, Admission Policy, İmaj Güvenliği, Manifest Güvenliği, CIS Benchmark, System Hardening, Kubespray Hardening) kaldı.
+Docker derinleşmesi tamamen bitti — temel kavramlar, güvenlik, ileri seviye güvenlik, IaC scanning, alternatif runtime'lar, ve son olarak Compose volume/network, PHP örneği, Windows containers dahil. Ayrıca SSL/TLS görevi tamamlandı. **Kubernetes roadmap'i (dokuz ana bölüm) tamamen tamamlandı**, ve ek olarak roadmap'in tamamlayıcı OpenShift bölümü de işlendi. OpenShift, gerçek bir dış engel (Red Hat hesap açma sürecinde yaşanan sorun, CRC/pull-secret gerekliliği) nedeniyle kavramsal olarak işlendi — staj boyunca ayrı ayrı kurulan araçlarla (ARGO-CD, Kyverno/NeuVector, Dashboard) çapraz referanslarla bağlantılandırıldı. Ayrıca Edib Bey'in talebiyle roadmap dışı iki güvenlik aracı (Kyverno, NeuVector) işlendi, Faz 29'dan beri bekleyen Vagrant backlog maddesi tamamlandı. Kalan backlog maddeleri: BGP/VXLAN teknik derinliği, Cilium denemesi, kubernetes.io/microservices.io okumaları, Faz 29 Vagrant kategorik düzeltmesi, additionals/kubernetes-terim-derinlesmesi rewrite, OpenShift Developer Sandbox ile gerçek test denemesi.
 
 Tüm fazların (01–24) Türkçe/İngilizce belge dönüşümü tamamlandı.
 
@@ -58,6 +58,8 @@ Tüm fazların (01–24) Türkçe/İngilizce belge dönüşümü tamamlandı.
 - [34-Kubernetes-Tasks](./34-Kubernetes-Tasks/): Güvenlik (JVM), İç Yük Dengeleme, Günlük Kayıtları, İyi Pratikler, CKA Konuları — beş konu, hepsi gerçek testlerle kanıtlandı. ([TR](./34-Kubernetes-Tasks/readme.md) / [EN](./34-Kubernetes-Tasks/readme-en.md))
 - [35-Kubernetes-Security-Tools](./35-Kubernetes-Security-Tools/): Kyverno (validate/mutate/generate), NeuVector (CVE taraması) — roadmap dışı, gerçek testlerle. ([TR](./35-Kubernetes-Security-Tools/readme.md) / [EN](./35-Kubernetes-Security-Tools/readme-en.md))
 - [36-Kubernetes-Advanced-Topics](./36-Kubernetes-Advanced-Topics/): Ağ Yapılandırması, Gateway API, Kubectl Shortcuts — üç konu, hepsi gerçek testlerle kanıtlandı. ([TR](./36-Kubernetes-Advanced-Topics/readme.md) / [EN](./36-Kubernetes-Advanced-Topics/readme-en.md))
+- [37-Kubernetes-Security](./37-Kubernetes-Security/): Genel Bakış, Admission Controllers, Network Policy, RBAC, Admission Policy, İmaj Güvenliği, Manifest Güvenliği, CIS Benchmark, System Hardening, Kubespray Hardening — dokuz konu, roadmap'in son bölümü. ([TR](./37-Kubernetes-Security/readme.md) / [EN](./37-Kubernetes-Security/readme-en.md))
+- [38-OpenShift](./38-OpenShift/): Nedir, Karşılaştırma, Management, Build & Push, OC Client — roadmap'in ek, tamamlayıcı bölümü, kavramsal olarak işlendi. ([TR](./38-OpenShift/readme.md) / [EN](./38-OpenShift/readme-en.md))
 - [additionals/ssl](./additionals/ssl/): SSL/TLS'in çalışma mantığının, hiç teknik terim kullanılmadan, tamamen gerçek dünya benzetmesiyle (iki firma arasında mühürlü mektup, noter zinciri, kurumsal evrak kontrol bürosu) anlatımı. ([TR](./additionals/ssl/readme.md) / [EN](./additionals/ssl/readme-en.md))
 - [additionals/security-situation](./additionals/security-situation/): Gerçek bir güvenlik olayı — DNS rebinding ve açık forward proxy (SSRF) ile sunucunun kötüye kullanılması, kök sebep analizi ve çözüm. ([TR](./additionals/security-situation/readme.md) / [EN](./additionals/security-situation/readme-en.md))
 - [additionals/kubernetes-terim-derinlesmesi](./additionals/kubernetes-terim-derinlesmesi/): Araştırdığım konular — etcd'nin genel mantığı, Raft protokolü, CNI/kube-proxy (VXLAN, BGP, Service, iptables/IPVS). Devam eden bir belge. ([TR](./additionals/kubernetes-terim-derinlesmesi/readme.md) / [EN](./additionals/kubernetes-terim-derinlesmesi/readme-en.md))
@@ -877,6 +879,67 @@ _Kubectl Shortcuts'a geçtim. Çok satırlı bir heredoc bloğunun terminalde se
   - İleri Düzey Konular bölümü tamamen tamamlandı.
 - **Kilometre Taşları & Çıktılar:**
   - ☸️ Kubernetes İleri Düzey Konular: [README (TR](./36-Kubernetes-Advanced-Topics/readme.md) / [EN)](./36-Kubernetes-Advanced-Topics/readme-en.md)
+
+### 🔹 3 Eylül 2026 | Güvenlik — Genel Bakış, Admission Controllers, Network Policy, RBAC
+
+_Güvenlik bölümüne başladım. Genel bakış sayfasındaki üç prensibi (Defense in Depth, Least Privilege, Attack Surface azaltma) staj boyunca test ettiğim şeylerle bağladım, bir takip listesi çıkardım (NodeRestriction, Audit Logging, Container Sandboxing gibi hiç test edilmemiş maddeler)._
+
+_Admission Controllers'a geçtim. kube-apiserver'da `NodeRestriction`'ın gerçekten etkin olduğunu doğruladım. `LimitRange` ile, hiç `resources` belirtmeden açılan bir pod'a otomatik varsayılan değerler atandığını gerçek testle kanıtladım — Faz 31'deki `ResourceQuota`'dan (toplam sınır) farklı, pod-bazlı bir mekanizma olduğunu netleştirdim._
+
+_Network Policy'ye geçtim. Varsayılan olarak her şeyin açık olduğunu, `default-deny-all` sonrası hem pod-to-pod hem DNS trafiğinin tamamen kesildiğini (IP ile izole ederek DNS'in de etkilendiğini kanıtladım), özel izin kurallarıyla erişimin tam olarak geri geldiğini gerçek testle kanıtladım._
+
+_RBAC'a geçtim, Faz 31'i derinleştirdim. `automountServiceAccountToken: false` ile token dizininin hiç oluşmadığını; gerçek bir CSR üretip onaylayarak `jane` adlı bir Kubernetes User oluşturduğumu; `get`/`list` yetkilerinin birbirinin yerine geçmediğini; `--as` ile context değiştirmeden kimlik taklit ettiğimi; `jane`'i bir ClusterRoleBinding ile cluster-admin'e "terfi ettirdiğimi" gerçek testlerle kanıtladım._
+
+- **Görevler & Hedefler:**
+  - Genel Bakış, Admission Controllers, Network Policy tamamlandı — hepsi gerçek testlerle kanıtlandı.
+  - RBAC derinleştirildi — gerçek CSR tabanlı User, --as taklit, cluster-admin terfi senaryosu eklendi.
+- **Kilometre Taşları & Çıktılar:**
+  - Belge henüz yazılmadı — Güvenlik bölümü tamamlanınca tek seferde yazılacak.
+
+### 🔹 4 Eylül 2026 | Güvenlik — Admission Policy, İmaj Güvenliği, Manifest Güvenliği, CIS Benchmark, System Hardening (Audit Logging Denemesi)
+
+_Admission Policy'yi gözden geçirdim — bu konu zaten Faz 35'te (Kyverno) derinlemesine işlenmişti, RBAC'ın "kim" sorusuyla Admission Policy'nin "ne şekilde" sorusu arasındaki farkı netleştirdim._
+
+_İmaj Güvenliği'ne geçtim. Standart `nginx` image'inin root olarak çalıştığını, `runAsNonRoot: true` koyunca Kubernetes'in container'ı hiç başlatmadan reddettiğini gerçek testle kanıtladım._
+
+_Manifest Güvenliği'ne geçtim. `readOnlyRootFilesystem: true` olan bir container'ın dosya oluşturamadığını gerçek testle kanıtladım._
+
+_CIS Benchmark'a geçtim. Sayfadaki kube-bench kurulum linkinin bozuk olduğunu (GitHub'ın HTML sayfasına işaret ediyordu) bulup doğru adresi kullandım. Gerçek bir tarama çalıştırıp `63 PASS, 16 FAIL, 52 WARN` sonucunu aldım — `NodeRestriction` PASS çıkarak bugünkü testimi doğruladı, `--audit-log-path` FAIL çıkarak bir sonraki konuya işaret etti._
+
+_System Hardening'e geçtim, Audit Logging'i etkinleştirmeye çalıştım. Audit policy dosyasını oluşturup, kube-apiserver static pod manifest'ini dikkatli bir şekilde (önce yedek alarak) düzenledim, gerekli mount'ları ve volume'leri ekledim. Ama audit ayarları çalışan process'e bir türlü yansımadı — kubelet restart, container/sandbox silme gibi çeşitli müdahaleler denedim, hiçbiri sonuç vermedi._
+
+- **Görevler & Hedefler:**
+  - Admission Policy, İmaj Güvenliği, Manifest Güvenliği, CIS Benchmark tamamlandı — hepsi gerçek testlerle kanıtlandı.
+  - System Hardening'e başlandı — Audit Logging denemesi başlatıldı, henüz çözülemedi.
+- **Kilometre Taşları & Çıktılar:**
+  - Belge henüz yazılmadı — Güvenlik bölümü tamamlanınca tek seferde yazılacak.
+
+### 🔹 7 Eylül 2026 | Güvenlik Tamamlandı — System Hardening (Sonuç), Kubespray Hardening, Roadmap Tamamlandı
+
+_System Hardening'deki Audit Logging denemesine devam ettim — manifest dosyasını geçici olarak kaldırıp geri koyma gibi ek yöntemler denedim, bir noktada API server'a geçici olarak erişim kaybettim. Cluster, her seferinde kendi kendine toparlandı (self-healing'in gerçek, tekrarlanan kanıtı), ama audit ayarları bir türlü kalıcı olmadı — bunu dürüst, çözülememiş bir bulgu olarak kabul edip devam ettim. `ss -tlpn` ile, sunucuda Kubernetes'e ait olmayan portların açık olduğunu (Attack Surface ihlali) gerçek testle kanıtladım._
+
+_Kubespray Hardening'e geçtim. Sayfadaki `pod-security.kubernetes.io/exempt: "true"` etiketinin resmi bir Kubernetes özelliği olmadığını araştırıp, gerçek testle bu etiketin hiçbir etkisi olmadığını (baseline politikasının hâlâ ayrıcalıklı pod'u reddettiğini) kanıtladım. `kubelet_rotate_server_certificates` ayarını, 3 Eylül'deki CSR/sertifika onaylama deneyimimle bağlantılandırdım._
+
+_Güvenlik bölümü tamamen bitince Faz 37 belgesini yazdım — bu, **Kubernetes roadmap'inin tamamının tamamlandığı** belge._
+
+- **Görevler & Hedefler:**
+  - System Hardening tamamlandı (Audit Logging denemesi dürüst bir bulgu olarak kayda geçirildi, Attack Surface testi gerçek testle kanıtlandı).
+  - Kubespray Hardening tamamlandı — sahte bir etiket iddiası gerçek testle çürütüldü.
+  - **Güvenlik bölümü, ve onunla birlikte tüm Kubernetes roadmap'i tamamen tamamlandı.**
+- **Kilometre Taşları & Çıktılar:**
+  - ☸️ Kubernetes Güvenlik: [README (TR](./37-Kubernetes-Security/readme.md) / [EN)](./37-Kubernetes-Security/readme-en.md)
+
+### 🔹 7 Eylül 2026 (devam) | OpenShift — Kavramsal İnceleme
+
+_Güvenlik bölümünü ve roadmap'in tamamını bitirdikten sonra, roadmap'in ek bölümü OpenShift'e geçtim. Gerçek bir OpenShift cluster'ı kurmak için CodeReady Containers (CRC) denemeyi planladım — bunun için gereken Red Hat hesabı ve pull secret'ı almaya çalıştım, ancak hesap açma sürecinde gerçek bir sorunla karşılaştım._
+
+_Bu nedenle OpenShift'i kavramsal olarak işledim — `BuildConfig`'in Faz 33'teki ARGO-CD'nin webhook otomasyonuna benzerliğini, `Route`'un Faz 31'deki Ingress kurulumuna göre (ekstra controller gerektirmeden) avantajını, ve OpenShift'in dahili container registry'sinin Faz 33'te Docker Hub kullandığımız yere göre farkını çapraz referanslarla netleştirdim. Sayfadaki "Developer Sandbox" seçeneğini, CRC engelini aşmanın alternatif bir yolu olarak backlog'a not düştüm._
+
+- **Görevler & Hedefler:**
+  - OpenShift bölümü (Nedir/Karşılaştırma, Management, Build & Push, OC Client) kavramsal olarak tamamlandı — gerçek bir dış engel (Red Hat hesap sorunu) dürüstçe belgelendi.
+  - Roadmap'in ek/tamamlayıcı son bölümü de kapsanmış oldu.
+- **Kilometre Taşları & Çıktılar:**
+  - ☸️ OpenShift: [README (TR](./38-OpenShift/readme.md) / [EN)](./38-OpenShift/readme-en.md)
 
 ---
 
