@@ -14,7 +14,7 @@ Completed Nginx deep dive: reverse proxy, path-based routing, path rewrite, path
 
 Completed OpenResty (PostgreSQL, MySQL, Redis, token authentication) and rclone with S3 — performance parameters, `rclone serve http` cache and security (VFS cache, dir cache, auth, remote control), `rclone mount` and VFS cache.
 
-Docker deep dive is fully complete — fundamentals, security, advanced security, IaC scanning, alternative runtimes, and finally Compose volume/network, the PHP example, and Windows containers. The SSL/TLS task is also complete. **The Kubernetes roadmap (nine main sections) is fully complete**, and additionally the roadmap's supplementary OpenShift section has been covered. OpenShift was covered conceptually due to a genuine external obstacle (a problem during Red Hat account creation, the CRC/pull-secret requirement) — connected via cross-references to tools set up separately throughout the internship (ARGO-CD, Kyverno/NeuVector, Dashboard). Additionally, at Edib Bey's request, two security tools outside the roadmap (Kyverno, NeuVector) were covered, and the Vagrant backlog item pending since Phase 29 was completed. Remaining backlog items: deeper BGP/VXLAN technical dive, trying Cilium, kubernetes.io/microservices.io readings, Phase 29 Vagrant categorical correction, additionals/kubernetes-terim-derinlesmesi rewrite, trying OpenShift Developer Sandbox for a real test.
+Docker deep dive is fully complete — fundamentals, security, advanced security, IaC scanning, alternative runtimes, and finally Compose volume/network, the PHP example, and Windows containers. The SSL/TLS task is also complete. The Kubernetes roadmap (nine main sections + OpenShift supplement) is fully complete. Following this, working methodology shifted based on mentor feedback — moving from concept/roadmap-driven progress to a **scenario-based, application engineering** format. First application: migrating from Calico to Cilium and a real payment service security scenario (L7 network policy, DNS exfiltration protection, Hubble observability) — documented with real errors (operator pending, heredoc truncation, DNS/health-check traps) and real screenshot evidence. Additionally, a Jekyll/GitHub Pages site to host all documentation has begun being set up (TeXt theme, deployed via GitHub Actions, free github.io address). Remaining backlog items: covering Kyverno/NeuVector with separate, deepened scenarios, extracting code from markdown into runnable files across all older phases too, deeper BGP/VXLAN technical dive, kubernetes.io/microservices.io readings, Phase 29 Vagrant categorical correction.
 
 Bilingual documentation (TR/EN) complete for all phases (01–24).
 
@@ -60,6 +60,7 @@ Bilingual documentation (TR/EN) complete for all phases (01–24).
 - [36-Kubernetes-Advanced-Topics](./36-Kubernetes-Advanced-Topics/): Network Configuration, Gateway API, Kubectl Shortcuts — three topics, all proven with real tests. ([TR](./36-Kubernetes-Advanced-Topics/readme.md) / [EN](./36-Kubernetes-Advanced-Topics/readme-en.md))
 - [37-Kubernetes-Security](./37-Kubernetes-Security/): Overview, Admission Controllers, Network Policy, RBAC, Admission Policy, Image Security, Manifest Security, CIS Benchmark, System Hardening, Kubespray Hardening — nine topics, the roadmap's final section. ([TR](./37-Kubernetes-Security/readme.md) / [EN](./37-Kubernetes-Security/readme-en.md))
 - [38-OpenShift](./38-OpenShift/): What It Is, Comparison, Management, Build & Push, OC Client — the roadmap's supplementary section, covered conceptually. ([TR](./38-OpenShift/readme.md) / [EN](./38-OpenShift/readme-en.md))
+- [39-Cilium-L7-Security](./39-Cilium-L7-Security/): Payment service scenario — migrating from Calico to Cilium, L7 network policy, DNS exfiltration protection, Hubble observability. Outside the roadmap, in a scenario-based application engineering format; with real runnable YAML/script files. ([TR](./39-Cilium-L7-Security/readme.md) / [EN](./39-Cilium-L7-Security/readme-en.md))
 - [additionals/ssl](./additionals/ssl/): An explanation of how SSL/TLS works, with no technical terminology at all, entirely through a real-world analogy (a sealed letter between two companies, a notary chain, a corporate mail-control office). ([TR](./additionals/ssl/readme.md) / [EN](./additionals/ssl/readme-en.md))
 - [additionals/security-situation](./additionals/security-situation/): A real security incident — a server abused via DNS rebinding and an open forward proxy (SSRF), with root cause analysis and fix. ([TR](./additionals/security-situation/readme.md) / [EN](./additionals/security-situation/readme-en.md))
 - [additionals/kubernetes-terim-derinlesmesi](./additionals/kubernetes-terim-derinlesmesi/): Topics I researched myself — etcd's general mechanics, the Raft protocol, CNI/kube-proxy (VXLAN, BGP, Service, iptables/IPVS). An ongoing document. ([TR](./additionals/kubernetes-terim-derinlesmesi/readme.md) / [EN](./additionals/kubernetes-terim-derinlesmesi/readme-en.md))
@@ -940,6 +941,31 @@ _As a result, covered OpenShift conceptually — clarified with cross-references
   - The roadmap's final supplementary section is now also covered.
 - **Milestones & Deliverables:**
   - ☸️ OpenShift: [README (TR](./38-OpenShift/readme.md) / [EN)](./38-OpenShift/readme-en.md)
+
+### 🔹 September 8, 2026 | Cilium Setup and L7 Security Scenario
+
+_Working methodology shifted — instead of processing roadmap pages sequentially, moved to solving a real enterprise scenario (payment service security) from scratch. Reset the existing Calico-based cluster on the Vagrant VM with `kubeadm reset` and rebuilt it with Cilium._
+
+_Hit two real setup problems: the Cilium operator staying `Pending` due to HA/anti-affinity constraints on a single node (fixed by scaling replicas to 1), and the connectivity test timing out due to the control-plane taint plus image pull time (fixed by removing the taint and cleaning up namespaces, result 79/79 passing)._
+
+_In the payment service scenario, discovered and fixed three real traps: kubelet health checks being rejected by the L7 rule and pushing the pod into CrashLoopBackOff, everything timing out when DNS egress permission was forgotten, and DNS/FQDN blocks silently getting truncated while pasting YAML via heredoc (a repeat of the same class of error from Phase 36). Then set up the DNS exfiltration scenario (domain restriction via matchPattern) and Hubble observability, verified with real screenshots (green/red traffic flow). Also covered TLS/SNI architecture and the Blue/Green migration strategy conceptually._
+
+_Per mentor feedback, extracted the code from markdown and kept it as separate, real, runnable YAML/script files._
+
+- **Tasks & Objectives:**
+  - Completed Cilium setup, L7 network policy scenario, DNS exfiltration protection, Hubble observability — all proven with real tests and screenshot evidence.
+  - Code separated into real, runnable files (YAML/shell script) — not embedded in markdown.
+- **Milestones & Deliverables:**
+  - ☸️ Cilium L7 Security: [README (TR](./39-Cilium-L7-Security/readme.md) / [EN)](./39-Cilium-L7-Security/readme-en.md), along with real manifest/script files.
+
+### 🔹 September 9, 2026 | Jekyll/GitHub Pages Site Setup
+
+_Started setting up a Jekyll/GitHub Pages site to visualize all documentation. Chose the TeXt theme, decided to proceed with the free `github.io` address. Wrote the `Gemfile` and `_config.yml` files. Switched GitHub Pages' "Source" setting to GitHub Actions and reviewed the suggested "GitHub Pages Jekyll" workflow template (using `actions/jekyll-build-pages@v1`) — confirmed this action supports custom theme gems (like jekyll-text-theme), unlike the classic Pages build's restricted gem list._
+
+- **Tasks & Objectives:**
+  - Jekyll site infrastructure (theme selection, Gemfile, \_config.yml, GitHub Actions workflow) prepared, not yet committed.
+- **Milestones & Deliverables:**
+  - Site not yet live — will be completed once files are committed and Actions runs.
 
 ---
 

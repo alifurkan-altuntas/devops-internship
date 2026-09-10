@@ -1,6 +1,6 @@
 # ☸️ Kubernetes Security Tools — Kyverno, NeuVector
 
-At Edib Bey's direct request, covered two security tools outside the roadmap (Kyverno, NeuVector). In the process, also completed the **trying Vagrant on own computer** backlog item pending since Phase 29.
+Covered two security tools outside the roadmap (Kyverno, NeuVector). In the process, also completed the **trying Vagrant on own computer** backlog item pending since Phase 29.
 
 ---
 
@@ -27,9 +27,9 @@ Proved with real tests:
 
 - **Validate:** A pod without a `team` label was rejected at admission time with a **`Forbidden`** error; a labeled pod was created successfully.
 - **Mutate:** An unlabeled pod got `team=unassigned` **auto-added**; with the `+(team)` conditional syntax, proved an **already-labeled** pod's label was **left untouched** (only added when missing).
-- **Generate:** Creating a new namespace, with **nothing written manually**, automatically produced a `ResourceQuota` (own example) and, following an example from Edib Bey's resource, a **`Role` + `RoleBinding` pair**.
+- **Generate:** Creating a new namespace, with **nothing written manually**, automatically produced a `ResourceQuota` (own example) and, following an example, a **`Role` + `RoleBinding` pair**.
 
-**Real debugging:** Applying Edib Bey's example hit two real obstacles — (1) in current Kyverno the `apiVersion` field in the `generate` block is now **mandatory** (it wasn't before), (2) Kyverno's own `background-controller` **cannot grant an RBAC permission it doesn't itself have** (Kubernetes' privilege-escalation protection — an advanced application of Phase 31's "least privilege" principle). Resolved by adding a `ClusterRole` granting Kyverno the needed permission.
+**Real debugging:** Applying example hit two real obstacles — (1) in current Kyverno the `apiVersion` field in the `generate` block is now **mandatory** (it wasn't before), (2) Kyverno's own `background-controller` **cannot grant an RBAC permission it doesn't itself have** (Kubernetes' privilege-escalation protection — an advanced application of Phase 31's "least privilege" principle). Resolved by adding a `ClusterRole` granting Kyverno the needed permission.
 
 **YAML:**
 

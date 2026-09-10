@@ -1,6 +1,6 @@
 # 🔍 Kubernetes Terminology Deep Dive — etcd, Raft, CNI/kube-proxy (in progress)
 
-Based on feedback from Edib Bey, I researched and went deeper into some topics that stayed shallow in the Cluster Architecture document from Phase 28. This document is the record of that research — over time it'll grow with new sections (kubernetes.io and microservices.io readings).
+I researched and went deeper into some topics that stayed shallow in the Cluster Architecture document from Phase 28. This document is the record of that research — over time it'll grow with new sections (kubernetes.io and microservices.io readings).
 
 ---
 
@@ -29,7 +29,7 @@ The **term** number adds another layer of safety — every election round has a 
 
 ## CNI / kube-proxy — Pod-to-Pod and Service-Based Communication
 
-I worked through the networking topic Edib Bey called "more critical" using an apartment/package delivery scenario.
+I worked through the networking topic called "more critical" using an apartment/package delivery scenario.
 
 ### The Core Problem — Pods on Different Nodes Finding Each Other
 

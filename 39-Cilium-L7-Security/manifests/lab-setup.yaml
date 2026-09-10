@@ -1,0 +1,59 @@
+# Cilium L7 Güvenlik Senaryosu — Test Ortamı
+# Ödeme servisi (payment-api) + istemci (frontend) simülasyonu
+#
+# Kullanım:
+#   kubectl apply -f lab-setup.yaml
+#
+# Doğrulama:
+#   kubectl get pods -n lab-odeme -w
+#   (İki pod da Running olunca Ctrl+C ile çık)
+
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: lab-odeme
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: payment-api
+  namespace: lab-odeme
+  labels:
+    app: payment-api
+spec:
+  containers:
+    - name: server
+      image: hashicorp/http-echo:0.2.3
+      args:
+        - "-text=ODEME_BASARILI"
+        - "-listen=:8080"
+      ports:
+        - containerPort: 8080
+    - name: client-tools
+      image: curlimages/curl:latest
+      command: ["sleep", "3600"]
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: payment-service
+  namespace: lab-odeme
+spec:
+  selector:
+    app: payment-api
+  ports:
+    - port: 8080
+      targetPort: 8080
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: frontend
+  namespace: lab-odeme
+  labels:
+    app: frontend
+spec:
+  containers:
+    - name: curl
+      image: curlimages/curl:latest
+      command: ["sleep", "3600"]

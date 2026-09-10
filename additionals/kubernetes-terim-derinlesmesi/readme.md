@@ -1,6 +1,6 @@
 # 🔍 Kubernetes Terim Derinleşmesi — etcd, Raft, CNI/kube-proxy (devam edecek)
 
-Edib Bey'in verdiği geri bildirim üzerine, Faz 28'deki Küme Mimarisi belgesinde yüzeysel kalan bazı konuları kendim araştırıp derinleştirdim. Bu belge, o araştırmaların kaydı — zamanla yeni bölümler (kubernetes.io ve microservices.io okumaları) eklenerek büyüyecek.
+Faz 28'deki Küme Mimarisi belgesinde yüzeysel kalan bazı konuları kendim araştırıp derinleştirdim. Bu belge, o araştırmaların kaydı — zamanla yeni bölümler (kubernetes.io ve microservices.io okumaları) eklenerek büyüyecek.
 
 ---
 
@@ -29,7 +29,7 @@ Sistem sayesinde karışıklık çıkmıyor çünkü herkesin bekleme süresi fa
 
 ## CNI / kube-proxy — Pod'lar Arası ve Service Üzerinden İletişim
 
-Edib Bey'in "burası daha kritik" dediği network konusunu, bir apartman/kargo senaryosu üzerinden işledim.
+"burası daha kritik" network konusunu, bir apartman/kargo senaryosu üzerinden işledim.
 
 ### Asıl Problem — Farklı Node'lardaki Pod'ların Birbirini Bulması
 

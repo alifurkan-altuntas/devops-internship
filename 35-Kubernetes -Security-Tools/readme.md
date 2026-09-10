@@ -1,6 +1,6 @@
 # ☸️ Kubernetes Güvenlik Araçları — Kyverno, NeuVector
 
-Edib Bey'in doğrudan talebi üzerine, roadmap'in dışında iki güvenlik aracını (Kyverno, NeuVector) işledim. Bu süreçte ayrıca Faz 29'dan beri backlog'da bekleyen **Vagrant'ı kendi bilgisayarında deneme** maddesini de tamamladım.
+Roadmap'in dışında iki güvenlik aracını (Kyverno, NeuVector) işledim. Bu süreçte ayrıca Faz 29'dan beri backlog'da bekleyen **Vagrant'ı kendi bilgisayarında deneme** maddesini de tamamladım.
 
 ---
 
@@ -27,9 +27,9 @@ Gerçek testle kanıtladım:
 
 - **Validate:** `team` etiketi olmayan bir pod, admission aşamasında **`Forbidden`** hatasıyla reddedildi; etiketli pod başarıyla oluştu.
 - **Mutate:** Etiketsiz bir pod'a `team=unassigned` **otomatik eklendi**; `+(team)` koşullu sözdizimiyle, **zaten etiketli** bir pod'un etiketine **hiç dokunulmadığı** (sadece eksikse eklendiği) kanıtlandı.
-- **Generate:** Yeni bir namespace açılınca, **elle hiçbir şey yazmadan**, bir `ResourceQuota` (kendi örneğim) ve ardından Edib Bey'in kaynağındaki örnekle **bir `Role` + `RoleBinding` çifti** otomatik oluştu.
+- **Generate:** Yeni bir namespace açılınca, **elle hiçbir şey yazmadan**, bir `ResourceQuota` (kendi örneğim) ve ardından örnekle **bir `Role` + `RoleBinding` çifti** otomatik oluştu.
 
-**Gerçek hata ayıklama:** Edib Bey'in örneğini uygularken iki gerçek engelle karşılaştım — (1) güncel Kyverno'da `generate` bloğunda `apiVersion` artık **zorunlu** (eskiden değildi), (2) Kyverno'nun kendi `background-controller`'ı, **kendisinin sahip olmadığı bir RBAC yetkisini başkasına veremiyor** (Kubernetes'in yetki yükseltme koruması — Faz 31'deki "en az yetki" prensibinin ileri bir uygulaması). Bir `ClusterRole` ekleyip Kyverno'ya gerekli izni vererek çözdüm.
+**Gerçek hata ayıklama:** Örneği uygularken iki gerçek engelle karşılaştım — (1) güncel Kyverno'da `generate` bloğunda `apiVersion` artık **zorunlu** (eskiden değildi), (2) Kyverno'nun kendi `background-controller`'ı, **kendisinin sahip olmadığı bir RBAC yetkisini başkasına veremiyor** (Kubernetes'in yetki yükseltme koruması — Faz 31'deki "en az yetki" prensibinin ileri bir uygulaması). Bir `ClusterRole` ekleyip Kyverno'ya gerekli izni vererek çözdüm.
 
 **YAML:**
 

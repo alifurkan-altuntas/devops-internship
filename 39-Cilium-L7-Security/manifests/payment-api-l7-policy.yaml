@@ -1,0 +1,75 @@
+# Cilium L7 Network Policy — Ödeme Servisi (payment-api)
+#
+# Üç talebi karşılıyor:
+#   1. Sadece frontend'den gelen istekler kabul edilir
+#   2. Sadece POST /api/v1/charge'a izin verilir (diğer path/metodlar reddedilir)
+#   3. payment-api internete kapalı, sadece CoreDNS + izinli FQDN'e çıkabilir
+#
+# Üç gerçek tuzağa karşı düzeltilmiş:
+#   - Kubelet health check (fromEntities: host + GET /healthz) yoksa CrashLoopBackOff olur
+#   - DNS egress izni (port 53) yoksa FQDN hiç çözülemez, her şey timeout olur
+#   - Heredoc ile yapıştırırken bu dosyanın TAMAMININ gittiğinden emin olun —
+#     yarım yapıştırma, DNS/FQDN bloklarının sessizce kaybolmasına yol açabilir
+#
+# Kullanım:
+#   kubectl apply -f payment-api-l7-policy.yaml
+
+apiVersion: "cilium.io/v2"
+kind: CiliumNetworkPolicy
+metadata:
+  name: payment-api-l7-policy
+  namespace: lab-odeme
+spec:
+  endpointSelector:
+    matchLabels:
+      app: payment-api
+
+  # INGRESS — Giriş Kapısı
+  ingress:
+    # 1. Frontend İş Trafiği (L7 Filtreleme)
+    - fromEndpoints:
+        - matchLabels:
+            app: frontend
+      toPorts:
+        - ports:
+            - port: "8080"
+              protocol: TCP
+          rules:
+            http:
+              - method: "POST"
+                path: "^/api/v1/charge$"
+
+    # 2. Kubelet Sağlık Kontrolleri (pod CrashLoopBackOff'a girmesin)
+    - fromEntities:
+        - host
+      toPorts:
+        - ports:
+            - port: "8080"
+              protocol: TCP
+          rules:
+            http:
+              - method: "GET"
+                path: "^/healthz$"
+
+  # EGRESS — Çıkış Kapısı
+  egress:
+    # 1. DNS Çözümleme İzni (CoreDNS) — bu olmadan FQDN kuralı hiç çalışmaz
+    - toEndpoints:
+        - matchLabels:
+            k8s:io.kubernetes.pod.namespace: kube-system
+            k8s-app: kube-dns
+      toPorts:
+        - ports:
+            - port: "53"
+              protocol: UDP
+          rules:
+            dns:
+              - matchPattern: "*"
+
+    # 2. Yalnızca izinli dış hedefe çıkış (SNI ile doğrulanır, TLS içeriği açılmaz)
+    - toFQDNs:
+        - matchName: "api.github.com"
+      toPorts:
+        - ports:
+            - port: "443"
+              protocol: TCP

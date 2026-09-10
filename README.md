@@ -14,7 +14,7 @@ Nginx derinleşmesi tamamlandı: reverse proxy, path bazlı yönlendirme, path r
 
 OpenResty (PostgreSQL, MySQL, Redis, token authentication) ve rclone ile S3 entegrasyonu tamamlandı — performans parametreleri, `rclone serve http` cache ve güvenlik (VFS cache, dir cache, auth, remote control), `rclone mount` ve VFS cache.
 
-Docker derinleşmesi tamamen bitti — temel kavramlar, güvenlik, ileri seviye güvenlik, IaC scanning, alternatif runtime'lar, ve son olarak Compose volume/network, PHP örneği, Windows containers dahil. Ayrıca SSL/TLS görevi tamamlandı. **Kubernetes roadmap'i (dokuz ana bölüm) tamamen tamamlandı**, ve ek olarak roadmap'in tamamlayıcı OpenShift bölümü de işlendi. OpenShift, gerçek bir dış engel (Red Hat hesap açma sürecinde yaşanan sorun, CRC/pull-secret gerekliliği) nedeniyle kavramsal olarak işlendi — staj boyunca ayrı ayrı kurulan araçlarla (ARGO-CD, Kyverno/NeuVector, Dashboard) çapraz referanslarla bağlantılandırıldı. Ayrıca Edib Bey'in talebiyle roadmap dışı iki güvenlik aracı (Kyverno, NeuVector) işlendi, Faz 29'dan beri bekleyen Vagrant backlog maddesi tamamlandı. Kalan backlog maddeleri: BGP/VXLAN teknik derinliği, Cilium denemesi, kubernetes.io/microservices.io okumaları, Faz 29 Vagrant kategorik düzeltmesi, additionals/kubernetes-terim-derinlesmesi rewrite, OpenShift Developer Sandbox ile gerçek test denemesi.
+Docker derinleşmesi tamamen bitti — temel kavramlar, güvenlik, ileri seviye güvenlik, IaC scanning, alternatif runtime'lar, ve son olarak Compose volume/network, PHP örneği, Windows containers dahil. Ayrıca SSL/TLS görevi tamamlandı. Kubernetes roadmap'i (dokuz ana bölüm + OpenShift eklentisi) tamamen tamamlandı. Bunun üzerine, mentor geri bildirimiyle çalışma yöntemi değişti — kavram/roadmap odaklı ilerlemek yerine, **senaryo bazlı, uygulama mühendisliği** formatına geçildi. İlk uygulaması: Calico'dan Cilium'a geçiş ve gerçek bir ödeme servisi güvenlik senaryosu (L7 network policy, DNS exfiltration koruması, Hubble gözlemlenebilirliği) — gerçek hatalarla (operator pending, heredoc kırpılması, DNS/health-check tuzakları) ve gerçek ekran görüntüsü kanıtlarıyla belgelendi. Ayrıca, tüm dokümantasyonu barındıracak bir Jekyll/GitHub Pages sitesi kurulmaya başlandı (TeXt teması, GitHub Actions ile deploy, ücretsiz github.io adresi). Kalan backlog maddeleri: Kyverno/NeuVector'ün ayrı, derinleştirilmiş senaryolarla işlenmesi, kodların markdown'dan çıkarılıp tüm eski fazlar için de çalıştırılabilir dosyalara dönüştürülmesi, BGP/VXLAN teknik derinliği, kubernetes.io/microservices.io okumaları, Faz 29 Vagrant kategorik düzeltmesi.
 
 Tüm fazların (01–24) Türkçe/İngilizce belge dönüşümü tamamlandı.
 
@@ -60,6 +60,7 @@ Tüm fazların (01–24) Türkçe/İngilizce belge dönüşümü tamamlandı.
 - [36-Kubernetes-Advanced-Topics](./36-Kubernetes-Advanced-Topics/): Ağ Yapılandırması, Gateway API, Kubectl Shortcuts — üç konu, hepsi gerçek testlerle kanıtlandı. ([TR](./36-Kubernetes-Advanced-Topics/readme.md) / [EN](./36-Kubernetes-Advanced-Topics/readme-en.md))
 - [37-Kubernetes-Security](./37-Kubernetes-Security/): Genel Bakış, Admission Controllers, Network Policy, RBAC, Admission Policy, İmaj Güvenliği, Manifest Güvenliği, CIS Benchmark, System Hardening, Kubespray Hardening — dokuz konu, roadmap'in son bölümü. ([TR](./37-Kubernetes-Security/readme.md) / [EN](./37-Kubernetes-Security/readme-en.md))
 - [38-OpenShift](./38-OpenShift/): Nedir, Karşılaştırma, Management, Build & Push, OC Client — roadmap'in ek, tamamlayıcı bölümü, kavramsal olarak işlendi. ([TR](./38-OpenShift/readme.md) / [EN](./38-OpenShift/readme-en.md))
+- [39-Cilium-L7-Security](./39-Cilium-L7-Security/): Ödeme servisi senaryosu — Calico'dan Cilium'a geçiş, L7 network policy, DNS exfiltration koruması, Hubble gözlemlenebilirliği. Roadmap dışı, senaryo bazlı uygulama mühendisliği formatında; gerçek çalıştırılabilir YAML/script dosyalarıyla. ([TR](./39-Cilium-L7-Security/readme.md) / [EN](./39-Cilium-L7-Security/readme-en.md))
 - [additionals/ssl](./additionals/ssl/): SSL/TLS'in çalışma mantığının, hiç teknik terim kullanılmadan, tamamen gerçek dünya benzetmesiyle (iki firma arasında mühürlü mektup, noter zinciri, kurumsal evrak kontrol bürosu) anlatımı. ([TR](./additionals/ssl/readme.md) / [EN](./additionals/ssl/readme-en.md))
 - [additionals/security-situation](./additionals/security-situation/): Gerçek bir güvenlik olayı — DNS rebinding ve açık forward proxy (SSRF) ile sunucunun kötüye kullanılması, kök sebep analizi ve çözüm. ([TR](./additionals/security-situation/readme.md) / [EN](./additionals/security-situation/readme-en.md))
 - [additionals/kubernetes-terim-derinlesmesi](./additionals/kubernetes-terim-derinlesmesi/): Araştırdığım konular — etcd'nin genel mantığı, Raft protokolü, CNI/kube-proxy (VXLAN, BGP, Service, iptables/IPVS). Devam eden bir belge. ([TR](./additionals/kubernetes-terim-derinlesmesi/readme.md) / [EN](./additionals/kubernetes-terim-derinlesmesi/readme-en.md))
@@ -940,6 +941,31 @@ _Bu nedenle OpenShift'i kavramsal olarak işledim — `BuildConfig`'in Faz 33'te
   - Roadmap'in ek/tamamlayıcı son bölümü de kapsanmış oldu.
 - **Kilometre Taşları & Çıktılar:**
   - ☸️ OpenShift: [README (TR](./38-OpenShift/readme.md) / [EN)](./38-OpenShift/readme-en.md)
+
+### 🔹 8 Eylül 2026 | Cilium Kurulumu ve L7 Güvenlik Senaryosu
+
+_Çalışma yöntemi değişti — roadmap sayfalarını sırayla işlemek yerine, gerçek bir enterprise senaryosunu (ödeme servisi güvenliği) sıfırdan çözme sürecine geçildi. Vagrant VM'indeki mevcut Calico tabanlı cluster'ı `kubeadm reset` ile sıfırlayıp, Cilium ile yeniden kurdum._
+
+_İki gerçek kurulum sorunuyla karşılaştım: Cilium operator'ın tek node'da HA/anti-affinity kısıtı nedeniyle `Pending` kalması (replica sayısını 1'e düşürerek çözdüm), ve connectivity test'in control-plane taint'i + imaj indirme süresi nedeniyle timeout vermesi (taint kaldırıp namespace temizleyerek çözdüm, sonuç 79/79 başarılı)._
+
+_Ödeme servisi senaryosunda üç gerçek tuzak keşfedip çözdüm: kubelet health check'in L7 kuralı tarafından reddedilip pod'u CrashLoopBackOff'a sokması, DNS egress izni unutulunca her şeyin timeout vermesi, ve heredoc ile YAML yapıştırırken DNS/FQDN bloklarının sessizce kırpılması (Faz 36'daki aynı sınıf hatanın tekrarı). Ardından DNS exfiltration senaryosunu (matchPattern ile domain kısıtlama) ve Hubble gözlemlenebilirliğini kurup, gerçek ekran görüntüleriyle (yeşil/kırmızı trafik akışı) doğruladım. TLS/SNI mimarisini ve Blue/Green migration stratejisini de kavramsal olarak işledim._
+
+_Mentor geri bildirimi doğrultusunda, kodları markdown'dan çıkarıp gerçek, çalıştırılabilir YAML/script dosyaları olarak ayrı tuttum._
+
+- **Görevler & Hedefler:**
+  - Cilium kurulumu, L7 network policy senaryosu, DNS exfiltration koruması, Hubble gözlemlenebilirliği tamamlandı — hepsi gerçek testlerle ve ekran görüntüsü kanıtlarıyla kanıtlandı.
+  - Kodlar gerçek, çalıştırılabilir dosyalara (YAML/shell script) ayrıldı — markdown'a gömülü değil.
+- **Kilometre Taşları & Çıktılar:**
+  - ☸️ Cilium L7 Güvenlik: [README (TR](./39-Cilium-L7-Security/readme.md) / [EN)](./39-Cilium-L7-Security/readme-en.md), gerçek manifest/script dosyalarıyla birlikte.
+
+### 🔹 9 Eylül 2026 | Jekyll/GitHub Pages Sitesi Kurulumu
+
+_Tüm dokümantasyonu görselleştirmek için Jekyll/GitHub Pages sitesi kurmaya başladım. TeXt temasını seçtim, ücretsiz `github.io` adresiyle ilerlemeye karar verdim. `Gemfile` ve `_config.yml` dosyalarını yazdım. GitHub Pages ayarlarında "Source"u GitHub Actions'a çevirip, önerilen "GitHub Pages Jekyll" workflow şablonunu (`actions/jekyll-build-pages@v1` kullanan) inceledim — bu action'ın, klasik Pages build'inin kısıtlı gem listesinden farklı olarak özel tema gem'lerini (jekyll-text-theme gibi) desteklediğini doğruladım._
+
+- **Görevler & Hedefler:**
+  - Jekyll site altyapısı (tema seçimi, Gemfile, \_config.yml, GitHub Actions workflow) hazırlandı, henüz commit edilmedi.
+- **Kilometre Taşları & Çıktılar:**
+  - Site henüz canlıya alınmadı — dosyalar commit edilip Actions çalıştırıldıktan sonra tamamlanacak.
 
 ---
 
