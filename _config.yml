@@ -1,4 +1,8 @@
 title: Ali Furkan Altuntas - DevOps
 theme: jekyll-text-theme
+text_skin: default
+highlight_theme: default
 url: https://alifurkan-altuntas.github.io
 baseurl: /devops-internship
+description: >
+  DevOps stajı boyunca tuttuğum teknik günlük ve dokümantasyon.
