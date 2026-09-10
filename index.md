@@ -5,4 +5,4 @@ title: Ana Sayfa
 
 # Ali Furkan Altuntaş — DevOps Notları
 
-[Türkçe README'yi görüntüle](./readme.md) · [English README](./readme-en.md)
+[Türkçe README'yi görüntüle](./README.md) · [English README](./README-EN.md)
