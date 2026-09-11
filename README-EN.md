@@ -18,7 +18,7 @@ Completed Nginx deep dive: reverse proxy, path-based routing, path rewrite, path
 
 Completed OpenResty (PostgreSQL, MySQL, Redis, token authentication) and rclone with S3 — performance parameters, `rclone serve http` cache and security (VFS cache, dir cache, auth, remote control), `rclone mount` and VFS cache.
 
-Docker deep dive is fully complete — fundamentals, security, advanced security, IaC scanning, alternative runtimes, and finally Compose volume/network, the PHP example, and Windows containers. The SSL/TLS task is also complete. The Kubernetes roadmap (nine main sections + OpenShift supplement) is fully complete. Following this, working methodology shifted based on mentor feedback — moving from concept/roadmap-driven progress to a **scenario-based, application engineering** format. First application: migrating from Calico to Cilium and a real payment service security scenario (L7 network policy, DNS exfiltration protection, Hubble observability) — documented with real errors (operator pending, heredoc truncation, DNS/health-check traps) and real screenshot evidence. Additionally, a Jekyll/GitHub Pages site to host all documentation has begun being set up (TeXt theme, deployed via GitHub Actions, free github.io address). Remaining backlog items: covering Kyverno/NeuVector with separate, deepened scenarios, extracting code from markdown into runnable files across all older phases too, deeper BGP/VXLAN technical dive, kubernetes.io/microservices.io readings, Phase 29 Vagrant categorical correction.
+Docker deep dive is fully complete — fundamentals, security, advanced security, IaC scanning, alternative runtimes, and finally Compose volume/network, the PHP example, and Windows containers. The SSL/TLS task is also complete. The Kubernetes roadmap (nine main sections + OpenShift supplement) is fully complete. Following this, working methodology shifted based on mentor feedback — moving from concept/roadmap-driven progress to a **scenario-based, application engineering** format. First application: migrating from Calico to Cilium and a real payment service security scenario (L7 network policy, DNS exfiltration protection, Hubble observability) — documented with real errors (operator pending, heredoc truncation, DNS/health-check traps) and real screenshot evidence. Additionally, a Jekyll/GitHub Pages site to host all documentation has begun being set up (TeXt theme, deployed via GitHub Actions, free github.io address). Remaining backlog items: covering Kyverno/NeuVector with separate, deepened scenarios, extracting code from markdown into runnable files across all older phases too, deeper BGP/VXLAN technical dive, kubernetes.io/microservices.io readings, Phase 29 Vagrant categorical correction. The Jekyll/GitHub Pages site (`https://alifurkan-altuntas.github.io/devops-internship/`) is now live and functional — TeXt theme applied, top navigation menu and author profile active. Three separate real bugs were diagnosed and fixed during site setup: missing front matter, an incorrect GitHub Actions workflow using a restricted gem list, and the requirement for all 525 internal links across the repo to use `.html` instead of `.md`. Claude Code was used to assist with file scanning and bulk fixes at this scale — front matter was added to 156 files, 525 links were fixed, and other pre-existing broken links (filename typos, singular/plural naming mismatches) were also found and corrected. The site is still basic — content enrichment (category pages, a better homepage design) remains in the backlog.
 
 Bilingual documentation (TR/EN) complete for all phases (01–24).
 
@@ -970,6 +970,34 @@ _Started setting up a Jekyll/GitHub Pages site to visualize all documentation. C
   - Jekyll site infrastructure (theme selection, Gemfile, \_config.yml, GitHub Actions workflow) prepared, not yet committed.
 - **Milestones & Deliverables:**
   - Site not yet live — will be completed once files are committed and Actions runs.
+
+### 🔹 September 10, 2026 | Jekyll Site — Theme, Navigation, and Enrichment
+
+_Continued diagnosing core issues in the Jekyll site. Found the TeXt theme wasn't applying at all — the cause was the main `readme.md` file having no front matter (YAML header block) at all, and Jekyll copying front-matter-less files as-is, without any theme. Adding front matter made the theme appear, but then found GitHub's suggested ready-made workflow (`actions/jekyll-build-pages@v1`) couldn't compile `jekyll-text-theme` due to its restricted gem list — switched to a custom `ruby/setup-ruby`-based workflow, which fixed it. Then found the root address 404ing (due to a missing `index.md`) and created one._
+
+_Tried enriching the site so it wouldn't stay "basic" — added a real `_data/navigation.yml` (top menu) and author profile/repository settings to `_config.yml`, based on TeXt's official docs. However, realized the links inside `index.md` also needed `.html` instead of `.md` — and that this was actually a much larger issue affecting the ENTIRE repo (38+ phases, hundreds of links). Decided that fixing this scale of issue manually, via a screenshot loop, would be inefficient, and prepared a comprehensive fix prompt for Claude Code instead._
+
+- **Tasks & Objectives:**
+  - Diagnosed and fixed three root issues in the Jekyll site (missing front matter, wrong workflow, missing index.md).
+  - Enriched site navigation and author profile with real TeXt settings.
+  - Identified the repo-wide link issue and handed it off to Claude Code.
+- **Milestones & Deliverables:**
+  - Site live but basic: `https://alifurkan-altuntas.github.io/devops-internship/`
+
+### 🔹 September 11, 2026 | Jekyll Site Completed — Bulk Fix via Claude Code
+
+_Set up Claude Code and had it scan the entire repo to resolve the large-scale issue identified the day before: added front matter to 156 markdown files, converted 525 internal links from `.md` to `.html` across the whole repo. In the process, found and fixed other pre-existing broken links unrelated to the original task (some phases had singular/plural filename mismatches, one folder name had a typo)._
+
+_After committing and pushing the changes, tested the live site — found the "Repo Structure" link on the homepage still didn't work. Investigating the root cause revealed two separate real bugs: a case-sensitivity mismatch (`readme.html` lowercase vs. the real file `README.html` uppercase, since GitHub Pages is case-sensitive), and Jekyll's markdown engine (kramdown) adding an extra hyphen to the URL anchor because the heading starts with an emoji (`#-repo-yapısı` instead of `#repo-yapısı`). Both were fixed and verified live by actually clicking through in the browser._
+
+_Also addressed a question about an automatically-added AI co-authorship line appearing in GitHub's Contributors list on one commit — assessed the risk as low and decided to leave it as-is rather than rewriting history with a force-push._
+
+- **Tasks & Objectives:**
+  - Added front matter to 156 files, fixed 525 internal links — with Claude Code's help, across the whole repo.
+  - Fixed and verified two additional real bugs found during live testing (case sensitivity, kramdown emoji/anchor issue).
+  - **The Jekyll/GitHub Pages site is now fully functional** — still basic, content enrichment remains in the backlog.
+- **Milestones & Deliverables:**
+  - 🌐 Live site: [alifurkan-altuntas.github.io/devops-internship](https://alifurkan-altuntas.github.io/devops-internship/)
 
 ---
 

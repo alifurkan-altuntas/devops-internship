@@ -18,7 +18,7 @@ Nginx derinleşmesi tamamlandı: reverse proxy, path bazlı yönlendirme, path r
 
 OpenResty (PostgreSQL, MySQL, Redis, token authentication) ve rclone ile S3 entegrasyonu tamamlandı — performans parametreleri, `rclone serve http` cache ve güvenlik (VFS cache, dir cache, auth, remote control), `rclone mount` ve VFS cache.
 
-Docker derinleşmesi tamamen bitti — temel kavramlar, güvenlik, ileri seviye güvenlik, IaC scanning, alternatif runtime'lar, ve son olarak Compose volume/network, PHP örneği, Windows containers dahil. Ayrıca SSL/TLS görevi tamamlandı. Kubernetes roadmap'i (dokuz ana bölüm + OpenShift eklentisi) tamamen tamamlandı. Bunun üzerine, mentor geri bildirimiyle çalışma yöntemi değişti — kavram/roadmap odaklı ilerlemek yerine, **senaryo bazlı, uygulama mühendisliği** formatına geçildi. İlk uygulaması: Calico'dan Cilium'a geçiş ve gerçek bir ödeme servisi güvenlik senaryosu (L7 network policy, DNS exfiltration koruması, Hubble gözlemlenebilirliği) — gerçek hatalarla (operator pending, heredoc kırpılması, DNS/health-check tuzakları) ve gerçek ekran görüntüsü kanıtlarıyla belgelendi. Ayrıca, tüm dokümantasyonu barındıracak bir Jekyll/GitHub Pages sitesi kurulmaya başlandı (TeXt teması, GitHub Actions ile deploy, ücretsiz github.io adresi). Kalan backlog maddeleri: Kyverno/NeuVector'ün ayrı, derinleştirilmiş senaryolarla işlenmesi, kodların markdown'dan çıkarılıp tüm eski fazlar için de çalıştırılabilir dosyalara dönüştürülmesi, BGP/VXLAN teknik derinliği, kubernetes.io/microservices.io okumaları, Faz 29 Vagrant kategorik düzeltmesi.
+Docker derinleşmesi tamamen bitti — temel kavramlar, güvenlik, ileri seviye güvenlik, IaC scanning, alternatif runtime'lar, ve son olarak Compose volume/network, PHP örneği, Windows containers dahil. Ayrıca SSL/TLS görevi tamamlandı. Kubernetes roadmap'i (dokuz ana bölüm + OpenShift eklentisi) tamamen tamamlandı. Bunun üzerine, mentor geri bildirimiyle çalışma yöntemi değişti — kavram/roadmap odaklı ilerlemek yerine, **senaryo bazlı, uygulama mühendisliği** formatına geçildi. İlk uygulaması: Calico'dan Cilium'a geçiş ve gerçek bir ödeme servisi güvenlik senaryosu (L7 network policy, DNS exfiltration koruması, Hubble gözlemlenebilirliği) — gerçek hatalarla (operator pending, heredoc kırpılması, DNS/health-check tuzakları) ve gerçek ekran görüntüsü kanıtlarıyla belgelendi. Ayrıca, tüm dokümantasyonu barındıracak bir Jekyll/GitHub Pages sitesi kurulmaya başlandı (TeXt teması, GitHub Actions ile deploy, ücretsiz github.io adresi). Kalan backlog maddeleri: Kyverno/NeuVector'ün ayrı, derinleştirilmiş senaryolarla işlenmesi, kodların markdown'dan çıkarılıp tüm eski fazlar için de çalıştırılabilir dosyalara dönüştürülmesi, BGP/VXLAN teknik derinliği, kubernetes.io/microservices.io okumaları, Faz 29 Vagrant kategorik düzeltmesi. Jekyll/GitHub Pages sitesi (`https://alifurkan-altuntas.github.io/devops-internship/`) artık yayında ve çalışır durumda — TeXt teması uygulanmış, üst navigasyon menüsü, yazar profili aktif. Site kurulumu sırasında üç ayrı gerçek hata teşhis edilip çözüldü: front matter eksikliği, kısıtlı gem listeli yanlış GitHub Actions workflow'u, ve reponun tamamındaki 525 iç linkin `.md` yerine `.html` olması gerekliliği. Bu ölçekteki dosya taraması ve toplu düzeltme için Claude Code'dan yardım alındı — 156 dosyaya front matter eklendi, 525 link düzeltildi, ayrıca önceden var olan başka kırık linkler (dosya adı yazım hataları, tekil/çoğul isim uyuşmazlıkları) de bulunup düzeltildi. Site hâlâ temel seviyede — içerik zenginleştirme (kategori sayfaları, daha iyi ana sayfa tasarımı) backlog'da.
 
 Tüm fazların (01–24) Türkçe/İngilizce belge dönüşümü tamamlandı.
 
@@ -970,6 +970,34 @@ _Tüm dokümantasyonu görselleştirmek için Jekyll/GitHub Pages sitesi kurmaya
   - Jekyll site altyapısı (tema seçimi, Gemfile, \_config.yml, GitHub Actions workflow) hazırlandı, henüz commit edilmedi.
 - **Kilometre Taşları & Çıktılar:**
   - Site henüz canlıya alınmadı — dosyalar commit edilip Actions çalıştırıldıktan sonra tamamlanacak.
+
+### 🔹 10 Eylül 2026 | Jekyll Sitesi — Tema, Navigasyon ve Zenginleştirme
+
+_Jekyll sitesindeki temel sorunları teşhis etmeye devam ettim. TeXt temasının hiç uygulanmadığını fark ettim — sebebi, ana `readme.md` dosyasında front matter (YAML başlık bloğu) hiç olmaması, Jekyll'in front matter'sız dosyaları temasız, olduğu gibi kopyalaması. Front matter ekleyince tema göründü, ama bu sefer GitHub'ın önerdiği hazır workflow'un (`actions/jekyll-build-pages@v1`) kısıtlı gem listesi nedeniyle `jekyll-text-theme`'i derleyemediğini gördüm — `ruby/setup-ruby` tabanlı özel bir workflow'a geçtim, bu çözdü. Sonra kök adresin (`index.md` eksikliği nedeniyle) 404 verdiğini bulup `index.md` oluşturdum._
+
+_Siteyi daha "basic" kalmaması için zenginleştirmeye çalıştım — TeXt'in resmi belgelerinden gerçek `_data/navigation.yml` (üst menü) ve `_config.yml`'e yazar profili/repository ayarları ekledim. Ancak `index.md` içindeki linklerin de `.md` yerine `.html` olması gerektiğini fark ettim — ve bunun aslında reponun TAMAMINI (38+ faz, yüzlerce link) etkileyen çok daha büyük bir sorun olduğunu anladım. Bu ölçekteki bir düzeltmeyi elle, ekran görüntüsü döngüsüyle yapmanın verimsiz olacağına karar verip, Claude Code için kapsamlı bir düzeltme talimatı hazırladım._
+
+- **Görevler & Hedefler:**
+  - Jekyll sitesindeki üç kök sorun (front matter eksikliği, yanlış workflow, index.md eksikliği) teşhis edilip çözüldü.
+  - Site navigasyonu ve yazar profili gerçek TeXt ayarlarıyla zenginleştirildi.
+  - Reponun tamamını etkileyen büyük ölçekli link sorunu tespit edilip Claude Code'a devredildi.
+- **Kilometre Taşları & Çıktılar:**
+  - Site canlı ama temel seviyede: `https://alifurkan-altuntas.github.io/devops-internship/`
+
+### 🔹 11 Eylül 2026 | Jekyll Sitesi Tamamlandı — Claude Code ile Toplu Düzeltme
+
+_Claude Code'u kurup reponun tamamını taratarak, bir gün önce tespit edilen büyük ölçekli sorunu çözdürdüm: 156 markdown dosyasına front matter eklendi, reponun genelinde 525 iç link `.md`'den `.html`'e çevrildi. Bu süreçte, göreve dahil olmayan ama önceden var olan başka kırık linkler de bulundu ve düzeltildi (bazı fazlarda tekil/çoğul dosya adı uyuşmazlıkları, bir klasör adındaki yazım hatası)._
+
+_Değişiklikler commit edilip push edildikten sonra siteyi canlıda test ettim — ana sayfadaki "Repo Yapısı" linkinin hâlâ çalışmadığını fark ettim. Kök sebebini araştırınca iki ayrı gerçek hata bulundu: GitHub Pages'in büyük/küçük harf duyarlı olması nedeniyle `readme.html` (küçük) ile gerçek dosya `README.html` (büyük) uyuşmazlığı, ve başlığın emoji ile başlamasından dolayı Jekyll'in markdown motorunun (kramdown) URL çapasının başına fazladan bir tire eklemesi (`#-repo-yapısı`, `#repo-yapısı` değil). İkisi de düzeltilip tarayıcıda gerçekten tıklanarak doğrulandı._
+
+_Ayrıca commit mesajlarına otomatik eklenen bir AI ortak-yazarlık (co-authorship) satırının GitHub'ın Contributors listesinde görünmesi meselesini ele aldım — riski düşük bulunup, geçmişi değiştirmeden (force-push yapmadan) olduğu gibi bırakılmasına karar verildi._
+
+- **Görevler & Hedefler:**
+  - 156 dosyaya front matter eklendi, 525 iç link düzeltildi — Claude Code yardımıyla, tüm repo genelinde.
+  - Canlı testte bulunan iki ek gerçek hata (büyük/küçük harf duyarlılığı, kramdown emoji/anchor sorunu) düzeltilip doğrulandı.
+  - **Jekyll/GitHub Pages sitesi artık tam çalışır durumda** — hâlâ temel seviyede, içerik zenginleştirmesi backlog'da.
+- **Kilometre Taşları & Çıktılar:**
+  - 🌐 Canlı site: [alifurkan-altuntas.github.io/devops-internship](https://alifurkan-altuntas.github.io/devops-internship/)
 
 ---
 
