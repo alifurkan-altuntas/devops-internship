@@ -1,3 +1,7 @@
+---
+layout: page
+---
+
 # 📊 Phase 13 Quiz Results — Forward & Reverse Proxy
 
 **Score: 13/15 (87%)** — 1 incorrect, 1 left blank

@@ -4,7 +4,7 @@ layout: home
 
 # 🚀 DevOps & Linux Altyapı Yolculuğu - Türkiye Sigorta
 
-🌐 [Read in English](./README-EN.md)
+🌐 [Read in English](./README-EN.html)
 
 Bu repo, stajım boyunca takip ettiğim öğrenme sürecimi, altyapı otomasyonu pratiklerimi, hata çözümlerimi ve Linux sistem yönetimi görevlerimi belgeleyen DevOps mühendisliği günlüğümdür.
 
@@ -26,68 +26,68 @@ Tüm fazların (01–24) Türkçe/İngilizce belge dönüşümü tamamlandı.
 
 ## 📁 Repo Yapısı
 
-- [01-Linux-Basics](./01-Linux-Basics/): Temel Linux komutları ve metin işleme (`awk`, `grep`, `cut`), ve özel otomasyon scriptleri. ([EN](./01-Linux-Basics/readme-en.md) / [TR](./01-Linux-Basics/readme.md))
-- [02-Vagrant-Automation](./02-Vagrant-Automation/): Infrastructure as Code (IaC) ortamları, ve çoklu dağıtım provisioning. ([EN](./02-Vagrant-Automation/readme-en.md) / [TR](./02-Vagrant-Automation/readme.md))
-- [03-File-System-Management](./03-File-System-Management/): Depolama diagnostiği, disk yazma işlemleri (`dd`), ve sıralama pipeline'ları. ([EN](./03-File-System-Management/readme-en.md) / [TR](./03-File-System-Management/readme.md))
-- [04-User-Privilege-Management](./04-User-Privilege-Management/): Kimlik erişim kontrolü, sistem grup yaşam döngüleri, ve sudoers yapılandırması (Least Privilege Prensibi). ([EN](./04-User-Privilege-Management/readme-en.md) / [TR](./04-User-Privilege-Management/readme.md))
-- [05-Linux-Permissions](./05-Linux-Permissions/): Dosya sistemi erişim kontrolü, recursive sahiplik değişiklikleri, ve sticky bit izolasyonu. ([EN](./05-Linux-Permissions/readme-en.md) / [TR](./05-Linux-Permissions/readme.md))
-- [06-Linux-Process-Management](./06-Linux-Process-Management/): Süreç durum izleme, CPU önceliği ayarlamaları (`nice`/`renice`), ve sinyaller. ([EN](./06-Linux-Process-Management/readme-en.md) / [TR](./06-Linux-Process-Management/readme.md))
-- [07-Linux-Service-Management](./07-Linux-Service-Management/): Systemd servis yönetimi, kesintisiz yeniden yüklemeler, ve journalctl ile log yönetimi. ([EN](./07-Linux-Service-Management/readme-en.md) / [TR](./07-Linux-Service-Management/readme.md))
-- [08-Linux-Log-Analysis](./08-Linux-Log-Analysis/): Log işleme pipeline'ları, `sed`, ve dağıtımlar arası IPv4/IPv6 farkları. ([EN](./08-Linux-Log-Analysis/readme-en.md) / [TR](./08-Linux-Log-Analysis/readme.md))
-- [09-Linux-Network-Management](./09-Linux-Network-Management/): DNS sorguları, dinleyen portları kontrol etme, ve TLS sertifika doğrulama. ([EN](./09-Linux-Network-Management/readme-en.md) / [TR](./09-Linux-Network-Management/readme.md))
-- [10-Linux-Storage-Management](./10-Linux-Storage-Management/): Disk partition'lama, `ext4` ile formatlama, ve `/etc/fstab` üzerinden kalıcı mount'lar. ([EN](./10-Linux-Storage-Management/readme-en.md) / [TR](./10-Linux-Storage-Management/readme.md))
-- [11-Linux-LVM-Management](./11-Linux-LVM-Management/): LVM kurulumu, canlı volume büyütme, ve bir disk-alanı olayının anlatımı. ([EN](./11-Linux-LVM-Management/readme-en.md) / [TR](./11-Linux-LVM-Management/readme.md))
-- [12-Linux-SSH-Management](./12-Linux-SSH-Management/): Key çiftleri ile şifresiz SSH erişimi, SSH config kısayolları, ve SCP/SFTP ile dosya transferleri. ([EN](./12-Linux-SSH-Management/readme-en.md) / [TR](./12-Linux-SSH-Management/readme.md))
-- [13-Linux-Proxy-Management](./13-Linux-Proxy-Management/): Forward vs reverse proxy kavramları, Nginx'in `proxy_pass`'i, ve gerçek bir 502 Bad Gateway debug hikayesi. ([EN](./13-Linux-Proxy-Management/readme-en.md) / [TR](./13-Linux-Proxy-Management/readme.md))
-- [14-Linux-Bash-Scripting](./14-Linux-Bash-Scripting/): Değişkenler, komut yerine geçirme (command substitution), sayısal koşullar, ve bir disk kullanım uyarı scripti. ([EN](./14-Linux-Bash-Scripting/readme-en.md) / [TR](./14-Linux-Bash-Scripting/readme.md))
-- [15-Linux-Cron-Automation](./15-Linux-Cron-Automation/): `cron` ve `at` ile zamanlama, gerçek bir `sudo`-cron-içinde debug hikayesi, ve `logrotate`'e bir bakış. ([EN](./15-Linux-Cron-Automation/readme-en.md) / [TR](./15-Linux-Cron-Automation/readme.md))
-- [16-Git-Basics](./16-Git-Basics/): `git clone`, branching, merging, ve bu repo üzerinde gerçekten çözülen bir push-reddedildi/editör-takıldı çakışması. ([EN](./16-Git-Basics/readme-en.md) / [TR](./16-Git-Basics/readme.md))
-- [17-Mini-Project](./17-Mini-Project/): Gerçek bir kiralık sunucuda Nginx, Docker, Git, ve SSH kurulumu — bu repodan çekilip canlıya alınan statik bir sayfa. ([EN](./17-Mini-Project/readme-en.md) / [TR](./17-Mini-Project/readme.md))
-- [18-Linux-Networking-Fundamentals](./18-Linux-Networking-Fundamentals/): OSI modeli, routing & forwarding, ve DNS (resolver zinciri, kayıt tipleri, TTL) — gerçek senaryolarla ve `tcpdump`/`dig +trace` ile doğrulanmış. Ayrıca AWS/Cloudflare/Google Cloud'un gerçek kesintilerine dair araştırma içerir. ([EN](./18-Linux-Networking-Fundamentals/readme-en.md) / [TR](./18-Linux-Networking-Fundamentals/readme.md) — Outage araştırması: [EN](./18-Linux-Networking-Fundamentals/dns-outages-EN.md) / [TR](./18-Linux-Networking-Fundamentals/dns-outages-TR.md))
-- [19-Nginx-Derinleşme](./19-Nginx-Derinleşme/): Reverse proxy, path bazlı yönlendirme, path rewrite, path engelleme, ve forward proxy (Squid) — gerçek bir sunucuda uygulamalı olarak test edildi. ([EN](./19-Nginx-Derinleşme/readme-en.md) / [TR](./19-Nginx-Derinleşme/readme.md))
-- [20-Rate-Limiting-Load-Balancing](./20-Rate-Limiting-Load-Balancing/): Nginx'te rate limiting (`limit_req_zone`, `burst`, `nodelay`) ve load balancing (round-robin, failover, `least_conn`, `ip_hash`). ([TR](./20-Rate-Limiting-Load-Balancing/readme.md) / [EN](./20-Rate-Limiting-Load-Balancing/readme-en.md))
-- [21-OpenResty-API](./21-OpenResty-API/): OpenResty ile token authentication, PostgreSQL, MySQL ve Redis entegrasyonu — Docker Compose ile kuruldu. ([TR](./21-OpenResty-API/readme.md) / [EN](./21-OpenResty-API/readme-en.md))
-- [22-rclone-S3](./22-rclone-S3/): rclone ile Amazon S3 bağlantısı, performans parametreleri testi ve `rclone serve http` ile private bucket'ı dışarıya açma. ([TR](./22-rclone-S3/readme.md) / [EN](./22-rclone-S3/readme-en.md))
-- [23-Docker-Fundamentals](./23-Docker-Fundamentals/): Image, container, Dockerfile temelleri, multi-stage build, layer caching, Compose volume/network davranışı, Windows containers (kavramsal). ([TR](./23-Docker-Fundamentals/readme.md) / [EN](./23-Docker-Fundamentals/readme-en.md)) — Uygulamalı: ([TR](./23-Docker-Fundamentals/practice.md) / [EN](./23-Docker-Fundamentals/practice-en.md))
-- [24-Docker-Security](./24-Docker-Security/): Docker güvenliği — non-root container, `.dockerignore`, Trivy ile image scanning. ([TR](./24-Docker-Security/readme.md) / [EN](./24-Docker-Security/readme-en.md)) — Uygulamalı: ([TR](./24-Docker-Security/practice.md) / [EN](./24-Docker-Security/practice-en.md))
-- [25-Docker-Advanced-Security](./25-Docker-Advanced-Security/): Distroless image, read-only filesystem, resource limits, BuildKit, Hadolint, image tag immutability, docker-bench-security, image signing (Cosign), seccomp, AppArmor, Kaniko, Jib, PHP build örneği, Falco, SBOM (Syft+Grype). ([TR](./25-Docker-Advanced-Security/readme.md) / [EN](./25-Docker-Advanced-Security/readme-en.md)) — Uygulamalı: ([TR](./25-Docker-Advanced-Security/practice.md) / [EN](./25-Docker-Advanced-Security/practice-en.md))
-- [26-IaC-Scanning](./26-IaC-Scanning/): Trivy config ile Dockerfile/YAML statik taraması, HEALTHCHECK. ([TR](./26-IaC-Scanning/readme.md) / [EN](./26-IaC-Scanning/readme-en.md)) — Uygulamalı: ([TR](./26-IaC-Scanning/practice.md) / [EN](./26-IaC-Scanning/practice-en.md))
-- [27-Docker-Alternatives](./27-Docker-Alternatives/): Podman, containerd, CRI-O, Buildah — rootless/daemonless kanıtları, build hızı kıyaslaması. ([TR](./27-Docker-Alternatives/readme.md) / [EN](./27-Docker-Alternatives/readme-en.md)) — Uygulamalı: ([TR](./27-Docker-Alternatives/practice.md) / [EN](./27-Docker-Alternatives/practice-en.md))
-- [28-Kubernetes-Fundamentals](./28-Kubernetes-Fundamentals/): Kubernetes temel kavramları — GitOps, konteyner tarihi, self-healing, envsubst, küme mimarisi (kube-apiserver, etcd, kube-scheduler, kubelet, coredns, kube-proxy, CNI), kubectl. ([TR](./28-Kubernetes-Fundamentals/readme.md) / [EN](./28-Kubernetes-Fundamentals/readme-en.md))
-- [29-Kubernetes-Installation](./29-Kubernetes-Installation/): Beş kurulum yönteminin (Vagrant, kubeadm, MicroK8s, minikube, Kubespray) gerçek kurulup test edilerek karşılaştırılması — güncel olmayan kaynaklar, port çakışmaları, eski kalıntı temizliği dahil. ([TR](./29-Kubernetes-Installation/readme.md) / [EN](./29-Kubernetes-Installation/readme-en.md))
-- [30-Kubernetes-Basic-Resources](./30-Kubernetes-Basic-Resources/): Pod, ReplicaSet, Deployment, Service (tüm türleri), ConfigMaps, Secrets (base64 vs gerçek şifreleme, EncryptionConfiguration), Kanarya Deployment — hepsi gerçek testlerle kanıtlandı. ([TR](./30-Kubernetes-Basic-Resources/readme.md) / [EN](./30-Kubernetes-Basic-Resources/readme-en.md))
-- [31-Kubernetes-Other-Resources](./31-Kubernetes-Other-Resources/): StatefulSets, Volumes, Ingress, Jobs & Cronjobs, Kaynaklar ve Limitler, DaemonSets, HPA, VPA, Yetkiler (RBAC) — dokuz konu, hepsi gerçek testlerle kanıtlandı. ([TR](./31-Kubernetes-Other-Resources/readme.md) / [EN](./31-Kubernetes-Other-Resources/readme-en.md))
-- [32-Kubernetes-Important-Resources](./32-Kubernetes-Important-Resources/): Etiketler, Sürekli Güncellemeler, Canlılık ve Hazırlık, İtme ve Çekme — dört konu, hepsi gerçek testlerle kanıtlandı. ([TR](./32-Kubernetes-Important-Resources/readme.md) / [EN](./32-Kubernetes-Important-Resources/readme-en.md))
-- [33-Kubernetes-Additional-Tools](./33-Kubernetes-Additional-Tools/): ARGO-CD, Dashboard, Helm, MetalLB, Service Mesh, kubeadm, kustomize — yedi araç, hepsi gerçek testlerle kanıtlandı. ([TR](./33-Kubernetes-Additional-Tools/readme.md) / [EN](./33-Kubernetes-Additional-Tools/readme-en.md))
-- [34-Kubernetes-Tasks](./34-Kubernetes-Tasks/): Güvenlik (JVM), İç Yük Dengeleme, Günlük Kayıtları, İyi Pratikler, CKA Konuları — beş konu, hepsi gerçek testlerle kanıtlandı. ([TR](./34-Kubernetes-Tasks/readme.md) / [EN](./34-Kubernetes-Tasks/readme-en.md))
-- [35-Kubernetes-Security-Tools](./35-Kubernetes-Security-Tools/): Kyverno (validate/mutate/generate), NeuVector (CVE taraması) — roadmap dışı, gerçek testlerle. ([TR](./35-Kubernetes-Security-Tools/readme.md) / [EN](./35-Kubernetes-Security-Tools/readme-en.md))
-- [36-Kubernetes-Advanced-Topics](./36-Kubernetes-Advanced-Topics/): Ağ Yapılandırması, Gateway API, Kubectl Shortcuts — üç konu, hepsi gerçek testlerle kanıtlandı. ([TR](./36-Kubernetes-Advanced-Topics/readme.md) / [EN](./36-Kubernetes-Advanced-Topics/readme-en.md))
-- [37-Kubernetes-Security](./37-Kubernetes-Security/): Genel Bakış, Admission Controllers, Network Policy, RBAC, Admission Policy, İmaj Güvenliği, Manifest Güvenliği, CIS Benchmark, System Hardening, Kubespray Hardening — dokuz konu, roadmap'in son bölümü. ([TR](./37-Kubernetes-Security/readme.md) / [EN](./37-Kubernetes-Security/readme-en.md))
-- [38-OpenShift](./38-OpenShift/): Nedir, Karşılaştırma, Management, Build & Push, OC Client — roadmap'in ek, tamamlayıcı bölümü, kavramsal olarak işlendi. ([TR](./38-OpenShift/readme.md) / [EN](./38-OpenShift/readme-en.md))
-- [39-Cilium-L7-Security](./39-Cilium-L7-Security/): Ödeme servisi senaryosu — Calico'dan Cilium'a geçiş, L7 network policy, DNS exfiltration koruması, Hubble gözlemlenebilirliği. Roadmap dışı, senaryo bazlı uygulama mühendisliği formatında; gerçek çalıştırılabilir YAML/script dosyalarıyla. ([TR](./39-Cilium-L7-Security/readme.md) / [EN](./39-Cilium-L7-Security/readme-en.md))
-- [additionals/ssl](./additionals/ssl/): SSL/TLS'in çalışma mantığının, hiç teknik terim kullanılmadan, tamamen gerçek dünya benzetmesiyle (iki firma arasında mühürlü mektup, noter zinciri, kurumsal evrak kontrol bürosu) anlatımı. ([TR](./additionals/ssl/readme.md) / [EN](./additionals/ssl/readme-en.md))
-- [additionals/security-situation](./additionals/security-situation/): Gerçek bir güvenlik olayı — DNS rebinding ve açık forward proxy (SSRF) ile sunucunun kötüye kullanılması, kök sebep analizi ve çözüm. ([TR](./additionals/security-situation/readme.md) / [EN](./additionals/security-situation/readme-en.md))
-- [additionals/kubernetes-terim-derinlesmesi](./additionals/kubernetes-terim-derinlesmesi/): Araştırdığım konular — etcd'nin genel mantığı, Raft protokolü, CNI/kube-proxy (VXLAN, BGP, Service, iptables/IPVS). Devam eden bir belge. ([TR](./additionals/kubernetes-terim-derinlesmesi/readme.md) / [EN](./additionals/kubernetes-terim-derinlesmesi/readme-en.md))
+- [01-Linux-Basics](./01-Linux-Basics/): Temel Linux komutları ve metin işleme (`awk`, `grep`, `cut`), ve özel otomasyon scriptleri. ([EN](./01-Linux-Basics/readme-en.html) / [TR](./01-Linux-Basics/readme.html))
+- [02-Vagrant-Automation](./02-Vagrant-Automation/): Infrastructure as Code (IaC) ortamları, ve çoklu dağıtım provisioning. ([EN](./02-Vagrant-Automation/readme-en.html) / [TR](./02-Vagrant-Automation/readme.html))
+- [03-File-System-Management](./03-File-System-Management/): Depolama diagnostiği, disk yazma işlemleri (`dd`), ve sıralama pipeline'ları. ([EN](./03-File-System-Management/readme-en.html) / [TR](./03-File-System-Management/readme.html))
+- [04-User-Privilege-Management](./04-User-Privilege-Management/): Kimlik erişim kontrolü, sistem grup yaşam döngüleri, ve sudoers yapılandırması (Least Privilege Prensibi). ([EN](./04-User-Privilege-Management/readme-en.html) / [TR](./04-User-Privilege-Management/readme.html))
+- [05-Linux-Permissions](./05-Linux-Permissions/): Dosya sistemi erişim kontrolü, recursive sahiplik değişiklikleri, ve sticky bit izolasyonu. ([EN](./05-Linux-Permissions/readme-en.html) / [TR](./05-Linux-Permissions/readme.html))
+- [06-Linux-Process-Management](./06-Linux-Process-Management/): Süreç durum izleme, CPU önceliği ayarlamaları (`nice`/`renice`), ve sinyaller. ([EN](./06-Linux-Process-Management/readme-en.html) / [TR](./06-Linux-Process-Management/readme.html))
+- [07-Linux-Service-Management](./07-Linux-Service-Management/): Systemd servis yönetimi, kesintisiz yeniden yüklemeler, ve journalctl ile log yönetimi. ([EN](./07-Linux-Service-Management/readme-en.html) / [TR](./07-Linux-Service-Management/readme.html))
+- [08-Linux-Log-Analysis](./08-Linux-Log-Analysis/): Log işleme pipeline'ları, `sed`, ve dağıtımlar arası IPv4/IPv6 farkları. ([EN](./08-Linux-Log-Analysis/readme-en.html) / [TR](./08-Linux-Log-Analysis/readme.html))
+- [09-Linux-Network-Management](./09-Linux-Network-Management/): DNS sorguları, dinleyen portları kontrol etme, ve TLS sertifika doğrulama. ([EN](./09-Linux-Network-Management/readme-en.html) / [TR](./09-Linux-Network-Management/readme.html))
+- [10-Linux-Storage-Management](./10-Linux-Storage-Management/): Disk partition'lama, `ext4` ile formatlama, ve `/etc/fstab` üzerinden kalıcı mount'lar. ([EN](./10-Linux-Storage-Management/readme-en.html) / [TR](./10-Linux-Storage-Management/readme.html))
+- [11-Linux-LVM-Management](./11-Linux-LVM-Management/): LVM kurulumu, canlı volume büyütme, ve bir disk-alanı olayının anlatımı. ([EN](./11-Linux-LVM-Management/readme-en.html) / [TR](./11-Linux-LVM-Management/readme.html))
+- [12-Linux-SSH-Management](./12-Linux-SSH-Management/): Key çiftleri ile şifresiz SSH erişimi, SSH config kısayolları, ve SCP/SFTP ile dosya transferleri. ([EN](./12-Linux-SSH-Management/readme-en.html) / [TR](./12-Linux-SSH-Management/readme.html))
+- [13-Linux-Proxy-Management](./13-Linux-Proxy-Management/): Forward vs reverse proxy kavramları, Nginx'in `proxy_pass`'i, ve gerçek bir 502 Bad Gateway debug hikayesi. ([EN](./13-Linux-Proxy-Management/readme-en.html) / [TR](./13-Linux-Proxy-Management/readme.html))
+- [14-Linux-Bash-Scripting](./14-Linux-Bash-Scripting/): Değişkenler, komut yerine geçirme (command substitution), sayısal koşullar, ve bir disk kullanım uyarı scripti. ([EN](./14-Linux-Bash-Scripting/readme-en.html) / [TR](./14-Linux-Bash-Scripting/readme.html))
+- [15-Linux-Cron-Automation](./15-Linux-Cron-Automation/): `cron` ve `at` ile zamanlama, gerçek bir `sudo`-cron-içinde debug hikayesi, ve `logrotate`'e bir bakış. ([EN](./15-Linux-Cron-Automation/readme-en.html) / [TR](./15-Linux-Cron-Automation/readme.html))
+- [16-Git-Basics](./16-Git-Basics/): `git clone`, branching, merging, ve bu repo üzerinde gerçekten çözülen bir push-reddedildi/editör-takıldı çakışması. ([EN](./16-Git-Basics/readme-en.html) / [TR](./16-Git-Basics/readme.html))
+- [17-Mini-Project](./17-Mini-Project/): Gerçek bir kiralık sunucuda Nginx, Docker, Git, ve SSH kurulumu — bu repodan çekilip canlıya alınan statik bir sayfa. ([EN](./17-Mini-Project/readme-en.html) / [TR](./17-Mini-Project/readme.html))
+- [18-Linux-Networking-Fundamentals](./18-Linux-Networking-Fundamentals/): OSI modeli, routing & forwarding, ve DNS (resolver zinciri, kayıt tipleri, TTL) — gerçek senaryolarla ve `tcpdump`/`dig +trace` ile doğrulanmış. Ayrıca AWS/Cloudflare/Google Cloud'un gerçek kesintilerine dair araştırma içerir. ([EN](./18-Linux-Networking-Fundamentals/readme-en.html) / [TR](./18-Linux-Networking-Fundamentals/readme.html) — Outage araştırması: [EN](./18-Linux-Networking-Fundamentals/dns-outages-EN.html) / [TR](./18-Linux-Networking-Fundamentals/dns-outages-TR.html))
+- [19-Nginx-Derinleşme](./19-Nginx-Derinleşme/): Reverse proxy, path bazlı yönlendirme, path rewrite, path engelleme, ve forward proxy (Squid) — gerçek bir sunucuda uygulamalı olarak test edildi. ([EN](./19-Nginx-Derinleşme/readme-en.html) / [TR](./19-Nginx-Derinleşme/readme.html))
+- [20-Rate-Limiting-Load-Balancing](./20-Rate-Limiting-Load-Balancing/): Nginx'te rate limiting (`limit_req_zone`, `burst`, `nodelay`) ve load balancing (round-robin, failover, `least_conn`, `ip_hash`). ([TR](./20-Rate-Limiting-Load-Balancing/readme.html) / [EN](./20-Rate-Limiting-Load-Balancing/readme-en.html))
+- [21-OpenResty-API](./21-OpenResty-API/): OpenResty ile token authentication, PostgreSQL, MySQL ve Redis entegrasyonu — Docker Compose ile kuruldu. ([TR](./21-OpenResty-API/readme.html) / [EN](./21-OpenResty-API/readme-en.html))
+- [22-rclone-S3](./22-rclone-S3/): rclone ile Amazon S3 bağlantısı, performans parametreleri testi ve `rclone serve http` ile private bucket'ı dışarıya açma. ([TR](./22-rclone-S3/readme.html) / [EN](./22-rclone-S3/readme-en.html))
+- [23-Docker-Fundamentals](./23-Docker-Fundamentals/): Image, container, Dockerfile temelleri, multi-stage build, layer caching, Compose volume/network davranışı, Windows containers (kavramsal). ([TR](./23-Docker-Fundamentals/readme.html) / [EN](./23-Docker-Fundamentals/readme-en.html)) — Uygulamalı: ([TR](./23-Docker-Fundamentals/practice.html) / [EN](./23-Docker-Fundamentals/practice-en.html))
+- [24-Docker-Security](./24-Docker-Security/): Docker güvenliği — non-root container, `.dockerignore`, Trivy ile image scanning. ([TR](./24-Docker-Security/readme.html) / [EN](./24-Docker-Security/readme-en.html)) — Uygulamalı: ([TR](./24-Docker-Security/practice.html) / [EN](./24-Docker-Security/practice-en.html))
+- [25-Docker-Advanced-Security](./25-Docker-Advanced-Security/): Distroless image, read-only filesystem, resource limits, BuildKit, Hadolint, image tag immutability, docker-bench-security, image signing (Cosign), seccomp, AppArmor, Kaniko, Jib, PHP build örneği, Falco, SBOM (Syft+Grype). ([TR](./25-Docker-Advanced-Security/readme.html) / [EN](./25-Docker-Advanced-Security/readme-en.html)) — Uygulamalı: ([TR](./25-Docker-Advanced-Security/practice.html) / [EN](./25-Docker-Advanced-Security/practice-en.html))
+- [26-IaC-Scanning](./26-IaC-Scanning/): Trivy config ile Dockerfile/YAML statik taraması, HEALTHCHECK. ([TR](./26-IaC-Scanning/readme.html) / [EN](./26-IaC-Scanning/readme-en.html)) — Uygulamalı: ([TR](./26-IaC-Scanning/practice.html) / [EN](./26-IaC-Scanning/practice-en.html))
+- [27-Docker-Alternatives](./27-Docker-Alternatives/): Podman, containerd, CRI-O, Buildah — rootless/daemonless kanıtları, build hızı kıyaslaması. ([TR](./27-Docker-Alternatives/readme.html) / [EN](./27-Docker-Alternatives/readme-en.html)) — Uygulamalı: ([TR](./27-Docker-Alternatives/practice.html) / [EN](./27-Docker-Alternatives/practice-en.html))
+- [28-Kubernetes-Fundamentals](./28-Kubernetes-Fundamentals/): Kubernetes temel kavramları — GitOps, konteyner tarihi, self-healing, envsubst, küme mimarisi (kube-apiserver, etcd, kube-scheduler, kubelet, coredns, kube-proxy, CNI), kubectl. ([TR](./28-Kubernetes-Fundamentals/readme.html) / [EN](./28-Kubernetes-Fundamentals/readme-en.html))
+- [29-Kubernetes-Installation](./29-Kubernetes-Installation/): Beş kurulum yönteminin (Vagrant, kubeadm, MicroK8s, minikube, Kubespray) gerçek kurulup test edilerek karşılaştırılması — güncel olmayan kaynaklar, port çakışmaları, eski kalıntı temizliği dahil. ([TR](./29-Kubernetes-Installation/readme.html) / [EN](./29-Kubernetes-Installation/readme-en.html))
+- [30-Kubernetes-Basic-Resources](./30-Kubernetes-Basic-Resources/): Pod, ReplicaSet, Deployment, Service (tüm türleri), ConfigMaps, Secrets (base64 vs gerçek şifreleme, EncryptionConfiguration), Kanarya Deployment — hepsi gerçek testlerle kanıtlandı. ([TR](./30-Kubernetes-Basic-Resources/readme.html) / [EN](./30-Kubernetes-Basic-Resources/readme-en.html))
+- [31-Kubernetes-Other-Resources](./31-Kubernetes-Other-Resources/): StatefulSets, Volumes, Ingress, Jobs & Cronjobs, Kaynaklar ve Limitler, DaemonSets, HPA, VPA, Yetkiler (RBAC) — dokuz konu, hepsi gerçek testlerle kanıtlandı. ([TR](./31-Kubernetes-Other-Resources/readme.html) / [EN](./31-Kubernetes-Other-Resources/readme-en.html))
+- [32-Kubernetes-Important-Resources](./32-Kubernetes-Important-Resources/): Etiketler, Sürekli Güncellemeler, Canlılık ve Hazırlık, İtme ve Çekme — dört konu, hepsi gerçek testlerle kanıtlandı. ([TR](./32-Kubernetes-Important-Resources/readme.html) / [EN](./32-Kubernetes-Important-Resources/readme-en.html))
+- [33-Kubernetes-Additional-Tools](./33-Kubernetes-Additional-Tools/): ARGO-CD, Dashboard, Helm, MetalLB, Service Mesh, kubeadm, kustomize — yedi araç, hepsi gerçek testlerle kanıtlandı. ([TR](./33-Kubernetes-Additional-Tools/readme.html) / [EN](./33-Kubernetes-Additional-Tools/readme-en.html))
+- [34-Kubernetes-Tasks](./34-Kubernetes-Tasks/): Güvenlik (JVM), İç Yük Dengeleme, Günlük Kayıtları, İyi Pratikler, CKA Konuları — beş konu, hepsi gerçek testlerle kanıtlandı. ([TR](./34-Kubernetes-Tasks/readme.html) / [EN](./34-Kubernetes-Tasks/readme-en.html))
+- [35-Kubernetes-Security-Tools](./35-Kubernetes -Security-Tools/): Kyverno (validate/mutate/generate), NeuVector (CVE taraması) — roadmap dışı, gerçek testlerle. ([TR](./35-Kubernetes -Security-Tools/readme.html) / [EN](./35-Kubernetes -Security-Tools/readme-en.html))
+- [36-Kubernetes-Advanced-Topics](./36-Kubernetes-Advanced-Tools/): Ağ Yapılandırması, Gateway API, Kubectl Shortcuts — üç konu, hepsi gerçek testlerle kanıtlandı. ([TR](./36-Kubernetes-Advanced-Tools/readme.html) / [EN](./36-Kubernetes-Advanced-Tools/readme-en.html))
+- [37-Kubernetes-Security](./37-Kubernetes-Security/): Genel Bakış, Admission Controllers, Network Policy, RBAC, Admission Policy, İmaj Güvenliği, Manifest Güvenliği, CIS Benchmark, System Hardening, Kubespray Hardening — dokuz konu, roadmap'in son bölümü. ([TR](./37-Kubernetes-Security/readme.html) / [EN](./37-Kubernetes-Security/readme-en.html))
+- [38-OpenShift](./38-OpenShift/): Nedir, Karşılaştırma, Management, Build & Push, OC Client — roadmap'in ek, tamamlayıcı bölümü, kavramsal olarak işlendi. ([TR](./38-OpenShift/readme.html) / [EN](./38-OpenShift/readme-en.html))
+- [39-Cilium-L7-Security](./39-Cilium-L7-Security/): Ödeme servisi senaryosu — Calico'dan Cilium'a geçiş, L7 network policy, DNS exfiltration koruması, Hubble gözlemlenebilirliği. Roadmap dışı, senaryo bazlı uygulama mühendisliği formatında; gerçek çalıştırılabilir YAML/script dosyalarıyla. ([TR](./39-Cilium-L7-Security/readme.html) / [EN](./39-Cilium-L7-Security/readme-en.html))
+- [additionals/ssl](./additionals/ssl/): SSL/TLS'in çalışma mantığının, hiç teknik terim kullanılmadan, tamamen gerçek dünya benzetmesiyle (iki firma arasında mühürlü mektup, noter zinciri, kurumsal evrak kontrol bürosu) anlatımı. ([TR](./additionals/ssl/readme.html) / [EN](./additionals/ssl/readme-en.html))
+- [additionals/security-situation](./additionals/security-situation/): Gerçek bir güvenlik olayı — DNS rebinding ve açık forward proxy (SSRF) ile sunucunun kötüye kullanılması, kök sebep analizi ve çözüm. ([TR](./additionals/security-situation/readme.html) / [EN](./additionals/security-situation/readme-en.html))
+- [additionals/kubernetes-terim-derinlesmesi](./additionals/kubernetes-terim-derinlesmesi/): Araştırdığım konular — etcd'nin genel mantığı, Raft protokolü, CNI/kube-proxy (VXLAN, BGP, Service, iptables/IPVS). Devam eden bir belge. ([TR](./additionals/kubernetes-terim-derinlesmesi/readme.html) / [EN](./additionals/kubernetes-terim-derinlesmesi/readme-en.html))
 
 ### 📝 Değerlendirme & Sınav Materyalleri
 
-- [challenges.md](./challenges.md): Senaryo soruları ve cevapları (Faz 1-4).
-- [quiz-results.md](./quiz-results.md): 20 soruluk quiz, %85 skor (Faz 1-4).
-- [Faz 5 Quiz Sonuçları](./05-Linux-Permissions/quiz-results.md): umask ve sticky bit üzerine 5 soruluk quiz.
-- [Faz 6 Quiz Sonuçları](./06-Linux-Process-Management/quiz-results.md): Süreç izleme ve sinyaller üzerine quiz.
-- [Faz 7 Quiz Sonuçları](./07-Linux-Service-Management/quiz-results.md): systemd ve journalctl üzerine quiz.
-- [Faz 8 Quiz Sonuçları](./08-Linux-Log-Analysis/quiz-results.md): Log işleme üzerine quiz.
-- [Faz 9 Quiz Sonuçları](./09-Linux-Network-Management/quiz-results.md): Networking ve TLS üzerine quiz.
-- [Faz 10 Quiz Sonuçları](./10-Linux-Storage-Management/quiz-results.md): Depolama ve fstab üzerine quiz.
-- [Faz 11 Quiz Sonuçları](./11-Linux-LVM-Management/quiz-results.md): LVM üzerine quiz.
-- [Faz 12 Quiz Sonuçları](./12-Linux-SSH-Management/quiz-results.md): SSH key'leri, SCP, ve SFTP üzerine quiz.
-- [Faz 13 Quiz Sonuçları](./13-Linux-Proxy-Management/quiz-results.md): Forward/reverse proxy ve Nginx routing üzerine quiz.
-- [Faz 14 Quiz Sonuçları](./14-Linux-Bash-Scripting/quiz-results.md): Bash değişkenleri, koşullar, ve scripting temelleri üzerine quiz.
-- [Faz 15 Quiz Sonuçları](./15-Linux-Cron-Automation/quiz-results.md): Cron zamanlama, sudoers, ve log rotasyonu üzerine quiz.
-- [Faz 16 Quiz Sonuçları](./16-Git-Basics/quiz-results.md): Git branching, merging, ve bir push çakışması çözme üzerine quiz.
-- [Faz 19 & 20 Quiz Sonuçları](./19-Nginx-Derinleşme/quiz-results.md): Nginx reverse proxy, path yönetimi, forward proxy, rate limiting ve load balancing üzerine quiz
-- [Docker Derinleşmesi Quiz Sonuçları](./25-Docker-Advanced-Security/quiz.md): Multi-stage build, Compose volume/network, image güvenliği, Jib/BuildKit/Kaniko, Windows containers üzerine quiz
-- [Kubernetes Fundamentals Quiz Sonuçları](./28-Kubernetes-Fundamentals/quiz.md): GitOps, konteyner tarihi, self-healing, etcd, küme mimarisi üzerine quiz
+- [challenges.md](./challenges.html): Senaryo soruları ve cevapları (Faz 1-4).
+- [quiz-results.md](./quiz-results.html): 20 soruluk quiz, %85 skor (Faz 1-4).
+- [Faz 5 Quiz Sonuçları](./05-Linux-Permissions/quiz-results.html): umask ve sticky bit üzerine 5 soruluk quiz.
+- [Faz 6 Quiz Sonuçları](./06-Linux-Process-Management/quiz-results.html): Süreç izleme ve sinyaller üzerine quiz.
+- [Faz 7 Quiz Sonuçları](./07-Linux-Service-Management/quiz-results.html): systemd ve journalctl üzerine quiz.
+- [Faz 8 Quiz Sonuçları](./08-Linux-Log-Analysis/quiz-result.html): Log işleme üzerine quiz.
+- [Faz 9 Quiz Sonuçları](./09-Linux-Network-Management/quiz-result.html): Networking ve TLS üzerine quiz.
+- [Faz 10 Quiz Sonuçları](./10-Linux-Storage-Management/quiz-result.html): Depolama ve fstab üzerine quiz.
+- [Faz 11 Quiz Sonuçları](./11-Linux-LVM-Management/quiz-result.html): LVM üzerine quiz.
+- [Faz 12 Quiz Sonuçları](./12-Linux-SSH-Management/quiz-results.html): SSH key'leri, SCP, ve SFTP üzerine quiz.
+- [Faz 13 Quiz Sonuçları](./13-Linux-Proxy-Management/quiz-result.html): Forward/reverse proxy ve Nginx routing üzerine quiz.
+- [Faz 14 Quiz Sonuçları](./14-Linux-Bash-Scripting/quiz-results.html): Bash değişkenleri, koşullar, ve scripting temelleri üzerine quiz.
+- [Faz 15 Quiz Sonuçları](./15-Linux-Cron-Automation/quiz-results.html): Cron zamanlama, sudoers, ve log rotasyonu üzerine quiz.
+- [Faz 16 Quiz Sonuçları](./16-Git-Basics/quiz-results.html): Git branching, merging, ve bir push çakışması çözme üzerine quiz.
+- [Faz 19 & 20 Quiz Sonuçları](./19-Nginx-Derinleşme/quiz-result.html): Nginx reverse proxy, path yönetimi, forward proxy, rate limiting ve load balancing üzerine quiz
+- [Docker Derinleşmesi Quiz Sonuçları](./25-Docker-Advanced-Security/quiz.html): Multi-stage build, Compose volume/network, image güvenliği, Jib/BuildKit/Kaniko, Windows containers üzerine quiz
+- [Kubernetes Fundamentals Quiz Sonuçları](./28-Kubernetes-Fundamentals/quiz.html): GitOps, konteyner tarihi, self-healing, etcd, küme mimarisi üzerine quiz
 
 ### 🎓 Kurslar & Sertifikalar
 
@@ -107,8 +107,8 @@ _Daha önce Vagrant kullanmamıştım — önceki sanallaştırma deneyimim dire
   - Temel Linux komutlarını araştırdım ve kurumsal yapılandırma standartlarını analiz ettim (Rocky Linux'ta FQDN varsayılanları).
   - Canlı sistem metriklerini izlemek için bir shell scripti yazdım.
 - **Kilometre Taşları & Çıktılar:**
-  - 🛠️ Otomatik Ortam Kurulumu: [Vagrant Logları & Sorun Giderme (EN](./02-Vagrant-Automation/readme-en.md) / [TR)](./02-Vagrant-Automation/readme.md)
-  - 📜 Linux Temelleri & Özel Script: [Linux Temelleri Notları (EN](./01-Linux-Basics/readme-en.md) / [TR)](./01-Linux-Basics/readme.md)
+  - 🛠️ Otomatik Ortam Kurulumu: [Vagrant Logları & Sorun Giderme (EN](./02-Vagrant-Automation/readme-en.html) / [TR)](./02-Vagrant-Automation/readme.html)
+  - 📜 Linux Temelleri & Özel Script: [Linux Temelleri Notları (EN](./01-Linux-Basics/readme-en.html) / [TR)](./01-Linux-Basics/readme.html)
 
 ### 🔹 18 Haziran 2026 | Dosya Sistemi & Depolama Diagnostiği
 
@@ -120,7 +120,7 @@ _`dd` ile `fallocate` arasındaki farkı sadece okumak yerine gerçekten görmek
   - `dd` ve `fallocate`'in disk yazmalarını nasıl ele aldığını karşılaştırdım (sparse vs fiziksel allocation).
   - Sistemdeki en büyük 10 dosyayı listelemek için `find`, `du`, ve `sort` ile bir komut pipeline'ı kurdum.
 - **Kilometre Taşları & Çıktılar:**
-  - 🗂️ Dosya Sistemi İşlemleri & Pipeline'lar: [Depolama Diagnostiği & Komut Matrisi (EN](./03-File-System-Management/readme-en.md) / [TR)](./03-File-System-Management/readme.md)
+  - 🗂️ Dosya Sistemi İşlemleri & Pipeline'lar: [Depolama Diagnostiği & Komut Matrisi (EN](./03-File-System-Management/readme-en.html) / [TR)](./03-File-System-Management/readme.html)
 
 ### 🔹 18 Haziran 2026 | Kimlik Erişim Kontrolü & Güvenlik Sıkılaştırma (Least Privilege)
 
@@ -132,7 +132,7 @@ _Sudoers kısıtlamasının nasıl çalıştığını gerçekten anlamak için, 
   - `visudo` ve `/etc/sudoers` mimarisi üzerinden özel olarak yapılandırılmış, kısıtlı bir operatör hesabı (`devopstester`) oluşturdum.
   - Kullanıcıyı, root alanına (`ALL=(root)`) açıkça yönlendirilmiş, _sadece_ `systemctl restart nginx` çalıştırabilecek şekilde kısıtladım — kimlik doğrulama isteminin ek bir güvenlik katmanı olarak korunmasını sağlarken, yetkisiz işlemleri (örn. `systemctl stop nginx`) başarıyla bloke ettim.
 - **Kilometre Taşları & Çıktılar:**
-  - 🔑 Rol-Bazlı Erişim Kontrolleri: [Kullanıcı Yönetimi & Sudoers Kısıtlamaları (EN](./04-User-Privilege-Management/readme-en.md) / [TR)](./04-User-Privilege-Management/readme.md)
+  - 🔑 Rol-Bazlı Erişim Kontrolleri: [Kullanıcı Yönetimi & Sudoers Kısıtlamaları (EN](./04-User-Privilege-Management/readme-en.html) / [TR)](./04-User-Privilege-Management/readme.html)
 
 ### 🔹 19 Haziran 2026 | Genel Tekrar & Quiz Sonuçları
 
@@ -144,8 +144,8 @@ _Önceki tüm fazları kapsayan 20 soruluk quiz'i çözdüm. Cevapları, gerçek
   - IaC, filtreleme pipeline'ları, ve sudoers kurallarını kapsayan 20 soruluk bir quiz çözdüm.
   - Hataları ve öğrenilen dersleri belgeledim (Vagrant provider kurulumu ve kernel versiyon flag'leri).
 - **Kilometre Taşları & Çıktılar:**
-  - 📝 Senaryo Çözümleri: [Doğrulanmış Production Senaryo Matrisleri](./challenges.md)
-  - 📊 Quiz Sonuçları: [20 Soruluk Quiz Sonuçları](./quiz-results.md)
+  - 📝 Senaryo Çözümleri: [Doğrulanmış Production Senaryo Matrisleri](./challenges.html)
+  - 📊 Quiz Sonuçları: [20 Soruluk Quiz Sonuçları](./quiz-results.html)
 
 ### 🔹 19 Haziran 2026 | Dosya İzinleri & Paylaşılan Dizin Güvenliği
 
@@ -157,8 +157,8 @@ _İzin sayıları (`755` veya `777` gibi) ilk başta bana mantıklı gelmedi —
   - Özel **Sticky Bit** ayrıcalıklarıyla (`+t`) yapılandırılmış, paylaşılan bir test dizini (`/tmp/test`) kurdum.
   - Yetkisiz kullanıcıların, bağımsız operatör profilleri arasında başkalarının dosyalarını silemediğini başarıyla test ettim ve doğruladım, ortam bütünlüğünü koruyarak.
 - **Kilometre Taşları & Çıktılar:**
-  - 🔑 Güvenlik Sıkılaştırma Çalışma Alanı: [Depolama Diagnostiği & İzinler Matrisi (EN](./05-Linux-Permissions/readme-en.md) / [TR)](./05-Linux-Permissions/readme.md)
-  - 📊 Doğrulama Diagnostiği: [Faz 5 Değerlendirme Analitiği](./05-Linux-Permissions/quiz-results.md)
+  - 🔑 Güvenlik Sıkılaştırma Çalışma Alanı: [Depolama Diagnostiği & İzinler Matrisi (EN](./05-Linux-Permissions/readme-en.html) / [TR)](./05-Linux-Permissions/readme.html)
+  - 📊 Doğrulama Diagnostiği: [Faz 5 Değerlendirme Analitiği](./05-Linux-Permissions/quiz-results.html)
 
 ### 🔹 19 Haziran 2026 | Linux Süreç Yönetimi
 
@@ -170,8 +170,8 @@ _`htop`'un varsayılan olarak kurulu olmadığını fark ettim ve önce kurulumd
   - `top` ve `htop`'u karşılaştırdım.
   - `nice` ve `renice` ile CPU önceliği zamanlamasını pratik ettim.
 - **Kilometre Taşları & Çıktılar:**
-  - ⚙️ Süreç İşlemleri Çalışma Alanı: [Süreç Yönetimi Notları (EN](./06-Linux-Process-Management/readme-en.md) / [TR)](./06-Linux-Process-Management/readme.md)
-  - 📊 Performans Değerlendirmesi: [Faz 6 Temiz Doğrulama Analitiği (%100 Skor)](./06-Linux-Process-Management/quiz-results.md)
+  - ⚙️ Süreç İşlemleri Çalışma Alanı: [Süreç Yönetimi Notları (EN](./06-Linux-Process-Management/readme-en.html) / [TR)](./06-Linux-Process-Management/readme.html)
+  - 📊 Performans Değerlendirmesi: [Faz 6 Temiz Doğrulama Analitiği (%100 Skor)](./06-Linux-Process-Management/quiz-results.html)
 
 ### 🔹 19 Haziran 2026 | Servis Yönetimi & Loglama
 
@@ -183,8 +183,8 @@ _Rocky Linux'un `apt` kullanmadığını, bunun yerine `dnf`/`yum` kullandığı
   - `enable` (reboot'lar arası kalıcı) ile `start` (şimdi çalıştırır)'ı karşılaştırdım.
   - Kesintisiz config değişiklikleri için `reload`'u, logları canlı takip etmek için `journalctl -u -f`'i kullandım.
 - **Kilometre Taşları & Çıktılar:**
-  - 🏗️ Servis Kontrol Çalışma Alanı: [Systemd Daemon Yaşam Döngüleri & Yapılandırmaları (EN](./07-Linux-Service-Management/readme-en.md) / [TR)](./07-Linux-Service-Management/readme.md)
-  - 📊 Quiz Sonuçları: [Faz 7 Performans Değerlendirmesi (%100 Skor)](./07-Linux-Service-Management/quiz-results.md)
+  - 🏗️ Servis Kontrol Çalışma Alanı: [Systemd Daemon Yaşam Döngüleri & Yapılandırmaları (EN](./07-Linux-Service-Management/readme-en.html) / [TR)](./07-Linux-Service-Management/readme.html)
+  - 📊 Quiz Sonuçları: [Faz 7 Performans Değerlendirmesi (%100 Skor)](./07-Linux-Service-Management/quiz-results.html)
 
 ### 🔹 19 Haziran 2026 | Linux Log Analizi
 
@@ -196,8 +196,8 @@ _Ubuntu'nun localhost için IPv6 loopback adresini (`::1`) döndürmesini beklem
   - Ubuntu'nun minimal imajındaki eksik `curl`'u elle kurarak düzelttim.
   - En çok istek gönderen IP'leri bulmak ve 404 hatalarını path'e göre saymak için `grep`/`awk`/`sort`/`uniq` pipeline'ları kurdum.
 - **Kilometre Taşları & Çıktılar:**
-  - 🪵 Metin İşleme Çalışma Alanı: [Log Analizi Notları (EN](./08-Linux-Log-Analysis/readme-en.md) / [TR)](./08-Linux-Log-Analysis/readme.md)
-  - 📊 Quiz Sonuçları: [Faz 8 Performans Değerlendirmesi (%100 Skor)](./08-Linux-Log-Analysis/quiz-results.md)
+  - 🪵 Metin İşleme Çalışma Alanı: [Log Analizi Notları (EN](./08-Linux-Log-Analysis/readme-en.html) / [TR)](./08-Linux-Log-Analysis/readme.html)
+  - 📊 Quiz Sonuçları: [Faz 8 Performans Değerlendirmesi (%100 Skor)](./08-Linux-Log-Analysis/quiz-result.html)
 
 ### 🔹 21 Haziran 2026 | Networking & TLS
 
@@ -208,8 +208,8 @@ _İlk kez bir TLS sertifikasını doğrudan inceledim — ilk başta tam olarak 
   - Hem IPv4 hem IPv6 üzerinden, bir portu hangi sürecin dinlediğini bulmak için `ss -lntp`'yi kullandım.
   - Bir sertifikanın trust chain'ini, issuer'ını, ve bitiş tarihini incelemek için `openssl s_client`'ı kullandım.
 - **Kilometre Taşları & Çıktılar:**
-  - 🌐 Networking Çalışma Alanı: [Network & TLS Notları (EN](./09-Linux-Network-Management/readme-en.md) / [TR)](./09-Linux-Network-Management/readme.md)
-  - 📊 Quiz Sonuçları: [Faz 9 Quiz Sonuçları](./09-Linux-Network-Management/quiz-results.md)
+  - 🌐 Networking Çalışma Alanı: [Network & TLS Notları (EN](./09-Linux-Network-Management/readme-en.html) / [TR)](./09-Linux-Network-Management/readme.html)
+  - 📊 Quiz Sonuçları: [Faz 9 Quiz Sonuçları](./09-Linux-Network-Management/quiz-result.html)
 
 ### 🔹 22 Haziran 2026 | Depolama & LVM
 
@@ -221,9 +221,9 @@ _Bu faz gerçek bir hata içeriyordu: `dd` ile test ederken host makinenin diski
   - `dd` ile host diskini doldurmanın sebep olduğu bir VM dondurmasından kurtuldum, ve bunu önlemek için `fallocate`'e geçtim.
   - Bir mantıksal volume'u ve dosya sistemini, unmount etmeden, canlı olarak büyüttüm.
 - **Kilometre Taşları & Çıktılar:**
-  - 💾 Depolama Çalışma Alanı: [Depolama Yönetimi Notları (EN](./10-Linux-Storage-Management/readme-en.md) / [TR)](./10-Linux-Storage-Management/readme.md)
-  - 🏗️ LVM Çalışma Alanı: [LVM Yönetimi Notları (EN](./11-Linux-LVM-Management/readme-en.md) / [TR)](./11-Linux-LVM-Management/readme.md)
-  - 📊 Quiz Sonuçları: [Faz 10 Quiz Sonuçları](./10-Linux-Storage-Management/quiz-results.md) / [Faz 11 Quiz Sonuçları](./11-Linux-LVM-Management/quiz-results.md)
+  - 💾 Depolama Çalışma Alanı: [Depolama Yönetimi Notları (EN](./10-Linux-Storage-Management/readme-en.html) / [TR)](./10-Linux-Storage-Management/readme.html)
+  - 🏗️ LVM Çalışma Alanı: [LVM Yönetimi Notları (EN](./11-Linux-LVM-Management/readme-en.html) / [TR)](./11-Linux-LVM-Management/readme.html)
+  - 📊 Quiz Sonuçları: [Faz 10 Quiz Sonuçları](./10-Linux-Storage-Management/quiz-result.html) / [Faz 11 Quiz Sonuçları](./11-Linux-LVM-Management/quiz-result.html)
 
 ### 🔹 22 Haziran 2026 | SSH, SCP & SFTP
 
@@ -236,8 +236,8 @@ _Windows'ta `ssh-copy-id` mevcut değildi, bu yüzden aynı şeyi elle yapmam ge
   - Yanlış key dosyası kullanmaktan kaynaklanan bir `Permission denied (publickey)` hatasını debug ettim, ve `-i` ile bir SSH config dosyasıyla düzelttim.
   - Host ve VM arasında `scp` ve `sftp` ile dosya transferi yaptım.
 - **Kilometre Taşları & Çıktılar:**
-  - 🔐 SSH Çalışma Alanı: [SSH, SCP & SFTP Notları (EN](./12-Linux-SSH-Management/readme-en.md) / [TR)](./12-Linux-SSH-Management/readme.md)
-  - 📊 Quiz Sonuçları: [Faz 12 Quiz Sonuçları](./12-Linux-SSH-Management/quiz-results.md)
+  - 🔐 SSH Çalışma Alanı: [SSH, SCP & SFTP Notları (EN](./12-Linux-SSH-Management/readme-en.html) / [TR)](./12-Linux-SSH-Management/readme.html)
+  - 📊 Quiz Sonuçları: [Faz 12 Quiz Sonuçları](./12-Linux-SSH-Management/quiz-results.html)
 
 ### 🔹 22 Haziran 2026 | Forward & Reverse Proxy
 
@@ -249,8 +249,8 @@ _Bu faz, tamamen pratik olmaktan çok ağırlıklı olarak kavramsaldı. Forward
   - `proxy_pass`'in backend VM'in gerçek IP'si yerine `localhost`'a işaret etmesinden kaynaklanan gerçek bir `502 Bad Gateway`'i tespit ettim ve diagnoz ettim.
   - Bir 502 hatasının tam olarak ne anlama geldiğini (proxy backend'e ulaşamadı) diğer hata kodlarına kıyasla öğrendim.
 - **Kilometre Taşları & Çıktılar:**
-  - 🔀 Proxy Çalışma Alanı: [Forward & Reverse Proxy Notları (EN](./13-Linux-Proxy-Management/readme-en.md) / [TR)](./13-Linux-Proxy-Management/readme.md)
-  - 📊 Quiz Sonuçları: [Faz 13 Quiz Sonuçları](./13-Linux-Proxy-Management/quiz-results.md)
+  - 🔀 Proxy Çalışma Alanı: [Forward & Reverse Proxy Notları (EN](./13-Linux-Proxy-Management/readme-en.html) / [TR)](./13-Linux-Proxy-Management/readme.html)
+  - 📊 Quiz Sonuçları: [Faz 13 Quiz Sonuçları](./13-Linux-Proxy-Management/quiz-result.html)
 
 ### 🔹 22 Haziran 2026 | Bash Scripting
 
@@ -263,8 +263,8 @@ _Disk kullanımı %80'i geçtiğinde uyarı veren bir script yazdım, bunu zaten
   - Koşul syntax'ındaki bir boşluk eksikliğinden kaynaklanan gerçek bir `[48: command not found` hatasını debug ettim.
   - Scripti `chmod +x` ile çalıştırılabilir yaptım ve `./script.sh` ile doğrudan çalıştırdım.
 - **Kilometre Taşları & Çıktılar:**
-  - 🐚 Bash Scripting Çalışma Alanı: [Bash Scripting Notları (EN](./14-Linux-Bash-Scripting/readme-en.md) / [TR)](./14-Linux-Bash-Scripting/readme.md)
-  - 📊 Quiz Sonuçları: [Faz 14 Quiz Sonuçları](./14-Linux-Bash-Scripting/quiz-results.md)
+  - 🐚 Bash Scripting Çalışma Alanı: [Bash Scripting Notları (EN](./14-Linux-Bash-Scripting/readme-en.html) / [TR)](./14-Linux-Bash-Scripting/readme.html)
+  - 📊 Quiz Sonuçları: [Faz 14 Quiz Sonuçları](./14-Linux-Bash-Scripting/quiz-results.html)
 
 ### 🔹 22 Haziran 2026 | Cron & Otomasyon
 
@@ -278,8 +278,8 @@ _İki script yazdım — biri disk kullanım raporları için, biri Nginx loglar
   - Her iki scripti de `crontab -e` ile her gece saat 02:00'de çalışacak şekilde zamanladım.
   - Bu tür log yönetimi için standart gerçek dünya aracı olan `logrotate`'e baktım.
 - **Kilometre Taşları & Çıktılar:**
-  - ⏰ Cron & Otomasyon Çalışma Alanı: [Cron & Otomasyon Notları (EN](./15-Linux-Cron-Automation/readme-en.md) / [TR)](./15-Linux-Cron-Automation/readme.md)
-  - 📊 Quiz Sonuçları: [Faz 15 Quiz Sonuçları](./15-Linux-Cron-Automation/quiz-results.md)
+  - ⏰ Cron & Otomasyon Çalışma Alanı: [Cron & Otomasyon Notları (EN](./15-Linux-Cron-Automation/readme-en.html) / [TR)](./15-Linux-Cron-Automation/readme.html)
+  - 📊 Quiz Sonuçları: [Faz 15 Quiz Sonuçları](./15-Linux-Cron-Automation/quiz-results.html)
 
 ### 🔹 23 Haziran 2026 | DevOps - Linux Temelleri (Udemy Kursu)
 
@@ -313,8 +313,8 @@ _`git branch` ve `git merge`'i doğrudan bu repo üzerinde test ettim — bir te
   - Yanlış yapılandırılmış, var olmayan bir editör path'inden kaynaklanan takılı bir `git pull`/merge'i diagnoz ettim ve düzelttim.
   - Git'in varsayılan editörünü global olarak yeniden yapılandırdım (`git config --global core.editor`).
 - **Kilometre Taşları & Çıktılar:**
-  - 🔧 Git Çalışma Alanı: [Git Notları (EN](./16-Git-Basics/readme-en.md) / [TR)](./16-Git-Basics/readme.md)
-  - 📊 Quiz Sonuçları: [Faz 16 Quiz Sonuçları](./16-Git-Basics/quiz-results.md)
+  - 🔧 Git Çalışma Alanı: [Git Notları (EN](./16-Git-Basics/readme-en.html) / [TR)](./16-Git-Basics/readme.html)
+  - 📊 Quiz Sonuçları: [Faz 16 Quiz Sonuçları](./16-Git-Basics/quiz-results.html)
 
 ### 🔹 24 Haziran 2026 | Genel Tekrar & Mini Proje (Gerçek Sunucu)
 
@@ -330,8 +330,8 @@ _Sonra bu hafta satın alınan gerçek sunucuda mini projeyi yaptım — root ol
   - Git'i kurdum, bu repoyu klonladım, ve Nginx üzerinden ondan statik bir sayfa yayınladım.
   - Eski bir deployment sorununu (kaynak dosya vs sunulan dosya) ve bir HTTPS-vs-HTTP bağlantı sorununu debug ettim.
 - **Kilometre Taşları & Çıktılar:**
-  - 📝 Derinleştirilmiş Notlar: [Depolama](./10-Linux-Storage-Management/readme.md) · [Servis Yönetimi](./07-Linux-Service-Management/readme.md) · [İzinler](./05-Linux-Permissions/readme.md) · [Log Analizi](./08-Linux-Log-Analysis/readme.md) · [Network](./09-Linux-Network-Management/readme.md) · [LVM](./11-Linux-LVM-Management/readme.md)
-  - 🚀 Mini Proje: [Mini Proje Notları (EN](./17-Mini-Project/readme-en.md) / [TR)](./17-Mini-Project/readme.md)
+  - 📝 Derinleştirilmiş Notlar: [Depolama](./10-Linux-Storage-Management/readme.html) · [Servis Yönetimi](./07-Linux-Service-Management/readme.html) · [İzinler](./05-Linux-Permissions/readme.html) · [Log Analizi](./08-Linux-Log-Analysis/readme.html) · [Network](./09-Linux-Network-Management/readme.html) · [LVM](./11-Linux-LVM-Management/readme.html)
+  - 🚀 Mini Proje: [Mini Proje Notları (EN](./17-Mini-Project/readme-en.html) / [TR)](./17-Mini-Project/readme.html)
 
 ### 🔹 26 Haziran 2026 | Path Bazlı Gruplama & OSI Modeli (Devam Ediyor)
 
@@ -346,8 +346,8 @@ _Sonra OSI modeline başladım. 7 katmanı kavramsal olarak öğrendikten sonra,
   - Encapsulation kavramını öğrendim, ve `tcpdump` kurup gerçek bir HTTP isteğini paket seviyesinde yakaladım.
   - OSI fazını, encapsulation/decapsulation tam bitmediği için "devam ediyor" olarak işaretledim.
 - **Kilometre Taşları & Çıktılar:**
-  - 🪵 Path Bazlı Gruplama: [Log Analizi Notları (EN](./08-Linux-Log-Analysis/readme-en.md) / [TR)](./08-Linux-Log-Analysis/readme.md) güncellendi
-  - 🌐 OSI Modeli (Devam Ediyor): [OSI Modeli Notları (EN](./18-Linux-Networking-Fundamentals/readme-en.md) / [TR)](./18-Linux-Networking-Fundamentals/readme.md)
+  - 🪵 Path Bazlı Gruplama: [Log Analizi Notları (EN](./08-Linux-Log-Analysis/readme-en.html) / [TR)](./08-Linux-Log-Analysis/readme.html) güncellendi
+  - 🌐 OSI Modeli (Devam Ediyor): [OSI Modeli Notları (EN](./18-Linux-Networking-Fundamentals/readme-en.html) / [TR)](./18-Linux-Networking-Fundamentals/readme.html)
 
 ### 🔹 29 Haziran 2026 | OSI Tamamlama, Routing & Forwarding, DNS Sorgu Zinciri
 
@@ -364,7 +364,7 @@ _Son olarak DNS sorgu zincirine başladım — recursive resolver, root sunucula
   - `ip_forward` ayarının neden aktif olduğunu araştırarak, Docker bağlantısını doğruladım.
   - DNS sorgu zincirine başladım, `dig +trace` ile gerçek bir çözümleme sürecini izledim.
 - **Kilometre Taşları & Çıktılar:**
-  - 🌐 OSI Modeli (Tamamlandı) & Routing/Forwarding: [Notlar (EN](./18-Linux-Networking-Fundamentals/readme-en.md) / [TR)](./18-Linux-Networking-Fundamentals/readme.md)
+  - 🌐 OSI Modeli (Tamamlandı) & Routing/Forwarding: [Notlar (EN](./18-Linux-Networking-Fundamentals/readme-en.html) / [TR)](./18-Linux-Networking-Fundamentals/readme.html)
 
 ### 🔹 30 Haziran 2026 | DNS Kayıt Tipleri, TTL, ve Cloud Outage Araştırması
 
@@ -384,8 +384,8 @@ _Son olarak, AWS, Cloudflare, ve Google Cloud'un gerçek, yakın tarihli kesinti
   - `nslookup`, `host`, `resolvectl` debug araçlarını test ettim.
   - AWS, Cloudflare, ve Google Cloud'un gerçek DNS-ilişkili kesintilerini araştırdım, kaynakçalı bir belge oluşturdum.
 - **Kilometre Taşları & Çıktılar:**
-  - 🌐 DNS (Tamamlandı): [Networking Notları (EN](./18-Linux-Networking-Fundamentals/readme-en.md) / [TR)](./18-Linux-Networking-Fundamentals/readme.md)
-  - 🔥 Cloud Outage Araştırması: [Notlar (EN](./18-Linux-Networking-Fundamentals/dns-outages-EN.md) / [TR)](./18-Linux-Networking-Fundamentals/dns-outages-TR.md)
+  - 🌐 DNS (Tamamlandı): [Networking Notları (EN](./18-Linux-Networking-Fundamentals/readme-en.html) / [TR)](./18-Linux-Networking-Fundamentals/readme.html)
+  - 🔥 Cloud Outage Araştırması: [Notlar (EN](./18-Linux-Networking-Fundamentals/dns-outages-EN.html) / [TR)](./18-Linux-Networking-Fundamentals/dns-outages-TR.html)
 
 ### 🔹 1 Temmuz 2026 | Nginx Derinleşme — Reverse Proxy, Path Yönetimi, Forward Proxy
 
@@ -400,7 +400,7 @@ _Forward proxy için Squid kurdum. Windows'ta sistem proxy olarak `<SERVER_IP>:3
   - Path engellemeyi (`allow`/`deny`) iç/dış ağ ayrımıyla uyguladım.
   - Squid ile forward proxy kurup, Windows trafiğinin tamamının proxy'den geçtiğini logda doğruladım.
 - **Kilometre Taşları & Çıktılar:**
-  - 🌐 Nginx Derinleşme: [Notlar (EN](./19-Nginx-Derinleşme/readme-en.md) / [TR)](./19-Nginx-Derinleşme/readme.md)
+  - 🌐 Nginx Derinleşme: [Notlar (EN](./19-Nginx-Derinleşme/readme-en.html) / [TR)](./19-Nginx-Derinleşme/readme.html)
 
 ### 🔹 2 Temmuz 2026 | Nginx Test Senaryoları & Belge Güncellemeleri
 
@@ -415,8 +415,8 @@ _Aynı zamanda önceki fazların (03–19) Türkçe/İngilizce belge dönüşüm
   - test-cases.md ve test-cases-EN.md oluşturuldu.
   - 03–19 arası tüm fazların bilingual belge dönüşümü tamamlandı.
 - **Kilometre Taşları & Çıktılar:**
-  - 🧪 Test Senaryoları: [TR](./19-Nginx-Derinleşme/test-cases.md) / [EN](./19-Nginx-Derinleşme/test-cases-en.md)
-  - 🌐 Nginx Derinleşme: [Notlar (TR](./19-Nginx-Derinleşme/readme.md) / [EN)](./19-Nginx-Derinleşme/readme-en.md)
+  - 🧪 Test Senaryoları: [TR](./19-Nginx-Derinleşme/test-cases.html) / [EN](./19-Nginx-Derinleşme/test-cases-en.html)
+  - 🌐 Nginx Derinleşme: [Notlar (TR](./19-Nginx-Derinleşme/readme.html) / [EN)](./19-Nginx-Derinleşme/readme-en.html)
 
 ### 🔹 3 Temmuz 2026 | Rate Limiting & Load Balancing
 
@@ -427,7 +427,7 @@ _Rate limiting için `limit_req_zone` ile zone tanımlayıp tüm location'lara u
   - Load balancing kurdum — round-robin, failover, ve dışarıdan test.
   - `least_conn` ve `ip_hash` yöntemlerini araştırdım.
 - **Kilometre Taşları & Çıktılar:**
-  - 🚦 Rate Limiting & Load Balancing: [Notlar (TR](./20-Rate-Limiting-Load-Balancing/readme.md) / [EN)](./20-Rate-Limiting-Load-Balancing/readme-en.md)
+  - 🚦 Rate Limiting & Load Balancing: [Notlar (TR](./20-Rate-Limiting-Load-Balancing/readme.html) / [EN)](./20-Rate-Limiting-Load-Balancing/readme-en.html)
 
 ### 🔹 6 Temmuz 2026 | OpenResty — Token Authentication, PostgreSQL, MySQL, Redis
 
@@ -440,7 +440,7 @@ _yeni görevi uyguladım: OpenResty ile token korumalı bir API kurdum, PostgreS
   - Dockerfile ile pgmoon kütüphanesi eklendi.
   - `resolver 127.0.0.11` — container DNS çözümlemesi için gerekli.
 - **Kilometre Taşları & Çıktılar:**
-  - 🔐 OpenResty API: [Notlar (TR](./21-OpenResty-API/readme.md) / [EN)](./21-OpenResty-API/readme-en.md)
+  - 🔐 OpenResty API: [Notlar (TR](./21-OpenResty-API/readme.html) / [EN)](./21-OpenResty-API/readme-en.html)
 
 ### 🔹 8 Temmuz 2026 | rclone & Amazon S3 — Bulut Depolama ve Güvenli Erişim
 
@@ -453,7 +453,7 @@ _rclone'u inceledim, Amazon S3 bucket'ı oluşturdum ve bağlandım. Yapılandı
   - `rclone serve http` ile private S3 bucket'ı HTTP üzerinden dışarıya açıldı.
   - `rclone mount` ile S3 yerel disk olarak bağlandı, cache testi yapıldı (`--vfs-cache-mode full`, `--vfs-cache-max-size`, `--vfs-cache-max-age`).
 - **Kilometre Taşları & Çıktılar:**
-  - 🗄️ rclone & S3: [Notlar (TR](./22-rclone-S3/readme.md) / [EN)](./22-rclone-S3/readme-en.md)
+  - 🗄️ rclone & S3: [Notlar (TR](./22-rclone-S3/readme.html) / [EN)](./22-rclone-S3/readme-en.html)
 
 ### 🔹 8 Temmuz 2026 | Docker Temelleri — Image, Container, Dockerfile Optimizasyonu
 
@@ -465,7 +465,7 @@ _Docker'ı daha önce sadece hello-world ile test etmiştim. Bu fazda temel kavr
   - Dockerfile vs docker-compose.yml farkı anlaşıldı.
   - Multi-stage build, layer caching ve RUN birleştirme teknikleri öğrenildi.
 - **Kilometre Taşları & Çıktılar:**
-  - 🐳 Docker Temelleri: [Notlar (TR](./23-Docker-Fundamentals/readme.md) / [EN)](./23-Docker-Fundamentals/readme-en.md)
+  - 🐳 Docker Temelleri: [Notlar (TR](./23-Docker-Fundamentals/readme.html) / [EN)](./23-Docker-Fundamentals/readme-en.html)
 
 ### 🔹 9 Temmuz 2026 | Docker — Uygulamalı Testler (Image Boyutu, Layer Caching, Compose)
 
@@ -476,7 +476,7 @@ _Docker kavramsal öğrenimini uygulamaya döktüm. İki Dockerfile yazdım — 
   - Layer caching iki farklı senaryoda test edildi.
   - Docker Compose ile volume ve network yönetimi denendi.
 - **Kilometre Taşları & Çıktılar:**
-  - 🐳 Docker Uygulamalı: [Notlar (TR](./23-Docker-Fundamentals/practice.md) / [EN)](./23-Docker-Fundamentals/practice-en.md)
+  - 🐳 Docker Uygulamalı: [Notlar (TR](./23-Docker-Fundamentals/practice.html) / [EN)](./23-Docker-Fundamentals/practice-en.html)
 
 ### 🔹 10 Temmuz 2026 | Docker Güvenliği — Non-Root Container, .dockerignore, Trivy
 
@@ -487,7 +487,7 @@ _Docker güvenliğini üç katmanda ele aldım. Non-root container: varsayılan 
   - `.dockerignore` ile hassas dosya koruması sağlandı.
   - Trivy ile `python:3.11` ve `python:3.11-slim` karşılaştırması yapıldı (412 vs 20 açık).
 - **Kilometre Taşları & Çıktılar:**
-  - 🔒 Docker Güvenliği: [README (TR](./24-Docker-Security/readme.md) / [EN)](./24-Docker-Security/readme-en.md) — Uygulamalı: ([TR](./24-Docker-Security/practice.md) / [EN](./24-Docker-Security/practice-en.md))
+  - 🔒 Docker Güvenliği: [README (TR](./24-Docker-Security/readme.html) / [EN)](./24-Docker-Security/readme-en.html) — Uygulamalı: ([TR](./24-Docker-Security/practice.html) / [EN](./24-Docker-Security/practice-en.html))
 
 ### 🔹 13 Temmuz 2026 | rclone serve http — Cache ve Güvenlik
 
@@ -499,7 +499,7 @@ _`rclone serve http` için cache ve güvenlik konularını derinlemesine inceled
   - Auth kuruldu, şifre environment variable ile gizlendi.
   - Remote control ile cache yönetimi.
 - **Kilometre Taşları & Çıktılar:**
-  - 🗄️ rclone serve http Cache: [README (TR](./22-rclone-S3/readme.md) / [EN)](./22-rclone-S3/readme-en.md)
+  - 🗄️ rclone serve http Cache: [README (TR](./22-rclone-S3/readme.html) / [EN)](./22-rclone-S3/readme-en.html)
 
 ### 🔹 17 Temmuz 2026 | Docker İleri Seviye Güvenlik — Distroless, Read-Only, BuildKit
 
@@ -512,7 +512,7 @@ _Docker İleri Seviye Güvenlik'e başladım. Distroless image: Alpine'dan farkl
   - BuildKit paralel build sorgulandı, test edildi, kanıtlandı.
   - Hadolint ile Dockerfile lint yapıldı, image tag immutability öğrenildi.
 - **Kilometre Taşları & Çıktılar:**
-  - 🔒 Docker İleri Seviye Güvenlik: [README (TR](./25-Docker-Advanced-Security/readme.md) / [EN)](./25-Docker-Advanced-Security/readme-en.md) — Uygulamalı: ([TR](./25-Docker-Advanced-Security/practice.md) / [EN](./25-Docker-Advanced-Security/practice-en.md))
+  - 🔒 Docker İleri Seviye Güvenlik: [README (TR](./25-Docker-Advanced-Security/readme.html) / [EN)](./25-Docker-Advanced-Security/readme-en.html) — Uygulamalı: ([TR](./25-Docker-Advanced-Security/practice.html) / [EN](./25-Docker-Advanced-Security/practice-en.html))
 
 ### 🔹 18 Temmuz 2026 | Docker İleri Seviye Güvenlik — docker-bench-security, Image Signing
 
@@ -523,7 +523,7 @@ _docker-bench-security: Docker kurulumumun kendisini CIS benchmark'a göre tarad
   - Cosign ile key pair oluşturuldu, image imzalandı ve doğrulandı.
   - Değiştirilmiş image testiyle Cosign'ın sahtekârlığı yakaladığı kanıtlandı.
 - **Kilometre Taşları & Çıktılar:**
-  - 🔒 Docker İleri Seviye Güvenlik: [README (TR](./25-Docker-Advanced-Security/readme.md) / [EN)](./25-Docker-Advanced-Security/readme-en.md) — Uygulamalı: ([TR](./25-Docker-Advanced-Security/practice.md) / [EN](./25-Docker-Advanced-Security/practice-en.md))
+  - 🔒 Docker İleri Seviye Güvenlik: [README (TR](./25-Docker-Advanced-Security/readme.html) / [EN)](./25-Docker-Advanced-Security/readme-en.html) — Uygulamalı: ([TR](./25-Docker-Advanced-Security/practice.html) / [EN](./25-Docker-Advanced-Security/practice-en.html))
 
 ### 🔹 19 Temmuz 2026 | Docker İleri Seviye Güvenlik — Seccomp, AppArmor, Kaniko, Jib
 
@@ -535,7 +535,7 @@ _Seccomp: container'ın kernel'e yaptığı sistem çağrılarını kısıtladı
   - Kaniko ile Docker daemon olmadan image build edildi ve kanıtlandı.
   - Jib ile Dockerfile'sız Java image build edildi.
 - **Kilometre Taşları & Çıktılar:**
-  - 🔒 Docker İleri Seviye Güvenlik: [README (TR](./25-Docker-Advanced-Security/readme.md) / [EN)](./25-Docker-Advanced-Security/readme-en.md) — Uygulamalı: ([TR](./25-Docker-Advanced-Security/practice.md) / [EN](./25-Docker-Advanced-Security/practice-en.md))
+  - 🔒 Docker İleri Seviye Güvenlik: [README (TR](./25-Docker-Advanced-Security/readme.html) / [EN)](./25-Docker-Advanced-Security/readme-en.html) — Uygulamalı: ([TR](./25-Docker-Advanced-Security/practice.html) / [EN](./25-Docker-Advanced-Security/practice-en.html))
 
 ### 🔹 20 Temmuz 2026 | Docker İleri Seviye Güvenlik — Falco, SBOM & IaC Scanning
 
@@ -547,8 +547,8 @@ _Falco: bir nevi canlı kameraları izleyen güvenlik görevlisi gibi container 
   - Trivy config ile IaC/Dockerfile statik taraması yapıldı — docker-compose'un desteklenmediği görüldü.
   - HEALTHCHECK eklenmiş temiz bir Dockerfile yazıldı, healthy/unhealthy durumları canlı test edildi.
 - **Kilometre Taşları & Çıktılar:**
-  - 🔒 Docker İleri Seviye Güvenlik: [README (TR](./25-Docker-Advanced-Security/readme.md) / [EN)](./25-Docker-Advanced-Security/readme-en.md) — Uygulamalı: ([TR](./25-Docker-Advanced-Security/practice.md) / [EN](./25-Docker-Advanced-Security/practice-en.md))
-  - 🔍 IaC Scanning: [README (TR](./26-IaC-Scanning/readme.md) / [EN)](./26-IaC-Scanning/readme-en.md) — Uygulamalı: ([TR](./26-IaC-Scanning/practice.md) / [EN](./26-IaC-Scanning/practice-en.md))
+  - 🔒 Docker İleri Seviye Güvenlik: [README (TR](./25-Docker-Advanced-Security/readme.html) / [EN)](./25-Docker-Advanced-Security/readme-en.html) — Uygulamalı: ([TR](./25-Docker-Advanced-Security/practice.html) / [EN](./25-Docker-Advanced-Security/practice-en.html))
+  - 🔍 IaC Scanning: [README (TR](./26-IaC-Scanning/readme.html) / [EN)](./26-IaC-Scanning/readme-en.html) — Uygulamalı: ([TR](./26-IaC-Scanning/practice.html) / [EN](./26-IaC-Scanning/practice-en.html))
 
 ### 🔹 22 Temmuz 2026 | Docker Alternatifleri — Podman, containerd, CRI-O, Buildah
 
@@ -560,7 +560,7 @@ _Docker'ın alternatiflerini araştırdım: Podman, containerd, CRI-O, Buildah. 
   - Rootless iddiası, host'ta process sahipliği testiyle kanıtlandı (Docker: root, Podman: normal kullanıcı).
   - Docker ile Podman arasında build hızı kıyaslandı, image deposu izolasyonu keşfedildi.
 - **Kilometre Taşları & Çıktılar:**
-  - 🔄 Docker Alternatifleri: [README (TR](./27-Docker-Alternatives/readme.md) / [EN)](./27-Docker-Alternatives/readme-en.md) — Uygulamalı: ([TR](./27-Docker-Alternatives/practice.md) / [EN](./27-Docker-Alternatives/practice-en.md))
+  - 🔄 Docker Alternatifleri: [README (TR](./27-Docker-Alternatives/readme.html) / [EN)](./27-Docker-Alternatives/readme-en.html) — Uygulamalı: ([TR](./27-Docker-Alternatives/practice.html) / [EN](./27-Docker-Alternatives/practice-en.html))
 
 ### 🔹 12 Ağustos 2026 | SSL/TLS Görevi — Basit Anlatım
 
@@ -571,7 +571,7 @@ _"SSL/TLS nasıl çalışır, for dummies tarzda anlat" görevini tamamladım. �
   - İki firma arasındaki mektup senaryosu üzerinden güven zinciri, ortak şifre anlaşması, ve ara durakların işleyişi kuruldu.
   - TCP'nin sabit/tek yönlü yapısı, gerçek dünyadan fark olarak eklendi.
 - **Kilometre Taşları & Çıktılar:**
-  - 🔐 SSL/TLS Anlatımı: [README (TR](./additionals/ssl/readme.md) / [EN)](./additionals/ssl/readme-en.md)
+  - 🔐 SSL/TLS Anlatımı: [README (TR](./additionals/ssl/readme.html) / [EN)](./additionals/ssl/readme-en.html)
 
 ### 🔹 13 Ağustos 2026 | Docker Derinleşmesi — Kalan Maddelerin Tamamlanması
 
@@ -582,8 +582,8 @@ _Docker derinleşmesi listesindeki kalan üç maddeyi tamamladım. Docker Compos
   - PHP ile bir image build edilip çalıştırıldı.
   - Windows containers'ın kernel paylaşımı nedeniyle Linux'ta çalıştırılamadığı, "Docker her yerde çalışır" ifadesinin gerçek anlamıyla birlikte incelendi.
 - **Kilometre Taşları & Çıktılar:**
-  - 🐳 Docker Temelleri: [README (TR](./23-Docker-Fundamentals/readme.md) / [EN)](./23-Docker-Fundamentals/readme-en.md)
-  - 🔒 Docker İleri Seviye Güvenlik: [README (TR](./25-Docker-Advanced-Security/readme.md) / [EN)](./25-Docker-Advanced-Security/readme-en.md)
+  - 🐳 Docker Temelleri: [README (TR](./23-Docker-Fundamentals/readme.html) / [EN)](./23-Docker-Fundamentals/readme-en.html)
+  - 🔒 Docker İleri Seviye Güvenlik: [README (TR](./25-Docker-Advanced-Security/readme.html) / [EN)](./25-Docker-Advanced-Security/readme-en.html)
 
 ### 🔹 14 Ağustos 2026 | Kubernetes Temel Kavramlar — GitOps, Küme Mimarisi, kubectl
 
@@ -597,8 +597,8 @@ _k8s-tr.github.io roadmap'ini takip ederek Kubernetes'in Temel Kavramlar bölüm
   - kubectl'in temel komutları (get, create, scale, set image, exec, delete) test edildi.
   - 15 soruluk bir quiz çözüldü, 15/15 alındı.
 - **Kilometre Taşları & Çıktılar:**
-  - ☸️ Kubernetes Temel Kavramlar: [README (TR](./28-Kubernetes-Fundamentals/readme.md) / [EN)](./28-Kubernetes-Fundamentals/readme-en.md)
-  - 📊 Quiz Sonuçları: [Kubernetes Fundamentals Quiz](./28-Kubernetes-Fundamentals/quiz.md)
+  - ☸️ Kubernetes Temel Kavramlar: [README (TR](./28-Kubernetes-Fundamentals/readme.html) / [EN)](./28-Kubernetes-Fundamentals/readme-en.html)
+  - 📊 Quiz Sonuçları: [Kubernetes Fundamentals Quiz](./28-Kubernetes-Fundamentals/quiz.html)
 
 ### 🔹 15 Ağustos 2026 | Kubernetes Kurulum Yöntemleri — kubeadm'e Başlangıç
 
@@ -609,7 +609,7 @@ _k8s-tr roadmap'inin "Kurulum" bölümünü işlemeye başladım. Beş yöntemi 
   - CRI-O ve kubeadm/kubelet/kubectl için güncel olmayan k8s-tr repo adresleri tespit edilip güncelleri araştırıldı.
   - Swap kalıcı olarak kapatıldı (`/etc/fstab` düzenlemesiyle).
 - **Kilometre Taşları & Çıktılar:**
-  - ☸️ Kubernetes Kurulum Yöntemleri (devam ediyor): [README (TR](./29-Kubernetes-Installation/readme.md) / [EN)](./29-Kubernetes-Installation/readme-en.md)
+  - ☸️ Kubernetes Kurulum Yöntemleri (devam ediyor): [README (TR](./29-Kubernetes-Installation/readme.html) / [EN)](./29-Kubernetes-Installation/readme-en.html)
 
 ## 🔹 17 Ağustos 2026 | kubeadm Tamamlandı, MicroK8s ve minikube Test Edildi
 
@@ -621,7 +621,7 @@ _kubeadm kurulumuna devam ettim. `kubeadm init` başarıyla tamamlandı, ama son
   - Eski Podman ağ config'inin Calico'nun önüne geçmesi tespit edilip giderildi.
   - MicroK8s ve minikube kuruldu, ikisi de gerçek pod testiyle doğrulandı.
 - **Kilometre Taşları & Çıktılar:**
-  - ☸️ Kubernetes Kurulum Yöntemleri (devam ediyor): [README (TR](./29-Kubernetes-Installation/readme.md) / [EN)](./29-Kubernetes-Installation/readme-en.md)
+  - ☸️ Kubernetes Kurulum Yöntemleri (devam ediyor): [README (TR](./29-Kubernetes-Installation/readme.html) / [EN)](./29-Kubernetes-Installation/readme-en.html)
 
 ### 🔹 18 Ağustos 2026 | Kubespray Tamamlandı, etcd/Raft/CNI Derinleşmesi
 
@@ -637,9 +637,9 @@ _Ardından Kubernetes Temel Kavramlar belgesine verilen geri bildirimleri işled
   - Beş yöntemin (Vagrant dahil) karşılaştırma belgesi tamamlandı.
   - etcd'nin genel mantığı, alternatifleri, Raft protokolü, ve CNI/kube-proxy (VXLAN, BGP, Service, iptables/IPVS) araştırılıp derinleştirildi, gerçek kanıtla (vxlan.calico) doğrulandı.
 - **Kilometre Taşları & Çıktılar:**
-  - ☸️ Kubernetes Kurulum Yöntemleri: [README (TR](./29-Kubernetes-Installation/readme.md) / [EN)](./29-Kubernetes-Installation/readme-en.md)
-  - ☸️ Kubernetes Temel Kavramlar (güncellendi): [README (TR](./28-Kubernetes-Fundamentals/readme.md) / [EN)](./28-Kubernetes-Fundamentals/readme-en.md)
-  - 🔍 Kubernetes Terim Derinleşmesi: [README (TR](./additionals/kubernetes-terim-derinlesmesi/readme.md) / [EN)](./additionals/kubernetes-terim-derinlesmesi/readme-en.md)
+  - ☸️ Kubernetes Kurulum Yöntemleri: [README (TR](./29-Kubernetes-Installation/readme.html) / [EN)](./29-Kubernetes-Installation/readme-en.html)
+  - ☸️ Kubernetes Temel Kavramlar (güncellendi): [README (TR](./28-Kubernetes-Fundamentals/readme.html) / [EN)](./28-Kubernetes-Fundamentals/readme-en.html)
+  - 🔍 Kubernetes Terim Derinleşmesi: [README (TR](./additionals/kubernetes-terim-derinlesmesi/readme.html) / [EN)](./additionals/kubernetes-terim-derinlesmesi/readme-en.html)
 
 ## 🔹 19 Ağustos 2026 | Temel Kaynaklar — Pod/ReplicaSet/Deployment, Service
 
@@ -688,7 +688,7 @@ _Son olarak Kanarya Deployment'ı işledim — aynı etiketli iki Deployment'ı 
   - Kanarya Deployment gerçek trafik dağılımıyla kanıtlandı.
   - Temel Kaynaklar bölümündeki tüm eksikler tamamlanıp bölüm kapatıldı.
 - **Kilometre Taşları & Çıktılar:**
-  - ☸️ Kubernetes Temel Kaynaklar: [README (TR](./30-Kubernetes-Basic-Resources/readme.md) / [EN)](./30-Kubernetes-Basic-Resources/readme-en.md)
+  - ☸️ Kubernetes Temel Kaynaklar: [README (TR](./30-Kubernetes-Basic-Resources/readme.html) / [EN)](./30-Kubernetes-Basic-Resources/readme-en.html)
 
 ### 🔹 22 Ağustos 2026 | Kubernetes Temel Kavramlar Belgesi Revize Edildi
 
@@ -699,7 +699,7 @@ _Faz 28 (Kubernetes Temel Kavramlar) belgesini baştan gözden geçirdim. İnsan
   - Her kavrama gerçek işlev ve çapraz referans eklendi.
   - Küme mimarisi ve GitOps için Mermaid diyagramları eklendi.
 - **Kilometre Taşları & Çıktılar:**
-  - ☸️ Kubernetes Temel Kavramlar (güncellendi): [README (TR](./28-Kubernetes-Fundamentals/readme.md) / [EN)](./28-Kubernetes-Fundamentals/readme-en.md)
+  - ☸️ Kubernetes Temel Kavramlar (güncellendi): [README (TR](./28-Kubernetes-Fundamentals/readme.html) / [EN)](./28-Kubernetes-Fundamentals/readme-en.html)
 
 ### 🔹 23 Ağustos 2026 | Kubernetes Temel Kaynaklar Belgesi Revize Edildi
 
@@ -710,7 +710,7 @@ _Faz 30 (Kubernetes Temel Kaynaklar) belgesini aynı standartla yeniden yazdım.
   - Gerçek YAML örnekleri belgeye eklendi.
   - Dört ayrı Mermaid diyagramı (hiyerarşi/akış) eklendi.
 - **Kilometre Taşları & Çıktılar:**
-  - ☸️ Kubernetes Temel Kaynaklar (güncellendi): [README (TR](./30-Kubernetes-Basic-Resources/readme.md) / [EN)](./30-Kubernetes-Basic-Resources/readme-en.md)
+  - ☸️ Kubernetes Temel Kaynaklar (güncellendi): [README (TR](./30-Kubernetes-Basic-Resources/readme.html) / [EN)](./30-Kubernetes-Basic-Resources/readme-en.html)
 
 ### 🔹 24 Ağustos 2026 | Diğer Kaynaklar — StatefulSets'e Başlandı
 
@@ -765,7 +765,7 @@ _Belgeyi (Faz 31: Diğer Kaynaklar) yazarken, StatefulSets'te pod'ların sıral�
   - Beş konunun Kubernetes-dışı, genel teknoloji kökenleri araştırılıp belgeye işlendi.
   - Diğer Kaynaklar bölümü (StatefulSets, Volumes, Ingress, Jobs & Cronjobs, Kaynaklar ve Limitler, DaemonSets, HPA, VPA, Yetkiler) tamamen tamamlandı.
 - **Kilometre Taşları & Çıktılar:**
-  - ☸️ Kubernetes Diğer Kaynaklar: [README (TR](./31-Kubernetes-Other-Resources/readme.md) / [EN)](./31-Kubernetes-Other-Resources/readme-en.md)
+  - ☸️ Kubernetes Diğer Kaynaklar: [README (TR](./31-Kubernetes-Other-Resources/readme.html) / [EN)](./31-Kubernetes-Other-Resources/readme-en.html)
 
 ### 🔹 27 Ağustos 2026 | Önemli Kaynaklar Tamamlandı — Etiketler, Sürekli Güncellemeler, Canlılık ve Hazırlık, İtme ve Çekme
 
@@ -786,7 +786,7 @@ _Dört konuyu kapsayan 15 soruluk bir quiz çözdüm. Ardından Faz 32 (Önemli 
   - Taint/Toleration ve Node Affinity'nin required/preferred farkı gerçek testle kanıtlandı.
   - Önemli Kaynaklar bölümü (Etiketler, Sürekli Güncellemeler, Canlılık ve Hazırlık, İtme ve Çekme) tamamen tamamlandı.
 - **Kilometre Taşları & Çıktılar:**
-  - ☸️ Kubernetes Önemli Kaynaklar: [README (TR](./32-Kubernetes-Important-Resources/readme.md) / [EN)](./32-Kubernetes-Important-Resources/readme-en.md)
+  - ☸️ Kubernetes Önemli Kaynaklar: [README (TR](./32-Kubernetes-Important-Resources/readme.html) / [EN)](./32-Kubernetes-Important-Resources/readme-en.html)
 
 ### 🔹 28 Ağustos 2026 | Ek Araçlar — ARGO-CD, Dashboard
 
@@ -826,7 +826,7 @@ _Ek Araçlar bölümü tamamen bitince, Faz 33 belgesini yazdım — yedi aracı
   - Service Mesh (Istio), kubeadm (HA, kavramsal), kustomize tamamlandı — hepsi gerçek testlerle (kubeadm hariç) kanıtlandı.
   - Ek Araçlar bölümü (ARGO-CD, Dashboard, Helm, MetalLB, Service Mesh, kubeadm, kustomize) tamamen tamamlandı.
 - **Kilometre Taşları & Çıktılar:**
-  - ☸️ Kubernetes Ek Araçlar: [README (TR](./33-Kubernetes-Additional-Tools/readme.md) / [EN)](./33-Kubernetes-Additional-Tools/readme-en.md)
+  - ☸️ Kubernetes Ek Araçlar: [README (TR](./33-Kubernetes-Additional-Tools/readme.html) / [EN)](./33-Kubernetes-Additional-Tools/readme-en.html)
 
 ### 🔹 31 Ağustos 2026 | Görevler Bölümü İncelendi, Eksikler Görüldü, Konular Tekrar Ele Alındı
 
@@ -847,7 +847,7 @@ _Görevler bölümü tamamen bitince Faz 34 belgesini yazdım, ardından tüm st
   - `PodSecurityPolicy`'nin kaldırıldığı, `stern`'ün eski reposunun terk edildiği tespit edilip güncel karşılıklarıyla değiştirildi.
   - Görevler bölümü (Güvenlik, İç Yük Dengeleme, Günlük Kayıtları, İyi Pratikler, CKA Konuları) tamamen tamamlandı.
 - **Kilometre Taşları & Çıktılar:**
-  - ☸️ Kubernetes Görevler: [README (TR](./34-Kubernetes-Tasks/readme.md) / [EN)](./34-Kubernetes-Tasks/readme-en.md)
+  - ☸️ Kubernetes Görevler: [README (TR](./34-Kubernetes-Tasks/readme.html) / [EN)](./34-Kubernetes-Tasks/readme-en.html)
 
 ### 🔹 1 Eylül 2026 | Kyverno, NeuVector, Vagrant — Roadmap Dışı Güvenlik Araçları
 
@@ -867,8 +867,8 @@ _Ayrıca, Faz 31 belgesini işlevine göre 5 gruba (Depolama, Ağ, İş Yükü K
   - Faz 29'dan beri bekleyen Vagrant backlog maddesi tamamlandı.
   - Faz 31 belgesi işlevine göre yeniden gruplandırıldı.
 - **Kilometre Taşları & Çıktılar:**
-  - ☸️ Kubernetes Güvenlik Araçları: [README (TR](./35-Kubernetes-Security-Tools/readme.md) / [EN)](./35-Kubernetes-Security-Tools/readme-en.md)
-  - 🔄 Faz 31 (yeniden gruplandı): [README (TR](./31-Kubernetes-Other-Resources/readme.md) / [EN)](./31-Kubernetes-Other-Resources/readme-en.md)
+  - ☸️ Kubernetes Güvenlik Araçları: [README (TR](./35-Kubernetes -Security-Tools/readme.html) / [EN)](./35-Kubernetes -Security-Tools/readme-en.html)
+  - 🔄 Faz 31 (yeniden gruplandı): [README (TR](./31-Kubernetes-Other-Resources/readme.html) / [EN)](./31-Kubernetes-Other-Resources/readme-en.html)
 
 ### 🔹 2 Eylül 2026 | İleri Düzey Konular — Ağ Yapılandırması, Gateway API, Kubectl Shortcuts
 
@@ -883,7 +883,7 @@ _Kubectl Shortcuts'a geçtim. Çok satırlı bir heredoc bloğunun terminalde se
   - Eski bir bandwidth birim hatasının artık geçerli olmadığı, bir kurulum komutunun eksik olduğu, ve heredoc'un terminalde sessizce başarısız olabildiği tespit edilip düzeltildi.
   - İleri Düzey Konular bölümü tamamen tamamlandı.
 - **Kilometre Taşları & Çıktılar:**
-  - ☸️ Kubernetes İleri Düzey Konular: [README (TR](./36-Kubernetes-Advanced-Topics/readme.md) / [EN)](./36-Kubernetes-Advanced-Topics/readme-en.md)
+  - ☸️ Kubernetes İleri Düzey Konular: [README (TR](./36-Kubernetes-Advanced-Tools/readme.html) / [EN)](./36-Kubernetes-Advanced-Tools/readme-en.html)
 
 ### 🔹 3 Eylül 2026 | Güvenlik — Genel Bakış, Admission Controllers, Network Policy, RBAC
 
@@ -932,7 +932,7 @@ _Güvenlik bölümü tamamen bitince Faz 37 belgesini yazdım — bu, **Kubernet
   - Kubespray Hardening tamamlandı — sahte bir etiket iddiası gerçek testle çürütüldü.
   - **Güvenlik bölümü, ve onunla birlikte tüm Kubernetes roadmap'i tamamen tamamlandı.**
 - **Kilometre Taşları & Çıktılar:**
-  - ☸️ Kubernetes Güvenlik: [README (TR](./37-Kubernetes-Security/readme.md) / [EN)](./37-Kubernetes-Security/readme-en.md)
+  - ☸️ Kubernetes Güvenlik: [README (TR](./37-Kubernetes-Security/readme.html) / [EN)](./37-Kubernetes-Security/readme-en.html)
 
 ### 🔹 7 Eylül 2026 (devam) | OpenShift — Kavramsal İnceleme
 
@@ -944,7 +944,7 @@ _Bu nedenle OpenShift'i kavramsal olarak işledim — `BuildConfig`'in Faz 33'te
   - OpenShift bölümü (Nedir/Karşılaştırma, Management, Build & Push, OC Client) kavramsal olarak tamamlandı — gerçek bir dış engel (Red Hat hesap sorunu) dürüstçe belgelendi.
   - Roadmap'in ek/tamamlayıcı son bölümü de kapsanmış oldu.
 - **Kilometre Taşları & Çıktılar:**
-  - ☸️ OpenShift: [README (TR](./38-OpenShift/readme.md) / [EN)](./38-OpenShift/readme-en.md)
+  - ☸️ OpenShift: [README (TR](./38-OpenShift/readme.html) / [EN)](./38-OpenShift/readme-en.html)
 
 ### 🔹 8 Eylül 2026 | Cilium Kurulumu ve L7 Güvenlik Senaryosu
 
@@ -960,7 +960,7 @@ _Mentor geri bildirimi doğrultusunda, kodları markdown'dan çıkarıp gerçek,
   - Cilium kurulumu, L7 network policy senaryosu, DNS exfiltration koruması, Hubble gözlemlenebilirliği tamamlandı — hepsi gerçek testlerle ve ekran görüntüsü kanıtlarıyla kanıtlandı.
   - Kodlar gerçek, çalıştırılabilir dosyalara (YAML/shell script) ayrıldı — markdown'a gömülü değil.
 - **Kilometre Taşları & Çıktılar:**
-  - ☸️ Cilium L7 Güvenlik: [README (TR](./39-Cilium-L7-Security/readme.md) / [EN)](./39-Cilium-L7-Security/readme-en.md), gerçek manifest/script dosyalarıyla birlikte.
+  - ☸️ Cilium L7 Güvenlik: [README (TR](./39-Cilium-L7-Security/readme.html) / [EN)](./39-Cilium-L7-Security/readme-en.html), gerçek manifest/script dosyalarıyla birlikte.
 
 ### 🔹 9 Eylül 2026 | Jekyll/GitHub Pages Sitesi Kurulumu
 

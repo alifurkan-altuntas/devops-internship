@@ -1,3 +1,7 @@
+---
+layout: page
+---
+
 # 🔑 Linux Permissions & Security Hardening
 
 This document covers file permissions, ownership, umask, and the sticky bit.

@@ -1,3 +1,7 @@
+---
+layout: page
+---
+
 # 🔀 Forward Proxy vs Reverse Proxy
 
 Bu belge, forward proxy ve reverse proxy arasındaki farkı, Nginx'in reverse proxy olarak ne yaptığını ve ilk kurulum denemesinde karşılaşılan 502 hatasını kapsar.

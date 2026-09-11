@@ -1,3 +1,7 @@
+---
+layout: page
+---
+
 # ☸️ Kubernetes Ek Araçlar — ARGO-CD, Dashboard, Helm, MetalLB, Service Mesh, kubeadm, kustomize
 
 32. fazda Önemli Kaynaklar bölümünü tamamlamıştım. Bu fazda roadmap'in Ek Araçlar bölümünü işledim — yedi araç, hepsi gerçek testlerle kanıtlandı.

@@ -1,3 +1,7 @@
+---
+layout: page
+---
+
 # ☸️ Kubernetes Security Tools — Kyverno, NeuVector
 
 Covered two security tools outside the roadmap (Kyverno, NeuVector). In the process, also completed the **trying Vagrant on own computer** backlog item pending since Phase 29.

@@ -1,3 +1,7 @@
+---
+layout: page
+---
+
 # ☸️ Kubernetes Güvenlik — Genel Bakış, Admission Controllers, Network Policy, RBAC, Admission Policy, İmaj Güvenliği, Manifest Güvenliği, CIS Benchmark, System Hardening, Kubespray Hardening
 
 Faz 36'da İleri Düzey Konular'ı tamamlamıştım. Bu fazda roadmap'in **son bölümü** olan Güvenlik'i işledim — dokuz konu, hepsi gerçek testlerle, ya da (bir konuda) dürüst bir "denendi, çözülemedi" notuyla kanıtlandı. Bu, **tüm Kubernetes roadmap'inin tamamlandığı** fazdır.

@@ -1,3 +1,7 @@
+---
+layout: page
+---
+
 # 🚨 A Real Security Incident — DNS Rebinding and an Open Forward Proxy (SSRF)
 
 While continuing the Docker Advanced Examples phase, my disk filled to 100% and I couldn't even log into the admin panel. Investigating, I discovered that a leftover configuration from our July 1 forward proxy experiment (Phase 19) had been abused by an attacker for weeks.

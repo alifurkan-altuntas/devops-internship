@@ -1,3 +1,7 @@
+---
+layout: page
+---
+
 # 🚀 Mini Project — Nginx, Docker, Git & SSH on a Real Server
 
 This document covers setting up a real rented Linux server (not a local VM) with Nginx, Docker, Git, and SSH key-based access, and publishing a simple static web page pulled from this repository via Git.

@@ -1,3 +1,7 @@
+---
+layout: page
+---
+
 # ☸️ Kubernetes Installation Methods — Vagrant, kubeadm, MicroK8s, minikube, Kubespray
 
 28th phase covered Kubernetes fundamentals (GitOps, cluster architecture, kubectl). This phase I compared the five installation methods the k8s-tr roadmap suggests (Vagrant, Kubespray, MicroK8s, kubeadm, minikube) — one by one, by actually installing and testing each.

@@ -1,3 +1,7 @@
+---
+layout: page
+---
+
 # ☸️ Kubernetes Önemli Kaynaklar — Etiketler, Sürekli Güncellemeler, Canlılık ve Hazırlık, İtme ve Çekme
 
 31. fazda Diğer Kaynaklar bölümünü (StatefulSets, Volumes, Ingress, Jobs & Cronjobs, Kaynaklar ve Limitler, DaemonSets, HPA, VPA, Yetkiler) tamamlamıştım. Bu fazda roadmap'in Önemli Kaynaklar bölümünü işledim — dört konu, hepsi yazılım ekosisteminden örnekle, gerçek işlevle, çapraz referansla, ve gerçek testlerle.

@@ -1,3 +1,7 @@
+---
+layout: page
+---
+
 # ☸️ Kubernetes Temel Kaynaklar — Pod, ReplicaSet, Deployment, Service, ConfigMaps, Secrets, Kanarya Deployment
 
 29. fazda beş kurulum yöntemini karşılaştırmıştım. Bu fazda roadmap'in Temel Kaynaklar bölümünü işledim — her kavramı yazılım ekosisteminden bir örnekle, gerçek işleviyle, ilgili olduğu diğer konulara referans vererek, ve gerçek YAML/testlerle.

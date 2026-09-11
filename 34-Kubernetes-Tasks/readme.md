@@ -1,3 +1,7 @@
+---
+layout: page
+---
+
 # ☸️ Kubernetes Görevler — Güvenlik, İç Yük Dengeleme, Günlük Kayıtları, İyi Pratikler, CKA Konuları
 
 33. fazda Ek Araçlar bölümünü tamamlamıştım. Bu fazda roadmap'in Görevler bölümünü işledim — beş konu, hepsi gerçek testlerle kanıtlandı.

@@ -1,3 +1,7 @@
+---
+layout: page
+---
+
 # 🔒 Docker Security — Non-Root Containers, .dockerignore, Image Scanning
 
 Docker security was approached at three layers: user privileges inside the container, what files make it into the image, and security vulnerabilities inside the image itself.

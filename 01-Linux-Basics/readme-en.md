@@ -1,3 +1,7 @@
+---
+layout: page
+---
+
 # 🐧 Core Linux Commands & Text Processing
 
 This document contains notes, command variations (`--help` discoveries), and observations gathered during Day 3 core Linux administration tasks.

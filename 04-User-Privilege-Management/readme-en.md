@@ -1,3 +1,7 @@
+---
+layout: page
+---
+
 # 🔑 Linux User Administration & Privilege Management
 
 This document covers user/group management and sudo restrictions using the Least Privilege Principle inside the `sudoers` architecture.

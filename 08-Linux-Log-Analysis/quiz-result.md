@@ -1,3 +1,7 @@
+---
+layout: page
+---
+
 # Phase 8: Linux Log Analysis & Text Manipulation - Quiz Logs
 
 This document tracks the comprehensive assessment results regarding unified text stream manipulation, column indexing arrays, deduplication logic, and distributed log filtering standards.

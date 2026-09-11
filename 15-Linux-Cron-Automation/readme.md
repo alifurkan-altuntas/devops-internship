@@ -1,3 +1,7 @@
+---
+layout: page
+---
+
 # ⏰ Cron & Otomasyon — Disk Raporları, Log Arşivleme ve Tek Seferlik Görevler
 
 Bu belge, `cron` ile tekrarlayan scriptleri zamanlama, `at` ile tek seferlik görevleri zamanlama, ve cron job'ları içinde `sudo` çalıştırırken yaşanan gerçek bir debug sürecini kapsar.

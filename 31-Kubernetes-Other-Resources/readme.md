@@ -1,3 +1,7 @@
+---
+layout: page
+---
+
 # ☸️ Kubernetes Diğer Kaynaklar — StatefulSets, Volumes, Ingress, Jobs & Cronjobs, Kaynaklar ve Limitler, DaemonSets, HPA, VPA, Yetkiler
 
 30. fazda Pod, ReplicaSet, Deployment, Service, ConfigMaps, Secrets ve Kanarya Deployment'ı işlemiştim. Bu fazda roadmap'in Diğer Kaynaklar bölümünü işledim — dokuz konu, **işlevine göre beş grupta**, hepsi yazılım ekosisteminden örnekle, gerçek işleviyle, ilgili fazlara çapraz referansla, ve gerçek YAML/kubectl testleriyle.

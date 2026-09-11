@@ -1,3 +1,7 @@
+---
+layout: page
+---
+
 # İki Firma Arasındaki Mektup
 
 **A Firması**, başka bir şehirdeki **B Firması**'na resmi bir yazı göndermek istiyor. Ama iki şehir arasındaki yol güvensiz — yoldaki kuryeler, aracı taşıyıcılar, kim olursa olsun, üzerinden geçen her mektubu açıp okuyabilir, isterse değiştirip tekrar kapatabilir. A Firması bunu biliyor.

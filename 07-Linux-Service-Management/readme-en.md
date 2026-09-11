@@ -1,3 +1,7 @@
+---
+layout: page
+---
+
 # 🏗️ Linux Service & Log Management (`systemd` Architecture)
 
 This document covers systemd service management, journalctl, and distro defaults across major Linux distribution families.

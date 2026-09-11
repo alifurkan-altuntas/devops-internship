@@ -1,3 +1,7 @@
+---
+layout: page
+---
+
 # 🐳 Docker — Uygulamalı Testler
 
 Bu belgede kavramsal öğrenilen konular gerçek ortamda test edildi.

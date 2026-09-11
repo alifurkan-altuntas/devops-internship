@@ -1,3 +1,7 @@
+---
+layout: page
+---
+
 # 🔄 Docker Alternatives — Podman, containerd, CRI-O, Buildah
 
 In phase 26 we covered IaC scanning, examining Docker's own codebase. This phase steps back to look at alternative container engines to Docker itself — why they exist, how they differ from Docker, and why Docker is still the most widely used.

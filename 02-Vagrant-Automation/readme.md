@@ -1,3 +1,7 @@
+---
+layout: page
+---
+
 # 🛠️ Vagrant Kurulumu & Sorun Giderme
 
 Vagrant'ı VMware provider'ı ile kurarken karşılaşılan sorunlar, ve bunların nasıl düzeltildiği.

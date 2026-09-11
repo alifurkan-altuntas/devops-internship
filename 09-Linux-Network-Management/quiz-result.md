@@ -1,3 +1,7 @@
+---
+layout: page
+---
+
 # 🌐 Phase 9: Network & Port Management - Quiz Logs
 
 This document tracks the comprehensive assessment results regarding public/private domain resolution mechanisms, dual-stack socket monitoring, cryptographic certificate chain hiearchies, and session validation parameters.

@@ -1,3 +1,7 @@
+---
+layout: page
+---
+
 # The Letter Between Two Companies
 
 **Company A** wants to send an official letter to **Company B** in another city. But the road between the two cities isn't safe — couriers, intermediary carriers, whoever handles the route, can open any letter passing through, read it, even change it and reseal it. Company A knows this.

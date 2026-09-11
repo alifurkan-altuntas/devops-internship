@@ -1,3 +1,7 @@
+---
+layout: page
+---
+
 # 📊 Docker Deep Dive Quiz Results
 
 **Score: 15/15 (100%)**

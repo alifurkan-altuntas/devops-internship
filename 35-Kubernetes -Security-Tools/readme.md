@@ -1,3 +1,7 @@
+---
+layout: page
+---
+
 # ☸️ Kubernetes Güvenlik Araçları — Kyverno, NeuVector
 
 Roadmap'in dışında iki güvenlik aracını (Kyverno, NeuVector) işledim. Bu süreçte ayrıca Faz 29'dan beri backlog'da bekleyen **Vagrant'ı kendi bilgisayarında deneme** maddesini de tamamladım.

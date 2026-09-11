@@ -1,3 +1,7 @@
+---
+layout: page
+---
+
 # 🐳 Docker Alternatives — Hands-On Tests
 
 This document covers Podman setup and comparison tests against Docker.

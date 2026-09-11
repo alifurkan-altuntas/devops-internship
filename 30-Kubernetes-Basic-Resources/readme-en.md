@@ -1,3 +1,7 @@
+---
+layout: page
+---
+
 # ☸️ Kubernetes Basic Resources — Pod, ReplicaSet, Deployment, Service, ConfigMaps, Secrets, Canary Deployment
 
 29th phase compared five installation methods. This phase I worked through the roadmap's Basic Resources section — each concept with a software-ecosystem example, its real function, cross-references to related topics, and real YAML/tests.

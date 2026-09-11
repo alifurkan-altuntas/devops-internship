@@ -1,3 +1,7 @@
+---
+layout: page
+---
+
 # 🛠️ Vagrant Setup & Troubleshooting
 
 Issues encountered setting up Vagrant with the VMware provider, and how they were fixed.

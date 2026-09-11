@@ -1,3 +1,7 @@
+---
+layout: page
+---
+
 # ☸️ Kubernetes Other Resources — StatefulSets, Volumes, Ingress, Jobs & Cronjobs, Resources and Limits, DaemonSets, HPA, VPA, Permissions
 
 Phase 30 covered Pod, ReplicaSet, Deployment, Service, ConfigMaps, Secrets, and Canary Deployment. This phase covered the roadmap's Other Resources section — nine topics, **grouped by function into five groups**, each with a software-ecosystem example, real function, cross-references to related phases, and real YAML/kubectl tests.

@@ -1,3 +1,7 @@
+---
+layout: page
+---
+
 # 🌐 Nginx Deep Dive — Reverse Proxy, Path Management, and Forward Proxy
 
 ✅ **Status: Complete.** Reverse proxy setup, path-based routing, path rewrite, path blocking, and forward proxy (Squid) — all tested hands-on on a real server.

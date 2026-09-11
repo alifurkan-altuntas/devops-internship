@@ -1,3 +1,7 @@
+---
+layout: page
+---
+
 # 🔀 Forward Proxy vs Reverse Proxy
 
 This document covers the difference between forward and reverse proxies, what Nginx does as a reverse proxy, and a 502 error encountered during the first setup attempt.

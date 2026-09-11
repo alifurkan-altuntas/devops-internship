@@ -1,3 +1,7 @@
+---
+layout: page
+---
+
 # ⚙️ Linux Süreç Yönetimi & Sinyaller
 
 Bu belge, test ortamında süreç izleme, kaynak kullanımı ve sinyal uygulamalarını kapsar.

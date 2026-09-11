@@ -1,3 +1,7 @@
+---
+layout: page
+---
+
 # ⏰ Cron & Automation — Disk Reports, Log Archiving, and One-Time Jobs
 
 This document covers scheduling recurring scripts with `cron`, scheduling one-time jobs with `at`, and a real debugging process around running `sudo` commands inside a cron job.

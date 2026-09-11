@@ -1,3 +1,7 @@
+---
+layout: page
+---
+
 # ☸️ Kubernetes İleri Düzey Konular — Ağ Yapılandırması, Gateway API, Kubectl Shortcuts
 
 Faz 35'te Kyverno ve NeuVector'ı işlemiştim. Bu fazda roadmap'in İleri Düzey Konular bölümünü işledim — üç konu, hepsi gerçek testlerle kanıtlandı.

@@ -1,3 +1,7 @@
+---
+layout: page
+---
+
 # 📁 Linux Dosya Sistemi Yönetimi & Depolama Tanılaması
 
 Bu belge, Linux'ta depolama işlemleri, dosya sistemi gezintisi, pipeline sıralama ve otomatik alan denetimi iş akışlarını kapsar.

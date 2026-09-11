@@ -1,3 +1,7 @@
+---
+layout: page
+---
+
 # 🔧 Git — Branching, Merging, and a Real Push Conflict
 
 This document covers `git clone`, `git commit`, `git push`, `git branch`, and `git merge` — and a real debugging session that came out of testing them on this actual repo.

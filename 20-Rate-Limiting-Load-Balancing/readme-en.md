@@ -1,3 +1,7 @@
+---
+layout: page
+---
+
 # 🚦 Nginx — Rate Limiting and Load Balancing
 
 After the Nginx deep dive phase, I added two more things: limiting the number of requests and distributing traffic across multiple backends.

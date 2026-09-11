@@ -1,3 +1,7 @@
+---
+layout: page
+---
+
 # 📊 Phase 16 Quiz Results — Git
 
 **Score: 14/15 (93%)** — 1 incorrect

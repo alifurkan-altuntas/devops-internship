@@ -1,3 +1,7 @@
+---
+layout: page
+---
+
 # 🔍 Kubernetes Terim Derinleşmesi — etcd, Raft, CNI/kube-proxy (devam edecek)
 
 Faz 28'deki Küme Mimarisi belgesinde yüzeysel kalan bazı konuları kendim araştırıp derinleştirdim. Bu belge, o araştırmaların kaydı — zamanla yeni bölümler (kubernetes.io ve microservices.io okumaları) eklenerek büyüyecek.

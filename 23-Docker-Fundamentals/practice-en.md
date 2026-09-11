@@ -1,3 +1,7 @@
+---
+layout: page
+---
+
 # 🐳 Docker — Hands-On Tests
 
 In this document, the concepts learned were tested in a real environment.

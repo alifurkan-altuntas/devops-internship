@@ -1,3 +1,7 @@
+---
+layout: page
+---
+
 # 🌐 OSI Model — Layers, Real Scenarios, and Real Packet Verification
 
 ✅ **Status: Completed.** The 7 layers, real-scenario layer identification, encapsulation/decapsulation, router behavior, and ICMP/traceroute behavior across real-world providers have all been worked through and verified hands-on.
@@ -268,7 +272,7 @@ resolvectl status      # not a query tool — shows the system's own DNS configu
 
 ### Real-World Cloud Outages
 
-A separate document in this folder covers researched, real DNS-related (and DNS-adjacent) outages from AWS, Cloudflare, and Google Cloud — connecting these concepts to actual large-scale failures. See [dns-outages-EN.md](./dns-outages-EN.md).
+A separate document in this folder covers researched, real DNS-related (and DNS-adjacent) outages from AWS, Cloudflare, and Google Cloud — connecting these concepts to actual large-scale failures. See [dns-outages-EN.md](./dns-outages-EN.html).
 
 ---
 

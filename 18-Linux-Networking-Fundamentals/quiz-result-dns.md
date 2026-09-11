@@ -1,3 +1,7 @@
+---
+layout: page
+---
+
 # 📊 Phase 18 Quiz Results — DNS
 
 **Score: 15/15 (100%)**

@@ -1,3 +1,7 @@
+---
+layout: page
+---
+
 # 📊 Kubernetes Fundamentals Quiz Results
 
 **Score: 15/15 (100%)**

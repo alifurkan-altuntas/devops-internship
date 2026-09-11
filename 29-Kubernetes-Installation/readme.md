@@ -1,3 +1,7 @@
+---
+layout: page
+---
+
 # ☸️ Kubernetes Kurulum Yöntemleri — Vagrant, kubeadm, MicroK8s, minikube, Kubespray
 
 28. fazda Kubernetes'in temel kavramlarını (GitOps, küme mimarisi, kubectl) işledim. Bu fazda k8s-tr roadmap'inin önerdiği beş kurulum yöntemini (Vagrant, Kubespray, MicroK8s, kubeadm, minikube) sırayla, gerçekten kurup test ederek karşılaştırdım.

@@ -1,3 +1,7 @@
+---
+layout: page
+---
+
 # 📁 Linux File System Management & Storage Diagnostics
 
 This document covers practical Linux storage operations, file system navigation, pipeline sorting, and automated space auditing workflows.

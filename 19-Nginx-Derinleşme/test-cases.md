@@ -1,3 +1,7 @@
+---
+layout: page
+---
+
 # 🧪 Nginx Test Senaryoları
 
 Nginx config'ini yazdıktan sonra 20 farklı senaryodan geçirdim — routing, path engelleme, rewrite, hata durumları. Bir tanesi beklediğim sonucu vermedi ve en çok o testten bir şey öğrendim.

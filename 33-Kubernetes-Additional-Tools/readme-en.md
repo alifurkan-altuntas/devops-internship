@@ -1,3 +1,7 @@
+---
+layout: page
+---
+
 # ☸️ Kubernetes Additional Tools — ARGO-CD, Dashboard, Helm, MetalLB, Service Mesh, kubeadm, kustomize
 
 32nd phase completed the Important Resources section. This phase I worked through the roadmap's Additional Tools section — seven tools, all proven with real tests.

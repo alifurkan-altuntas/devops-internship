@@ -1,3 +1,7 @@
+---
+layout: page
+---
+
 # 🔒 Docker Security — Hands-On Tests
 
 Security topics tested in a real environment.

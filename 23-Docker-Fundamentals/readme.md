@@ -1,3 +1,7 @@
+---
+layout: page
+---
+
 # 🐳 Docker — Image, Container, Dockerfile ve Image Optimizasyonu
 
 Docker'ı daha önce sadece `hello-world` ile test etmiştim. Bu fazda temel kavramları, Dockerfile yazımını ve image optimizasyon tekniklerini öğrendim.

@@ -1,3 +1,7 @@
+---
+layout: page
+---
+
 # 🧠 DevOps & Linux Systems Administration - Examination Logs
 
 This document targets the comprehensive validation phase covering Vagrant architecture, telemetry structures, core pipeline filters, advanced storage auditing, and role-based privilege access matrices.

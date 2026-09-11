@@ -1,3 +1,7 @@
+---
+layout: page
+---
+
 # Linux Log Analysis & Text Manipulation
 
 This document covers log parsing pipelines, IPv4/IPv6 differences across distros, and editing text with `sed`.

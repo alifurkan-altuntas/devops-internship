@@ -1,3 +1,7 @@
+---
+layout: page
+---
+
 # 🏗️ Linux Logical Volume Management (LVM)
 
 This document covers LVM basics: physical volumes, volume groups, logical volumes, online resizing, and a real incident caused by running out of host disk space.

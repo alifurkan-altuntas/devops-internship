@@ -1,3 +1,7 @@
+---
+layout: page
+---
+
 # 🗄️ rclone & Amazon S3 — Bulut Depolama ve Güvenli Erişim
 
 Bu fazda rclone'u inceledim, Amazon S3'e bağlandım. S3'ü daha önce hiç kullanmamıştım, bu faz hem S3'ü hem rclone'u aynı anda öğretti.

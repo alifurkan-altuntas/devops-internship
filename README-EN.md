@@ -1,6 +1,10 @@
+---
+layout: page
+---
+
 # 🚀 DevOps & Linux Infrastructure Journey - Türkiye Sigorta
 
-🌐 [Türkçe oku](./README.md)
+🌐 [Türkçe oku](./README.html)
 
 Welcome to my DevOps engineering journal. This repository documents my learning path, infrastructure automation practices, error resolutions, and Linux systems administration tasks during my internship.
 
@@ -22,68 +26,68 @@ Bilingual documentation (TR/EN) complete for all phases (01–24).
 
 ## 📁 Repository Structure
 
-- [01-Linux-Basics](./01-Linux-Basics/): Core Linux commands and text processing (`awk`, `grep`, `cut`), and custom automation scripts. ([EN](./01-Linux-Basics/readme-en.md) / [TR](./01-Linux-Basics/readme.md))
-- [02-Vagrant-Automation](./02-Vagrant-Automation/): Infrastructure as Code (IaC) environments, and multi-distro provisioning. ([EN](./02-Vagrant-Automation/readme-en.md) / [TR](./02-Vagrant-Automation/readme.md))
-- [03-File-System-Management](./03-File-System-Management/): Storage diagnostics, disk write operations (`dd`), and sorting pipelines. ([EN](./03-File-System-Management/readme-en.md) / [TR](./03-File-System-Management/readme.md))
-- [04-User-Privilege-Management](./04-User-Privilege-Management/): Identity access control, system group lifecycles, and sudoers configuration (Least Privilege Principle). ([EN](./04-User-Privilege-Management/readme-en.md) / [TR](./04-User-Privilege-Management/readme.md))
-- [05-Linux-Permissions](./05-Linux-Permissions/): File system access control, recursive ownership changes, and sticky bit isolation. ([EN](./05-Linux-Permissions/readme-en.md) / [TR](./05-Linux-Permissions/readme.md))
-- [06-Linux-Process-Management](./06-Linux-Process-Management/): Process status monitoring, CPU priority adjustments (`nice`/`renice`), and signals. ([EN](./06-Linux-Process-Management/readme-en.md) / [TR](./06-Linux-Process-Management/readme.md))
-- [07-Linux-Service-Management](./07-Linux-Service-Management/): Systemd service management, zero-downtime reloads, and Log Management with journalctl. ([EN](./07-Linux-Service-Management/readme-en.md) / [TR](./07-Linux-Service-Management/readme.md))
-- [08-Linux-Log-Analysis](./08-Linux-Log-Analysis/): Log parsing pipelines, `sed`, and IPv4/IPv6 differences across distros. ([EN](./08-Linux-Log-Analysis/readme-en.md) / [TR](./08-Linux-Log-Analysis/readme.md))
-- [09-Linux-Network-Management](./09-Linux-Network-Management/): DNS lookups, checking listening ports, and TLS certificate verification. ([EN](./09-Linux-Network-Management/readme-en.md) / [TR](./09-Linux-Network-Management/readme.md))
-- [10-Linux-Storage-Management](./10-Linux-Storage-Management/): Disk partitioning, formatting with `ext4`, and persistent mounts via `/etc/fstab`. ([EN](./10-Linux-Storage-Management/readme-en.md) / [TR](./10-Linux-Storage-Management/readme.md))
-- [11-Linux-LVM-Management](./11-Linux-LVM-Management/): LVM setup, live volume resizing, and a disk-space incident writeup. ([EN](./11-Linux-LVM-Management/readme-en.md) / [TR](./11-Linux-LVM-Management/readme.md))
-- [12-Linux-SSH-Management](./12-Linux-SSH-Management/): Passwordless SSH access via key pairs, SSH config shortcuts, and file transfers with SCP/SFTP. ([EN](./12-Linux-SSH-Management/readme-en.md) / [TR](./12-Linux-SSH-Management/readme.md))
-- [13-Linux-Proxy-Management](./13-Linux-Proxy-Management/): Forward vs reverse proxy concepts, Nginx's `proxy_pass`, and a real 502 Bad Gateway debugging story. ([EN](./13-Linux-Proxy-Management/readme-en.md) / [TR](./13-Linux-Proxy-Management/readme.md))
-- [14-Linux-Bash-Scripting](./14-Linux-Bash-Scripting/): Variables, command substitution, numeric conditions, and a disk usage alert script. ([EN](./14-Linux-Bash-Scripting/readme-en.md) / [TR](./14-Linux-Bash-Scripting/readme.md))
-- [15-Linux-Cron-Automation](./15-Linux-Cron-Automation/): Scheduling with `cron` and `at`, a real `sudo`-in-cron debugging story, and a look at `logrotate`. ([EN](./15-Linux-Cron-Automation/readme-en.md) / [TR](./15-Linux-Cron-Automation/readme.md))
-- [16-Git-Basics](./16-Git-Basics/): `git clone`, branching, merging, and a real push-rejected/editor-stuck conflict resolved on this exact repo. ([EN](./16-Git-Basics/readme-en.md) / [TR](./16-Git-Basics/readme.md))
-- [17-Mini-Project](./17-Mini-Project/): Nginx, Docker, Git, and SSH set up on a real rented server — a static page pulled from this repo and published live. ([EN](./17-Mini-Project/readme-en.md) / [TR](./17-Mini-Project/readme.md))
-- [18-Linux-Networking-Fundamentals](./18-Linux-Networking-Fundamentals/): OSI model, routing & forwarding, and DNS (resolver chain, record types, TTL) — verified hands-on with `tcpdump` and `dig +trace`. Also includes research into real outages from AWS/Cloudflare/Google Cloud. ([EN](./18-Linux-Networking-Fundamentals/readme-en.md) / [TR](./18-Linux-Networking-Fundamentals/readme.md) — Outage research: [EN](./18-Linux-Networking-Fundamentals/dns-outages-EN.md) / [TR](./18-Linux-Networking-Fundamentals/dns-outages-TR.md))
-- [19-Nginx-Derinleşme](./19-Nginx-Derinleşme/): Reverse proxy, path-based routing, path rewrite, path blocking, and forward proxy (Squid) — all tested hands-on on a real server. ([EN](./19-Nginx-Derinleşme/readme-en.md) / [TR](./19-Nginx-Derinleşme/readme.md))
-- [20-Rate-Limiting-Load-Balancing](./20-Rate-Limiting-Load-Balancing/): Nginx rate limiting (`limit_req_zone`, `burst`, `nodelay`) and load balancing (round-robin, failover, `least_conn`, `ip_hash`). ([TR](./20-Rate-Limiting-Load-Balancing/readme.md) / [EN](./20-Rate-Limiting-Load-Balancing/readme-en.md))
-- [21-OpenResty-API](./21-OpenResty-API/): Token authentication with OpenResty, PostgreSQL, MySQL, and Redis integration — deployed with Docker Compose. ([TR](./21-OpenResty-API/readme.md) / [EN](./21-OpenResty-API/readme-en.md))
-- [22-rclone-S3](./22-rclone-S3/): Connecting to Amazon S3 with rclone, testing performance parameters, and exposing a private bucket over HTTP with `rclone serve http`. ([TR](./22-rclone-S3/readme.md) / [EN](./22-rclone-S3/readme-en.md))
-- [23-Docker-Fundamentals](./23-Docker-Fundamentals/): Image, container, Dockerfile basics, multi-stage build, layer caching, Compose volume/network behavior, Windows containers (conceptual). ([TR](./23-Docker-Fundamentals/readme.md) / [EN](./23-Docker-Fundamentals/readme-en.md)) — Hands-on: ([TR](./23-Docker-Fundamentals/practice.md) / [EN](./23-Docker-Fundamentals/practice-en.md))
-- [24-Docker-Security](./24-Docker-Security/): Docker security — non-root containers, `.dockerignore`, image scanning with Trivy. ([TR](./24-Docker-Security/readme.md) / [EN](./24-Docker-Security/readme-en.md)) — Hands-on: ([TR](./24-Docker-Security/practice.md) / [EN](./24-Docker-Security/practice-en.md))
-- [25-Docker-Advanced-Security](./25-Docker-Advanced-Security/): Distroless image, read-only filesystem, resource limits, BuildKit, Hadolint, image tag immutability, docker-bench-security, image signing (Cosign), seccomp, AppArmor, Kaniko, Jib, PHP build example, Falco, SBOM (Syft+Grype). ([TR](./25-Docker-Advanced-Security/readme.md) / [EN](./25-Docker-Advanced-Security/readme-en.md)) — Hands-on: ([TR](./25-Docker-Advanced-Security/practice.md) / [EN](./25-Docker-Advanced-Security/practice-en.md))
-- [26-IaC-Scanning](./26-IaC-Scanning/): Static scanning of Dockerfile/YAML with Trivy config, HEALTHCHECK. ([TR](./26-IaC-Scanning/readme.md) / [EN](./26-IaC-Scanning/readme-en.md)) — Hands-on: ([TR](./26-IaC-Scanning/practice.md) / [EN](./26-IaC-Scanning/practice-en.md))
-- [27-Docker-Alternatives](./27-Docker-Alternatives/): Podman, containerd, CRI-O, Buildah — rootless/daemonless proofs, build speed comparison. ([TR](./27-Docker-Alternatives/readme.md) / [EN](./27-Docker-Alternatives/readme-en.md)) — Hands-on: ([TR](./27-Docker-Alternatives/practice.md) / [EN](./27-Docker-Alternatives/practice-en.md))
-- [28-Kubernetes-Fundamentals](./28-Kubernetes-Fundamentals/): Kubernetes fundamentals — GitOps, container history, self-healing, envsubst, cluster architecture (kube-apiserver, etcd, kube-scheduler, kubelet, coredns, kube-proxy, CNI), kubectl. ([TR](./28-Kubernetes-Fundamentals/readme.md) / [EN](./28-Kubernetes-Fundamentals/readme-en.md))
-- [29-Kubernetes-Installation](./29-Kubernetes-Installation/): A real, hands-on comparison of five installation methods (Vagrant, kubeadm, MicroK8s, minikube, Kubespray) — including outdated sources, port conflicts, and leftover cleanup. ([TR](./29-Kubernetes-Installation/readme.md) / [EN](./29-Kubernetes-Installation/readme-en.md))
-- [30-Kubernetes-Basic-Resources](./30-Kubernetes-Basic-Resources/): Pod, ReplicaSet, Deployment, Service (all types), ConfigMaps, Secrets (base64 vs real encryption, EncryptionConfiguration), Canary Deployment — all proven with real tests. ([TR](./30-Kubernetes-Basic-Resources/readme.md) / [EN](./30-Kubernetes-Basic-Resources/readme-en.md))
-- [31-Kubernetes-Other-Resources](./31-Kubernetes-Other-Resources/): StatefulSets, Volumes, Ingress, Jobs & Cronjobs, Resources and Limits, DaemonSets, HPA, VPA, Permissions (RBAC) — nine topics, all proven with real tests. ([TR](./31-Kubernetes-Other-Resources/readme.md) / [EN](./31-Kubernetes-Other-Resources/readme-en.md))
-- [32-Kubernetes-Important-Resources](./32-Kubernetes-Important-Resources/): Labels, Rolling Updates, Liveness and Readiness, Taints and Affinity — four topics, all proven with real tests. ([TR](./32-Kubernetes-Important-Resources/readme.md) / [EN](./32-Kubernetes-Important-Resources/readme-en.md))
-- [33-Kubernetes-Additional-Tools](./33-Kubernetes-Additional-Tools/): ARGO-CD, Dashboard, Helm, MetalLB, Service Mesh, kubeadm, kustomize — seven tools, all proven with real tests. ([TR](./33-Kubernetes-Additional-Tools/readme.md) / [EN](./33-Kubernetes-Additional-Tools/readme-en.md))
-- [34-Kubernetes-Tasks](./34-Kubernetes-Tasks/): Security (JVM), Internal Load Balancing, Log Collection, Best Practices, CKA Topics — five topics, all proven with real tests. ([TR](./34-Kubernetes-Tasks/readme.md) / [EN](./34-Kubernetes-Tasks/readme-en.md))
-- [35-Kubernetes-Security-Tools](./35-Kubernetes-Security-Tools/): Kyverno (validate/mutate/generate), NeuVector (CVE scanning) — outside the roadmap, with real tests. ([TR](./35-Kubernetes-Security-Tools/readme.md) / [EN](./35-Kubernetes-Security-Tools/readme-en.md))
-- [36-Kubernetes-Advanced-Topics](./36-Kubernetes-Advanced-Topics/): Network Configuration, Gateway API, Kubectl Shortcuts — three topics, all proven with real tests. ([TR](./36-Kubernetes-Advanced-Topics/readme.md) / [EN](./36-Kubernetes-Advanced-Topics/readme-en.md))
-- [37-Kubernetes-Security](./37-Kubernetes-Security/): Overview, Admission Controllers, Network Policy, RBAC, Admission Policy, Image Security, Manifest Security, CIS Benchmark, System Hardening, Kubespray Hardening — nine topics, the roadmap's final section. ([TR](./37-Kubernetes-Security/readme.md) / [EN](./37-Kubernetes-Security/readme-en.md))
-- [38-OpenShift](./38-OpenShift/): What It Is, Comparison, Management, Build & Push, OC Client — the roadmap's supplementary section, covered conceptually. ([TR](./38-OpenShift/readme.md) / [EN](./38-OpenShift/readme-en.md))
-- [39-Cilium-L7-Security](./39-Cilium-L7-Security/): Payment service scenario — migrating from Calico to Cilium, L7 network policy, DNS exfiltration protection, Hubble observability. Outside the roadmap, in a scenario-based application engineering format; with real runnable YAML/script files. ([TR](./39-Cilium-L7-Security/readme.md) / [EN](./39-Cilium-L7-Security/readme-en.md))
-- [additionals/ssl](./additionals/ssl/): An explanation of how SSL/TLS works, with no technical terminology at all, entirely through a real-world analogy (a sealed letter between two companies, a notary chain, a corporate mail-control office). ([TR](./additionals/ssl/readme.md) / [EN](./additionals/ssl/readme-en.md))
-- [additionals/security-situation](./additionals/security-situation/): A real security incident — a server abused via DNS rebinding and an open forward proxy (SSRF), with root cause analysis and fix. ([TR](./additionals/security-situation/readme.md) / [EN](./additionals/security-situation/readme-en.md))
-- [additionals/kubernetes-terim-derinlesmesi](./additionals/kubernetes-terim-derinlesmesi/): Topics I researched myself — etcd's general mechanics, the Raft protocol, CNI/kube-proxy (VXLAN, BGP, Service, iptables/IPVS). An ongoing document. ([TR](./additionals/kubernetes-terim-derinlesmesi/readme.md) / [EN](./additionals/kubernetes-terim-derinlesmesi/readme-en.md))
+- [01-Linux-Basics](./01-Linux-Basics/): Core Linux commands and text processing (`awk`, `grep`, `cut`), and custom automation scripts. ([EN](./01-Linux-Basics/readme-en.html) / [TR](./01-Linux-Basics/readme.html))
+- [02-Vagrant-Automation](./02-Vagrant-Automation/): Infrastructure as Code (IaC) environments, and multi-distro provisioning. ([EN](./02-Vagrant-Automation/readme-en.html) / [TR](./02-Vagrant-Automation/readme.html))
+- [03-File-System-Management](./03-File-System-Management/): Storage diagnostics, disk write operations (`dd`), and sorting pipelines. ([EN](./03-File-System-Management/readme-en.html) / [TR](./03-File-System-Management/readme.html))
+- [04-User-Privilege-Management](./04-User-Privilege-Management/): Identity access control, system group lifecycles, and sudoers configuration (Least Privilege Principle). ([EN](./04-User-Privilege-Management/readme-en.html) / [TR](./04-User-Privilege-Management/readme.html))
+- [05-Linux-Permissions](./05-Linux-Permissions/): File system access control, recursive ownership changes, and sticky bit isolation. ([EN](./05-Linux-Permissions/readme-en.html) / [TR](./05-Linux-Permissions/readme.html))
+- [06-Linux-Process-Management](./06-Linux-Process-Management/): Process status monitoring, CPU priority adjustments (`nice`/`renice`), and signals. ([EN](./06-Linux-Process-Management/readme-en.html) / [TR](./06-Linux-Process-Management/readme.html))
+- [07-Linux-Service-Management](./07-Linux-Service-Management/): Systemd service management, zero-downtime reloads, and Log Management with journalctl. ([EN](./07-Linux-Service-Management/readme-en.html) / [TR](./07-Linux-Service-Management/readme.html))
+- [08-Linux-Log-Analysis](./08-Linux-Log-Analysis/): Log parsing pipelines, `sed`, and IPv4/IPv6 differences across distros. ([EN](./08-Linux-Log-Analysis/readme-en.html) / [TR](./08-Linux-Log-Analysis/readme.html))
+- [09-Linux-Network-Management](./09-Linux-Network-Management/): DNS lookups, checking listening ports, and TLS certificate verification. ([EN](./09-Linux-Network-Management/readme-en.html) / [TR](./09-Linux-Network-Management/readme.html))
+- [10-Linux-Storage-Management](./10-Linux-Storage-Management/): Disk partitioning, formatting with `ext4`, and persistent mounts via `/etc/fstab`. ([EN](./10-Linux-Storage-Management/readme-en.html) / [TR](./10-Linux-Storage-Management/readme.html))
+- [11-Linux-LVM-Management](./11-Linux-LVM-Management/): LVM setup, live volume resizing, and a disk-space incident writeup. ([EN](./11-Linux-LVM-Management/readme-en.html) / [TR](./11-Linux-LVM-Management/readme.html))
+- [12-Linux-SSH-Management](./12-Linux-SSH-Management/): Passwordless SSH access via key pairs, SSH config shortcuts, and file transfers with SCP/SFTP. ([EN](./12-Linux-SSH-Management/readme-en.html) / [TR](./12-Linux-SSH-Management/readme.html))
+- [13-Linux-Proxy-Management](./13-Linux-Proxy-Management/): Forward vs reverse proxy concepts, Nginx's `proxy_pass`, and a real 502 Bad Gateway debugging story. ([EN](./13-Linux-Proxy-Management/readme-en.html) / [TR](./13-Linux-Proxy-Management/readme.html))
+- [14-Linux-Bash-Scripting](./14-Linux-Bash-Scripting/): Variables, command substitution, numeric conditions, and a disk usage alert script. ([EN](./14-Linux-Bash-Scripting/readme-en.html) / [TR](./14-Linux-Bash-Scripting/readme.html))
+- [15-Linux-Cron-Automation](./15-Linux-Cron-Automation/): Scheduling with `cron` and `at`, a real `sudo`-in-cron debugging story, and a look at `logrotate`. ([EN](./15-Linux-Cron-Automation/readme-en.html) / [TR](./15-Linux-Cron-Automation/readme.html))
+- [16-Git-Basics](./16-Git-Basics/): `git clone`, branching, merging, and a real push-rejected/editor-stuck conflict resolved on this exact repo. ([EN](./16-Git-Basics/readme-en.html) / [TR](./16-Git-Basics/readme.html))
+- [17-Mini-Project](./17-Mini-Project/): Nginx, Docker, Git, and SSH set up on a real rented server — a static page pulled from this repo and published live. ([EN](./17-Mini-Project/readme-en.html) / [TR](./17-Mini-Project/readme.html))
+- [18-Linux-Networking-Fundamentals](./18-Linux-Networking-Fundamentals/): OSI model, routing & forwarding, and DNS (resolver chain, record types, TTL) — verified hands-on with `tcpdump` and `dig +trace`. Also includes research into real outages from AWS/Cloudflare/Google Cloud. ([EN](./18-Linux-Networking-Fundamentals/readme-en.html) / [TR](./18-Linux-Networking-Fundamentals/readme.html) — Outage research: [EN](./18-Linux-Networking-Fundamentals/dns-outages-EN.html) / [TR](./18-Linux-Networking-Fundamentals/dns-outages-TR.html))
+- [19-Nginx-Derinleşme](./19-Nginx-Derinleşme/): Reverse proxy, path-based routing, path rewrite, path blocking, and forward proxy (Squid) — all tested hands-on on a real server. ([EN](./19-Nginx-Derinleşme/readme-en.html) / [TR](./19-Nginx-Derinleşme/readme.html))
+- [20-Rate-Limiting-Load-Balancing](./20-Rate-Limiting-Load-Balancing/): Nginx rate limiting (`limit_req_zone`, `burst`, `nodelay`) and load balancing (round-robin, failover, `least_conn`, `ip_hash`). ([TR](./20-Rate-Limiting-Load-Balancing/readme.html) / [EN](./20-Rate-Limiting-Load-Balancing/readme-en.html))
+- [21-OpenResty-API](./21-OpenResty-API/): Token authentication with OpenResty, PostgreSQL, MySQL, and Redis integration — deployed with Docker Compose. ([TR](./21-OpenResty-API/readme.html) / [EN](./21-OpenResty-API/readme-en.html))
+- [22-rclone-S3](./22-rclone-S3/): Connecting to Amazon S3 with rclone, testing performance parameters, and exposing a private bucket over HTTP with `rclone serve http`. ([TR](./22-rclone-S3/readme.html) / [EN](./22-rclone-S3/readme-en.html))
+- [23-Docker-Fundamentals](./23-Docker-Fundamentals/): Image, container, Dockerfile basics, multi-stage build, layer caching, Compose volume/network behavior, Windows containers (conceptual). ([TR](./23-Docker-Fundamentals/readme.html) / [EN](./23-Docker-Fundamentals/readme-en.html)) — Hands-on: ([TR](./23-Docker-Fundamentals/practice.html) / [EN](./23-Docker-Fundamentals/practice-en.html))
+- [24-Docker-Security](./24-Docker-Security/): Docker security — non-root containers, `.dockerignore`, image scanning with Trivy. ([TR](./24-Docker-Security/readme.html) / [EN](./24-Docker-Security/readme-en.html)) — Hands-on: ([TR](./24-Docker-Security/practice.html) / [EN](./24-Docker-Security/practice-en.html))
+- [25-Docker-Advanced-Security](./25-Docker-Advanced-Security/): Distroless image, read-only filesystem, resource limits, BuildKit, Hadolint, image tag immutability, docker-bench-security, image signing (Cosign), seccomp, AppArmor, Kaniko, Jib, PHP build example, Falco, SBOM (Syft+Grype). ([TR](./25-Docker-Advanced-Security/readme.html) / [EN](./25-Docker-Advanced-Security/readme-en.html)) — Hands-on: ([TR](./25-Docker-Advanced-Security/practice.html) / [EN](./25-Docker-Advanced-Security/practice-en.html))
+- [26-IaC-Scanning](./26-IaC-Scanning/): Static scanning of Dockerfile/YAML with Trivy config, HEALTHCHECK. ([TR](./26-IaC-Scanning/readme.html) / [EN](./26-IaC-Scanning/readme-en.html)) — Hands-on: ([TR](./26-IaC-Scanning/practice.html) / [EN](./26-IaC-Scanning/practice-en.html))
+- [27-Docker-Alternatives](./27-Docker-Alternatives/): Podman, containerd, CRI-O, Buildah — rootless/daemonless proofs, build speed comparison. ([TR](./27-Docker-Alternatives/readme.html) / [EN](./27-Docker-Alternatives/readme-en.html)) — Hands-on: ([TR](./27-Docker-Alternatives/practice.html) / [EN](./27-Docker-Alternatives/practice-en.html))
+- [28-Kubernetes-Fundamentals](./28-Kubernetes-Fundamentals/): Kubernetes fundamentals — GitOps, container history, self-healing, envsubst, cluster architecture (kube-apiserver, etcd, kube-scheduler, kubelet, coredns, kube-proxy, CNI), kubectl. ([TR](./28-Kubernetes-Fundamentals/readme.html) / [EN](./28-Kubernetes-Fundamentals/readme-en.html))
+- [29-Kubernetes-Installation](./29-Kubernetes-Installation/): A real, hands-on comparison of five installation methods (Vagrant, kubeadm, MicroK8s, minikube, Kubespray) — including outdated sources, port conflicts, and leftover cleanup. ([TR](./29-Kubernetes-Installation/readme.html) / [EN](./29-Kubernetes-Installation/readme-en.html))
+- [30-Kubernetes-Basic-Resources](./30-Kubernetes-Basic-Resources/): Pod, ReplicaSet, Deployment, Service (all types), ConfigMaps, Secrets (base64 vs real encryption, EncryptionConfiguration), Canary Deployment — all proven with real tests. ([TR](./30-Kubernetes-Basic-Resources/readme.html) / [EN](./30-Kubernetes-Basic-Resources/readme-en.html))
+- [31-Kubernetes-Other-Resources](./31-Kubernetes-Other-Resources/): StatefulSets, Volumes, Ingress, Jobs & Cronjobs, Resources and Limits, DaemonSets, HPA, VPA, Permissions (RBAC) — nine topics, all proven with real tests. ([TR](./31-Kubernetes-Other-Resources/readme.html) / [EN](./31-Kubernetes-Other-Resources/readme-en.html))
+- [32-Kubernetes-Important-Resources](./32-Kubernetes-Important-Resources/): Labels, Rolling Updates, Liveness and Readiness, Taints and Affinity — four topics, all proven with real tests. ([TR](./32-Kubernetes-Important-Resources/readme.html) / [EN](./32-Kubernetes-Important-Resources/readme-en.html))
+- [33-Kubernetes-Additional-Tools](./33-Kubernetes-Additional-Tools/): ARGO-CD, Dashboard, Helm, MetalLB, Service Mesh, kubeadm, kustomize — seven tools, all proven with real tests. ([TR](./33-Kubernetes-Additional-Tools/readme.html) / [EN](./33-Kubernetes-Additional-Tools/readme-en.html))
+- [34-Kubernetes-Tasks](./34-Kubernetes-Tasks/): Security (JVM), Internal Load Balancing, Log Collection, Best Practices, CKA Topics — five topics, all proven with real tests. ([TR](./34-Kubernetes-Tasks/readme.html) / [EN](./34-Kubernetes-Tasks/readme-en.html))
+- [35-Kubernetes-Security-Tools](./35-Kubernetes -Security-Tools/): Kyverno (validate/mutate/generate), NeuVector (CVE scanning) — outside the roadmap, with real tests. ([TR](./35-Kubernetes -Security-Tools/readme.html) / [EN](./35-Kubernetes -Security-Tools/readme-en.html))
+- [36-Kubernetes-Advanced-Topics](./36-Kubernetes-Advanced-Tools/): Network Configuration, Gateway API, Kubectl Shortcuts — three topics, all proven with real tests. ([TR](./36-Kubernetes-Advanced-Tools/readme.html) / [EN](./36-Kubernetes-Advanced-Tools/readme-en.html))
+- [37-Kubernetes-Security](./37-Kubernetes-Security/): Overview, Admission Controllers, Network Policy, RBAC, Admission Policy, Image Security, Manifest Security, CIS Benchmark, System Hardening, Kubespray Hardening — nine topics, the roadmap's final section. ([TR](./37-Kubernetes-Security/readme.html) / [EN](./37-Kubernetes-Security/readme-en.html))
+- [38-OpenShift](./38-OpenShift/): What It Is, Comparison, Management, Build & Push, OC Client — the roadmap's supplementary section, covered conceptually. ([TR](./38-OpenShift/readme.html) / [EN](./38-OpenShift/readme-en.html))
+- [39-Cilium-L7-Security](./39-Cilium-L7-Security/): Payment service scenario — migrating from Calico to Cilium, L7 network policy, DNS exfiltration protection, Hubble observability. Outside the roadmap, in a scenario-based application engineering format; with real runnable YAML/script files. ([TR](./39-Cilium-L7-Security/readme.html) / [EN](./39-Cilium-L7-Security/readme-en.html))
+- [additionals/ssl](./additionals/ssl/): An explanation of how SSL/TLS works, with no technical terminology at all, entirely through a real-world analogy (a sealed letter between two companies, a notary chain, a corporate mail-control office). ([TR](./additionals/ssl/readme.html) / [EN](./additionals/ssl/readme-en.html))
+- [additionals/security-situation](./additionals/security-situation/): A real security incident — a server abused via DNS rebinding and an open forward proxy (SSRF), with root cause analysis and fix. ([TR](./additionals/security-situation/readme.html) / [EN](./additionals/security-situation/readme-en.html))
+- [additionals/kubernetes-terim-derinlesmesi](./additionals/kubernetes-terim-derinlesmesi/): Topics I researched myself — etcd's general mechanics, the Raft protocol, CNI/kube-proxy (VXLAN, BGP, Service, iptables/IPVS). An ongoing document. ([TR](./additionals/kubernetes-terim-derinlesmesi/readme.html) / [EN](./additionals/kubernetes-terim-derinlesmesi/readme-en.html))
 
 ### 📝 Evaluation & Assessment Artifacts
 
-- [challenges.md](./challenges.md): Scenario questions and answers (Phases 1-4).
-- [quiz-results.md](./quiz-results.md): 20-question quiz, 85% score (Phases 1-4).
-- [Phase 5 Quiz Logs](./05-Linux-Permissions/quiz-results.md): 5-question quiz on umask and sticky bit.
-- [Phase 6 Quiz Logs](./06-Linux-Process-Management/quiz-results.md): Quiz on process monitoring and signals.
-- [Phase 7 Quiz Logs](./07-Linux-Service-Management/quiz-results.md): Quiz on systemd and journalctl.
-- [Phase 8 Quiz Logs](./08-Linux-Log-Analysis/quiz-results.md): Quiz on log parsing.
-- [Phase 9 Quiz Logs](./09-Linux-Network-Management/quiz-results.md): Quiz on networking and TLS.
-- [Phase 10 Quiz Logs](./10-Linux-Storage-Management/quiz-results.md): Quiz on storage and fstab.
-- [Phase 11 Quiz Logs](./11-Linux-LVM-Management/quiz-results.md): Quiz on LVM.
-- [Phase 12 Quiz Logs](./12-Linux-SSH-Management/quiz-results.md): Quiz on SSH keys, SCP, and SFTP.
-- [Phase 13 Quiz Logs](./13-Linux-Proxy-Management/quiz-results.md): Quiz on forward/reverse proxy and Nginx routing.
-- [Phase 14 Quiz Logs](./14-Linux-Bash-Scripting/quiz-results.md): Quiz on Bash variables, conditions, and scripting basics.
-- [Phase 15 Quiz Logs](./15-Linux-Cron-Automation/quiz-results.md): Quiz on cron scheduling, sudoers, and log rotation.
-- [Phase 16 Quiz Logs](./16-Git-Basics/quiz-results.md): Quiz on Git branching, merging, and resolving a push conflict.
-- [Phase 19 & 20 Quiz Results](./19-Nginx-Derinlestirme/quiz-results.md): Nginx reverse proxy, path management, forward proxy, rate limiting and load balancing
-- [Docker Deep Dive Quiz Results](./25-Docker-Advanced-Security/quiz.md): Quiz on multi-stage build, Compose volume/network, image security, Jib/BuildKit/Kaniko, and Windows containers
-- [Kubernetes Fundamentals Quiz Results](./28-Kubernetes-Fundamentals/quiz.md): Quiz on GitOps, container history, self-healing, etcd, and cluster architecture
+- [challenges.md](./challenges.html): Scenario questions and answers (Phases 1-4).
+- [quiz-results.md](./quiz-results.html): 20-question quiz, 85% score (Phases 1-4).
+- [Phase 5 Quiz Logs](./05-Linux-Permissions/quiz-results.html): 5-question quiz on umask and sticky bit.
+- [Phase 6 Quiz Logs](./06-Linux-Process-Management/quiz-results.html): Quiz on process monitoring and signals.
+- [Phase 7 Quiz Logs](./07-Linux-Service-Management/quiz-results.html): Quiz on systemd and journalctl.
+- [Phase 8 Quiz Logs](./08-Linux-Log-Analysis/quiz-result.html): Quiz on log parsing.
+- [Phase 9 Quiz Logs](./09-Linux-Network-Management/quiz-result.html): Quiz on networking and TLS.
+- [Phase 10 Quiz Logs](./10-Linux-Storage-Management/quiz-result.html): Quiz on storage and fstab.
+- [Phase 11 Quiz Logs](./11-Linux-LVM-Management/quiz-result.html): Quiz on LVM.
+- [Phase 12 Quiz Logs](./12-Linux-SSH-Management/quiz-results.html): Quiz on SSH keys, SCP, and SFTP.
+- [Phase 13 Quiz Logs](./13-Linux-Proxy-Management/quiz-result.html): Quiz on forward/reverse proxy and Nginx routing.
+- [Phase 14 Quiz Logs](./14-Linux-Bash-Scripting/quiz-results.html): Quiz on Bash variables, conditions, and scripting basics.
+- [Phase 15 Quiz Logs](./15-Linux-Cron-Automation/quiz-results.html): Quiz on cron scheduling, sudoers, and log rotation.
+- [Phase 16 Quiz Logs](./16-Git-Basics/quiz-results.html): Quiz on Git branching, merging, and resolving a push conflict.
+- [Phase 19 & 20 Quiz Results](./19-Nginx-Derinleşme/quiz-result.html): Nginx reverse proxy, path management, forward proxy, rate limiting and load balancing
+- [Docker Deep Dive Quiz Results](./25-Docker-Advanced-Security/quiz.html): Quiz on multi-stage build, Compose volume/network, image security, Jib/BuildKit/Kaniko, and Windows containers
+- [Kubernetes Fundamentals Quiz Results](./28-Kubernetes-Fundamentals/quiz.html): Quiz on GitOps, container history, self-healing, etcd, and cluster architecture
 
 ### 🎓 Courses & Certifications
 
@@ -103,8 +107,8 @@ _Hadn't used Vagrant before — my previous virtualization experience was with V
   - Explored core Linux commands and analyzed enterprise configuration standards (FQDN defaults on Rocky Linux).
   - Wrote a shell script to monitor live system metrics.
 - **Milestones & Deliverables:**
-  - 🛠️ Automated Environment Setup: See [Vagrant Logs & Troubleshooting (EN](./02-Vagrant-Automation/readme-en.md) / [TR)](./02-Vagrant-Automation/readme.md)
-  - 📜 Linux Basics & Custom Script: See [Linux Basics Notes (EN](./01-Linux-Basics/readme-en.md) / [TR)](./01-Linux-Basics/readme.md)
+  - 🛠️ Automated Environment Setup: See [Vagrant Logs & Troubleshooting (EN](./02-Vagrant-Automation/readme-en.html) / [TR)](./02-Vagrant-Automation/readme.html)
+  - 📜 Linux Basics & Custom Script: See [Linux Basics Notes (EN](./01-Linux-Basics/readme-en.html) / [TR)](./01-Linux-Basics/readme.html)
 
 ### 🔹 June 18, 2026 | File System & Storage Diagnostics
 
@@ -140,8 +144,8 @@ _Took the 20-question quiz covering everything from the previous phases. Answere
   - Took a 20-question quiz covering IaC, filtering pipelines, and sudoers rules.
   - Documented mistakes and lessons learned (Vagrant provider setup and kernel version flags).
 - **Milestones & Deliverables:**
-  - 📝 Scenario Solutions: See [Verified Production Scenario Matrices](./challenges.md)
-  - 📊 Quiz Results: See [20-Question Quiz Results](./quiz-results.md)
+  - 📝 Scenario Solutions: See [Verified Production Scenario Matrices](./challenges.html)
+  - 📊 Quiz Results: See [20-Question Quiz Results](./quiz-results.html)
 
 ### 🔹 June 19, 2026 | File Permissions & Shared Directory Security
 
@@ -153,8 +157,8 @@ _The permission numbers (like `755` or `777`) didn't make sense to me at first �
   - Set up a shared test directory (`/tmp/test`) configured with custom **Sticky Bit** privileges (`+t`).
   - Successfully tested and confirmed that unauthorized users couldn't delete others' files across independent operator profiles, preserving environment integrity.
 - **Milestones & Deliverables:**
-  - 🔑 Security Hardening Workspace: See [Storage Diagnostics & Permissions Matrix](./05-Linux-Permissions/notes.md)
-  - 📊 Validation Diagnostics: See [Phase 5 Assessment Analytics](./05-Linux-Permissions/quiz-results.md)
+  - 🔑 Security Hardening Workspace: See [Storage Diagnostics & Permissions Matrix](./05-Linux-Permissions/readme-en.html)
+  - 📊 Validation Diagnostics: See [Phase 5 Assessment Analytics](./05-Linux-Permissions/quiz-results.html)
 
 ### 🔹 June 19, 2026 | Linux Process Management
 
@@ -166,8 +170,8 @@ _Noticed `htop` wasn't installed by default and initially thought I'd missed som
   - Compared `top` and `htop`.
   - Practiced CPU priority scheduling with `nice` and `renice`.
 - **Milestones & Deliverables:**
-  - ⚙️ Process Operations Workspace: See [Process Management Notes](./06-Linux-Process-Management/notes.md)
-  - 📊 Performance Evaluation: See [Phase 6 Clean Validation Analytics (100% Score)](./06-Linux-Process-Management/quiz-results.md)
+  - ⚙️ Process Operations Workspace: See [Process Management Notes](./06-Linux-Process-Management/readme-en.html)
+  - 📊 Performance Evaluation: See [Phase 6 Clean Validation Analytics (100% Score)](./06-Linux-Process-Management/quiz-results.html)
 
 ### 🔹 June 19, 2026 | Service Management & Logging
 
@@ -179,8 +183,8 @@ _Found that Rocky Linux doesn't use `apt` — it uses `dnf`/`yum` instead. Looki
   - Compared `enable` (persists across reboots) vs `start` (runs now).
   - Used `reload` for zero-downtime config changes and `journalctl -u -f` to follow logs live.
 - **Milestones & Deliverables:**
-  - 🏗️ Service Control Workspace: See [Systemd Daemon Lifecycles & Configurations](./07-Linux-Service-Management/notes.md)
-  - 📊 Quiz Results: See [Phase 7 Performance Evaluation (100% Score)](./07-Linux-Service-Management/quiz-results.md)
+  - 🏗️ Service Control Workspace: See [Systemd Daemon Lifecycles & Configurations](./07-Linux-Service-Management/readme-en.html)
+  - 📊 Quiz Results: See [Phase 7 Performance Evaluation (100% Score)](./07-Linux-Service-Management/quiz-results.html)
 
 ### 🔹 June 19, 2026 | Linux Log Analysis
 
@@ -192,8 +196,8 @@ _Wasn't expecting Ubuntu to return the IPv6 loopback address (`::1`) for localho
   - Fixed missing `curl` on Ubuntu's minimal image by installing it manually.
   - Built `grep`/`awk`/`sort`/`uniq` pipelines to find top IPs and count 404 errors by path.
 - **Milestones & Deliverables:**
-  - 🪵 Text Process Workspace: See [Log Analysis Notes (EN](./08-Linux-Log-Analysis/readme-en.md) / [TR)](./08-Linux-Log-Analysis/readme.md)
-  - 📊 Quiz Results: See [Phase 8 Performance Evaluation (100% Score)](./08-Linux-Log-Analysis/quiz-results.md)
+  - 🪵 Text Process Workspace: See [Log Analysis Notes (EN](./08-Linux-Log-Analysis/readme-en.html) / [TR)](./08-Linux-Log-Analysis/readme.html)
+  - 📊 Quiz Results: See [Phase 8 Performance Evaluation (100% Score)](./08-Linux-Log-Analysis/quiz-result.html)
 
 ### 🔹 June 21, 2026 | Networking & TLS
 
@@ -204,8 +208,8 @@ _First time inspecting a TLS certificate directly — at first I didn't fully un
   - Used `ss -lntp` to find which process was listening on a port, across both IPv4 and IPv6.
   - Used `openssl s_client` to inspect a certificate's trust chain, issuer, and expiration date.
 - **Milestones & Deliverables:**
-  - 🌐 Networking Workspace: See [Network & TLS Notes](./09-Linux-Network-Management/notes.md)
-  - 📊 Quiz Results: See [Phase 9 Quiz Results](./09-Linux-Network-Management/quiz-results.md)
+  - 🌐 Networking Workspace: See [Network & TLS Notes](./09-Linux-Network-Management/readme-en.html)
+  - 📊 Quiz Results: See [Phase 9 Quiz Results](./09-Linux-Network-Management/quiz-result.html)
 
 ### 🔹 June 22, 2026 | Storage & LVM
 
@@ -217,9 +221,9 @@ _This phase included a real mistake: I filled the host machine's disk while test
   - Recovered from a VM freeze caused by filling the host disk with `dd`, and switched to `fallocate` to avoid it.
   - Resized a logical volume and its filesystem live, without unmounting.
 - **Milestones & Deliverables:**
-  - 💾 Storage Workspace: See [Storage Management Notes](./10-Linux-Storage-Management/notes.md)
-  - 🏗️ LVM Workspace: See [LVM Management Notes](./11-Linux-LVM-Management/notes.md)
-  - 📊 Quiz Results: See [Phase 10 Quiz Results](./10-Linux-Storage-Management/quiz-results.md) / [Phase 11 Quiz Results](./11-Linux-LVM-Management/quiz-results.md)
+  - 💾 Storage Workspace: See [Storage Management Notes](./10-Linux-Storage-Management/readme-en.html)
+  - 🏗️ LVM Workspace: See [LVM Management Notes](./11-Linux-LVM-Management/readme-en.html)
+  - 📊 Quiz Results: See [Phase 10 Quiz Results](./10-Linux-Storage-Management/quiz-result.html) / [Phase 11 Quiz Results](./11-Linux-LVM-Management/quiz-result.html)
 
 ### 🔹 June 22, 2026 | SSH, SCP & SFTP
 
@@ -232,8 +236,8 @@ _Didn't have `ssh-copy-id` available on Windows, so I had to do the same thing m
   - Debugged a `Permission denied (publickey)` error caused by using the wrong key file, and fixed it with `-i` and an SSH config file.
   - Transferred files between host and VM using `scp` and `sftp`.
 - **Milestones & Deliverables:**
-  - 🔐 SSH Workspace: See [SSH, SCP & SFTP Notes](./12-Linux-SSH-Management/notes.md)
-  - 📊 Quiz Results: See [Phase 12 Quiz Results](./12-Linux-SSH-Management/quiz-results.md)
+  - 🔐 SSH Workspace: See [SSH, SCP & SFTP Notes](./12-Linux-SSH-Management/readme-en.html)
+  - 📊 Quiz Results: See [Phase 12 Quiz Results](./12-Linux-SSH-Management/quiz-results.html)
 
 ### 🔹 June 22, 2026 | Forward & Reverse Proxy
 
@@ -245,8 +249,8 @@ _This phase was mostly conceptual rather than fully hands-on. I understood forwa
   - Hit and diagnosed a real `502 Bad Gateway` caused by `proxy_pass` pointing to `localhost` instead of the backend VM's actual IP.
   - Learned what a 502 error specifically means (proxy couldn't reach the backend) vs. other error codes.
 - **Milestones & Deliverables:**
-  - 🔀 Proxy Workspace: See [Forward & Reverse Proxy Notes](./13-Linux-Proxy-Management/notes.md)
-  - 📊 Quiz Results: See [Phase 13 Quiz Results](./13-Linux-Proxy-Management/quiz-results.md)
+  - 🔀 Proxy Workspace: See [Forward & Reverse Proxy Notes](./13-Linux-Proxy-Management/readme-en.html)
+  - 📊 Quiz Results: See [Phase 13 Quiz Results](./13-Linux-Proxy-Management/quiz-result.html)
 
 ### 🔹 June 22, 2026 | Bash Scripting
 
@@ -259,8 +263,8 @@ _Built a script that warns when disk usage goes over 80%, piecing it together fr
   - Debugged a real `[48: command not found` error caused by a missing space in the condition syntax.
   - Made the script executable with `chmod +x` and ran it directly with `./script.sh`.
 - **Milestones & Deliverables:**
-  - 🐚 Bash Scripting Workspace: See [Bash Scripting Notes](./14-Linux-Bash-Scripting/notes.md)
-  - 📊 Quiz Results: See [Phase 14 Quiz Results](./14-Linux-Bash-Scripting/quiz-results.md)
+  - 🐚 Bash Scripting Workspace: See [Bash Scripting Notes](./14-Linux-Bash-Scripting/readme-en.html)
+  - 📊 Quiz Results: See [Phase 14 Quiz Results](./14-Linux-Bash-Scripting/quiz-results.html)
 
 ### 🔹 June 22, 2026 | Cron & Automation
 
@@ -274,8 +278,8 @@ _Wrote two scripts — one for disk usage reports, one for archiving Nginx logs 
   - Scheduled both scripts with `crontab -e` to run nightly at 02:00.
   - Looked into `logrotate` as the standard real-world tool for this kind of log management.
 - **Milestones & Deliverables:**
-  - ⏰ Cron & Automation Workspace: See [Cron & Automation Notes (EN](./15-Linux-Cron-Automation/readme-en.md) / [TR)](./15-Linux-Cron-Automation/readme.md)
-  - 📊 Quiz Results: See [Phase 15 Quiz Results](./15-Linux-Cron-Automation/quiz-results.md)
+  - ⏰ Cron & Automation Workspace: See [Cron & Automation Notes (EN](./15-Linux-Cron-Automation/readme-en.html) / [TR)](./15-Linux-Cron-Automation/readme.html)
+  - 📊 Quiz Results: See [Phase 15 Quiz Results](./15-Linux-Cron-Automation/quiz-results.html)
 
 ### 🔹 June 23, 2026 | DevOps - Linux Temelleri (Udemy Course)
 
@@ -309,8 +313,8 @@ _Tested `git branch` and `git merge` directly on this repo — created a test br
   - Diagnosed and fixed a stuck `git pull`/merge caused by a misconfigured, nonexistent editor path.
   - Reconfigured Git's default editor globally (`git config --global core.editor`).
 - **Milestones & Deliverables:**
-  - 🔧 Git Workspace: See [Git Notes](./16-Git-Basics/notes.md)
-  - 📊 Quiz Results: See [Phase 16 Quiz Results](./16-Git-Basics/quiz-results.md)
+  - 🔧 Git Workspace: See [Git Notes](./16-Git-Basics/readme-en.html)
+  - 📊 Quiz Results: See [Phase 16 Quiz Results](./16-Git-Basics/quiz-results.html)
 
 ### 🔹 June 24, 2026 | Full Review & Mini Project (Real Server)
 
@@ -326,8 +330,8 @@ _Then did the mini-project on the real server purchased this week — created a 
   - Installed Git, cloned this repository, and published a static page from it via Nginx.
   - Debugged a stale-deployment issue (source file vs. served file) and an HTTPS-vs-HTTP connection issue.
 - **Milestones & Deliverables:**
-  - 📝 Deepened Notes: [Storage](./10-Linux-Storage-Management/notes.md) · [Service Management](./07-Linux-Service-Management/notes.md) · [Permissions](./05-Linux-Permissions/notes.md) · [Log Analysis](./08-Linux-Log-Analysis/notes.md) · [Network](./09-Linux-Network-Management/notes.md) · [LVM](./11-Linux-LVM-Management/notes.md)
-  - 🚀 Mini Project: See [Mini Project Notes](./17-Mini-Project/notes.md)
+  - 📝 Deepened Notes: [Storage](./10-Linux-Storage-Management/readme-en.html) · [Service Management](./07-Linux-Service-Management/readme-en.html) · [Permissions](./05-Linux-Permissions/readme-en.html) · [Log Analysis](./08-Linux-Log-Analysis/readme-en.html) · [Network](./09-Linux-Network-Management/readme-en.html) · [LVM](./11-Linux-LVM-Management/readme-en.html)
+  - 🚀 Mini Project: See [Mini Project Notes](./17-Mini-Project/readme-en.html)
 
 ### 🔹 June 26, 2026 | Path-Based Grouping & OSI Model (In Progress)
 
@@ -342,8 +346,8 @@ _Then started on the OSI model. After learning the 7 layers conceptually, practi
   - Learned the concept of encapsulation, and installed `tcpdump` to capture a real HTTP request at the packet level.
   - Marked the OSI phase as "in progress," since encapsulation/decapsulation isn't fully covered yet.
 - **Milestones & Deliverables:**
-  - 🪵 Path-Based Grouping: [Log Analysis Notes (EN](./08-Linux-Log-Analysis/readme-en.md) / [TR)](./08-Linux-Log-Analysis/readme.md) updated
-  - 🌐 OSI Model (In Progress): [OSI Model Notes (EN](./18-Linux-Networking-Fundamentals/readme-en.md) / [TR)](./18-Linux-Networking-Fundamentals/readme.md)
+  - 🪵 Path-Based Grouping: [Log Analysis Notes (EN](./08-Linux-Log-Analysis/readme-en.html) / [TR)](./08-Linux-Log-Analysis/readme.html) updated
+  - 🌐 OSI Model (In Progress): [OSI Model Notes (EN](./18-Linux-Networking-Fundamentals/readme-en.html) / [TR)](./18-Linux-Networking-Fundamentals/readme.html)
 
 ### 🔹 June 29, 2026 | Completing OSI, Routing & Forwarding, DNS Resolution Chain
 
@@ -360,7 +364,7 @@ _Finally started on the DNS resolution chain — learned the hierarchy between r
   - Investigated why `ip_forward` was active, confirming the Docker connection.
   - Started the DNS resolution chain, following a real resolution process with `dig +trace`.
 - **Milestones & Deliverables:**
-  - 🌐 OSI Model (Complete) & Routing/Forwarding: [Notes (EN](./18-Linux-Networking-Fundamentals/readme-en.md) / [TR)](./18-Linux-Networking-Fundamentals/readme.md)
+  - 🌐 OSI Model (Complete) & Routing/Forwarding: [Notes (EN](./18-Linux-Networking-Fundamentals/readme-en.html) / [TR)](./18-Linux-Networking-Fundamentals/readme.html)
 
 ### 🔹 June 30, 2026 | DNS Record Types, TTL, and Cloud Outage Research
 
@@ -380,8 +384,8 @@ _Finally, researched real, recent outages from AWS, Cloudflare, and Google Cloud
   - Tested `nslookup`, `host`, and `resolvectl` debug tools.
   - Researched real DNS-related outages from AWS, Cloudflare, and Google Cloud, producing a sourced document.
 - **Milestones & Deliverables:**
-  - 🌐 DNS (Complete): [Networking Notes (EN](./18-Linux-Networking-Fundamentals/readme-en.md) / [TR)](./18-Linux-Networking-Fundamentals/readme.md)
-  - 🔥 Cloud Outage Research: [Notes (EN](./18-Linux-Networking-Fundamentals/dns-outages-EN.md) / [TR)](./18-Linux-Networking-Fundamentals/dns-outages-TR.md)
+  - 🌐 DNS (Complete): [Networking Notes (EN](./18-Linux-Networking-Fundamentals/readme-en.html) / [TR)](./18-Linux-Networking-Fundamentals/readme.html)
+  - 🔥 Cloud Outage Research: [Notes (EN](./18-Linux-Networking-Fundamentals/dns-outages-EN.html) / [TR)](./18-Linux-Networking-Fundamentals/dns-outages-TR.html)
 
 ### 🔹 July 1, 2026 | Nginx Deep Dive — Reverse Proxy, Path Management, Forward Proxy
 
@@ -396,7 +400,7 @@ _Set up Squid as a forward proxy. Configured Windows to use `<SERVER_IP>:3128` a
   - Applied path blocking with internal/external distinction (`allow`/`deny`).
   - Set up Squid as a forward proxy, confirmed all Windows traffic passing through it via the access log.
 - **Milestones & Deliverables:**
-  - 🌐 Nginx Deep Dive: [Notes (EN](./19-Nginx-Derinleşme/readme-en.md) / [TR)](./19-Nginx-Derinleşme/readme.md)
+  - 🌐 Nginx Deep Dive: [Notes (EN](./19-Nginx-Derinleşme/readme-en.html) / [TR)](./19-Nginx-Derinleşme/readme.html)
 
 ### 🔹 July 2, 2026 | Nginx Test Cases & Documentation Updates
 
@@ -411,8 +415,8 @@ _Also completed the bilingual documentation conversion for all phases (03–19),
   - Created test-cases.md and test-cases-EN.md.
   - Completed bilingual documentation for all phases 03–19.
 - **Milestones & Deliverables:**
-  - 🧪 Test Cases: [TR](./19-Nginx-Derinleşme/test-cases.md) / [EN](./19-Nginx-Derinleşme/test-cases-en.md)
-  - 🌐 Nginx Deep Dive: [Notes (TR](./19-Nginx-Derinleşme/readme.md) / [EN)](./19-Nginx-Derinleşme/readme-en.md)
+  - 🧪 Test Cases: [TR](./19-Nginx-Derinleşme/test-cases.html) / [EN](./19-Nginx-Derinleşme/test-cases-en.html)
+  - 🌐 Nginx Deep Dive: [Notes (TR](./19-Nginx-Derinleşme/readme.html) / [EN)](./19-Nginx-Derinleşme/readme-en.html)
 
 ### 🔹 July 3, 2026 | Rate Limiting & Load Balancing
 
@@ -423,7 +427,7 @@ _For rate limiting, defined a zone with `limit_req_zone` and applied it to all l
   - Set up load balancing — round-robin, failover, and external testing.
   - Researched `least_conn` and `ip_hash` methods.
 - **Milestones & Deliverables:**
-  - 🚦 Rate Limiting & Load Balancing: [Notes (TR](./20-Rate-Limiting-Load-Balancing/readme.md) / [EN)](./20-Rate-Limiting-Load-Balancing/readme-en.md)
+  - 🚦 Rate Limiting & Load Balancing: [Notes (TR](./20-Rate-Limiting-Load-Balancing/readme.html) / [EN)](./20-Rate-Limiting-Load-Balancing/readme-en.html)
 
 ### 🔹 July 6, 2026 | OpenResty — Token Authentication, PostgreSQL, MySQL, Redis
 
@@ -436,7 +440,7 @@ _Implemented new task: built a token-protected API with OpenResty, connecting to
   - Added pgmoon via Dockerfile.
   - `resolver 127.0.0.11` — required for container DNS resolution.
 - **Milestones & Deliverables:**
-  - 🔐 OpenResty API: [Notes (TR](./21-OpenResty-API/readme.md) / [EN)](./21-OpenResty-API/readme-en.md)
+  - 🔐 OpenResty API: [Notes (TR](./21-OpenResty-API/readme.html) / [EN)](./21-OpenResty-API/readme-en.html)
 
 ### 🔹 July 8, 2026 | rclone & Amazon S3 — Cloud Storage and Secure Access
 
@@ -449,7 +453,7 @@ _Explored rclone, created an Amazon S3 bucket and connected to it. During config
   - Exposed a private S3 bucket over HTTP with `rclone serve http`.
   - Mounted S3 as a local disk with `rclone mount`, tested cache (`--vfs-cache-mode full`, `--vfs-cache-max-size`, `--vfs-cache-max-age`).
 - **Milestones & Deliverables:**
-  - 🗄️ rclone & S3: [Notes (TR](./22-rclone-S3/readme.md) / [EN)](./22-rclone-S3/readme-en.md)
+  - 🗄️ rclone & S3: [Notes (TR](./22-rclone-S3/readme.html) / [EN)](./22-rclone-S3/readme-en.html)
 
 ### 🔹 July 8, 2026 | Docker Fundamentals — Images, Containers, Dockerfile Optimization
 
@@ -461,7 +465,7 @@ _Had only used Docker for hello-world before. In this phase I learned the core c
   - Understood Dockerfile vs docker-compose.yml.
   - Learned multi-stage build, layer caching, and RUN combining techniques.
 - **Milestones & Deliverables:**
-  - 🐳 Docker Fundamentals: [Notes (TR](./23-Docker-Fundamentals/readme.md) / [EN)](./23-Docker-Fundamentals/readme-en.md)
+  - 🐳 Docker Fundamentals: [Notes (TR](./23-Docker-Fundamentals/readme.html) / [EN)](./23-Docker-Fundamentals/readme-en.html)
 
 ### 🔹 July 9, 2026 | Docker — Hands-On Tests (Image Size, Layer Caching, Compose)
 
@@ -472,7 +476,7 @@ _Turned the conceptual Docker learning into practice. Wrote two Dockerfiles — 
   - Layer caching tested in two different scenarios.
   - Volume and network management tested with Docker Compose.
 - **Milestones & Deliverables:**
-  - 🐳 Docker Hands-On: [Notes (TR](./23-Docker-Fundamentals/practice.md) / [EN)](./23-Docker-Fundamentals/practice-en.md)
+  - 🐳 Docker Hands-On: [Notes (TR](./23-Docker-Fundamentals/practice.html) / [EN)](./23-Docker-Fundamentals/practice-en.html)
 
 ### 🔹 July 10, 2026 | Docker Security — Non-Root Containers, .dockerignore, Trivy
 
@@ -483,7 +487,7 @@ _Covered Docker security at three layers. Non-root container: every container ru
   - Protected sensitive files with `.dockerignore`.
   - Compared `python:3.11` and `python:3.11-slim` with Trivy (412 vs 20 vulnerabilities).
 - **Milestones & Deliverables:**
-  - 🔒 Docker Security: [README (TR](./24-Docker-Security/readme.md) / [EN)](./24-Docker-Security/readme-en.md) — Hands-on: ([TR](./24-Docker-Security/practice.md) / [EN](./24-Docker-Security/practice-en.md))
+  - 🔒 Docker Security: [README (TR](./24-Docker-Security/readme.html) / [EN)](./24-Docker-Security/readme-en.html) — Hands-on: ([TR](./24-Docker-Security/practice.html) / [EN](./24-Docker-Security/practice-en.html))
 
 ### 🔹 July 13, 2026 | rclone serve http — Cache and Security
 
@@ -495,7 +499,7 @@ _Took a deep dive into cache and security for `rclone serve http`. Without cache
   - Auth set up, password hidden with environment variable.
   - Cache management with remote control.
 - **Milestones & Deliverables:**
-  - 🗄️ rclone serve http Cache: [README (TR](./22-rclone-S3/readme.md) / [EN)](./22-rclone-S3/readme-en.md)
+  - 🗄️ rclone serve http Cache: [README (TR](./22-rclone-S3/readme.html) / [EN)](./22-rclone-S3/readme-en.html)
 
 ### 🔹 July 17, 2026 | Docker Advanced Security — Distroless, Read-Only, BuildKit
 
@@ -508,7 +512,7 @@ _Started Docker Advanced Security. Distroless image: unlike Alpine, there's no s
   - Questioned, tested, and proved BuildKit's parallel build.
   - Linted Dockerfile with Hadolint, learned image tag immutability.
 - **Milestones & Deliverables:**
-  - 🔒 Docker Advanced Security: [README (TR](./25-Docker-Advanced-Security/readme.md) / [EN)](./25-Docker-Advanced-Security/readme-en.md) — Hands-on: ([TR](./25-Docker-Advanced-Security/practice.md) / [EN](./25-Docker-Advanced-Security/practice-en.md))
+  - 🔒 Docker Advanced Security: [README (TR](./25-Docker-Advanced-Security/readme.html) / [EN)](./25-Docker-Advanced-Security/readme-en.html) — Hands-on: ([TR](./25-Docker-Advanced-Security/practice.html) / [EN](./25-Docker-Advanced-Security/practice-en.html))
 
 ### 🔹 July 18, 2026 | Docker Advanced Security — docker-bench-security, Image Signing
 
@@ -519,7 +523,7 @@ _docker-bench-security: scanned my Docker installation itself against the CIS be
   - Generated a key pair with Cosign, signed and verified an image.
   - Proved Cosign catches tampering with a modified-image test.
 - **Milestones & Deliverables:**
-  - 🔒 Docker Advanced Security: [README (TR](./25-Docker-Advanced-Security/readme.md) / [EN)](./25-Docker-Advanced-Security/readme-en.md) — Hands-on: ([TR](./25-Docker-Advanced-Security/practice.md) / [EN](./25-Docker-Advanced-Security/practice-en.md))
+  - 🔒 Docker Advanced Security: [README (TR](./25-Docker-Advanced-Security/readme.html) / [EN)](./25-Docker-Advanced-Security/readme-en.html) — Hands-on: ([TR](./25-Docker-Advanced-Security/practice.html) / [EN](./25-Docker-Advanced-Security/practice-en.html))
 
 ### 🔹 July 19, 2026 | Docker Advanced Security — Seccomp, AppArmor, Kaniko, Jib
 
@@ -531,7 +535,7 @@ _Seccomp: restricted the system calls a container can make to the kernel — blo
   - Built an image with Kaniko without the Docker daemon, and proved it.
   - Built a Dockerfile-less Java image with Jib.
 - **Milestones & Deliverables:**
-  - 🔒 Docker Advanced Security: [README (TR](./25-Docker-Advanced-Security/readme.md) / [EN)](./25-Docker-Advanced-Security/readme-en.md) — Hands-on: ([TR](./25-Docker-Advanced-Security/practice.md) / [EN](./25-Docker-Advanced-Security/practice-en.md))
+  - 🔒 Docker Advanced Security: [README (TR](./25-Docker-Advanced-Security/readme.html) / [EN)](./25-Docker-Advanced-Security/readme-en.html) — Hands-on: ([TR](./25-Docker-Advanced-Security/practice.html) / [EN](./25-Docker-Advanced-Security/practice-en.html))
 
 ### 🔹 July 20, 2026 | Docker Advanced Security — Falco, SBOM & IaC Scanning
 
@@ -543,8 +547,8 @@ _Falco: learned it's like a security guard watching live camera feeds, monitorin
   - Ran static IaC/Dockerfile scanning with Trivy config — found docker-compose isn't supported.
   - Wrote a clean Dockerfile with HEALTHCHECK, tested healthy/unhealthy states live.
 - **Milestones & Deliverables:**
-  - 🔒 Docker Advanced Security: [README (TR](./25-Docker-Advanced-Security/readme.md) / [EN)](./25-Docker-Advanced-Security/readme-en.md) — Hands-on: ([TR](./25-Docker-Advanced-Security/practice.md) / [EN](./25-Docker-Advanced-Security/practice-en.md))
-  - 🔍 IaC Scanning: [README (TR](./26-IaC-Scanning/readme.md) / [EN)](./26-IaC-Scanning/readme-en.md) — Hands-on: ([TR](./26-IaC-Scanning/practice.md) / [EN](./26-IaC-Scanning/practice-en.md))
+  - 🔒 Docker Advanced Security: [README (TR](./25-Docker-Advanced-Security/readme.html) / [EN)](./25-Docker-Advanced-Security/readme-en.html) — Hands-on: ([TR](./25-Docker-Advanced-Security/practice.html) / [EN](./25-Docker-Advanced-Security/practice-en.html))
+  - 🔍 IaC Scanning: [README (TR](./26-IaC-Scanning/readme.html) / [EN)](./26-IaC-Scanning/readme-en.html) — Hands-on: ([TR](./26-IaC-Scanning/practice.html) / [EN](./26-IaC-Scanning/practice-en.html))
 
 ### 🔹 July 22, 2026 | Docker Alternatives — Podman, containerd, CRI-O, Buildah
 
@@ -556,7 +560,7 @@ _Researched Docker's alternatives: Podman, containerd, CRI-O, Buildah. Podman: m
   - Proved the rootless claim with a host-side process ownership test (Docker: root, Podman: regular user).
   - Compared build speed between Docker and Podman, discovered image store isolation.
 - **Milestones & Deliverables:**
-  - 🔄 Docker Alternatives: [README (TR](./27-Docker-Alternatives/readme.md) / [EN)](./27-Docker-Alternatives/readme-en.md) — Hands-on: ([TR](./27-Docker-Alternatives/practice.md) / [EN](./27-Docker-Alternatives/practice-en.md))
+  - 🔄 Docker Alternatives: [README (TR](./27-Docker-Alternatives/readme.html) / [EN)](./27-Docker-Alternatives/readme-en.html) — Hands-on: ([TR](./27-Docker-Alternatives/practice.html) / [EN](./27-Docker-Alternatives/practice-en.html))
 
 ### 🔹 August 12, 2026 | SSL/TLS Task — A Simple Explanation
 
@@ -567,7 +571,7 @@ _Completed task of explaining "how SSL/TLS works" in a for-dummies style. My fir
   - Built the chain of trust, shared-key agreement, and intermediate-stop behavior through a two-company letter scenario.
   - Added TCP's fixed/one-directional structure as a real-world difference.
 - **Milestones & Deliverables:**
-  - 🔐 SSL/TLS Explainer: [README (TR](./additionals/ssl/readme.md) / [EN)](./additionals/ssl/readme-en.md)
+  - 🔐 SSL/TLS Explainer: [README (TR](./additionals/ssl/readme.html) / [EN)](./additionals/ssl/readme-en.html)
 
 ### 🔹 August 13, 2026 | Docker Deep Dive — Completing the Remaining Items
 
@@ -578,8 +582,8 @@ _Completed the three remaining items from Docker deep-dive list. Tested Docker C
   - Built and ran an image with PHP.
   - Examined why Windows containers can't run on Linux due to kernel sharing, along with the real meaning of "Docker runs everywhere."
 - **Milestones & Deliverables:**
-  - 🐳 Docker Fundamentals: [README (TR](./23-Docker-Fundamentals/readme.md) / [EN)](./23-Docker-Fundamentals/readme-en.md)
-  - 🔒 Docker Advanced Security: [README (TR](./25-Docker-Advanced-Security/readme.md) / [EN)](./25-Docker-Advanced-Security/readme-en.md)
+  - 🐳 Docker Fundamentals: [README (TR](./23-Docker-Fundamentals/readme.html) / [EN)](./23-Docker-Fundamentals/readme-en.html)
+  - 🔒 Docker Advanced Security: [README (TR](./25-Docker-Advanced-Security/readme.html) / [EN)](./25-Docker-Advanced-Security/readme-en.html)
 
 ### 🔹 August 14, 2026 | Kubernetes Fundamentals — GitOps, Cluster Architecture, kubectl
 
@@ -593,8 +597,8 @@ _Worked through Kubernetes' Fundamental Concepts section start to finish, follow
   - Tested kubectl's basic commands (get, create, scale, set image, exec, delete).
   - Took a 15-question quiz, scored 15/15.
 - **Milestones & Deliverables:**
-  - ☸️ Kubernetes Fundamentals: [README (TR](./28-Kubernetes-Fundamentals/readme.md) / [EN)](./28-Kubernetes-Fundamentals/readme-en.md)
-  - 📊 Quiz Results: [Kubernetes Fundamentals Quiz](./28-Kubernetes-Fundamentals/quiz.md)
+  - ☸️ Kubernetes Fundamentals: [README (TR](./28-Kubernetes-Fundamentals/readme.html) / [EN)](./28-Kubernetes-Fundamentals/readme-en.html)
+  - 📊 Quiz Results: [Kubernetes Fundamentals Quiz](./28-Kubernetes-Fundamentals/quiz.html)
 
 ### 🔹 August 15, 2026 | Kubernetes Installation Methods — Starting with kubeadm
 
@@ -605,7 +609,7 @@ _Started working through the k8s-tr roadmap's "Installation" section. Decided to
   - Identified outdated k8s-tr repo addresses for CRI-O and kubeadm/kubelet/kubectl and researched current ones.
   - Permanently disabled swap (via `/etc/fstab` edit).
 - **Milestones & Deliverables:**
-  - ☸️ Kubernetes Installation Methods (in progress): [README (TR](./29-Kubernetes-Installation/readme.md) / [EN)](./29-Kubernetes-Installation/readme-en.md)
+  - ☸️ Kubernetes Installation Methods (in progress): [README (TR](./29-Kubernetes-Installation/readme.html) / [EN)](./29-Kubernetes-Installation/readme-en.html)
 
 ### 🔹 August 17, 2026 | kubeadm Completed, MicroK8s and minikube Tested
 
@@ -617,7 +621,7 @@ _Continued the kubeadm installation. `kubeadm init` completed successfully, thou
   - Found and fixed an old Podman network config overriding Calico.
   - Installed MicroK8s and minikube, verified both with real pod tests.
 - **Milestones & Deliverables:**
-  - ☸️ Kubernetes Installation Methods (in progress): [README (TR](./29-Kubernetes-Installation/readme.md) / [EN)](./29-Kubernetes-Installation/readme-en.md)
+  - ☸️ Kubernetes Installation Methods (in progress): [README (TR](./29-Kubernetes-Installation/readme.html) / [EN)](./29-Kubernetes-Installation/readme-en.html)
 
 ### 🔹 August 18, 2026 | Kubespray Completed, etcd/Raft/CNI Deep Dive
 
@@ -633,9 +637,9 @@ _Removed the kubectl section ("kubectl is just a tool"), fixed the gap in the et
   - Completed the comparison document for all five methods (including Vagrant).
   - Researched and deepened understanding of etcd's general mechanics, its alternatives, the Raft protocol, and CNI/kube-proxy (VXLAN, BGP, Service, iptables/IPVS), verified with real evidence (vxlan.calico).
 - **Milestones & Deliverables:**
-  - ☸️ Kubernetes Installation Methods: [README (TR](./29-Kubernetes-Installation/readme.md) / [EN)](./29-Kubernetes-Installation/readme-en.md)
-  - ☸️ Kubernetes Fundamentals (updated): [README (TR](./28-Kubernetes-Fundamentals/readme.md) / [EN)](./28-Kubernetes-Fundamentals/readme-en.md)
-  - 🔍 Kubernetes Terminology Deep Dive: [README (TR](./additionals/kubernetes-terim-derinlesmesi/readme.md) / [EN)](./additionals/kubernetes-terim-derinlesmesi/readme-en.md)
+  - ☸️ Kubernetes Installation Methods: [README (TR](./29-Kubernetes-Installation/readme.html) / [EN)](./29-Kubernetes-Installation/readme-en.html)
+  - ☸️ Kubernetes Fundamentals (updated): [README (TR](./28-Kubernetes-Fundamentals/readme.html) / [EN)](./28-Kubernetes-Fundamentals/readme-en.html)
+  - 🔍 Kubernetes Terminology Deep Dive: [README (TR](./additionals/kubernetes-terim-derinlesmesi/readme.html) / [EN)](./additionals/kubernetes-terim-derinlesmesi/readme-en.html)
 
 ### 🔹 August 19, 2026 | Basic Resources — Pod/ReplicaSet/Deployment, Service
 
@@ -684,7 +688,7 @@ _Finally worked through Canary Deployment — connected two Deployments with the
   - Proved Canary Deployment with real traffic distribution.
   - Closed out all remaining gaps in the Basic Resources section.
 - **Milestones & Deliverables:**
-  - ☸️ Kubernetes Basic Resources: [README (TR](./30-Kubernetes-Basic-Resources/readme.md) / [EN)](./30-Kubernetes-Basic-Resources/readme-en.md)
+  - ☸️ Kubernetes Basic Resources: [README (TR](./30-Kubernetes-Basic-Resources/readme.html) / [EN)](./30-Kubernetes-Basic-Resources/readme-en.html)
 
 ### 🔹 August 22, 2026 | Kubernetes Fundamentals Document Revised
 
@@ -695,7 +699,7 @@ _Went back through the Phase 28 (Kubernetes Fundamentals) document from scratch.
   - Added real function and cross-references to every concept.
   - Added Mermaid diagrams for cluster architecture and GitOps.
 - **Milestones & Deliverables:**
-  - ☸️ Kubernetes Fundamentals (updated): [README (TR](./28-Kubernetes-Fundamentals/readme.md) / [EN)](./28-Kubernetes-Fundamentals/readme-en.md)
+  - ☸️ Kubernetes Fundamentals (updated): [README (TR](./28-Kubernetes-Fundamentals/readme.html) / [EN)](./28-Kubernetes-Fundamentals/readme-en.html)
 
 ### 🔹 August 23, 2026 | Kubernetes Basic Resources Document Revised
 
@@ -706,7 +710,7 @@ _Rewrote the Phase 30 (Kubernetes Basic Resources) document to the same standard
   - Added real YAML examples to the document.
   - Added four separate Mermaid diagrams (hierarchy/flow).
 - **Milestones & Deliverables:**
-  - ☸️ Kubernetes Basic Resources (updated): [README (TR](./30-Kubernetes-Basic-Resources/readme.md) / [EN)](./30-Kubernetes-Basic-Resources/readme-en.md)
+  - ☸️ Kubernetes Basic Resources (updated): [README (TR](./30-Kubernetes-Basic-Resources/readme.html) / [EN)](./30-Kubernetes-Basic-Resources/readme-en.html)
 
 ### 🔹 August 24, 2026 | Other Resources — Started StatefulSets
 
@@ -761,7 +765,7 @@ _While writing the document (Phase 31: Other Resources), added that StatefulSets
   - Researched and documented five topics' non-Kubernetes, general-technology origins.
   - Fully completed the Other Resources section (StatefulSets, Volumes, Ingress, Jobs & Cronjobs, Resources and Limits, DaemonSets, HPA, VPA, Permissions).
 - **Milestones & Deliverables:**
-  - ☸️ Kubernetes Other Resources: [README (TR](./31-Kubernetes-Other-Resources/readme.md) / [EN)](./31-Kubernetes-Other-Resources/readme-en.md)
+  - ☸️ Kubernetes Other Resources: [README (TR](./31-Kubernetes-Other-Resources/readme.html) / [EN)](./31-Kubernetes-Other-Resources/readme-en.html)
 
 ### 🔹 August 27, 2026 | Important Resources Completed — Labels, Rolling Updates, Liveness and Readiness, Taints and Affinity
 
@@ -782,7 +786,7 @@ _Took a 15-question quiz covering all four topics. Then wrote the Phase 32 (Impo
   - Proved Taint/Toleration and Node Affinity's required/preferred difference with real tests.
   - Fully completed the Important Resources section (Labels, Rolling Updates, Liveness and Readiness, Taints and Affinity).
 - **Milestones & Deliverables:**
-  - ☸️ Kubernetes Important Resources: [README (TR](./32-Kubernetes-Important-Resources/readme.md) / [EN)](./32-Kubernetes-Important-Resources/readme-en.md)
+  - ☸️ Kubernetes Important Resources: [README (TR](./32-Kubernetes-Important-Resources/readme.html) / [EN)](./32-Kubernetes-Important-Resources/readme-en.html)
 
 ### 🔹 August 28, 2026 | Additional Tools — ARGO-CD, Dashboard
 
@@ -822,7 +826,7 @@ _Once the Additional Tools section was fully complete, wrote the Phase 33 docume
   - Completed Service Mesh (Istio), kubeadm (HA, conceptual), kustomize — all proven with real tests (except kubeadm).
   - Fully completed the Additional Tools section (ARGO-CD, Dashboard, Helm, MetalLB, Service Mesh, kubeadm, kustomize).
 - **Milestones & Deliverables:**
-  - ☸️ Kubernetes Additional Tools: [README (TR](./33-Kubernetes-Additional-Tools/readme.md) / [EN)](./33-Kubernetes-Additional-Tools/readme-en.md)
+  - ☸️ Kubernetes Additional Tools: [README (TR](./33-Kubernetes-Additional-Tools/readme.html) / [EN)](./33-Kubernetes-Additional-Tools/readme-en.html)
 
 ### 🔹 August 31, 2026 | Tasks Section Reviewed, Gaps Found, Topics Revisited
 
@@ -843,7 +847,7 @@ _Once the Tasks section was fully complete, wrote the Phase 34 document, then pr
   - Identified that `PodSecurityPolicy` was removed and `stern`'s old repo was abandoned, replaced with current equivalents.
   - Fully completed the Tasks section (Security, Internal Load Balancing, Log Collection, Best Practices, CKA Topics).
 - **Milestones & Deliverables:**
-  - ☸️ Kubernetes Tasks: [README (TR](./34-Kubernetes-Tasks/readme.md) / [EN)](./34-Kubernetes-Tasks/readme-en.md)
+  - ☸️ Kubernetes Tasks: [README (TR](./34-Kubernetes-Tasks/readme.html) / [EN)](./34-Kubernetes-Tasks/readme-en.html)
 
 ### 🔹 September 1, 2026 | Kyverno, NeuVector, Vagrant — Security Tools Outside the Roadmap
 
@@ -863,8 +867,8 @@ _Also, per feedback, reorganized the Phase 31 document into 5 functional groups 
   - Completed the Vagrant backlog item pending since Phase 29.
   - Regrouped the Phase 31 document by function.
 - **Milestones & Deliverables:**
-  - ☸️ Kubernetes Security Tools: [README (TR](./35-Kubernetes-Security-Tools/readme.md) / [EN)](./35-Kubernetes-Security-Tools/readme-en.md)
-  - 🔄 Phase 31 (regrouped): [README (TR](./31-Kubernetes-Other-Resources/readme.md) / [EN)](./31-Kubernetes-Other-Resources/readme-en.md)
+  - ☸️ Kubernetes Security Tools: [README (TR](./35-Kubernetes -Security-Tools/readme.html) / [EN)](./35-Kubernetes -Security-Tools/readme-en.html)
+  - 🔄 Phase 31 (regrouped): [README (TR](./31-Kubernetes-Other-Resources/readme.html) / [EN)](./31-Kubernetes-Other-Resources/readme-en.html)
 
 ### 🔹 September 2, 2026 | Advanced Topics — Network Configuration, Gateway API, Kubectl Shortcuts
 
@@ -879,7 +883,7 @@ _Moved to Kubectl Shortcuts. Noticed a multi-line heredoc block silently broke i
   - Identified and fixed: an old bandwidth unit bug no longer applying, an incomplete install command, and a heredoc silently failing in the terminal.
   - Fully completed the Advanced Topics section.
 - **Milestones & Deliverables:**
-  - ☸️ Kubernetes Advanced Topics: [README (TR](./36-Kubernetes-Advanced-Topics/readme.md) / [EN)](./36-Kubernetes-Advanced-Topics/readme-en.md)
+  - ☸️ Kubernetes Advanced Topics: [README (TR](./36-Kubernetes-Advanced-Tools/readme.html) / [EN)](./36-Kubernetes-Advanced-Tools/readme-en.html)
 
 ### 🔹 September 3, 2026 | Security — Overview, Admission Controllers, Network Policy, RBAC
 
@@ -928,7 +932,7 @@ _Once the Security section was fully complete, wrote the Phase 37 document — t
   - Completed Kubespray Hardening — disproved a fake label claim with a real test.
   - **The Security section, and with it the entire Kubernetes roadmap, is now fully complete.**
 - **Milestones & Deliverables:**
-  - ☸️ Kubernetes Security: [README (TR](./37-Kubernetes-Security/readme.md) / [EN)](./37-Kubernetes-Security/readme-en.md)
+  - ☸️ Kubernetes Security: [README (TR](./37-Kubernetes-Security/readme.html) / [EN)](./37-Kubernetes-Security/readme-en.html)
 
 ### 🔹 September 7, 2026 (continued) | OpenShift — Conceptual Review
 
@@ -940,7 +944,7 @@ _As a result, covered OpenShift conceptually — clarified with cross-references
   - Completed the OpenShift section (What It Is/Comparison, Management, Build & Push, OC Client) conceptually — honestly documented a genuine external obstacle (Red Hat account issue).
   - The roadmap's final supplementary section is now also covered.
 - **Milestones & Deliverables:**
-  - ☸️ OpenShift: [README (TR](./38-OpenShift/readme.md) / [EN)](./38-OpenShift/readme-en.md)
+  - ☸️ OpenShift: [README (TR](./38-OpenShift/readme.html) / [EN)](./38-OpenShift/readme-en.html)
 
 ### 🔹 September 8, 2026 | Cilium Setup and L7 Security Scenario
 
@@ -956,7 +960,7 @@ _Per mentor feedback, extracted the code from markdown and kept it as separate, 
   - Completed Cilium setup, L7 network policy scenario, DNS exfiltration protection, Hubble observability — all proven with real tests and screenshot evidence.
   - Code separated into real, runnable files (YAML/shell script) — not embedded in markdown.
 - **Milestones & Deliverables:**
-  - ☸️ Cilium L7 Security: [README (TR](./39-Cilium-L7-Security/readme.md) / [EN)](./39-Cilium-L7-Security/readme-en.md), along with real manifest/script files.
+  - ☸️ Cilium L7 Security: [README (TR](./39-Cilium-L7-Security/readme.html) / [EN)](./39-Cilium-L7-Security/readme-en.html), along with real manifest/script files.
 
 ### 🔹 September 9, 2026 | Jekyll/GitHub Pages Site Setup
 

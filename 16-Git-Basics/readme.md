@@ -1,3 +1,7 @@
+---
+layout: page
+---
+
 # 🔧 Git — Branch, Merge ve Gerçek Bir Push Çakışması
 
 Bu belge, `git clone`, `git commit`, `git push`, `git branch` ve `git merge` komutlarını — ve bunları bu gerçek repo üzerinde test ederken yaşanan gerçek bir debug sürecini kapsar.

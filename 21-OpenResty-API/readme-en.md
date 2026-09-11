@@ -1,3 +1,7 @@
+---
+layout: page
+---
+
 # 🔐 OpenResty — Token Authentication, PostgreSQL, MySQL, Redis
 
 In this phase I built a token-protected API with OpenResty, connecting to PostgreSQL, MySQL, and Redis. All services were brought up with Docker.

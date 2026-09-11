@@ -1,3 +1,7 @@
+---
+layout: page
+---
+
 # 🔑 Linux İzinleri & Güvenlik Sıkılaştırma
 
 Bu belge, dosya izinlerini, sahipliği, umask'ı ve sticky bit'i kapsar.

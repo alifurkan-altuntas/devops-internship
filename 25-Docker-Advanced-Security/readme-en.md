@@ -1,3 +1,7 @@
+---
+layout: page
+---
+
 # 🔒 Docker Advanced Security
 
 In phase 24 we covered the basics — non-root containers, .dockerignore, Trivy. This phase goes deeper.

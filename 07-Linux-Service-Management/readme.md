@@ -1,3 +1,7 @@
+---
+layout: page
+---
+
 # 🏗️ Linux Servis & Log Yönetimi (`systemd` Mimarisi)
 
 Bu belge, systemd servis yönetimi, journalctl ve önemli Linux dağıtımlarındaki varsayılan davranışları kapsar.

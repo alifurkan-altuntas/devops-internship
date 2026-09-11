@@ -1,3 +1,7 @@
+---
+layout: page
+---
+
 # Linux Log Analizi & Metin İşleme
 
 Bu belge, log dosyalarını işleme (parsing) pipeline'larını, dağıtımlar arası IPv4/IPv6 farklarını ve `sed` ile metin düzenlemeyi kapsar.

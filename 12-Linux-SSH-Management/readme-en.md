@@ -1,3 +1,7 @@
+---
+layout: page
+---
+
 # 🔐 Linux SSH, SCP & SFTP
 
 This document covers setting up passwordless SSH access using key pairs, and transferring files with SCP and SFTP.

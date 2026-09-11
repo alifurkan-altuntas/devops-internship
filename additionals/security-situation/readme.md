@@ -1,3 +1,7 @@
+---
+layout: page
+---
+
 # 🚨 Gerçek Bir Güvenlik Olayı — DNS Rebinding ve Açık Forward Proxy (SSRF)
 
 Docker İleri Örnekler fazına devam ederken sunucumda disk %100 dolup admin paneline giremedim. Sorunu araştırırken, 1 Temmuz'daki forward proxy denememizden (Faz 19) kalan bir yapılandırmanın, bir saldırgan tarafından haftalardır kötüye kullanıldığını keşfettim.

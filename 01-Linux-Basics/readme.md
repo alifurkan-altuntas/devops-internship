@@ -1,3 +1,7 @@
+---
+layout: page
+---
+
 # 🐧 Temel Linux Komutları & Metin İşleme
 
 Bu belge, stajın 3. günündeki temel Linux yönetimi görevleri sırasında toplanan notları, komut varyasyonlarını (`--help` keşifleri), ve gözlemleri içerir.

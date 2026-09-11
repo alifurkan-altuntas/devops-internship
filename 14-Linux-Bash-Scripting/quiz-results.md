@@ -1,3 +1,7 @@
+---
+layout: page
+---
+
 # 📊 Phase 14 Quiz Results — Bash Scripting
 
 **Score: 15/15 (100%)**

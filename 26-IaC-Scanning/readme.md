@@ -1,3 +1,7 @@
+---
+layout: page
+---
+
 # 🔍 IaC Scanning — Trivy Config, Dockerfile Misconfigurations, HEALTHCHECK
 
 25. fazda Docker image'ının ve çalışma zamanının güvenliğini öğrendik. Bu fazda altyapı kodunun kendisini (Dockerfile, docker-compose.yml, Kubernetes YAML, Terraform) statik olarak taramayı öğrendik.

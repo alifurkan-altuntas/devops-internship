@@ -1,3 +1,7 @@
+---
+layout: page
+---
+
 ## 📊 Performance Overview
 
 - **Total Examination Questions:** 5

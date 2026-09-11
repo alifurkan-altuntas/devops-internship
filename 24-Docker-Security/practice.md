@@ -1,3 +1,7 @@
+---
+layout: page
+---
+
 # 🔒 Docker Güvenliği — Uygulamalı Testler
 
 Bu belgede güvenlik konuları gerçek ortamda test edildi.

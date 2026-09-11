@@ -1,3 +1,7 @@
+---
+layout: page
+---
+
 # ☸️ Kubernetes Advanced Topics — Network Configuration, Gateway API, Kubectl Shortcuts
 
 Phase 35 covered Kyverno and NeuVector. This phase covered the roadmap's Advanced Topics section — three topics, all proven with real tests.

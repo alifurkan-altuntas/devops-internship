@@ -1,3 +1,7 @@
+---
+layout: page
+---
+
 # 🎯 Infrastructure & Systems Administration Challenge - Solutions
 
 This document serves as the verified solution matrix for the system administration challenges, validated through production simulation testing.

@@ -1,3 +1,7 @@
+---
+layout: page
+---
+
 # 🔍 IaC Scanning — Trivy Config, Dockerfile Misconfigurations, HEALTHCHECK
 
 In phase 25 we covered the security of the Docker image and its runtime. This phase covers scanning the infrastructure code itself (Dockerfile, docker-compose.yml, Kubernetes YAML, Terraform) statically.

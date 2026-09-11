@@ -1,3 +1,7 @@
+---
+layout: page
+---
+
 # 🔒 Docker İleri Seviye Güvenlik
 
 24. fazda temel güvenlik konularını öğrendik — non-root container, .dockerignore, Trivy. Bu fazda daha ileri seviye konulara geçtik.

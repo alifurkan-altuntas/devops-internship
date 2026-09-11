@@ -1,3 +1,7 @@
+---
+layout: page
+---
+
 # ☸️ Kubernetes Important Resources — Labels, Rolling Updates, Liveness and Readiness, Taints and Affinity
 
 31st phase completed the Other Resources section (StatefulSets, Volumes, Ingress, Jobs & Cronjobs, Resources and Limits, DaemonSets, HPA, VPA, Permissions). This phase I worked through the roadmap's Important Resources section — four topics, each with a software-ecosystem example, real function, cross-references, and real tests.

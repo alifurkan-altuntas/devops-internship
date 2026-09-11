@@ -1,3 +1,7 @@
+---
+layout: page
+---
+
 # 🔐 Linux SSH, SCP & SFTP
 
 Bu belge, anahtar çiftleri kullanarak şifresiz SSH erişimi kurulumunu ve SCP/SFTP ile dosya transferini kapsar.

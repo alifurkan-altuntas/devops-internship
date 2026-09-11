@@ -1,3 +1,7 @@
+---
+layout: page
+---
+
 # 🐳 Docker Alternatifleri — Uygulamalı Testler
 
 Bu belgede Podman kurulumu ve Docker ile karşılaştırma testleri yapıldı.

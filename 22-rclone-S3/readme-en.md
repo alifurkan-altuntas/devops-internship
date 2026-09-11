@@ -1,3 +1,7 @@
+---
+layout: page
+---
+
 # 🗄️ rclone & Amazon S3 — Cloud Storage and Secure Access
 
 I hadn't used S3 before — this phase taught me both S3 and rclone at the same time.

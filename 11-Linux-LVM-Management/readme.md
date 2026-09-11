@@ -1,3 +1,7 @@
+---
+layout: page
+---
+
 # 🏗️ Linux Mantıksal Hacim Yönetimi (LVM)
 
 Bu belge, LVM temellerini kapsar: fiziksel hacimler, hacim grupları, mantıksal hacimler, çevrimiçi boyutlandırma ve host disk alanı dolmasından kaynaklanan gerçek bir olay.

@@ -1,3 +1,7 @@
+---
+layout: page
+---
+
 # 🧪 Nginx Test Cases
 
 After writing the Nginx config, I ran it through 20 different scenarios — routing, path blocking, rewrite, and error conditions. One of them didn't return what I expected, and that's where I learned the most.

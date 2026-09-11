@@ -1,3 +1,7 @@
+---
+layout: page
+---
+
 # 🐳 Docker Advanced Security — Hands-On Tests
 
 This document covers the hands-on tests behind the concepts explained in readme.md.

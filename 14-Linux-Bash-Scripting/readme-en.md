@@ -1,3 +1,7 @@
+---
+layout: page
+---
+
 # 🐚 Bash Scripting — Variables, Conditions, and a Disk Usage Alert
 
 This document covers Bash variables, command substitution, numeric comparisons, and writing a small script that checks disk usage and warns if it crosses a threshold.

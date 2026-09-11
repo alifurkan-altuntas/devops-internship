@@ -1,3 +1,7 @@
+---
+layout: page
+---
+
 # 🔍 Kubernetes Terminology Deep Dive — etcd, Raft, CNI/kube-proxy (in progress)
 
 I researched and went deeper into some topics that stayed shallow in the Cluster Architecture document from Phase 28. This document is the record of that research — over time it'll grow with new sections (kubernetes.io and microservices.io readings).

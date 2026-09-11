@@ -1,3 +1,7 @@
+---
+layout: page
+---
+
 # 🔑 Linux Kullanıcı Yönetimi & Yetki Kontrolü
 
 Bu belge, kullanıcı/grup yönetimi ve `sudoers` mimarisi içinde En Düşük Yetki Prensibi (Least Privilege) kullanılarak sudo kısıtlamalarını kapsar.

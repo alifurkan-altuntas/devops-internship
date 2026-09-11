@@ -1,3 +1,7 @@
+---
+layout: page
+---
+
 # 🌐 Linux Network & Port Management
 
 This document covers DNS lookups, checking listening ports, and verifying TLS certificates.

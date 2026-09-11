@@ -1,3 +1,7 @@
+---
+layout: page
+---
+
 # 💾 Phase 10: Linux Storage & File System Management - Quiz Logs
 
 This document monitors evaluation statistics regarding logical disk structures, formatting paradigms, immutable UUID advantages, and fail-safe mounting procedures.

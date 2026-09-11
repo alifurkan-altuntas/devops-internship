@@ -1,3 +1,7 @@
+---
+layout: page
+---
+
 # 🚦 Nginx — Rate Limiting ve Load Balancing
 
 Nginx derinleşme fazından sonra iki şeyi daha ekledim: istek sayısını sınırlamak ve trafiği birden fazla backend arasında dağıtmak.

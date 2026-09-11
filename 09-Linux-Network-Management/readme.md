@@ -1,3 +1,7 @@
+---
+layout: page
+---
+
 # 🌐 Linux Ağ & Port Yönetimi
 
 Bu belge, DNS sorguları, dinleme portlarını kontrol etme ve TLS sertifikalarını doğrulamayı kapsar.

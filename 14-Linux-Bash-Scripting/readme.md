@@ -1,3 +1,7 @@
+---
+layout: page
+---
+
 # 🐚 Bash Scripting — Değişkenler, Koşullar ve Disk Kullanımı Uyarısı
 
 Bu belge, Bash değişkenlerini, komut yerleştirmeyi, sayısal karşılaştırmaları ve disk kullanımını kontrol edip eşiği aştığında uyaran küçük bir script yazmayı kapsar.

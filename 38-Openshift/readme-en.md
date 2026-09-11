@@ -1,3 +1,7 @@
+---
+layout: page
+---
+
 # ☸️ OpenShift — What It Is, Comparison, Management, Build & Push, OC Client
 
 Phase 37 completed the Security section, and with it **the entire Kubernetes roadmap**. This is the roadmap's **final, supplementary section** — OpenShift isn't a Kubernetes feature, it's a separate, enterprise platform **Red Hat built on top of Kubernetes.**

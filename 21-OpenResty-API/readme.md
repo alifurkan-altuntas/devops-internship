@@ -1,3 +1,7 @@
+---
+layout: page
+---
+
 # 🔐 OpenResty — Token Authentication, PostgreSQL, MySQL, Redis
 
 Bu fazda OpenResty ile token korumalı bir API kurdum. PostgreSQL, MySQL ve Redis'i birlikte kullandım. Tüm servisler Docker ile ayağa kaldırıldı.

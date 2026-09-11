@@ -1,3 +1,7 @@
+---
+layout: page
+---
+
 # ☸️ Kubernetes Tasks — Security, Internal Load Balancing, Log Collection, Best Practices, CKA Topics
 
 33rd phase completed the Additional Tools section. This phase I worked through the roadmap's Tasks section — five topics, all proven with real tests.

@@ -1,3 +1,7 @@
+---
+layout: page
+---
+
 # 🧠 Phase 5: Linux Permissions & Security Hardening - Quiz Logs
 
 This document tracks the comprehensive assessment results regarding user mask configurations, identity alignment processes, resource group segregation, and special authorization boundaries.

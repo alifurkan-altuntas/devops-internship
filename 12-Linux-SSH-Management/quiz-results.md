@@ -1,3 +1,7 @@
+---
+layout: page
+---
+
 # 📊 Phase 12 Quiz Results — SSH, SCP & SFTP
 
 **Score: 15/15 (100%)**

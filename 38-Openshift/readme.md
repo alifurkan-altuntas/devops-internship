@@ -1,3 +1,7 @@
+---
+layout: page
+---
+
 # ☸️ OpenShift — Nedir, Karşılaştırma, Management, Build & Push, OC Client
 
 Faz 37'de Güvenlik bölümünü, ve onunla birlikte **tüm Kubernetes roadmap'ini** tamamlamıştım. Bu, roadmap'in **eklenti niteliğindeki son bölümü** — OpenShift, Kubernetes'in bir özelliği değil, Red Hat'in **Kubernetes üzerine inşa ettiği ayrı, kurumsal bir platform.**

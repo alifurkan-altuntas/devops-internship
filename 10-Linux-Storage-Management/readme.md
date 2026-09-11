@@ -1,3 +1,7 @@
+---
+layout: page
+---
+
 # 💾 Linux Depolama & Dosya Sistemi Yönetimi
 
 Bu belge, loop device oluşturma, bölümleme, biçimlendirme ve fstab aracılığıyla kalıcı mount yapılandırmasını kapsar.

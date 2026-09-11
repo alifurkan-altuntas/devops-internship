@@ -1,3 +1,7 @@
+---
+layout: page
+---
+
 # ☸️ Kubernetes Security — Overview, Admission Controllers, Network Policy, RBAC, Admission Policy, Image Security, Manifest Security, CIS Benchmark, System Hardening, Kubespray Hardening
 
 Phase 36 completed Advanced Topics. This phase covered the roadmap's **final section**, Security — nine topics, each proven with real tests, or (in one case) an honest "tried, couldn't resolve" note. This is the phase where **the entire Kubernetes roadmap is complete**.

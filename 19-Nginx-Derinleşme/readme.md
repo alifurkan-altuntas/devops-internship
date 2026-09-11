@@ -1,3 +1,7 @@
+---
+layout: page
+---
+
 # 🌐 Nginx Derinleşme — Reverse Proxy, Path Yönetimi, ve Forward Proxy
 
 ✅ **Durum: Tamamlandı.** Reverse proxy kurulumu, path bazlı yönlendirme, path rewrite, path engelleme, ve forward proxy (Squid) — hepsi gerçek bir sunucuda uygulamalı olarak test edildi.

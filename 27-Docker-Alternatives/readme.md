@@ -1,3 +1,7 @@
+---
+layout: page
+---
+
 # 🔄 Docker Alternatifleri — Podman, containerd, CRI-O, Buildah
 
 26. fazda IaC scanning ile Docker'ın kendi kod tabanını taramayı öğrendim. Bu fazda bir adım geri çekilip Docker'ın kendisine bakan alternatif container motorlarını araştırdım — neden var oldukları, Docker'dan farkları, ve Docker'ın hâlâ en çok kullanılan olmasının sebebi.

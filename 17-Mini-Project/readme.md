@@ -1,3 +1,7 @@
+---
+layout: page
+---
+
 # 🚀 Mini Proje — Gerçek Bir Sunucuda Nginx, Docker, Git & SSH
 
 Bu belge, gerçek kiralık bir Linux sunucusunu (yerel VM değil) Nginx, Docker, Git ve SSH anahtar tabanlı erişimle kurulumunu ve bu repodan Git aracılığıyla çekilen basit bir statik web sayfasının yayınlanmasını kapsar.

@@ -1,3 +1,7 @@
+---
+layout: page
+---
+
 # 🔒 Docker Güvenliği — Non-Root Container, .dockerignore, Image Scanning
 
 Docker'da güvenlik üç katmanda ele alındı: container içindeki kullanıcı yetkisi, image'a giren dosyalar ve image içindeki güvenlik açıkları.

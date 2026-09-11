@@ -1,3 +1,7 @@
+---
+layout: page
+---
+
 # 🐳 IaC Scanning — Uygulamalı Testler
 
 Bu belgede kavramsal öğrenilen konular gerçek ortamda test edildi.

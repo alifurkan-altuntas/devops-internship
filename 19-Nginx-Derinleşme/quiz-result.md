@@ -1,3 +1,7 @@
+---
+layout: page
+---
+
 # 📊 Faz 19 & 20 Quiz Sonuçları — Nginx Derinleşme, Rate Limiting & Load Balancing
 
 **Tarih:** 6 Temmuz 2026

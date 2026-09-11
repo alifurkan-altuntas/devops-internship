@@ -1,3 +1,7 @@
+---
+layout: page
+---
+
 # 🐳 Docker — Images, Containers, Dockerfile, and Image Optimization
 
 I’d only used Docker for `hello-world` before. In this phase I learned the core concepts, how to write a Dockerfile, and image optimization techniques.

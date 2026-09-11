@@ -1,3 +1,7 @@
+---
+layout: page
+---
+
 # ⚙️ Phase 6: Linux Process Management & Signaling - Quiz Logs
 
 This document tracks the comprehensive assessment results regarding process identification loops, native system observation frameworks, signaling mechanics, and dynamic CPU priority scheduling architectures.

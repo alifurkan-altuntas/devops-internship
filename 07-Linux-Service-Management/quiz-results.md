@@ -1,3 +1,7 @@
+---
+layout: page
+---
+
 # 🏗️ Phase 7: Linux Service & Log Management - Quiz Logs
 
 This document tracks the comprehensive assessment results regarding systemd initialization frameworks, distribution philosophy branches, zero-downtime reconfiguration pipelines, and centralized log telemetry tracking.

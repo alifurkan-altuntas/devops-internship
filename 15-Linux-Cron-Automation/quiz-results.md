@@ -1,3 +1,7 @@
+---
+layout: page
+---
+
 # 📊 Phase 15 Quiz Results — Cron & Automation
 
 **Score: 14/15 (93%)** — 1 left blank

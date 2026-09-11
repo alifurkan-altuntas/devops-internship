@@ -1,3 +1,7 @@
+---
+layout: page
+---
+
 # ⚙️ Linux Process Management & Signaling
 
 This document covers process monitoring, resource usage, and signals implemented on a test environment.

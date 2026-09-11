@@ -1,3 +1,7 @@
+---
+layout: page
+---
+
 # 🌐 OSI Modeli — Katmanlar, Gerçek Senaryolar, ve Gerçek Paket Doğrulaması
 
 ✅ **Durum: Tamamlandı.** 7 katman, gerçek senaryolarda katman ayırt etme, encapsulation/decapsulation, router davranışı, ve gerçek dünya sağlayıcıları arasında ICMP/traceroute davranışı — hepsi işlendi ve uygulamalı olarak doğrulandı.
@@ -268,7 +272,7 @@ resolvectl status      # bir sorgu aracı değil — sistemin kendi DNS yapılan
 
 ### Gerçek Dünya Cloud Kesintileri
 
-Bu klasördeki ayrı bir belge, AWS, Cloudflare, ve Google Cloud'dan araştırılmış, gerçek DNS-ilişkili (ve DNS'e yakın) kesintileri kapsıyor — bu kavramları gerçek, büyük ölçekli arızalarla bağlıyor. Bkz. [dns-outages-TR.md](./dns-outages-TR.md).
+Bu klasördeki ayrı bir belge, AWS, Cloudflare, ve Google Cloud'dan araştırılmış, gerçek DNS-ilişkili (ve DNS'e yakın) kesintileri kapsıyor — bu kavramları gerçek, büyük ölçekli arızalarla bağlıyor. Bkz. [dns-outages-TR.md](./dns-outages-TR.html).
 
 ---
 

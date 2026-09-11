@@ -1,3 +1,7 @@
+---
+layout: page
+---
+
 # 💾 Linux Storage & File System Management
 
 This document covers creating a loop device, partitioning it, formatting it, and mounting it persistently via fstab.
