@@ -1,0 +1,9 @@
+header:
+  - title: Ana Sayfa
+    url: /
+  - title: Kubernetes
+    url: /readme.md#repo-yapısı
+  - title: Cilium L7 Güvenlik
+    url: /39-Cilium-L7-Security/readme.md
+  - title: GitHub
+    url: https://github.com/alifurkan-altuntas/devops-internship

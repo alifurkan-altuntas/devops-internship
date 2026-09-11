@@ -1,8 +1,20 @@
 title: Ali Furkan Altuntas - DevOps
 theme: jekyll-text-theme
-text_skin: default
+text_skin: dark
 highlight_theme: default
 url: https://alifurkan-altuntas.github.io
 baseurl: /devops-internship
 description: >
-  DevOps stajı boyunca tuttuğum teknik günlük ve dokümantasyon.
+  DevOps stajı boyunca tuttuğum teknik günlük, hata çözümlerim ve altyapı otomasyonu pratiklerim.
+
+lang: tr
+timezone: Europe/Istanbul
+
+author:
+  type: person
+  name: Ali Furkan Altuntas
+  bio: >
+    Elektrik-Elektronik Mühendisliği öğrencisi, DevOps stajyeri.
+  github: alifurkan-altuntas
+
+repository: alifurkan-altuntas/devops-internship
