@@ -7,7 +7,7 @@ title: Ana Sayfa
 
 DevOps stajım boyunca tuttuğum teknik günlük, hata çözümlerim ve altyapı otomasyonu pratiklerimi belgeleyen dokümantasyon sitesi.
 
-[🇬🇧 Read in English](./readme-en.html)
+[🇬🇧 Read in English](./README-EN.html)
 
 ---
 
@@ -15,7 +15,7 @@ DevOps stajım boyunca tuttuğum teknik günlük, hata çözümlerim ve altyapı
 
 Tüm fazların (01'den 39'a) güncel, tam listesi ve açıklamaları için ana günlüğe bakın:
 
-**[→ Repo Yapısı ve Tüm Fazlar (readme.html)](./readme.html#repo-yapısı)**
+**[→ Repo Yapısı ve Tüm Fazlar (README.html)](./README.html#-repo-yapısı)**
 
 ---
 

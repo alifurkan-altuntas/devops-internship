@@ -2,7 +2,7 @@ header:
   - title: Ana Sayfa
     url: /
   - title: Kubernetes
-    url: /README.html#repo-yapısı
+    url: /README.html#-repo-yapısı
   - title: Cilium L7 Güvenlik
     url: /39-Cilium-L7-Security/readme.html
   - title: GitHub

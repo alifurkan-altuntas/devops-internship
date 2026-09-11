@@ -15,7 +15,7 @@ Documentation site for the technical journal, troubleshooting log, and infrastru
 
 For the current, complete list and description of all phases (01 through 39), see the main journal:
 
-**[→ Repo Structure and All Phases (readme-en.html)](./readme-en.html#repo-structure)**
+**[→ Repo Structure and All Phases (README-EN.html)](./README-EN.html#-repository-structure)**
 
 ---
 
