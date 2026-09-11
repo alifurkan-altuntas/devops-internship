@@ -7,7 +7,7 @@ title: Ana Sayfa
 
 DevOps stajım boyunca tuttuğum teknik günlük, hata çözümlerim ve altyapı otomasyonu pratiklerimi belgeleyen dokümantasyon sitesi.
 
-[🇬🇧 Read in English](./readme-en.md)
+[🇬🇧 Read in English](./readme-en.html)
 
 ---
 
@@ -15,13 +15,13 @@ DevOps stajım boyunca tuttuğum teknik günlük, hata çözümlerim ve altyapı
 
 Tüm fazların (01'den 39'a) güncel, tam listesi ve açıklamaları için ana günlüğe bakın:
 
-**[→ Repo Yapısı ve Tüm Fazlar (readme.md)](./readme.md#repo-yapısı)**
+**[→ Repo Yapısı ve Tüm Fazlar (readme.html)](./readme.html#repo-yapısı)**
 
 ---
 
 ## ⭐ Son Çalışma
 
-**[Cilium L7 Güvenlik Mimarisi — Ödeme Servisi Senaryosu](./39-Cilium-L7-Security/readme.md)**
+**[Cilium L7 Güvenlik Mimarisi — Ödeme Servisi Senaryosu](./39-Cilium-L7-Security/readme.html)**
 
 Roadmap dışı, senaryo bazlı uygulama mühendisliği formatında: Calico'dan Cilium'a geçiş, L7 network policy, DNS exfiltration koruması, Hubble gözlemlenebilirliği — gerçek hatalarla, gerçek çözümlerle, gerçek ekran görüntüleriyle.
 

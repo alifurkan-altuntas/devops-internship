@@ -7,7 +7,7 @@ title: Home
 
 Documentation site for the technical journal, troubleshooting log, and infrastructure automation practice kept throughout the DevOps internship.
 
-[🇹🇷 Türkçe'yi görüntüle](./index.md)
+[🇹🇷 Türkçe'yi görüntüle](./index.html)
 
 ---
 
@@ -15,13 +15,13 @@ Documentation site for the technical journal, troubleshooting log, and infrastru
 
 For the current, complete list and description of all phases (01 through 39), see the main journal:
 
-**[→ Repo Structure and All Phases (readme-en.md)](./readme-en.md#repo-structure)**
+**[→ Repo Structure and All Phases (readme-en.html)](./readme-en.html#repo-structure)**
 
 ---
 
 ## ⭐ Latest Work
 
-**[Cilium L7 Security Architecture — Payment Service Scenario](./39-Cilium-L7-Security/readme-en.md)**
+**[Cilium L7 Security Architecture — Payment Service Scenario](./39-Cilium-L7-Security/readme-en.html)**
 
 Outside the roadmap, in a scenario-based application engineering format: migrating from Calico to Cilium, L7 network policy, DNS exfiltration protection, Hubble observability — with real errors, real fixes, real screenshots.
 
